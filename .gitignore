@@ -1,0 +1,37 @@
+# uv / virtualenv
+.venv/
+venv/
+.python-version
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Build
+dist/
+build/
+
+# Data products (recreated by `make all`)
+data/structures/
+data/alphafold/
+data/pockets/
+processed/
+models/
+reports/*.png
+reports/*.pdf
+reports/raw_metrics.parquet
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Scratch
+/tmp_*
+scratch/
