@@ -4,6 +4,7 @@
 seed_base: 42
 n_iterations: 25
 test_fraction: 0.10
+split_strategy: stratified_shuffle
 
 # v14        -> paper canonical 17 descriptors
 # v14+v22    -> adds surf_pol_vdw22, surf_apol_vdw22 (already in CSV)

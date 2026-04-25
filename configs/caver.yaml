@@ -1,0 +1,9 @@
+caver_jar: tools/caver/caver.jar
+probe_radius: 0.9
+shell_radius: 3.0
+shell_depth: 4.0
+clustering_threshold: 3.5
+timeout_s: 45
+max_structure_timeout_s: 300
+use_multi_start: false
+java_heap: 768m

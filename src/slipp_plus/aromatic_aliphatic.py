@@ -81,6 +81,16 @@ def write_features(input_dir: Path, output_path: Path) -> dict[str, object]:
     }
 
 
+def _symmetric_jeffreys_log_ratio(numerator: int, denominator: int) -> float:
+    """Return the antisymmetric Jeffreys-smoothed log-ratio for two counts."""
+
+    return float(math.log((numerator + 0.5) / (denominator + 0.5)))
+
+
+def _jeffreys_log_ratio(numerator: int, denominator: int) -> float:
+    return _symmetric_jeffreys_log_ratio(numerator, denominator)
+
+
 def _extract_features_with_stats(input_dir: Path) -> ExtractionResult:
     if not input_dir.exists():
         raise FileNotFoundError(f"input directory does not exist: {input_dir}")
@@ -249,7 +259,7 @@ def _extract_pocket_row(
             aliphatic_counts[shell_index] += 1
 
     ratios = [
-        float(aromatic / (aliphatic + 1.0))
+        _symmetric_jeffreys_log_ratio(aromatic, aliphatic)
         for aromatic, aliphatic in zip(aromatic_counts, aliphatic_counts, strict=True)
     ]
     return {
@@ -331,7 +341,7 @@ def _validate_frame(frame: pl.DataFrame, expected_rows: int) -> None:
                 raise ValueError(f"{pocket_id}: negative count in {column}")
         for column in RATIO_COLUMNS:
             value = float(row[column])
-            if not math.isfinite(value) or value < 0:
+            if not math.isfinite(value):
                 raise ValueError(f"{pocket_id}: invalid ratio in {column}")
 
 

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from pathlib import Path
 
 import numpy as np
@@ -15,6 +16,7 @@ from slipp_plus.aromatic_aliphatic import (
     _compute_centroid,
     _extract_features_with_stats,
     _shell_index,
+    _symmetric_jeffreys_log_ratio,
     extract_features,
 )
 
@@ -144,13 +146,31 @@ def test_ratio_smoothing(tmp_path: Path) -> None:
         residues=[("PHE", 1, 1.0, 0.0, 0.0, "CA")],
         coordinates=[(0.0, 0.0, 0.0), (0.0, 0.0, 0.0)],
     )
+    _make_structure(
+        tmp_path,
+        pdb_id="ABCD",
+        pocket_index=1,
+        residues=[("LEU", 1, 1.0, 0.0, 0.0, "CA")],
+        coordinates=[(0.0, 0.0, 0.0), (0.0, 0.0, 0.0)],
+    )
 
-    frame = extract_features(tmp_path)
+    frame = extract_features(tmp_path).sort("pocket_id")
 
-    assert frame.height == 1
-    assert frame["aromatic_count_shell1"].item() == 1
-    assert frame["aliphatic_count_shell1"].item() == 0
-    assert frame["aromatic_aliphatic_ratio_shell1"].item() == 1.0
+    assert frame.height == 2
+    assert frame["aromatic_count_shell1"].to_list() == [1, 0]
+    assert frame["aliphatic_count_shell1"].to_list() == [0, 1]
+    expected = math.log(3.0)
+    ratios = frame["aromatic_aliphatic_ratio_shell1"].to_list()
+    assert ratios[0] == pytest.approx(expected)
+    assert ratios[1] == pytest.approx(-expected)
+
+
+def test_symmetric_jeffreys_log_ratio_is_antisymmetric() -> None:
+    expected = math.log((4.0 + 0.5) / (1.0 + 0.5))
+
+    assert _symmetric_jeffreys_log_ratio(4, 1) == pytest.approx(expected)
+    assert _symmetric_jeffreys_log_ratio(1, 4) == pytest.approx(-expected)
+    assert _symmetric_jeffreys_log_ratio(3, 3) == pytest.approx(0.0)
 
 
 def test_closest_atom_preferred_over_ca(tmp_path: Path) -> None:
@@ -202,14 +222,20 @@ def test_extract_features_end_to_end(tmp_path: Path) -> None:
             "aliphatic_count_shell2": [1],
             "aliphatic_count_shell3": [0],
             "aliphatic_count_shell4": [1],
-            "aromatic_aliphatic_ratio_shell1": [1.0],
-            "aromatic_aliphatic_ratio_shell2": [0.0],
-            "aromatic_aliphatic_ratio_shell3": [1.0],
-            "aromatic_aliphatic_ratio_shell4": [0.0],
+            "aromatic_aliphatic_ratio_shell1": [math.log(3.0)],
+            "aromatic_aliphatic_ratio_shell2": [-math.log(3.0)],
+            "aromatic_aliphatic_ratio_shell3": [math.log(3.0)],
+            "aromatic_aliphatic_ratio_shell4": [-math.log(3.0)],
         }
     )
 
-    assert frame.to_dict(as_series=False) == expected.to_dict(as_series=False)
+    for column in frame.columns:
+        actual = frame[column].to_list()
+        target = expected[column].to_list()
+        if column.endswith("ratio_shell1") or column.endswith("ratio_shell2") or column.endswith("ratio_shell3") or column.endswith("ratio_shell4"):
+            assert actual == pytest.approx(target)
+        else:
+            assert actual == target
 
 
 def test_extract_features_skips_unmatched_and_malformed(tmp_path: Path) -> None:

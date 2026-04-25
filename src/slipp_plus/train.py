@@ -1,8 +1,11 @@
-"""Train 3 model families x N stratified-shuffle iterations, 10-class softmax.
+"""Train 3 model families x N split iterations.
 
-Iteration 0 models are persisted to ``models/`` for later interpretation and
-holdout scoring. All iterations' predictions + metadata are written to
-``processed/predictions/`` as parquet, consumed by ``evaluate.py``.
+Flat mode (``pipeline_mode=flat``): 10-class RF/XGB/LGBM, iteration-0 joblibs,
+and ``test_predictions.parquet``.
+
+Hierarchical mode (``pipeline_mode=hierarchical``): staged lipid pipeline only;
+see ``hierarchical_pipeline.run_hierarchical_training`` for artifacts
+(including ``hierarchical_bundle.joblib`` and staged prediction parquet).
 """
 
 from __future__ import annotations
@@ -13,16 +16,22 @@ from typing import Any
 import joblib
 import numpy as np
 import pandas as pd
+import sklearn
 from lightgbm import LGBMClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.utils.class_weight import compute_sample_weight
 from tqdm import tqdm
 from xgboost import XGBClassifier
 
+from .artifact_schema import (
+    build_feature_schema_metadata,
+    write_artifact_schema_sidecar,
+)
 from .config import Settings
 from .constants import CLASS_10
 from .features import class10_labels, feature_matrix
 from .splits import load_split, make_splits, persist_splits
+
 
 
 def _build_model(key: str, seed: int) -> Any:
@@ -71,7 +80,7 @@ def _fit_predict(
     return model, pred.astype(np.int64), proba.astype(np.float64)
 
 
-def run_training(settings: Settings) -> dict[str, Path]:
+def _run_flat_training(settings: Settings) -> dict[str, Path]:
     paths = settings.paths
     proc = paths.processed_dir
     models_dir = paths.models_dir
@@ -80,10 +89,21 @@ def run_training(settings: Settings) -> dict[str, Path]:
     pred_dir.mkdir(parents=True, exist_ok=True)
 
     full = pd.read_parquet(proc / "full_pockets.parquet")
+    feature_columns = settings.feature_columns()
+    schema_metadata = build_feature_schema_metadata(
+        feature_set=settings.feature_set,
+        feature_columns=feature_columns,
+    )
     X = feature_matrix(full, settings)
     y_str = class10_labels(full)
     class_to_int = {c: i for i, c in enumerate(CLASS_10)}
     y_int = np.array([class_to_int[c] for c in y_str], dtype=np.int64)
+    group_labels: np.ndarray | None = None
+    if settings.split_strategy == "grouped":
+        group_column = settings.split_group_column
+        if group_column not in full.columns:
+            raise KeyError(f"group column not found in training parquet: {group_column}")
+        group_labels = full[group_column].to_numpy()
 
     splits_dir = proc / "splits"
     split_files = sorted(splits_dir.glob("seed_*.parquet"))
@@ -93,6 +113,8 @@ def run_training(settings: Settings) -> dict[str, Path]:
             n_iterations=settings.n_iterations,
             test_fraction=settings.test_fraction,
             seed_base=settings.seed_base,
+            strategy=settings.split_strategy,
+            group_labels=group_labels,
         )
         split_files = persist_splits(splits, splits_dir)
 
@@ -109,8 +131,14 @@ def run_training(settings: Settings) -> dict[str, Path]:
                     {
                         "model": model,
                         "class_order": CLASS_10,
-                        "feature_set": settings.feature_set,
-                        "feature_columns": settings.feature_columns(),
+                        "sklearn_version": sklearn.__version__,
+                        "xgboost_version": getattr(
+                            __import__("xgboost"), "__version__", "unknown"
+                        ),
+                        "lightgbm_version": getattr(
+                            __import__("lightgbm"), "__version__", "unknown"
+                        ),
+                        **schema_metadata,
                     },
                     models_dir / f"{key}_multiclass.joblib",
                 )
@@ -125,5 +153,22 @@ def run_training(settings: Settings) -> dict[str, Path]:
     preds = pd.concat(all_rows, ignore_index=True)
     preds_path = pred_dir / "test_predictions.parquet"
     preds.to_parquet(preds_path, index=False)
+    write_artifact_schema_sidecar(
+        preds_path,
+        {
+            "artifact_type": "test_predictions",
+            "class_order": CLASS_10,
+            "models": list(settings.models),
+            **schema_metadata,
+        },
+    )
 
     return {"predictions": preds_path, "models_dir": models_dir}
+
+
+def run_training(settings: Settings) -> dict[str, Path]:
+    if settings.pipeline_mode == "hierarchical":
+        from .hierarchical_pipeline import run_hierarchical_training
+
+        return run_hierarchical_training(settings)
+    return _run_flat_training(settings)

@@ -1,7 +1,11 @@
 from slipp_plus.constants import (
     AA20,
     CLASS_10,
+    DERIVED_FEATURES_26,
+    EXTRA_VDW22,
+    FEATURE_SETS,
     LIG_TO_CLASS,
+    LIPID_BOUNDARY_FEATURES_22,
     LIPID_CODES,
     NONLIPID_CODES,
     PP_CODE,
@@ -34,3 +38,19 @@ def test_lig_to_class_maps_none_to_pp():
 def test_is_lipid_matches_set():
     for c in CLASS_10:
         assert is_lipid(c) == (c in LIPID_CODES)
+
+
+def test_v_lipid_boundary_registry_shape():
+    assert len(LIPID_BOUNDARY_FEATURES_22) == 22
+    assert len(set(LIPID_BOUNDARY_FEATURES_22)) == 22
+    assert FEATURE_SETS["v_lipid_boundary"][-22:] == LIPID_BOUNDARY_FEATURES_22
+    assert len(FEATURE_SETS["v_lipid_boundary"]) == len(FEATURE_SETS["v_sterol"]) + 22
+
+
+def test_v_sterol_ablation_registry_shapes() -> None:
+    assert FEATURE_SETS["v_sterol+vdw22"] == FEATURE_SETS["v_sterol"] + EXTRA_VDW22
+    assert FEATURE_SETS["v_sterol+derived"] == FEATURE_SETS["v_sterol"] + DERIVED_FEATURES_26
+    assert FEATURE_SETS["v_sterol+vdw22+derived"] == (
+        FEATURE_SETS["v_sterol"] + EXTRA_VDW22 + DERIVED_FEATURES_26
+    )
+    assert FEATURE_SETS["v_sterol_v2"] == FEATURE_SETS["v_sterol+derived"]

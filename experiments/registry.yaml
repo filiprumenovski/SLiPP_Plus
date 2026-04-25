@@ -1,0 +1,294 @@
+# experiments/registry.yaml
+# Machine-readable experiment index for SLiPP++.
+# Each entry records a completed experiment with its config, metrics, and artifacts.
+# Updated by human or LLM after each experiment session.
+#
+# Schema:
+#   id:               unique experiment identifier (exp-NNN-short-name)
+#   date:             ISO date of completion
+#   feature_set:      name from constants.FEATURE_SETS
+#   config:           path to YAML config used
+#   models:           list of model keys trained
+#   postprocessing:   any post-hoc correction (e.g. tiebreaker)
+#   status:           complete | in-progress | abandoned
+#   is_current_best:  true only for the recommended production config
+#   metrics:          headline numbers (mean across 25 iterations)
+#   holdouts:         holdout set performance (iteration-0 model)
+#   supersedes:       experiment ID this one replaces
+#   artifacts:        paths to key output files
+#   notes:            free-text context for LLMs
+
+- id: exp-001-day1-v14
+  date: "2026-04-23"
+  feature_set: v14
+  config: configs/day1.yaml
+  models: [rf, xgb, lgbm]
+  postprocessing: none
+  status: complete
+  metrics:
+    binary_f1: "0.860 ± 0.017"           # xgb, best single model
+    binary_auroc: "0.982 ± 0.004"
+    macro_f1_10: "0.650 ± 0.020"          # xgb
+    lipid_macro_f1: "0.514 ± 0.038"       # xgb
+    clr_f1: 0.669
+    ste_f1: 0.313
+    plm_f1: 0.564
+  holdouts:
+    apo_pdb_f1: 0.746                     # lgbm
+    apo_pdb_auroc: 0.798
+    alphafold_f1: 0.732                   # rf
+    alphafold_auroc: 0.855
+  artifacts:
+    predictions: processed/predictions/test_predictions.parquet
+    models: models/
+    report: reports/metrics_table.md
+  notes: >
+    Day 1 baseline. Reproduces paper binary F1 within 0.01.
+    XGB is the strongest single model on test split.
+    Paper targets: binary F1=0.869, AUROC=0.970, apo F1=0.726, AF F1=0.643.
+
+- id: exp-002-v49-baseline
+  date: "2026-04-23"
+  feature_set: v49
+  config: configs/v49.yaml
+  models: [rf, xgb, lgbm]
+  postprocessing: none
+  status: complete
+  metrics:
+    binary_f1: "0.895 ± 0.015"           # xgb
+    binary_auroc: "0.988 ± 0.003"
+    macro_f1_10: "0.725 ± 0.017"
+    lipid_macro_f1: "0.590 ± 0.033"
+    clr_f1: 0.708
+    ste_f1: 0.415
+    plm_f1: 0.623
+    myr_f1: 0.682
+    ola_f1: 0.522
+  holdouts:
+    apo_pdb_f1: 0.709                    # rf
+    apo_pdb_auroc: 0.848
+    alphafold_f1: 0.753                  # rf
+    alphafold_auroc: 0.883
+  supersedes: exp-001-day1-v14
+  artifacts:
+    predictions: processed/v49/predictions/test_predictions.parquet
+    models: models/v49/
+    report: reports/v49/metrics_table.md
+  notes: >
+    +20 AA counts + 12 aromatic/aliphatic shell features.
+    Major jump in lipid subclass discrimination (+0.076 lipid macro-F1).
+    Binary F1 surpasses paper by +0.026.
+
+- id: exp-003-v49-ensemble-clr-ste-tb
+  date: "2026-04-23"
+  feature_set: v49
+  config: configs/v49.yaml
+  models: [rf, xgb, lgbm]
+  postprocessing: "clr_ste_tiebreaker(margin=0.15)"
+  status: complete
+  metrics:
+    binary_f1: "0.898 ± 0.016"
+    binary_auroc: "0.986 ± 0.004"
+    macro_f1_10: "0.731 ± 0.016"
+    lipid_macro_f1: "0.596 ± 0.030"
+    clr_f1: "0.719 ± 0.047"
+    ste_f1: "0.393 ± 0.087"
+  artifacts:
+    report: reports/ensemble/metrics.md
+  notes: >
+    CLR/STE tiebreaker fired only 2 times across 25 iterations (0.08%).
+    Near-zero impact because STE's dominant confusion is with PLM, not CLR.
+    This experiment proved the CLR/STE tiebreaker is the wrong intervention for STE.
+
+- id: exp-004-v61-baseline
+  date: "2026-04-23"
+  feature_set: v61
+  config: configs/v61.yaml
+  models: [rf, xgb, lgbm]
+  postprocessing: none
+  status: complete
+  metrics:
+    binary_f1: "0.894 ± 0.016"           # lgbm
+    binary_auroc: "0.988 ± 0.004"
+    macro_f1_10: "0.726 ± 0.016"
+    lipid_macro_f1: "0.591 ± 0.031"
+  holdouts:
+    apo_pdb_f1: 0.745                    # rf
+    alphafold_f1: 0.690                  # rf
+  artifacts:
+    predictions: processed/v61/predictions/test_predictions.parquet
+    models: models/v61/
+    report: reports/v61/metrics_table.md
+  notes: >
+    v49 + 12 normalized shell features. Mixed results: helps apo-PDB RF
+    but slightly regresses AlphaFold. Not a clean replacement for v49.
+
+- id: exp-005-v_sterol-ensemble
+  date: "2026-04-23"
+  feature_set: v_sterol
+  config: configs/v_sterol.yaml
+  models: [rf, xgb, lgbm]
+  postprocessing: "ensemble(mean_prob)"
+  status: complete
+  metrics:
+    binary_f1: "0.899 ± 0.015"
+    binary_auroc: "0.986 ± 0.004"
+    macro_f1_10: "0.734 ± 0.016"
+    lipid_macro_f1: "0.601 ± 0.027"
+    clr_f1: "0.728 ± 0.050"
+    ste_f1: "0.398 ± 0.095"
+    plm_f1: "0.636 ± 0.046"
+    myr_f1: 0.700
+    ola_f1: 0.543
+  supersedes: exp-002-v49-baseline
+  artifacts:
+    predictions: processed/v_sterol/predictions/test_predictions.parquet
+    models: models/v_sterol/
+    report: reports/v_sterol/v_sterol_ensemble_metrics.md
+  notes: >
+    Chemistry-refined residue shells (28 chem + 4 ratio + 5 PCA + 1 burial = 38 new features).
+    CLR F1: +0.020 over v49 XGB. STE F1 regressed (0.415 → 0.398) — targeted in exp-007.
+    4 of 5 lipid classes improved. Sterol ID Sprint Round 1.
+
+- id: exp-006-v_plm_ste-features
+  date: "2026-04-23"
+  feature_set: v_plm_ste
+  config: configs/v_plm_ste.yaml
+  models: [rf, xgb, lgbm]
+  postprocessing: none
+  status: complete
+  metrics:
+    macro_f1_10: "~0.730"
+    ste_f1: "0.388"
+  artifacts:
+    report: reports/v_plm_ste/
+  notes: >
+    ABANDONED. 16 structural motif features (CRAC/CARC, axial, polar-anchor).
+    Neutral-to-regressive for STE F1 in 10-class softmax (0.388 vs 0.398 baseline).
+    Features show structure in group means but were diluted in multiclass.
+    Retained in repo for potential binary-head use. Not in winning config.
+
+- id: exp-007-v_sterol-plm_ste-tiebreaker
+  date: "2026-04-23"
+  feature_set: v_sterol
+  config: configs/v_sterol.yaml
+  models: [rf, xgb, lgbm]
+  postprocessing: "ensemble(mean_prob) + plm_ste_tiebreaker(margin=0.99)"
+  status: complete
+  is_current_best: false
+  metrics:
+    binary_f1: "0.899 ± 0.015"
+    binary_auroc: "0.986 ± 0.004"
+    macro_f1_10: "0.738 ± 0.015"
+    lipid_macro_f1: "0.610 ± 0.026"
+    clr_f1: "0.728 ± 0.047"
+    ste_f1: "0.444 ± 0.107"
+    plm_f1: "0.638 ± 0.046"
+    myr_f1: 0.697
+    ola_f1: 0.535
+  holdouts:
+    apo_pdb_f1: 0.716                   # rf
+    alphafold_f1: 0.725                  # rf
+  supersedes: exp-005-v_sterol-ensemble
+  artifacts:
+    predictions: processed/v_sterol/predictions/plm_ste_tiebreaker_predictions.parquet
+    ensemble_predictions: processed/v_sterol/predictions/ensemble_predictions.parquet
+    models: models/v_sterol/
+    report: reports/v_sterol/plm_ste_tiebreaker_metrics.md
+    overall_report: reports/v_sterol/overall_metrics_with_plm_ste_tb.md
+    sprint_report: reports/sterol_id_sprint.md
+  notes: >
+    WINNING CONFIG. PLM/STE binary XGB head with scale_pos_weight ≈ 4.72.
+    Fires 12.6 rows/iter (315 total). STE F1: +0.046 over ensemble-only.
+    PLM F1 net +0.002 (unchanged within error). Pure net win.
+    Sterol ID Sprint Round 2.
+
+- id: exp-009-v_sterol-boundary-refactor
+  date: "2026-04-24"
+  feature_set: v_sterol
+  config: configs/v_sterol.yaml
+  models: [rf, xgb, lgbm]
+  postprocessing: "ensemble(mean_prob) + ste_rescue(threshold=0.50) + ola_vs_plm(margin=0.05)"
+  status: complete
+  is_current_best: true
+  metrics:
+    binary_f1: "0.899 ± 0.016"
+    binary_auroc: "0.986 ± 0.004"
+    macro_f1_10: "0.754 ± 0.016"
+    lipid_macro_f1: "0.641 ± 0.030"
+    clr_f1: "0.728 ± 0.050"
+    myr_f1: "0.701 ± 0.060"
+    ola_f1: "0.553 ± 0.056"
+    plm_f1: "0.649 ± 0.050"
+    ste_f1: "0.576 ± 0.105"
+  supersedes: exp-007-v_sterol-plm_ste-tiebreaker
+  artifacts:
+    predictions: processed/v_sterol/predictions/ste_rescue_ola_plm_pair_predictions.parquet
+    ste_rescue_predictions: processed/v_sterol/predictions/ste_rescue_boundary_refactor_predictions.parquet
+    report: reports/v_sterol/boundary_refactor_results.md
+    ste_rescue_report: reports/v_sterol/ste_rescue_boundary_refactor.md
+    ola_plm_report: reports/v_sterol/ste_rescue_ola_plm_pair_selected.md
+    residual_confusions: reports/v_sterol/ste_rescue_ola_plm_pair_residual_confusions.md
+  notes: >
+    Boundary-head refactor promoted grouped STE-vs-neighbors rescue into the
+    shared local-arbitration architecture. Main gain is STE F1: 0.444 -> 0.576
+    vs exp-007, with binary F1/AUROC unchanged. OLA/PLM margin=0.05 adds a
+    small stacked improvement; PLM/MYR stacking was neutral-to-regressive.
+
+- id: exp-008-detector-bakeoff
+  date: "2026-04-23"
+  feature_set: null
+  config: null
+  models: null
+  postprocessing: null
+  status: complete
+  metrics:
+    fpocket_top1_dcc: 0.364
+    fpocket_top3_dcc: 0.532
+    p2rank_top1_dcc: 0.289
+    p2rank_top3_dcc: 0.403
+    fpocket_clr_mean_rank: 2.60
+    p2rank_clr_mean_rank: 7.64
+  artifacts:
+    report: reports/detector_bakeoff/results.md
+    scores: reports/detector_bakeoff/training_scores.parquet
+    summary: reports/detector_bakeoff/training_summary.parquet
+  notes: >
+    fpocket vs P2Rank on 1,752 ligand-bound structures.
+    fpocket wins every aggregate metric. P2Rank's CNN was trained on drug-pocket
+    benchmarks; lipid pockets are underrepresented. Validates paper's choice of fpocket.
+
+- id: exp-010-binary-ovr-lipid-family
+  date: "2026-04-25"
+  feature_set: v_sterol
+  config: configs/v_sterol_binary_ovr.yaml
+  models: [rf, xgb, lgbm]
+  postprocessing: "hierarchical(binary_ovr_stage2) + ste_specialist(threshold=0.40)"
+  status: complete
+  is_current_best: false
+  metrics:
+    binary_f1: "0.896 ± 0.017"
+    binary_auroc: "0.986 ± 0.004"
+    macro_f1_10: "0.726 ± 0.018"
+    lipid_macro_f1: "0.625 ± 0.033"
+    clr_f1: "0.707 ± 0.047"
+    myr_f1: "0.688 ± 0.058"
+    ola_f1: "0.523 ± 0.053"
+    plm_f1: "0.630 ± 0.047"
+    ste_f1: "0.576 ± 0.108"
+  holdouts:
+    apo_pdb_f1: 0.679
+    alphafold_f1: 0.708
+  artifacts:
+    predictions: processed/v_sterol/predictions/hierarchical_lipid_predictions.parquet
+    models: models/v_sterol_binary_ovr/
+    report: reports/v_sterol_binary_ovr/hierarchical_lipid_report.md
+    metrics: reports/v_sterol_binary_ovr/metrics_table.md
+    bundle: models/v_sterol_binary_ovr/hierarchical_bundle.joblib
+  notes: >
+    NEGATIVE RESULT. Replaced Stage 2 five-way lipid softmax with 5 independent
+    binary OvR XGB heads. STE F1 matched existing rescue stack (0.576) with zero
+    post-hoc logic, but CLR/MYR/OLA/PLM all regressed 2-3pp each. Net: -0.028
+    macro-F1 vs exp-009. The softmax simplex provides free inter-class discriminative
+    signal for well-sampled classes; removing it costs more than it gains. Validates
+    the current softmax + boundary-head architecture as near-optimal for this data regime.

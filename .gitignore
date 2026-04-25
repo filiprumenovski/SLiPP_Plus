@@ -19,11 +19,25 @@ build/
 data/structures/
 data/alphafold/
 data/pockets/
+data/**/*.parquet
 processed/
 models/
 reports/*.png
 reports/*.pdf
 reports/raw_metrics.parquet
+reports/**/raw_metrics.parquet
+reports/**/*.parquet
+
+# Upstream/reference fork kept locally for comparison only
+reference/SLiPP_2024-main/
+
+# Local third-party tools and generated tunnel/CAVER material
+tools/caver/
+tools/p2rank_2.4.2/
+configs/caver.local.yaml
+configs/*local*.yaml
+*caver_out*/
+*_out/
 
 # OS
 .DS_Store
@@ -31,6 +45,20 @@ reports/raw_metrics.parquet
 # IDE
 .vscode/
 .idea/
+.cursor/
+
+# Agent / LLM work artifacts
+.agents/
+.claude/
+.codex/
+AGENTS.md
+CLAUDE.md
+PROMPT.md
+*.prompt.md
+*.prompts.md
+*.chat.md
+*.conversation.md
+*.jsonl
 
 # Scratch
 /tmp_*

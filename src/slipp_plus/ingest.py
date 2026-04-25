@@ -16,7 +16,10 @@ lives in ``src/slipp_plus/download.py`` + ``pocket_extraction.py`` as stubs.
 
 from __future__ import annotations
 
+import logging
 from pathlib import Path
+
+_log = logging.getLogger(__name__)
 
 import pandas as pd
 
@@ -81,6 +84,18 @@ def _read_holdout_xlsx(path: Path, id_col: str) -> pd.DataFrame:
     out["class_binary"] = raw["ligand"].isin(LIPID_CODES).astype(int)
     for c in SELECTED_17:
         out[c] = pd.to_numeric(raw[c], errors="coerce")
+    n_before = len(out)
+    dropped = out[out[SELECTED_17].isna().any(axis=1)]
+    if len(dropped) > 0:
+        dropped_ids = dropped["structure_id"].unique().tolist()
+        _log.warning(
+            "%s: dropping %d/%d holdout rows with NaN descriptors "
+            "(structure_ids: %s)",
+            path.name,
+            len(dropped),
+            n_before,
+            dropped_ids[:10],
+        )
     out = out.dropna(subset=SELECTED_17).reset_index(drop=True)
     return out
 

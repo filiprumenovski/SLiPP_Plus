@@ -1,0 +1,61 @@
+seed_base: 42
+n_iterations: 5
+test_fraction: 0.10
+
+feature_set: v_sterol_v2
+pipeline_mode: hierarchical
+
+models:
+  - rf
+  - xgb
+  - lgbm
+
+hierarchical:
+  stage1_source: ensemble
+  ste_threshold: 0.40
+  workers: 5
+  specialist_gate: utility
+  specialist_feature_set: v_sterol
+  utility_threshold_default: 0.50
+  boundary_heads:
+    - name: ola_vs_plm
+      positive_label: OLA
+      negative_labels: [PLM]
+      margin: 0.05
+      feature_set: v_sterol_v2
+
+ground_truth:
+  test:
+    f1: 0.869
+    auroc: 0.970
+    accuracy: 0.968
+    precision: 0.926
+    sensitivity: 0.818
+  apo_pdb:
+    f1: 0.726
+    auroc: 0.828
+  alphafold:
+    f1: 0.643
+    auroc: 0.851
+
+paths:
+  training_csv: reference/SLiPP_2024-main/training_pockets.csv
+  supporting_file_2_xlsx: data/raw/supplementary/ci5c01076_si_003.xlsx
+  supporting_file_3_xlsx: data/raw/supplementary/ci5c01076_si_004.xlsx
+  processed_dir: processed/v_sterol_v2_specialist_routed_5
+  models_dir: models/v_sterol_v2_specialist_routed_5
+  reports_dir: reports/v_sterol_v2_specialist_routed_5
+
+validation:
+  training_total_exact: 15219
+  per_class_exact:
+    CLR: 358
+    MYR: 424
+    OLA: 329
+    PLM: 718
+    STE: 152
+    ADN: 414
+    B12: 373
+    BGC: 526
+    COA: 2020
+    PP: 9905

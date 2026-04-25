@@ -9,17 +9,21 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import (
     accuracy_score,
-    confusion_matrix,
     f1_score,
     precision_recall_fscore_support,
-    precision_score,
-    recall_score,
     roc_auc_score,
 )
 
+from .artifact_schema import (
+    read_artifact_schema_sidecar,
+    validate_feature_schema_metadata,
+)
 from .config import Settings
-from .constants import CLASS_10, LIPID_CODES
-from .features import feature_matrix
+from .constants import (
+    CLASS_10,
+    HIERARCHICAL_PREDICTIONS_NAME,
+    LIPID_CODES,
+)
 
 
 LIPID_IDX = np.array([i for i, c in enumerate(CLASS_10) if c in LIPID_CODES])
@@ -130,13 +134,28 @@ def evaluate_test_predictions(preds: pd.DataFrame) -> pd.DataFrame:
 def evaluate_holdout(
     model_bundle: dict,
     holdout_df: pd.DataFrame,
-    settings: Settings,
+    _settings: Settings,
 ) -> dict[str, float]:
     """Score a holdout using the iteration-0 fitted model bundle.
 
     Holdouts carry ``class_binary`` only (no class_10), so we collapse the
     10-class predicted softmax to a lipid probability via LIPID_IDX.sum.
+
+    The lipid indices are derived from the bundle's ``class_order`` metadata
+    to guard against silent misalignment if class ordering ever changes.
     """
+    # Derive lipid indices from the bundle's class_order, falling back to the
+    # module constant if the bundle predates the class_order field.
+    bundle_class_order = model_bundle.get("class_order", CLASS_10)
+    if bundle_class_order != CLASS_10:
+        raise ValueError(
+            f"model bundle class_order {bundle_class_order} does not match "
+            f"the canonical CLASS_10 {CLASS_10}. Cannot safely evaluate holdout."
+        )
+    lipid_idx = np.array(
+        [i for i, c in enumerate(bundle_class_order) if c in LIPID_CODES]
+    )
+
     cols = model_bundle["feature_columns"]
     missing = [c for c in cols if c not in holdout_df.columns]
     if missing:
@@ -148,7 +167,7 @@ def evaluate_holdout(
     X = holdout_df[cols].to_numpy(dtype=np.float64)
     true_bin = holdout_df["class_binary"].to_numpy(dtype=int)
     proba = model_bundle["model"].predict_proba(X)
-    p_lipid = proba[:, LIPID_IDX].sum(axis=1)
+    p_lipid = proba[:, lipid_idx].sum(axis=1)
     pred_bin = (p_lipid >= 0.5).astype(int)
 
     tp = int(((pred_bin == 1) & (true_bin == 1)).sum())
@@ -180,6 +199,84 @@ def evaluate_holdout(
     }
 
 
+def evaluate_staged_holdout_predictions(
+    holdout_preds: pd.DataFrame,
+    holdout_df: pd.DataFrame,
+) -> dict[str, float]:
+    proba_cols = [f"p_{c}" for c in CLASS_10]
+    proba = holdout_preds[proba_cols].to_numpy(dtype=np.float64)
+    true_bin = holdout_df["class_binary"].to_numpy(dtype=int)
+    p_lipid = proba[:, LIPID_IDX].sum(axis=1)
+    pred_bin = (p_lipid >= 0.5).astype(int)
+
+    tp = int(((pred_bin == 1) & (true_bin == 1)).sum())
+    tn = int(((pred_bin == 0) & (true_bin == 0)).sum())
+    fp = int(((pred_bin == 1) & (true_bin == 0)).sum())
+    fn = int(((pred_bin == 0) & (true_bin == 1)).sum())
+    sensitivity = tp / (tp + fn) if (tp + fn) else 0.0
+    specificity = tn / (tn + fp) if (tn + fp) else 0.0
+    precision = tp / (tp + fp) if (tp + fp) else 0.0
+    accuracy = (tp + tn) / len(true_bin) if len(true_bin) else 0.0
+    f1 = (
+        2 * precision * sensitivity / (precision + sensitivity)
+        if (precision + sensitivity)
+        else 0.0
+    )
+    try:
+        auroc = roc_auc_score(true_bin, p_lipid)
+    except ValueError:
+        auroc = float("nan")
+
+    return {
+        "n": int(len(true_bin)),
+        "n_lipid": int(true_bin.sum()),
+        "accuracy": accuracy,
+        "f1": f1,
+        "precision": precision,
+        "sensitivity": sensitivity,
+        "specificity": specificity,
+        "auroc": auroc,
+        "tp": tp,
+        "tn": tn,
+        "fp": fp,
+        "fn": fn,
+    }
+
+
+def evaluate_hierarchical_holdouts(
+    settings: Settings,
+    *,
+    feature_columns: list[str],
+) -> dict[str, dict[str, float]]:
+    from .hierarchical_pipeline import load_hierarchical_bundle, predict_hierarchical_holdout
+
+    proc = settings.paths.processed_dir
+    holdout_dir = proc / "predictions" / "holdouts"
+    holdout_dir.mkdir(parents=True, exist_ok=True)
+    bundle_path = settings.paths.models_dir / settings.hierarchical.bundle_name
+    bundle = load_hierarchical_bundle(bundle_path)
+    if list(bundle.get("class_order", CLASS_10)) != list(CLASS_10):
+        raise ValueError(
+            "hierarchical bundle class_order does not match canonical CLASS_10"
+        )
+
+    outputs: dict[str, dict[str, float]] = {}
+    for holdout_name in ("apo_pdb", "alphafold"):
+        holdout_df = pd.read_parquet(proc / f"{holdout_name}_holdout.parquet")
+        holdout_preds = predict_hierarchical_holdout(
+            holdout_df=holdout_df,
+            bundle=bundle,
+            expected_feature_columns=feature_columns,
+            expected_feature_set=settings.feature_set,
+        )
+        holdout_preds.to_parquet(
+            holdout_dir / f"hierarchical_{holdout_name}_predictions.parquet",
+            index=False,
+        )
+        outputs[holdout_name] = evaluate_staged_holdout_predictions(holdout_preds, holdout_df)
+    return outputs
+
+
 def _fmt(v: float | int) -> str:
     if isinstance(v, int):
         return str(v)
@@ -194,35 +291,73 @@ def run_evaluation(settings: Settings) -> dict[str, Path]:
     reports = paths.reports_dir
     reports.mkdir(parents=True, exist_ok=True)
 
-    preds = pd.read_parquet(proc / "predictions" / "test_predictions.parquet")
+    feature_columns = settings.feature_columns()
+    preds_name = (
+        HIERARCHICAL_PREDICTIONS_NAME
+        if settings.pipeline_mode == "hierarchical"
+        else "test_predictions.parquet"
+    )
+    preds_path = proc / "predictions" / preds_name
+    preds_schema = read_artifact_schema_sidecar(preds_path)
+    if preds_schema is not None:
+        validate_feature_schema_metadata(
+            preds_schema,
+            expected_feature_columns=feature_columns,
+            expected_feature_set=settings.feature_set,
+            artifact_label=f"prediction artifact {preds_path.name}",
+        )
+
+    preds = pd.read_parquet(preds_path)
+    if "model" not in preds.columns:
+        preds = preds.copy()
+        preds["model"] = settings.pipeline_mode
     metrics = evaluate_test_predictions(preds)
     raw_path = reports / "raw_metrics.parquet"
     metrics.to_parquet(raw_path, index=False)
 
     summary = _aggregate(metrics, group_cols=["model"])
 
-    apo = pd.read_parquet(proc / "apo_pdb_holdout.parquet")
-    af = pd.read_parquet(proc / "alphafold_holdout.parquet")
     holdout_rows: dict[str, dict[str, dict[str, float]]] = {}
-    for key in settings.models:
-        bundle_path = paths.models_dir / f"{key}_multiclass.joblib"
-        if not bundle_path.exists():
-            continue
-        bundle = joblib.load(bundle_path)
+    if settings.pipeline_mode != "hierarchical":
+        apo = pd.read_parquet(proc / "apo_pdb_holdout.parquet")
+        af = pd.read_parquet(proc / "alphafold_holdout.parquet")
+        for key in settings.models:
+            bundle_path = paths.models_dir / f"{key}_multiclass.joblib"
+            if not bundle_path.exists():
+                continue
+            bundle = joblib.load(bundle_path)
+            validate_feature_schema_metadata(
+                bundle,
+                expected_feature_columns=feature_columns,
+                expected_feature_set=settings.feature_set,
+                artifact_label=f"model bundle {bundle_path.name}",
+            )
+            try:
+                apo_m = evaluate_holdout(bundle, apo, settings)
+                af_m = evaluate_holdout(bundle, af, settings)
+                holdout_rows[key] = {"apo_pdb": apo_m, "alphafold": af_m}
+            except KeyError as e:
+                holdout_rows[key] = {"apo_pdb": {"error": str(e)},
+                                     "alphafold": {"error": str(e)}}
+    else:
         try:
-            apo_m = evaluate_holdout(bundle, apo, settings)
-            af_m = evaluate_holdout(bundle, af, settings)
-            holdout_rows[key] = {"apo_pdb": apo_m, "alphafold": af_m}
+            holdout_rows["hierarchical"] = evaluate_hierarchical_holdouts(
+                settings,
+                feature_columns=feature_columns,
+            )
         except KeyError as e:
-            holdout_rows[key] = {"apo_pdb": {"error": str(e)},
-                                 "alphafold": {"error": str(e)}}
+            holdout_rows["hierarchical"] = {
+                "apo_pdb": {"error": str(e)},
+                "alphafold": {"error": str(e)},
+            }
 
     md_path = reports / "metrics_table.md"
     gt = settings.ground_truth
     with md_path.open("w") as f:
         f.write("# SLiPP++ Day 1 metrics\n\n")
         f.write(f"_Feature set: `{settings.feature_set}`, "
-                f"{settings.n_iterations} stratified shuffle iterations._\n\n")
+                f"{settings.n_iterations} stratified shuffle iterations, "
+                f"pipeline mode: `{settings.pipeline_mode}`._\n\n")
 
         # --- Section 1: test split, binary-collapsed ---
         f.write("## 1. Binary-collapsed on test split (paper Table 1 line 1)\n\n")

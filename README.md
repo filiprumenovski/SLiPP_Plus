@@ -2,9 +2,9 @@
 
 **Day 1 reformulation of SLiPP (Chou et al. 2024) as a 10-class softmax classifier.**
 
-Reimplements the binary lipid-vs-rest classifier from [bioRxiv 2024.01.26.577452](https://doi.org/10.1101/2024.01.26.577452) with one change: the classifier head is 10-class over `{ADN, B12, BGC, CLR, COA, MYR, OLA, PLM, PP, STE}` instead of binary. Everything else (features, data, split protocol) matches the paper.
+Reimplements the binary lipid-vs-rest benchmark from the **published SLiPP** work (Chou et al.): read the **preprint PDF** at [doi.org/10.1101/2024.01.26.577452](https://doi.org/10.1101/2024.01.26.577452) (bioRxiv → PDF) and the lab code + `training_pockets.csv` at [github.com/dassamalab/SLiPP_2024](https://github.com/dassamalab/SLiPP_2024). SLiPP++ changes the head to **10-class** softmax over `{ADN, B12, BGC, CLR, COA, MYR, OLA, PLM, PP, STE}` while keeping the same curated table and binary-collapse definitions for comparison to **Table 1**.
 
-See `PROMPT.md` for full scope and `reference/SLiPP_2024-main/` for the author's original implementation.
+See `CONTEXT.md` / `RESEARCH_LOG.md` for scope and `reference/README.md` for how to lay out the upstream CSV next to this repo.
 
 ## Quickstart
 
@@ -17,6 +17,25 @@ make all
 ```
 
 Wall-clock budget: under 25 minutes on a 16-core machine. No network required; all training data ships in `reference/SLiPP_2024-main/training_pockets.csv` and the supporting-file xlsx tables in `data/raw/supplementary/`.
+
+## CAVER reliability checks
+
+`slipp_plus.tunnel_features` now enforces fail-fast guards so bad structure roots
+do not produce deceptively "successful" but unusable outputs:
+
+- Preflight validates expected structure artifacts (`<id>.pdb`, `<id>_out/pockets`).
+- Builds abort if missing-structure fraction exceeds configured limits.
+- Output quality gates require strong coverage for
+  `tunnel_pocket_context_present` and `tunnel_caver_profile_present`.
+
+Tune with:
+- `--max-missing-structure-frac`
+- `--min-context-present-frac`
+- `--min-profile-present-frac`
+
+Persist reusable CAVER raw analysis outputs for downstream feature extraction with:
+- `--analysis-output-root <dir>` (writes one directory per structure containing CAVER `analysis/*.csv`)
+- `--analysis-manifest <path.csv>` (writes pocket-to-analysis mapping for joins)
 
 ## What runs
 
@@ -40,7 +59,7 @@ Wall-clock budget: under 25 minutes on a 16-core machine. No network required; a
 
 All four ablations run with the same 25-iter harness and produce comparable metrics.
 
-## Ground truth (paper Table 1)
+## Ground truth (published Table 1 — preprint / JCIM)
 
 | dataset                 | F1    | AUROC |
 |-------------------------|-------|-------|
