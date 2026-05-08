@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "slipp_plus"
-version = "0.1.0"
+dynamic = ["version"]
 description = "SLiPP++ Day 1: 10-class softmax reformulation of Chou et al. 2024"
 authors = [{ name = "Filip Rumenovski" }]
 readme = "README.md"
@@ -54,6 +54,9 @@ slipp_plus = "slipp_plus.cli:app"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/slipp_plus"]
+
+[tool.hatch.version]
+path = "src/slipp_plus/__version__.py"
 
 [tool.ruff]
 line-length = 100

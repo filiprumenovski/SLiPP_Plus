@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use SLiPP++ in your work, please cite this software and the primary scientific reference."
+title: "SLiPP++: 10-class lipid-binding pocket prediction"
+version: 0.1.0
+date-released: 2026-05-08
+type: software
+license: MIT
+repository-code: "https://github.com/filiprumenovski/slipp_plus"
+authors:
+  - family-names: Rumenovski
+    given-names: Filip
+preferred-citation:
+  type: software
+  title: "SLiPP++: 10-class lipid-binding pocket prediction"
+  version: 0.1.0
+  date-released: 2026-05-08
+  repository-code: "https://github.com/filiprumenovski/slipp_plus"
+  authors:
+    - family-names: Rumenovski
+      given-names: Filip
+references:
+  - type: article
+    title: "Prediction of lipid binding sites on protein structures using machine learning"
+    authors:
+      - family-names: Chou
+        given-names: Jonathan
+      - family-names: Dassa
+        given-names: Benjamin
+    doi: 10.1101/2024.01.26.577452
+    year: 2024
+    notes: "Primary scientific reference for the SLiPP binary lipid-pocket classifier reformulated by SLiPP++."

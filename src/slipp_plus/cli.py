@@ -6,6 +6,7 @@ from pathlib import Path
 
 import typer
 
+from .__version__ import __version__
 from .config import load_settings
 
 app = typer.Typer(
@@ -16,6 +17,25 @@ app = typer.Typer(
 
 _CONFIG_OPT = typer.Option("configs/day1.yaml", "--config", "-c",
                            help="Path to YAML configuration.")
+
+
+def _version_callback(value: bool) -> None:
+    if value:
+        typer.echo(__version__)
+        raise typer.Exit()
+
+
+@app.callback()
+def main(
+    version: bool = typer.Option(
+        False,
+        "--version",
+        callback=_version_callback,
+        is_eager=True,
+        help="Show the SLiPP++ version and exit.",
+    ),
+) -> None:
+    """Run SLiPP++ commands."""
 
 
 def __main__() -> None:
