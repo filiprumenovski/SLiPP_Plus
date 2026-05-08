@@ -4,14 +4,15 @@ Date: 2026-05-06
 
 ## Current answer
 
-The current internal leader is `v49_tunnel_shape3_family_encoder`: 52 features, 431K artifact, lipid5 macro-F1 0.668 +/- 0.031.
+The current internal leader is `compact_shape3_shape6_ensemble`: a mean probability ensemble of the 52-feature `v49+tunnel_shape3` and 55-feature `v49+tunnel_shape` family encoders, lipid5 macro-F1 0.676 +/- 0.032.
 
-It edges the 55-feature compact tunnel stack within split noise while using 52 instead of 55 features. The older `v49_tunnel_shape_family_encoder` remains a more balanced holdout-facing candidate.
+It improves internal validation over either compact component, but external holdouts remain mixed. The single-model compact candidates remain important for the simpler release story.
 
 ## Internal 25-split Comparison
 
 | stack | features | artifact | lipid5 macro-F1 | macro10 F1 | binary F1 | CLR | MYR | OLA | PLM | STE |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| `shape3+shape6 mean ensemble` | 52/55 | 431K+433K | 0.676 +/- 0.032 | 0.775 +/- 0.017 | 0.904 +/- 0.015 | 0.759 | 0.702 | 0.620 | 0.652 | 0.646 |
 | `v49+tunnel_shape3` | 52 | 431K | 0.668 +/- 0.031 | 0.768 +/- 0.018 | 0.900 +/- 0.015 | 0.747 | 0.700 | 0.610 | 0.642 | 0.638 |
 | `v49+tunnel_shape` | 55 | 433K | 0.666 +/- 0.032 | 0.766 +/- 0.019 | 0.902 +/- 0.017 | 0.748 | 0.691 | 0.595 | 0.647 | 0.647 |
 | `v49+shell6+tunnel_shape` | 49 | 431K | 0.666 +/- 0.031 | 0.766 +/- 0.019 | 0.900 +/- 0.017 | 0.751 | 0.704 | 0.584 | 0.648 | 0.642 |
@@ -40,6 +41,7 @@ It edges the 55-feature compact tunnel stack within split noise while using 52 i
 | `v49+tunnel_chem` vs `v49` | +0.006 | tunnel chemistry is a smaller lift |
 | `v49+tunnel_shape` vs `v49` | +0.017 | best compact tunnel lift |
 | `v49+tunnel_shape3` vs `v49+tunnel_shape` | +0.002 | tiny internal win from the three screened tunnel signals, with mixed holdouts |
+| `shape3+shape6 mean ensemble` vs `v49+tunnel_shape3` | +0.008 | strongest internal result; confirms complementary compact errors |
 | `v49+tunnel_geom` vs `v49` | +0.016 | ties shape within noise with more columns |
 | `v_tunnel+moe` vs `v49+tunnel_shape` | -0.001 | high-complexity reference does not improve the compact leader |
 
@@ -47,4 +49,4 @@ It edges the 55-feature compact tunnel stack within split noise while using 52 i
 
 The main recovery comes from AA20, not shell12 alone: `paper17+shell12` is 0.567, `paper17+aa20` is 0.645, and `v49` is 0.649.
 
-Decision rule: keep the smallest stack whose lipid5 macro-F1 is within 0.01-0.015 of the best observed model and does not degrade STE. Under current results, `v49+tunnel_shape3` is the internal leader, `v49+tunnel_shape` is the more balanced compact holdout candidate, and `v49` is the stricter parsimony fallback.
+Decision rule: keep the smallest stack whose lipid5 macro-F1 is within 0.01-0.015 of the best observed model and does not degrade STE. Under current results, the shape3/shape6 probability ensemble is the internal leader, `v49+tunnel_shape3` is the best single compact model, `v49+tunnel_shape` is the more balanced compact holdout candidate, and `v49` is the stricter parsimony fallback.

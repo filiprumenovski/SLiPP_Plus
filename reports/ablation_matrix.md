@@ -17,6 +17,7 @@ Generated from `experiments/registry.yaml`. Metrics are copied from registry ent
 | exp-011-family-plus-moe | v_sterol | 0.901 ± 0.016 | 0.762 ± 0.015 | - | - | Current champion. | exp-012-compact-tunnel-shape |
 | exp-012-compact-tunnel-shape | v49+tunnel_shape | 0.902 ± 0.017 | 0.766 ± 0.019 | 0.696 | 0.62 | Release-facing compact leader. | exp-014-v49-tunnel-shape3 |
 | exp-013-v49-shell6-tunnel-shape | v14+aa20+shell6+tunnel_shape | 0.900 ± 0.017 | 0.766 ± 0.019 | 0.711 | 0.703 | MIXED/TIE RESULT. | - |
-| **exp-014-v49-tunnel-shape3** | v49+tunnel_shape3 | 0.900 ± 0.015 | 0.768 ± 0.018 | 0.667 | 0.724 | NEW INTERNAL LEADER, SMALL EFFECT. | - |
+| exp-014-v49-tunnel-shape3 | v49+tunnel_shape3 | 0.900 ± 0.015 | 0.768 ± 0.018 | 0.667 | 0.724 | NEW INTERNAL LEADER, SMALL EFFECT. | exp-017-compact-shape3-shape6-ensemble |
 | exp-015-v49-shell6-tunnel-shape3 | v14+aa20+shell6+tunnel_shape3 | 0.898 ± 0.016 | 0.764 ± 0.021 | 0.655 | 0.657 | NEGATIVE COMPACT RESULT. | - |
 | exp-016-v49-tunnel-shape-hydro4 | v49+tunnel_shape_hydro4 | 0.897 ± 0.017 | 0.762 ± 0.021 | 0.649 | 0.632 | NEGATIVE TARGETED RESULT. | - |
+| **exp-017-compact-shape3-shape6-ensemble** | v49+tunnel_shape3 + v49+tunnel_shape | 0.904 ± 0.015 | 0.775 ± 0.017 | 0.69 | 0.676 | NEW INTERNAL LEADER. | - |
