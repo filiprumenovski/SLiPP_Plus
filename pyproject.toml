@@ -76,6 +76,10 @@ strict = false
 ignore_missing_imports = true
 packages = ["slipp_plus"]
 
+[[tool.mypy.overrides]]
+module = "slipp_plus.cli"
+strict = true
+
 [tool.pytest.ini_options]
 addopts = "-ra --strict-markers"
 testpaths = ["tests"]
