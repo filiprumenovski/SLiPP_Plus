@@ -50,6 +50,7 @@ FeatureSet = Literal[
     "v14+aa12+tunnel_shape",
     "v14+aa16+tunnel_shape",
     "v14+aa20+shell6+tunnel_shape",
+    "v14+aa20+shell6+tunnel_shape3",
     "v49+tunnel_shape3",
     "v49+tunnel_shape",
     "v49+tunnel_chem",

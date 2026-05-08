@@ -451,3 +451,42 @@
     and the holdout story is mixed: AlphaFold F1 improves to 0.724 while
     apo-PDB F1 drops to 0.667. Treat as the current internal leader, not a
     decisive all-metric release winner.
+
+- id: exp-015-v49-shell6-tunnel-shape3
+  date: "2026-05-08"
+  feature_set: v14+aa20+shell6+tunnel_shape3
+  config: configs/v49_shell6_tunnel_shape3_family_encoder.yaml
+  models: [family_encoder]
+  postprocessing: none
+  status: complete
+  is_current_best: false
+  metrics:
+    binary_f1: "0.898 ± 0.016"
+    binary_auroc: "0.988 ± 0.003"
+    macro_f1_10: "0.764 ± 0.021"
+    lipid_macro_f1: "0.666 ± 0.033"
+    clr_f1: "0.750"
+    myr_f1: "0.703"
+    ola_f1: "0.598"
+    plm_f1: "0.639"
+    ste_f1: "0.640"
+  holdouts:
+    apo_pdb_f1: 0.655
+    apo_pdb_auroc: 0.796
+    alphafold_f1: 0.657
+    alphafold_auroc: 0.867
+  supersedes: null
+  artifacts:
+    predictions: processed/v49_shell6_tunnel_shape3/predictions/hierarchical_lipid_predictions.parquet
+    family_predictions: processed/v49_shell6_tunnel_shape3/predictions/family_encoder_predictions.parquet
+    models: models/v49_shell6_tunnel_shape3_family_encoder/
+    report: reports/v49_shell6_tunnel_shape3_family_encoder/metrics_table.md
+    metrics: reports/v49_shell6_tunnel_shape3_family_encoder/raw_metrics.parquet
+    bundle: models/v49_shell6_tunnel_shape3_family_encoder/family_encoder_bundle.joblib
+  notes: >
+    NEGATIVE COMPACT RESULT. Combined both reductions that looked plausible:
+    six screened shell features and three screened tunnel-shape features. The
+    model ties lipid5 within rounding (0.666) but regresses macro10, binary F1,
+    and both holdouts relative to exp-014. Conclusion: the three-feature tunnel
+    reduction is useful with the full shell12 context, but applying shell6 at
+    the same time removes too much context.
