@@ -20,7 +20,25 @@ Configs point at:
 reference/SLiPP_2024-main/training_pockets.csv
 ```
 
-**Restore the file** by cloning the lab repo and either:
+First-time setup from the repository root:
+
+```bash
+mkdir -p reference
+git clone https://github.com/dassamalab/SLiPP_2024 reference/SLiPP_2024-main
+shasum -a 256 reference/SLiPP_2024-main/training_pockets.csv
+wc -l reference/SLiPP_2024-main/training_pockets.csv
+```
+
+Expected checksum and row count for the checked-in Day 1 reference table:
+
+```text
+4d27636b4381dc3c1b9e27451db5b788e6b16f13919c4ed36f8c2ba108097711  reference/SLiPP_2024-main/training_pockets.csv
+15220 reference/SLiPP_2024-main/training_pockets.csv
+```
+
+The line count includes one header row plus the 15,219 training rows enforced by the Rule 1 ingestion gate.
+
+If you already have the upstream repository elsewhere, restore the file by either:
 
 1. Clone into `reference/SLiPP_2024-main/` so `training_pockets.csv` sits at that path (GitHub hosts it at the repo root; renaming the clone folder to `SLiPP_2024-main` is fine), or  
 2. Clone anywhere and **copy** `training_pockets.csv` into `reference/SLiPP_2024-main/`.
