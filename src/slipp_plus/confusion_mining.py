@@ -38,6 +38,30 @@ def mine_confusion_edges(
     Rows are oriented as ``true_label -> pred_label``. This orientation maps
     directly to a boundary head where ``true_label`` is the positive class to
     rescue and ``pred_label`` is the local negative class.
+
+    Parameters
+    ----------
+    predictions:
+        Prediction frame containing integer true/predicted labels and
+        probability columns. If a ``model`` column is present, model rows can be
+        averaged before mining.
+    average_models:
+        Average RF/XGB/LGBM soft probabilities before ranking confusions.
+    lipid_only:
+        Restrict reported edges to lipid-vs-lipid class pairs.
+    min_count:
+        Minimum off-diagonal count required for an edge to be reported.
+
+    Returns
+    -------
+    pandas.DataFrame
+        Ranked confusion-edge table with support, margin, probability, and
+        top-2 recoverability diagnostics.
+
+    Raises
+    ------
+    ValueError
+        If required prediction columns are missing.
     """
 
     frame = _prediction_frame(predictions, average_models=average_models)
@@ -123,7 +147,27 @@ def candidate_boundary_rules(
     min_top2_recoverable_fraction: float = 0.0,
     margin: float = 0.99,
 ) -> list[BoundaryRule]:
-    """Convert mined confusion rows into single-negative boundary rules."""
+    """Convert mined confusion rows into single-negative boundary rules.
+
+    Parameters
+    ----------
+    confusion_edges:
+        Output from :func:`mine_confusion_edges`.
+    top_n:
+        Maximum number of candidate rules to return.
+    min_count:
+        Minimum confusion count required for a rule.
+    min_top2_recoverable_fraction:
+        Minimum share of confused rows where both true and predicted labels
+        appear in the top-2 probabilities.
+    margin:
+        Probability margin threshold assigned to generated rules.
+
+    Returns
+    -------
+    list[BoundaryRule]
+        Candidate boundary-head rules ordered by confusion rank.
+    """
 
     rules: list[BoundaryRule] = []
     for row in confusion_edges.itertuples(index=False):
@@ -155,6 +199,26 @@ def write_confusion_mining_report(
     title: str = "Confusion mining report",
     top_n: int = 20,
 ) -> Path:
+    """Write a markdown report for mined confusion edges.
+
+    Parameters
+    ----------
+    output_path:
+        Markdown report destination.
+    confusion_edges:
+        Ranked edge table from :func:`mine_confusion_edges`.
+    rules:
+        Optional candidate boundary rules to include after the edge table.
+    title:
+        Report title.
+    top_n:
+        Maximum number of confusion rows to include in the markdown table.
+
+    Returns
+    -------
+    pathlib.Path
+        Path to the written markdown report.
+    """
     output_path.parent.mkdir(parents=True, exist_ok=True)
     shown = confusion_edges.head(top_n)
     with output_path.open("w", encoding="utf-8") as handle:
@@ -199,6 +263,42 @@ def run_confusion_mining(
     min_top2_recoverable_fraction: float = 0.0,
     candidate_margin: float = 0.99,
 ) -> dict[str, Any]:
+    """Load predictions, mine recurrent confusions, and write artifacts.
+
+    Parameters
+    ----------
+    predictions_path:
+        Parquet prediction frame to mine.
+    output_report:
+        Markdown report path.
+    output_table:
+        Optional parquet output path for the full edge table.
+    average_models:
+        Average model rows before mining when the frame contains a ``model``
+        column.
+    lipid_only:
+        Restrict mined edges to lipid-vs-lipid class pairs.
+    min_count:
+        Minimum off-diagonal count required for an edge.
+    candidate_count:
+        Maximum number of candidate boundary rules to emit.
+    min_top2_recoverable_fraction:
+        Minimum top-2 recoverable fraction required for candidate rules.
+    candidate_margin:
+        Margin assigned to generated candidate rules.
+
+    Returns
+    -------
+    dict[str, Any]
+        Report path, optional table path, mined edge table, and candidate rules.
+
+    Raises
+    ------
+    FileNotFoundError
+        If ``predictions_path`` does not exist.
+    ValueError
+        If the prediction frame is missing required columns.
+    """
     predictions = load_predictions(predictions_path)
     edges = mine_confusion_edges(
         predictions,
