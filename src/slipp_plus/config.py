@@ -6,6 +6,7 @@ object used throughout the pipeline.
 
 from __future__ import annotations
 
+from hashlib import sha256
 from pathlib import Path
 from typing import Literal
 
@@ -168,6 +169,8 @@ class HierarchicalSettings(BaseModel):
 
 
 class Settings(BaseModel):
+    config_path: Path | None = None
+    config_sha256: str | None = None
     seed_base: int = 42
     n_iterations: int = 25
     test_fraction: float = 0.10
@@ -218,4 +221,6 @@ def load_settings(path: str | Path) -> Settings:
         raise FileNotFoundError(f"config not found: {p}")
     with p.open(encoding="utf-8") as f:
         raw = yaml.safe_load(f)
+    raw["config_path"] = p
+    raw["config_sha256"] = sha256(p.read_bytes()).hexdigest()
     return Settings.model_validate(raw)
