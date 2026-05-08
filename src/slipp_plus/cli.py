@@ -7,8 +7,9 @@ from pathlib import Path
 import typer
 
 from .__version__ import __version__
-from .config import load_settings
+from .config import Settings, load_settings
 from .logging_config import setup_logging
+from .reproducibility import initialize_master_seed
 
 app = typer.Typer(
     add_completion=False,
@@ -24,6 +25,12 @@ def _version_callback(value: bool) -> None:
     if value:
         typer.echo(__version__)
         raise typer.Exit()
+
+
+def _load_settings(config: Path) -> Settings:
+    settings = load_settings(config)
+    initialize_master_seed(settings.seed_base)
+    return settings
 
 
 @app.callback()
@@ -49,7 +56,7 @@ def ingest(config: Path = _CONFIG_OPT) -> None:
     """CSV + xlsx -> parquet, with Rule 1 gate."""
     from .ingest import run_ingest
 
-    settings = load_settings(config)
+    settings = _load_settings(config)
     out = run_ingest(settings)
     typer.echo("ingest OK:")
     for k, v in out.items():
@@ -61,7 +68,7 @@ def train(config: Path = _CONFIG_OPT) -> None:
     """25 stratified shuffle iterations x 3 models."""
     from .train import run_training
 
-    settings = load_settings(config)
+    settings = _load_settings(config)
     out = run_training(settings)
     typer.echo("train OK:")
     for k, v in out.items():
@@ -73,7 +80,7 @@ def evaluate_cmd(config: Path = _CONFIG_OPT) -> None:
     """Metrics table + holdouts."""
     from .evaluate import run_evaluation
 
-    settings = load_settings(config)
+    settings = _load_settings(config)
     out = run_evaluation(settings)
     typer.echo("eval OK:")
     typer.echo(f"  metrics_table: {out['metrics_table']}")
@@ -92,7 +99,7 @@ def holdout_plm_ste_cmd(
     """Validate the v_sterol ensemble + PLM/STE tiebreaker on apo/AlphaFold holdouts."""
     from .plm_ste_holdout import run_holdout_validation
 
-    settings = load_settings(config)
+    settings = _load_settings(config)
     out = run_holdout_validation(
         settings,
         full_pockets_path=full_pockets,
@@ -202,7 +209,7 @@ def figures(config: Path = _CONFIG_OPT) -> None:
     """Confusion / ROC / PCA / comparison bars."""
     from .figures import run_figures
 
-    settings = load_settings(config)
+    settings = _load_settings(config)
     out = run_figures(settings)
     typer.echo("figures OK:")
     for k, v in out.items():
@@ -212,7 +219,7 @@ def figures(config: Path = _CONFIG_OPT) -> None:
 @app.command()
 def all(config: Path = _CONFIG_OPT) -> None:
     """ingest -> train -> eval -> figures."""
-    settings = load_settings(config)
+    settings = _load_settings(config)
     from .evaluate import run_evaluation
     from .figures import run_figures
     from .ingest import run_ingest
@@ -234,7 +241,7 @@ def calibration(config: Path = _CONFIG_OPT) -> None:
     """Binary baselines + ECE/Brier/MCE + reliability figures."""
     from .calibration import run_calibration
 
-    settings = load_settings(config)
+    settings = _load_settings(config)
     out = run_calibration(settings)
     typer.echo("calibration OK:")
     for k, v in out.items():
@@ -468,7 +475,7 @@ def scratch(config: Path = _CONFIG_OPT) -> None:
     """Day 7+ from-scratch reproduction (not implemented on Day 1)."""
     from .download import download_all
 
-    settings = load_settings(config)
+    settings = _load_settings(config)
     download_all(settings.paths.processed_dir)
 
 
