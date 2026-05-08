@@ -1,0 +1,45 @@
+# Queued Experiment Work
+
+This file queues long or non-inline validation work identified from `experiments/registry.yaml`. It preserves incomplete and negative results rather than deleting or overwriting them.
+
+## 2026-05-08 Registry Partial-Holdout Audit
+
+Generated from the registry after `reports/ablation_matrix.md` was created.
+
+### Queue For Holdout Completion
+
+1. `exp-005-v_sterol-ensemble`
+   - Config: `configs/v_sterol.yaml`
+   - Current gap: registry has no `holdouts` block.
+   - Suggested command: rerun/evaluate the saved `v_sterol` iteration-0 RF/XGB/LGBM bundles against current apo-PDB and AlphaFold parquet artifacts, then append `apo_pdb_f1`, `apo_pdb_auroc`, `alphafold_f1`, and `alphafold_auroc` to the registry.
+
+2. `exp-009-v_sterol-boundary-refactor`
+   - Config: `configs/v_sterol.yaml`
+   - Current gap: registry has no `holdouts` block for the boundary-refactor postprocessing.
+   - Suggested command: run the holdout validation path for the saved `ste_rescue_ola_plm_pair` predictions or regenerate the postprocessed holdout predictions, then update the registry with apo-PDB and AlphaFold metrics.
+
+3. `exp-011-family-plus-moe`
+   - Config: `configs/v_sterol_family_plus_moe.yaml`
+   - Current gap: registry holdout fields are explicitly `null`.
+   - Current blocker from registry notes: holdout inference for composite pair/local MoE bundles is not implemented yet.
+   - Suggested command: implement or wire composite holdout inference for `models/v_sterol_family_plus_moe/family_plus_moe_bundle.joblib`, then update holdout metrics.
+
+### No Inline Completion Planned
+
+1. `exp-003-v49-ensemble-clr-ste-tb`
+   - Reason: negative-targeting experiment; registry notes show the intervention fired only 2 times across 25 iterations. Holdout completion is low priority unless a manuscript specifically discusses CLR/STE tiebreaking.
+
+2. `exp-006-v_plm_ste-features`
+   - Reason: explicitly abandoned in registry notes because the feature set was neutral-to-regressive for STE in the 10-class softmax.
+
+3. `exp-008-detector-bakeoff`
+   - Reason: detector comparison, not a classifier holdout experiment; apo-PDB/AlphaFold classifier holdout fields are not applicable.
+
+## Missing Publishable Ablations
+
+These handoff items require long model runs or additional implementation and should not be run inline without long-run approval:
+
+1. STE class-imbalance handling: baseline vs class-weighted comparison for STE.
+2. Ensemble vs best single model: confirm ensemble macro-F1 lift over the best single model by at least 1 standard deviation.
+3. Tiebreaker on/off: quantify per-class lift from the PLM/STE or current boundary-head tiebreaker stack.
+4. CAVER/tunnel marginal value: compare the current compact leader against the appropriate no-tunnel baseline using matched split protocol.
