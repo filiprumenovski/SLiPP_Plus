@@ -8,6 +8,7 @@ import typer
 
 from .__version__ import __version__
 from .config import load_settings
+from .logging_config import setup_logging
 
 app = typer.Typer(
     add_completion=False,
@@ -36,6 +37,7 @@ def main(
     ),
 ) -> None:
     """Run SLiPP++ commands."""
+    setup_logging()
 
 
 def __main__() -> None:
