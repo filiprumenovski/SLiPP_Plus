@@ -405,6 +405,10 @@ def test_hierarchical_evaluation_reads_staged_predictions(tmp_path: Path) -> Non
     assert raw_metrics["model"].tolist() == ["hierarchical"]
     text = out["metrics_table"].read_text(encoding="utf-8")
     assert "pipeline mode: `hierarchical`" in text
+    assert "F1 95% CI" in text
+    assert "macro-F1 (10) 95% CI" in text
+    assert "### Per-class precision" in text
+    assert "### Per-class recall" in text
     assert "Holdout evaluation is not available" not in text
     assert "| hierarchical | 0.700 | 0.800 | 0.750 | 0.660 |" in text
     assert "| hierarchical | 0.600 | 0.780 | 0.620 | 0.580 |" in text
