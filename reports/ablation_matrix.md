@@ -15,5 +15,6 @@ Generated from `experiments/registry.yaml`. Metrics are copied from registry ent
 | exp-009-v_sterol-boundary-refactor | v_sterol | 0.899 ± 0.016 | 0.754 ± 0.016 | - | - | Boundary-head refactor promoted grouped STE-vs-neighbors rescue into the shared local-arbitration architecture. | exp-011-family-plus-moe |
 | exp-010-binary-ovr-lipid-family | v_sterol | 0.896 ± 0.017 | 0.726 ± 0.018 | 0.679 | 0.708 | NEGATIVE RESULT. | - |
 | exp-011-family-plus-moe | v_sterol | 0.901 ± 0.016 | 0.762 ± 0.015 | - | - | Current champion. | exp-012-compact-tunnel-shape |
-| **exp-012-compact-tunnel-shape** | v49+tunnel_shape | 0.902 ± 0.017 | 0.766 ± 0.019 | 0.696 | 0.62 | Release-facing compact leader. | - |
+| exp-012-compact-tunnel-shape | v49+tunnel_shape | 0.902 ± 0.017 | 0.766 ± 0.019 | 0.696 | 0.62 | Release-facing compact leader. | exp-014-v49-tunnel-shape3 |
 | exp-013-v49-shell6-tunnel-shape | v14+aa20+shell6+tunnel_shape | 0.900 ± 0.017 | 0.766 ± 0.019 | 0.711 | 0.703 | MIXED/TIE RESULT. | - |
+| **exp-014-v49-tunnel-shape3** | v49+tunnel_shape3 | 0.900 ± 0.015 | 0.768 ± 0.018 | 0.667 | 0.724 | NEW INTERNAL LEADER, SMALL EFFECT. | - |

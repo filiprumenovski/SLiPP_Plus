@@ -10,25 +10,27 @@ scientific evidence in this project.
 ## Current State
 
 - Branch: `main`
-- Latest pushed commit at time of writing: `83f4b5f repro: 5.2 write model metadata sidecars`
+- Latest pushed commit at time of writing: `62277da experiments: record shell6 tunnel-shape ablation`
 - Worktree was clean when this file was written.
-- Current release-facing leader: `exp-012-compact-tunnel-shape`
-- Current best config: `configs/v49_tunnel_shape_family_encoder.yaml`
-- Current best report: `reports/compact_publishable/summary.md`
-- Current best registry entry: `experiments/registry.yaml` entry `exp-012-compact-tunnel-shape`
+- Current internal leader: `exp-014-v49-tunnel-shape3`
+- Current internal best config: `configs/v49_tunnel_shape3_family_encoder.yaml`
+- Previous more balanced compact candidate: `exp-012-compact-tunnel-shape`
+- Current best report: `reports/v49_tunnel_shape3_family_encoder/metrics_table.md`
+- Current best registry entry: `experiments/registry.yaml` entry `exp-014-v49-tunnel-shape3`
 
 Current headline metrics from the registry/README:
 
 | metric | value |
 |---|---:|
-| Binary F1 | `0.902 +/- 0.017` |
-| Binary AUROC | `0.988 +/- 0.003` |
-| 10-class macro-F1 | `0.766 +/- 0.019` |
-| 5-lipid macro-F1 | `0.666 +/- 0.032` |
-| Apo-PDB F1 | `0.696` |
-| AlphaFold F1 | `0.620` |
+| Binary F1 | `0.900 +/- 0.015` |
+| Binary AUROC | `0.988 +/- 0.004` |
+| 10-class macro-F1 | `0.768 +/- 0.018` |
+| 5-lipid macro-F1 | `0.668 +/- 0.031` |
+| Apo-PDB F1 | `0.667` |
+| AlphaFold F1 | `0.724` |
 
-External holdouts are conservative for the compact leader. Do not hide that.
+The new internal leader is not a clean all-metric win: apo-PDB regresses vs
+exp-012, while AlphaFold improves. Do not hide that.
 
 ## Recently Completed
 

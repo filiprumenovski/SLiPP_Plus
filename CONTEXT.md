@@ -13,13 +13,13 @@ The project is in an **active research phase** — past Day 1 reproduction, now 
 ## Current Best Configuration
 
 ```
-experiment_id:   exp-012-compact-tunnel-shape
-feature_set:     v49+tunnel_shape (55 columns: 17 fpocket + 20 AA + 12 shell + 6 compact tunnel)
+experiment_id:   exp-014-v49-tunnel-shape3
+feature_set:     v49+tunnel_shape3 (52 columns: 17 fpocket + 20 AA + 12 shell + 3 compact tunnel)
 backbone:        family encoder distilled from exp-009 teacher predictions
 postprocessing:  none
-config:          configs/v49_tunnel_shape_family_encoder.yaml
-predictions:     processed/v49_tunnel_shape/predictions/hierarchical_lipid_predictions.parquet
-reproduce:       uv run python -m slipp_plus.cli train --config configs/v49_tunnel_shape_family_encoder.yaml
+config:          configs/v49_tunnel_shape3_family_encoder.yaml
+predictions:     processed/v49_tunnel_shape3/predictions/hierarchical_lipid_predictions.parquet
+reproduce:       uv run python -m slipp_plus.cli train --config configs/v49_tunnel_shape3_family_encoder.yaml
 report:          uv run python -m slipp_plus.cli compact-report
 ```
 
@@ -27,17 +27,17 @@ report:          uv run python -m slipp_plus.cli compact-report
 
 | metric                  | value           | paper baseline | Δ       |
 |---                      |---              |---             |---      |
-| Binary F1 (test)        | 0.902 ± 0.017  | 0.869          | +0.033  |
-| Binary AUROC (test)     | 0.988 ± 0.003  | 0.970          | +0.018  |
-| 10-class macro-F1       | 0.766 ± 0.019  | —              | new     |
-| 5-lipid macro-F1        | 0.666 ± 0.032  | —              | new     |
-| CLR F1                  | 0.748           | —              | —       |
-| STE F1                  | 0.647           | —              | weakest |
-| PLM F1                  | 0.647           | —              | —       |
-| MYR F1                  | 0.691           | —              | —       |
-| OLA F1                  | 0.595           | —              | —       |
-| Apo-PDB F1              | 0.696           | 0.726          | conservative |
-| AlphaFold F1            | 0.620           | 0.643          | conservative |
+| Binary F1 (test)        | 0.900 ± 0.015  | 0.869          | +0.031  |
+| Binary AUROC (test)     | 0.988 ± 0.004  | 0.970          | +0.018  |
+| 10-class macro-F1       | 0.768 ± 0.018  | —              | new     |
+| 5-lipid macro-F1        | 0.668 ± 0.031  | —              | new     |
+| CLR F1                  | 0.747           | —              | —       |
+| STE F1                  | 0.638           | —              | weakest |
+| PLM F1                  | 0.642           | —              | —       |
+| MYR F1                  | 0.700           | —              | —       |
+| OLA F1                  | 0.610           | —              | —       |
+| Apo-PDB F1              | 0.667           | 0.726          | regressive |
+| AlphaFold F1            | 0.724           | 0.643          | improved |
 
 ## Active Hypotheses
 

@@ -18,38 +18,37 @@ Upstream code and `training_pockets.csv` come from
 
 ## Current Release Candidate
 
-`exp-012-compact-tunnel-shape` is the current registry leader and the
-release-facing model:
+`exp-014-v49-tunnel-shape3` is the current internal registry leader. The effect
+over `exp-012` is small and holdouts are mixed, so preserve both candidates:
 
 ```text
-config:      configs/v49_tunnel_shape_family_encoder.yaml
-feature set: v49+tunnel_shape
-features:    55 columns
+config:      configs/v49_tunnel_shape3_family_encoder.yaml
+feature set: v49+tunnel_shape3
+features:    52 columns
 backbone:    family encoder
-artifact:    433K
-report:      reports/compact_publishable/summary.md
+artifact:    431K
+report:      reports/v49_tunnel_shape3_family_encoder/metrics_table.md
 ```
 
-It keeps the compact `v49` chemistry/shape stack, adds six tunnel-shape features,
-and uses a family-aware encoder instead of the heavier pair/MoE specialist stack.
-In the internal 25-split ladder, it matches the 105-feature tunnel MoE within
-split noise while using roughly half the columns and one third of the artifact
-size.
+It keeps the compact `v49` chemistry/shape stack, adds three screened
+tunnel-shape features, and uses a family-aware encoder instead of the heavier
+pair/MoE specialist stack. It edges the previous 55-feature compact leader
+internally while `exp-012` remains the more balanced holdout-facing candidate.
 
 | Metric | Mean +/- std |
 |---|---:|
-| Binary F1 | `0.902 +/- 0.017` |
-| Binary AUROC | `0.988 +/- 0.003` |
-| 10-class macro-F1 | `0.766 +/- 0.019` |
-| 5-lipid macro-F1 | `0.666 +/- 0.032` |
-| CLR F1 | `0.748` |
-| MYR F1 | `0.691` |
-| OLA F1 | `0.595` |
-| PLM F1 | `0.647` |
-| STE F1 | `0.647` |
+| Binary F1 | `0.900 +/- 0.015` |
+| Binary AUROC | `0.988 +/- 0.004` |
+| 10-class macro-F1 | `0.768 +/- 0.018` |
+| 5-lipid macro-F1 | `0.668 +/- 0.031` |
+| CLR F1 | `0.747` |
+| MYR F1 | `0.700` |
+| OLA F1 | `0.610` |
+| PLM F1 | `0.642` |
+| STE F1 | `0.638` |
 
-External holdouts remain conservative for this compact stack: apo-PDB F1 `0.696`
-and AlphaFold F1 `0.620`. The best recorded individual holdout F1s are `0.746`
+External holdouts are mixed for this compact stack: apo-PDB F1 `0.667`
+and AlphaFold F1 `0.724`. The best recorded individual holdout F1s are `0.746`
 on apo-PDB from `exp-001-day1-v14` and `0.753` on AlphaFold from
 `exp-002-v49-baseline`. Treat holdout performance as an explicit publication
 caveat, not as hidden tuning debt.
@@ -63,6 +62,7 @@ The compact ablation ladder shows a clean story:
 | `paper17` | 17 | `0.520 +/- 0.044` | `0.860 +/- 0.017` |
 | `paper17+aa20` | 37 | `0.645 +/- 0.028` | `0.901 +/- 0.020` |
 | `v49` | 49 | `0.649 +/- 0.026` | `0.898 +/- 0.016` |
+| `v49+tunnel_shape3` | 52 | `0.668 +/- 0.031` | `0.900 +/- 0.015` |
 | `v49+tunnel_shape` | 55 | `0.666 +/- 0.032` | `0.902 +/- 0.017` |
 | `v_tunnel+moe` | 105 | `0.664 +/- 0.029` | `0.902 +/- 0.014` |
 
@@ -124,12 +124,11 @@ checkout. See [`DATASHEET.md`](DATASHEET.md) and
 
 ## Reproduce
 
-Run the current compact release candidate:
+Run the current internal compact leader:
 
 ```bash
-uv run python -m slipp_plus.cli ingest --config configs/v49_tunnel_shape_family_encoder.yaml
-uv run python -m slipp_plus.cli train --config configs/v49_tunnel_shape_family_encoder.yaml
-uv run python -m slipp_plus.cli eval --config configs/v49_tunnel_shape_family_encoder.yaml
+uv run python -m slipp_plus.cli train --config configs/v49_tunnel_shape3_family_encoder.yaml
+uv run python -m slipp_plus.cli eval --config configs/v49_tunnel_shape3_family_encoder.yaml
 uv run python -m slipp_plus.cli compact-report
 ```
 

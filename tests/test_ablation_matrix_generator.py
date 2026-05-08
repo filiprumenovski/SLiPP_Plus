@@ -8,7 +8,7 @@ from scripts.generate_ablation_matrix import load_registry, render_ablation_matr
 def test_ablation_matrix_generator_marks_current_best_and_negative_results() -> None:
     rendered = render_ablation_matrix(load_registry(Path("experiments/registry.yaml")))
 
-    assert "| **exp-012-compact-tunnel-shape** | v49+tunnel_shape |" in rendered
+    assert "| **exp-014-v49-tunnel-shape3** | v49+tunnel_shape3 |" in rendered
     assert "NEGATIVE RESULT." in rendered
     assert "ABANDONED." in rendered
     assert "exp-011-family-plus-moe |" in rendered

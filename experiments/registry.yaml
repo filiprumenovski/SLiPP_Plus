@@ -279,7 +279,7 @@
   models: [family_encoder]
   postprocessing: none
   status: complete
-  is_current_best: true
+  is_current_best: false
   metrics:
     binary_f1: "0.902 ± 0.017"
     binary_auroc: "0.988 ± 0.003"
@@ -411,3 +411,43 @@
     not supersede the current internal leader. However, both external holdouts
     improve materially (apo-PDB F1 0.711 vs 0.696; AlphaFold F1 0.703 vs
     0.620), making it a useful holdout-robust candidate to preserve.
+
+- id: exp-014-v49-tunnel-shape3
+  date: "2026-05-08"
+  feature_set: v49+tunnel_shape3
+  config: configs/v49_tunnel_shape3_family_encoder.yaml
+  models: [family_encoder]
+  postprocessing: none
+  status: complete
+  is_current_best: true
+  metrics:
+    binary_f1: "0.900 ± 0.015"
+    binary_auroc: "0.988 ± 0.004"
+    macro_f1_10: "0.768 ± 0.018"
+    lipid_macro_f1: "0.668 ± 0.031"
+    clr_f1: "0.747"
+    myr_f1: "0.700"
+    ola_f1: "0.610"
+    plm_f1: "0.642"
+    ste_f1: "0.638"
+  holdouts:
+    apo_pdb_f1: 0.667
+    apo_pdb_auroc: 0.801
+    alphafold_f1: 0.724
+    alphafold_auroc: 0.862
+  supersedes: exp-012-compact-tunnel-shape
+  artifacts:
+    predictions: processed/v49_tunnel_shape3/predictions/hierarchical_lipid_predictions.parquet
+    family_predictions: processed/v49_tunnel_shape3/predictions/family_encoder_predictions.parquet
+    models: models/v49_tunnel_shape3_family_encoder/
+    report: reports/v49_tunnel_shape3_family_encoder/metrics_table.md
+    metrics: reports/v49_tunnel_shape3_family_encoder/raw_metrics.parquet
+    bundle: models/v49_tunnel_shape3_family_encoder/family_encoder_bundle.joblib
+  notes: >
+    NEW INTERNAL LEADER, SMALL EFFECT. Uses only the three screened tunnel
+    shape signals on top of v49. It improves internal macro10 and lipid5 over
+    exp-012 by about +0.002 each (macro10 0.768 vs 0.766; lipid5 0.668 vs
+    0.666) with fewer tunnel columns, but binary F1 is lower (0.900 vs 0.902)
+    and the holdout story is mixed: AlphaFold F1 improves to 0.724 while
+    apo-PDB F1 drops to 0.667. Treat as the current internal leader, not a
+    decisive all-metric release winner.
