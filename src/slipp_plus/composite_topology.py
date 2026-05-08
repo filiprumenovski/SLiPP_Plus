@@ -93,6 +93,21 @@ def resolve_composite_topology(settings: Any) -> CompositeSettings:
 
 
 def composite_topology_metadata(settings: Any) -> dict[str, Any]:
+    """Serialize the resolved composite topology for artifact sidecars.
+
+    Parameters
+    ----------
+    settings
+        Loaded experiment settings containing either explicit composite config
+        or a hierarchical config that can be mapped to composite parity.
+
+    Returns
+    -------
+    dict[str, Any]
+        Metadata payload with composite schema version and JSON-serializable
+        topology settings.
+    """
+
     topology = resolve_composite_topology(settings)
     return {
         "composite_version": 1,
