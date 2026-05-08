@@ -45,6 +45,18 @@ Lint with:
 uv run ruff check .
 ```
 
+Optional pre-commit hooks are available:
+
+```bash
+uvx pre-commit install
+```
+
+Run them manually with:
+
+```bash
+uvx pre-commit run --all-files
+```
+
 Prefer small, reviewable changes that follow the existing module boundaries. Do not rename public functions, move experiment artifacts, or alter model/science decisions without documenting the reason in `RESEARCH_LOG.md` and `experiments/registry.yaml`.
 
 ## Commit Messages
