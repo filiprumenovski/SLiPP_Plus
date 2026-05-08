@@ -1,4 +1,4 @@
-.PHONY: help install ingest train eval figures all scratch build-caver-t12 build-lipid-boundary hierarchical-lipid test lint typecheck clean
+.PHONY: help install ingest train eval figures all scratch build-caver-t12 build-lipid-boundary hierarchical-lipid test test-slow lint typecheck clean
 
 PY ?= uv run
 CFG ?= configs/day1.yaml
@@ -16,6 +16,7 @@ help:
 	@echo "  all         ingest -> train -> eval -> figures"
 	@echo "  scratch     Day 7+: download PDBs, run fpocket, re-ingest from raw"
 	@echo "  test        pytest + ruff + mypy"
+	@echo "  test-slow   pytest slow Day 1 regression checks"
 	@echo "  clean       remove processed/, models/, reports/*.png"
 
 install:
@@ -70,6 +71,9 @@ test:
 	$(PY) pytest -q
 	$(PY) ruff check .
 	$(PY) mypy src
+
+test-slow:
+	$(PY) pytest -q --runslow
 
 lint:
 	$(PY) ruff check .
