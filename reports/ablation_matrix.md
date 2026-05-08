@@ -19,3 +19,4 @@ Generated from `experiments/registry.yaml`. Metrics are copied from registry ent
 | exp-013-v49-shell6-tunnel-shape | v14+aa20+shell6+tunnel_shape | 0.900 ± 0.017 | 0.766 ± 0.019 | 0.711 | 0.703 | MIXED/TIE RESULT. | - |
 | **exp-014-v49-tunnel-shape3** | v49+tunnel_shape3 | 0.900 ± 0.015 | 0.768 ± 0.018 | 0.667 | 0.724 | NEW INTERNAL LEADER, SMALL EFFECT. | - |
 | exp-015-v49-shell6-tunnel-shape3 | v14+aa20+shell6+tunnel_shape3 | 0.898 ± 0.016 | 0.764 ± 0.021 | 0.655 | 0.657 | NEGATIVE COMPACT RESULT. | - |
+| exp-016-v49-tunnel-shape-hydro4 | v49+tunnel_shape_hydro4 | 0.897 ± 0.017 | 0.762 ± 0.021 | 0.649 | 0.632 | NEGATIVE TARGETED RESULT. | - |

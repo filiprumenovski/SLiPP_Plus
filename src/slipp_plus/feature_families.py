@@ -26,6 +26,7 @@ from .constants import (
     TUNNEL_FEATURES_18,
     TUNNEL_GEOM_9,
     TUNNEL_SHAPE_AVAIL_6,
+    TUNNEL_SHAPE_HYDRO_4,
     TUNNEL_SHAPE_SIGNAL_3,
 )
 
@@ -68,6 +69,11 @@ FEATURE_FAMILY_REGISTRY: dict[str, FeatureFamilySpec] = {
     "tunnel_shape_signal3": FeatureFamilySpec(
         "tunnel_shape_signal3",
         tuple(TUNNEL_SHAPE_SIGNAL_3),
+        optional=True,
+    ),
+    "tunnel_shape_hydro4": FeatureFamilySpec(
+        "tunnel_shape_hydro4",
+        tuple(TUNNEL_SHAPE_HYDRO_4),
         optional=True,
     ),
     "tunnel_chem": FeatureFamilySpec("tunnel_chem", tuple(TUNNEL_CHEM_5), optional=True),

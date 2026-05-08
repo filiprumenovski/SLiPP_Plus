@@ -297,6 +297,11 @@ TUNNEL_SHAPE_SIGNAL_3: list[str] = [
     "tunnel_primary_bottleneck_radius",
 ]
 
+TUNNEL_SHAPE_HYDRO_4: list[str] = [
+    *TUNNEL_SHAPE_SIGNAL_3,
+    "tunnel_primary_hydrophobicity",
+]
+
 TUNNEL_CHEM_5: list[str] = [
     "tunnel_has_tunnel",
     "tunnel_caver_profile_present",
@@ -376,6 +381,7 @@ FEATURE_SETS["v14+aa20+shell6+tunnel_shape3"] = (
     SELECTED_17 + AA20 + SHELL_SIGNAL_6 + TUNNEL_SHAPE_SIGNAL_3
 )
 FEATURE_SETS["v49+tunnel_shape3"] = FEATURE_SETS["v49"] + TUNNEL_SHAPE_SIGNAL_3
+FEATURE_SETS["v49+tunnel_shape_hydro4"] = FEATURE_SETS["v49"] + TUNNEL_SHAPE_HYDRO_4
 FEATURE_SETS["v49+tunnel_shape"] = FEATURE_SETS["v49"] + TUNNEL_SHAPE_AVAIL_6
 FEATURE_SETS["v49+tunnel_chem"] = FEATURE_SETS["v49"] + TUNNEL_CHEM_5
 FEATURE_SETS["v49+tunnel_geom"] = FEATURE_SETS["v49"] + TUNNEL_GEOM_9

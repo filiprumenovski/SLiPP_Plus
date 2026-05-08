@@ -490,3 +490,41 @@
     and both holdouts relative to exp-014. Conclusion: the three-feature tunnel
     reduction is useful with the full shell12 context, but applying shell6 at
     the same time removes too much context.
+
+- id: exp-016-v49-tunnel-shape-hydro4
+  date: "2026-05-08"
+  feature_set: v49+tunnel_shape_hydro4
+  config: configs/v49_tunnel_shape_hydro4_family_encoder.yaml
+  models: [family_encoder]
+  postprocessing: none
+  status: complete
+  is_current_best: false
+  metrics:
+    binary_f1: "0.897 ± 0.017"
+    binary_auroc: "0.988 ± 0.003"
+    macro_f1_10: "0.762 ± 0.021"
+    lipid_macro_f1: "0.661 ± 0.032"
+    clr_f1: "0.743"
+    myr_f1: "0.696"
+    ola_f1: "0.587"
+    plm_f1: "0.636"
+    ste_f1: "0.640"
+  holdouts:
+    apo_pdb_f1: 0.649
+    apo_pdb_auroc: 0.805
+    alphafold_f1: 0.632
+    alphafold_auroc: 0.864
+  supersedes: null
+  artifacts:
+    predictions: processed/v49_tunnel_shape_hydro4/predictions/hierarchical_lipid_predictions.parquet
+    family_predictions: processed/v49_tunnel_shape_hydro4/predictions/family_encoder_predictions.parquet
+    models: models/v49_tunnel_shape_hydro4_family_encoder/
+    report: reports/v49_tunnel_shape_hydro4_family_encoder/metrics_table.md
+    metrics: reports/v49_tunnel_shape_hydro4_family_encoder/raw_metrics.parquet
+    bundle: models/v49_tunnel_shape_hydro4_family_encoder/family_encoder_bundle.joblib
+  notes: >
+    NEGATIVE TARGETED RESULT. Added `tunnel_primary_hydrophobicity` to the
+    shape3 tunnel slice because the feature-signal audit ranked it highly.
+    The added feature regressed the compact family encoder (lipid5 0.661 vs
+    0.668 for exp-014) and hurt both holdouts. Conclusion: hydrophobic tunnel
+    signal is not additive in this compact supervised family-encoder setting.
