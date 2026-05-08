@@ -175,6 +175,21 @@ def persist_splits(
     splits: list[tuple[np.ndarray, np.ndarray]],
     out_dir: Path,
 ) -> list[Path]:
+    """Write split index pairs as deterministic parquet files.
+
+    Parameters
+    ----------
+    splits
+        Ordered ``(train_idx, test_idx)`` pairs.
+    out_dir
+        Destination directory for ``seed_XX.parquet`` files.
+
+    Returns
+    -------
+    list[Path]
+        Paths written in split order.
+    """
+
     out_dir.mkdir(parents=True, exist_ok=True)
     written: list[Path] = []
     for i, (train_idx, test_idx) in enumerate(splits):
@@ -195,6 +210,19 @@ def persist_splits(
 
 
 def load_split(path: Path) -> tuple[np.ndarray, np.ndarray]:
+    """Load one persisted split parquet.
+
+    Parameters
+    ----------
+    path
+        Path to a ``seed_XX.parquet`` file produced by ``persist_splits``.
+
+    Returns
+    -------
+    tuple[np.ndarray, np.ndarray]
+        Train and test row indices as ``int64`` arrays.
+    """
+
     df = pl.read_parquet(path)
     train_idx = (
         df.filter(pl.col("split") == "train")
@@ -216,6 +244,24 @@ def run_splits(
     class_labels: np.ndarray,
     group_labels: np.ndarray | None = None,
 ) -> list[Path]:
+    """Generate and persist splits for a loaded experiment configuration.
+
+    Parameters
+    ----------
+    settings
+        Experiment settings controlling split strategy, count, fraction, and
+        seed.
+    class_labels
+        Class labels used for stratification.
+    group_labels
+        Optional grouping labels required by grouped split strategies.
+
+    Returns
+    -------
+    list[Path]
+        Persisted split parquet paths.
+    """
+
     splits = make_splits(
         class_labels=class_labels,
         n_iterations=settings.n_iterations,
