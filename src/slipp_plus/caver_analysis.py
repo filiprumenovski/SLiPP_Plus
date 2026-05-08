@@ -49,6 +49,16 @@ class CaverPocketContext:
 
 
 def safe_caver_t12_defaults() -> dict[str, float]:
+    """Return finite default values for every Tier 1-2 CAVER feature.
+
+    Returns
+    -------
+    dict[str, float]
+        Feature map keyed by ``CAVER_T12_FEATURES_17``. Defaults encode "no
+        tunnel observed" while preserving finite numeric values for schema
+        validation and model scoring.
+    """
+
     return {
         "caver_tunnel_count": 0,
         "caver_primary_length": 0.0,
@@ -71,6 +81,20 @@ def safe_caver_t12_defaults() -> dict[str, float]:
 
 
 def cast_caver_t12_features(features: dict[str, float | int]) -> dict[str, float]:
+    """Coerce a partial CAVER feature map into the canonical numeric schema.
+
+    Parameters
+    ----------
+    features
+        Raw or partially-derived CAVER feature values.
+
+    Returns
+    -------
+    dict[str, float]
+        Complete feature map in ``CAVER_T12_FEATURES_17`` order with invalid,
+        missing, or non-finite values replaced by safe defaults.
+    """
+
     defaults = safe_caver_t12_defaults()
     out: dict[str, float] = {}
     int_columns = {
@@ -215,6 +239,26 @@ def _parse_profile_map(path: Path) -> dict[str, tuple[CaverProfilePoint, ...]]:
 
 
 def parse_caver_tunnels(analysis_dir: Path) -> tuple[CaverTunnel, ...]:
+    """Parse persisted CAVER output tables from one analysis directory.
+
+    Parameters
+    ----------
+    analysis_dir
+        Directory containing CAVER tunnel characteristics plus optional profile
+        and residue-lining tables.
+
+    Returns
+    -------
+    tuple[CaverTunnel, ...]
+        Parsed tunnels with profile points and lining residues attached where
+        available.
+
+    Raises
+    ------
+    ValueError
+        If CAVER output contains ambiguous tunnel identifiers.
+    """
+
     profile_map = _parse_profile_map(analysis_dir / "tunnel_profiles.csv")
     residue_path = analysis_dir / "residues.csv"
     if not residue_path.exists():
@@ -254,6 +298,20 @@ def parse_caver_tunnels(analysis_dir: Path) -> tuple[CaverTunnel, ...]:
 
 
 def select_primary_tunnel(tunnels: Iterable[CaverTunnel]) -> CaverTunnel | None:
+    """Select the highest-priority tunnel for pocket-level descriptors.
+
+    Parameters
+    ----------
+    tunnels
+        Candidate CAVER tunnels associated with a pocket start point.
+
+    Returns
+    -------
+    CaverTunnel | None
+        Tunnel with maximal throughput, then length, then average radius; or
+        ``None`` when no tunnels are available.
+    """
+
     tunnel_list = list(tunnels)
     if not tunnel_list:
         return None
@@ -265,6 +323,24 @@ def derive_caver_t12_features(
     pocket_axial_length: float,
     pocket_principal_axis: tuple[float, float, float] | None = None,
 ) -> dict[str, float]:
+    """Derive Tier 1-2 CAVER features for one matched fpocket pocket.
+
+    Parameters
+    ----------
+    tunnels
+        CAVER tunnels mapped to the pocket's start point.
+    pocket_axial_length
+        Axial length of the matched fpocket pocket, used for length
+        normalization.
+    pocket_principal_axis
+        Optional principal axis vector used to measure tunnel alignment.
+
+    Returns
+    -------
+    dict[str, float]
+        Complete canonical CAVER feature map.
+    """
+
     tunnel_list = list(tunnels)
     if not tunnel_list:
         return safe_caver_t12_defaults()
@@ -300,6 +376,20 @@ def derive_caver_t12_features(
 
 
 def group_tunnels_by_starting_point(tunnels: Iterable[CaverTunnel]) -> dict[int, tuple[CaverTunnel, ...]]:
+    """Group parsed tunnels by CAVER starting-point index.
+
+    Parameters
+    ----------
+    tunnels
+        Parsed CAVER tunnels.
+
+    Returns
+    -------
+    dict[int, tuple[CaverTunnel, ...]]
+        Mapping from starting-point index to all tunnels emitted from that
+        point.
+    """
+
     grouped: dict[int, list[CaverTunnel]] = defaultdict(list)
     for tunnel in tunnels:
         grouped[tunnel.starting_point_index].append(tunnel)
@@ -310,6 +400,22 @@ def derive_caver_t12_features_by_pocket(
     analysis_dir: Path,
     pocket_contexts: Iterable[CaverPocketContext],
 ) -> dict[int, dict[str, float]]:
+    """Derive CAVER features for all matched pockets in one analysis directory.
+
+    Parameters
+    ----------
+    analysis_dir
+        Persisted CAVER output directory for a structure.
+    pocket_contexts
+        Matched fpocket pocket metadata used to align CAVER starting points
+        back to pocket numbers.
+
+    Returns
+    -------
+    dict[int, dict[str, float]]
+        Mapping from ``matched_pocket_number`` to canonical CAVER feature map.
+    """
+
     context_list = list(pocket_contexts)
     tunnels = parse_caver_tunnels(analysis_dir)
     grouped = group_tunnels_by_starting_point(tunnels)

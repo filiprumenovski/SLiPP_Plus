@@ -7,7 +7,6 @@ import logging
 from collections import Counter
 from collections.abc import Iterable
 from pathlib import Path
-from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -29,6 +28,30 @@ def build_training_v_caver_t12_parquet(
     reports_dir: Path = Path("reports/v_caver_t12"),
     analysis_root: Path | None = None,
 ) -> dict[str, object]:
+    """Build a training parquet enriched with persisted CAVER T12 features.
+
+    Parameters
+    ----------
+    base_parquet
+        Base training parquet containing ``pdb_ligand`` and
+        ``matched_pocket_number`` columns.
+    manifest_path
+        CSV, TSV, or parquet manifest mapping structures and pocket contexts to
+        CAVER analysis directories.
+    output_path
+        Destination parquet path for the enriched feature table.
+    reports_dir
+        Directory where sanity and warning reports are written.
+    analysis_root
+        Optional root joined with manifest ``analysis_subdir`` values.
+
+    Returns
+    -------
+    dict[str, object]
+        Build summary including row count, warning count, warning messages, and
+        output path.
+    """
+
     return _build_v_caver_t12_parquet(
         base_parquet=base_parquet,
         manifest_path=manifest_path,
@@ -47,6 +70,30 @@ def build_holdout_v_caver_t12_parquet(
     reports_dir: Path = Path("reports/v_caver_t12"),
     analysis_root: Path | None = None,
 ) -> dict[str, object]:
+    """Build a holdout parquet enriched with persisted CAVER T12 features.
+
+    Parameters
+    ----------
+    base_parquet
+        Base holdout parquet containing ``structure_id`` and
+        ``matched_pocket_number`` columns.
+    manifest_path
+        CSV, TSV, or parquet manifest mapping holdout structures and pocket
+        contexts to CAVER analysis directories.
+    output_path
+        Destination parquet path for the enriched holdout table.
+    reports_dir
+        Directory where sanity and warning reports are written.
+    analysis_root
+        Optional root joined with manifest ``analysis_subdir`` values.
+
+    Returns
+    -------
+    dict[str, object]
+        Build summary including row count, warning count, warning messages, and
+        output path.
+    """
+
     return _build_v_caver_t12_parquet(
         base_parquet=base_parquet,
         manifest_path=manifest_path,
@@ -248,6 +295,19 @@ def _parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
 
 
 def main(argv: Iterable[str] | None = None) -> int:
+    """Run the CAVER T12 parquet builder CLI.
+
+    Parameters
+    ----------
+    argv
+        Optional command-line arguments. Defaults to ``sys.argv`` when omitted.
+
+    Returns
+    -------
+    int
+        Process exit status.
+    """
+
     args = _parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     if args.mode == "training":

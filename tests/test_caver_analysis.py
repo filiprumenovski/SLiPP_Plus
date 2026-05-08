@@ -4,8 +4,8 @@ import math
 from pathlib import Path
 
 from slipp_plus.caver_analysis import (
-    CaverPocketContext,
     CAVER_T12_FEATURES_17,
+    CaverPocketContext,
     cast_caver_t12_features,
     derive_caver_t12_features_by_pocket,
     parse_caver_tunnels,
