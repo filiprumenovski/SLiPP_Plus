@@ -19,8 +19,6 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-_log = logging.getLogger(__name__)
-
 import pandas as pd
 
 from .config import Settings
@@ -32,6 +30,8 @@ from .constants import (
     SELECTED_17,
 )
 from .schemas import validate_holdout, validate_training
+
+_log = logging.getLogger(__name__)
 
 
 def _read_training_csv(path: Path) -> pd.DataFrame:
@@ -49,12 +49,7 @@ def _read_training_csv(path: Path) -> pd.DataFrame:
     df["class_binary"] = df["class_10"].isin(LIPID_CODES).astype(int)
     df = df.rename(columns={"pdb": "pdb_ligand"})
 
-    keep = (
-        ["pdb_ligand", "class_10", "class_binary"]
-        + SELECTED_17
-        + EXTRA_VDW22
-        + AA20
-    )
+    keep = ["pdb_ligand", "class_10", "class_binary", *SELECTED_17, *EXTRA_VDW22, *AA20]
     missing = [c for c in keep if c not in df.columns]
     if missing:
         raise ValueError(f"training CSV missing columns: {missing}")
@@ -101,7 +96,28 @@ def _read_holdout_xlsx(path: Path, id_col: str) -> pd.DataFrame:
 
 
 def assert_rule_1(full: pd.DataFrame, settings: Settings) -> dict[str, int]:
-    """Rule 1 gate: total count + per-class count exact match to paper."""
+    """Validate the Day 1 training table against the paper counts.
+
+    Parameters
+    ----------
+    full:
+        Canonical training frame containing a ``class_10`` column.
+    settings:
+        Loaded project settings whose ``validation`` block defines the exact
+        total row count and per-class counts.
+
+    Returns
+    -------
+    dict[str, int]
+        Per-class row counts in the order defined by
+        ``settings.validation.per_class_exact``.
+
+    Raises
+    ------
+    AssertionError
+        If the total row count or any per-class count differs from the
+        configured Rule 1 values.
+    """
     total = len(full)
     expected_total = settings.validation.training_total_exact
     if total != expected_total:
@@ -125,7 +141,34 @@ def assert_rule_1(full: pd.DataFrame, settings: Settings) -> dict[str, int]:
 
 
 def run_ingest(settings: Settings) -> dict[str, Path]:
-    """Produce processed/*.parquet and log to reports/ingest_log.md."""
+    """Materialize validated Day 1 parquet artifacts.
+
+    The ingest stage reads the shipped Chou et al. training CSV and the two
+    supplementary holdout workbooks, derives canonical labels, validates the
+    requested feature set, and writes processed parquet files plus a markdown
+    ingest log.
+
+    Parameters
+    ----------
+    settings:
+        Loaded project settings that define input paths, output directories,
+        validation counts, and the active feature set.
+
+    Returns
+    -------
+    dict[str, pathlib.Path]
+        Paths for ``full_pockets``, ``apo_pdb_holdout``,
+        ``alphafold_holdout``, and ``ingest_log``.
+
+    Raises
+    ------
+    AssertionError
+        If the Rule 1 count gate fails.
+    ValueError
+        If required source columns are missing or schema validation fails.
+    FileNotFoundError
+        If any configured source file is missing.
+    """
     paths = settings.paths
     paths.processed_dir.mkdir(parents=True, exist_ok=True)
     paths.reports_dir.mkdir(parents=True, exist_ok=True)
@@ -151,18 +194,26 @@ def run_ingest(settings: Settings) -> dict[str, Path]:
     with log.open("w") as f:
         f.write("# Ingest log\n\n")
         f.write(f"- Training CSV: `{paths.training_csv}`\n")
-        f.write(f"- Total training rows: **{len(full)}** (expected "
-                f"{settings.validation.training_total_exact})\n")
+        f.write(
+            f"- Total training rows: **{len(full)}** (expected "
+            f"{settings.validation.training_total_exact})\n"
+        )
         f.write("- Per-class counts:\n\n")
         f.write("| class | count |\n|---|---|\n")
         for k in sorted(counts):
             f.write(f"| {k} | {counts[k]} |\n")
-        f.write(f"\n- Apo-PDB holdout: **{len(apo)}** rows "
-                f"(lipids={int(apo['class_binary'].sum())})\n")
-        f.write(f"- AlphaFold holdout: **{len(af)}** rows "
-                f"(lipids={int(af['class_binary'].sum())})\n")
-        f.write(f"\n- Feature set: `{settings.feature_set}` "
-                f"({len(settings.feature_columns())} columns)\n")
+        f.write(
+            f"\n- Apo-PDB holdout: **{len(apo)}** rows "
+            f"(lipids={int(apo['class_binary'].sum())})\n"
+        )
+        f.write(
+            f"- AlphaFold holdout: **{len(af)}** rows "
+            f"(lipids={int(af['class_binary'].sum())})\n"
+        )
+        f.write(
+            f"\n- Feature set: `{settings.feature_set}` "
+            f"({len(settings.feature_columns())} columns)\n"
+        )
         f.write("\nRule 1 gate: PASS.\n")
 
     return {
