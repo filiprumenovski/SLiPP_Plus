@@ -28,6 +28,23 @@ def _headline_model(settings: Settings) -> str:
 def plot_confusion_matrix(
     preds_iter0: pd.DataFrame, reports_dir: Path, model_key: str
 ) -> Path:
+    """Render the iteration-0 10-class confusion matrix.
+
+    Parameters
+    ----------
+    preds_iter0
+        Prediction rows for one model and one iteration.
+    reports_dir
+        Output directory for the figure.
+    model_key
+        Model label used in the plot title.
+
+    Returns
+    -------
+    Path
+        Path to the saved PNG.
+    """
+
     y_true = preds_iter0["y_true_int"].to_numpy()
     y_pred = preds_iter0["y_pred_int"].to_numpy()
     cm = confusion_matrix(y_true, y_pred, labels=np.arange(len(CLASS_10)))
@@ -57,6 +74,23 @@ def plot_confusion_matrix(
 def plot_per_class_roc(
     preds_iter0: pd.DataFrame, reports_dir: Path, model_key: str
 ) -> Path:
+    """Render one-vs-rest ROC curves for all 10 classes.
+
+    Parameters
+    ----------
+    preds_iter0
+        Prediction rows for one model and one iteration.
+    reports_dir
+        Output directory for the figure.
+    model_key
+        Model label used in the plot title.
+
+    Returns
+    -------
+    Path
+        Path to the saved PNG.
+    """
+
     proba_cols = [f"p_{c}" for c in CLASS_10]
     y_true = preds_iter0["y_true_int"].to_numpy()
     proba = preds_iter0[proba_cols].to_numpy()
@@ -86,6 +120,27 @@ def plot_pca_colored_by_pred(
     full: pd.DataFrame, preds_iter0: pd.DataFrame, settings: Settings,
     reports_dir: Path, model_key: str,
 ) -> Path:
+    """Render PCA projections colored by true and predicted class.
+
+    Parameters
+    ----------
+    full
+        Full pocket feature table.
+    preds_iter0
+        Iteration-0 prediction rows for the displayed model.
+    settings
+        Experiment settings used to materialize the feature matrix and seed PCA.
+    reports_dir
+        Output directory for the figure.
+    model_key
+        Model label used in the plot title.
+
+    Returns
+    -------
+    Path
+        Path to the saved PNG.
+    """
+
     X = feature_matrix(full, settings)
     X_std = StandardScaler().fit_transform(X)
     pcs = PCA(n_components=2, random_state=settings.seed_base).fit_transform(X_std)
@@ -126,6 +181,21 @@ def plot_pca_colored_by_pred(
 
 
 def plot_metrics_comparison(settings: Settings, reports_dir: Path) -> Path:
+    """Render paper-comparison bars from raw metric rows.
+
+    Parameters
+    ----------
+    settings
+        Experiment settings carrying feature-set and ground-truth metadata.
+    reports_dir
+        Directory containing ``raw_metrics.parquet`` and receiving the figure.
+
+    Returns
+    -------
+    Path
+        Path to the saved PNG.
+    """
+
     raw = pd.read_parquet(reports_dir / "raw_metrics.parquet")
     summary = raw.groupby("model").agg(
         f1_mean=("binary_f1", "mean"),
@@ -167,6 +237,20 @@ def plot_metrics_comparison(settings: Settings, reports_dir: Path) -> Path:
 
 
 def run_figures(settings: Settings) -> dict[str, Path]:
+    """Generate all standard figures for a completed run.
+
+    Parameters
+    ----------
+    settings
+        Loaded experiment configuration pointing at processed predictions and
+        reports directories.
+
+    Returns
+    -------
+    dict[str, Path]
+        Paths keyed by figure role: confusion, ROC, PCA, and comparison.
+    """
+
     proc = settings.paths.processed_dir
     reports = settings.paths.reports_dir
     reports.mkdir(parents=True, exist_ok=True)
