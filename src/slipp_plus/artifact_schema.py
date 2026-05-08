@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Iterable, Mapping
 from hashlib import sha256
 from pathlib import Path
-from typing import Any, Iterable, Mapping
-
+from typing import Any
 
 FEATURE_SCHEMA_VERSION = 1
 
@@ -16,6 +16,18 @@ def _normalized_feature_columns(feature_columns: Iterable[str]) -> list[str]:
 
 
 def compute_feature_schema_hash(feature_columns: Iterable[str]) -> str:
+    """Compute the stable hash for an ordered feature schema.
+
+    Parameters
+    ----------
+    feature_columns:
+        Ordered feature-column names used by a model or prediction artifact.
+
+    Returns
+    -------
+    str
+        SHA-256 hex digest of the JSON-normalized ordered column list.
+    """
     columns = _normalized_feature_columns(feature_columns)
     payload = json.dumps(columns, separators=(",", ":"), ensure_ascii=True)
     return sha256(payload.encode("utf-8")).hexdigest()
@@ -26,6 +38,21 @@ def build_feature_schema_metadata(
     feature_set: str,
     feature_columns: Iterable[str],
 ) -> dict[str, Any]:
+    """Build metadata that pins an artifact to a feature schema.
+
+    Parameters
+    ----------
+    feature_set:
+        Configured feature-set name, such as ``v14`` or ``v_sterol``.
+    feature_columns:
+        Ordered feature-column names used to create the artifact.
+
+    Returns
+    -------
+    dict[str, Any]
+        JSON-serializable metadata containing the feature set, ordered columns,
+        schema version, and order-sensitive schema hash.
+    """
     columns = _normalized_feature_columns(feature_columns)
     return {
         "feature_set": feature_set,
@@ -36,6 +63,18 @@ def build_feature_schema_metadata(
 
 
 def artifact_schema_sidecar_path(artifact_path: Path) -> Path:
+    """Return the schema-sidecar path for a persisted artifact.
+
+    Parameters
+    ----------
+    artifact_path:
+        Main artifact path, usually a parquet or joblib file.
+
+    Returns
+    -------
+    pathlib.Path
+        Sidecar path using ``<artifact suffix>.schema.json``.
+    """
     return artifact_path.with_suffix(f"{artifact_path.suffix}.schema.json")
 
 
@@ -43,6 +82,20 @@ def write_artifact_schema_sidecar(
     artifact_path: Path,
     metadata: Mapping[str, Any],
 ) -> Path:
+    """Write schema metadata beside an artifact.
+
+    Parameters
+    ----------
+    artifact_path:
+        Main artifact path whose sidecar should be written.
+    metadata:
+        JSON-serializable schema metadata.
+
+    Returns
+    -------
+    pathlib.Path
+        Path of the written sidecar JSON file.
+    """
     sidecar_path = artifact_schema_sidecar_path(artifact_path)
     sidecar_path.parent.mkdir(parents=True, exist_ok=True)
     sidecar_path.write_text(
@@ -53,6 +106,23 @@ def write_artifact_schema_sidecar(
 
 
 def read_artifact_schema_sidecar(artifact_path: Path) -> dict[str, Any] | None:
+    """Read schema metadata beside an artifact if present.
+
+    Parameters
+    ----------
+    artifact_path:
+        Main artifact path whose sidecar should be read.
+
+    Returns
+    -------
+    dict[str, Any] | None
+        Parsed sidecar metadata, or ``None`` when no sidecar exists.
+
+    Raises
+    ------
+    ValueError
+        If the sidecar exists but does not contain a JSON object.
+    """
     sidecar_path = artifact_schema_sidecar_path(artifact_path)
     if not sidecar_path.exists():
         return None
@@ -82,6 +152,33 @@ def validate_feature_schema_metadata(
     expected_feature_set: str | None = None,
     artifact_label: str = "artifact",
 ) -> dict[str, Any]:
+    """Validate persisted feature-schema metadata.
+
+    Parameters
+    ----------
+    metadata:
+        Metadata loaded from a model bundle or sidecar JSON.
+    expected_feature_columns:
+        Optional ordered feature columns expected by the caller.
+    expected_feature_set:
+        Optional feature-set name expected by the caller.
+    artifact_label:
+        Human-readable label used in error messages.
+
+    Returns
+    -------
+    dict[str, Any]
+        Normalized schema metadata with a recomputed feature-schema hash.
+
+    Raises
+    ------
+    KeyError
+        If ``feature_columns`` metadata is absent.
+    ValueError
+        If the stored hash is inconsistent, the feature set differs from the
+        expected feature set, or ordered feature columns differ from the
+        expected schema.
+    """
     if "feature_columns" not in metadata:
         raise KeyError(f"{artifact_label} is missing feature_columns metadata")
 
