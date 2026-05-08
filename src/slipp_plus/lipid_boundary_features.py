@@ -409,7 +409,9 @@ def _ensure_matched_pocket_number(
     if "matched_pocket_number" in base.columns:
         return base
     if structural_join is None or "matched_pocket_number" not in structural_join.columns:
-        raise ValueError("base parquet lacks matched_pocket_number and no structural join provides it")
+        raise ValueError(
+            "base parquet lacks matched_pocket_number and no structural join provides it"
+        )
     if len(base) != len(structural_join):
         raise ValueError(
             f"structural join row count mismatch: base={len(base)} join={len(structural_join)}"
@@ -417,9 +419,9 @@ def _ensure_matched_pocket_number(
     if (
         "pdb_ligand" in base.columns
         and "pdb_ligand" in structural_join.columns
-        and not base["pdb_ligand"].reset_index(drop=True).equals(
-            structural_join["pdb_ligand"].reset_index(drop=True)
-        )
+        and not base["pdb_ligand"]
+        .reset_index(drop=True)
+        .equals(structural_join["pdb_ligand"].reset_index(drop=True))
     ):
         raise ValueError("structural join pdb_ligand order does not match base parquet")
     out = base.copy()
@@ -589,11 +591,21 @@ def _parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
 
-    training = sub.add_parser("training", help="Build processed/v_lipid_boundary/full_pockets.parquet.")
-    training.add_argument("--base-parquet", type=Path, default=Path("processed/v_sterol/full_pockets.parquet"))
-    training.add_argument("--source-pdbs-root", type=Path, default=Path("data/structures/source_pdbs"))
-    training.add_argument("--structural-join-parquet", type=Path, default=Path("processed/v49/full_pockets.parquet"))
-    training.add_argument("--output", type=Path, default=Path("processed/v_lipid_boundary/full_pockets.parquet"))
+    training = sub.add_parser(
+        "training", help="Build processed/v_lipid_boundary/full_pockets.parquet."
+    )
+    training.add_argument(
+        "--base-parquet", type=Path, default=Path("processed/v_sterol/full_pockets.parquet")
+    )
+    training.add_argument(
+        "--source-pdbs-root", type=Path, default=Path("data/structures/source_pdbs")
+    )
+    training.add_argument(
+        "--structural-join-parquet", type=Path, default=Path("processed/v49/full_pockets.parquet")
+    )
+    training.add_argument(
+        "--output", type=Path, default=Path("processed/v_lipid_boundary/full_pockets.parquet")
+    )
     training.add_argument("--reports-dir", type=Path, default=Path("reports/v_lipid_boundary"))
     training.add_argument("--workers", type=int, default=6)
     training.add_argument("--skip-validation", action="store_true")

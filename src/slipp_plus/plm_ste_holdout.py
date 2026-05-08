@@ -290,8 +290,14 @@ def write_holdout_report(
                 )
 
         f.write("\n## Interpretation\n\n")
-        apo_delta = metrics["apo_pdb"]["ensemble_plus_tiebreaker"]["f1"] - metrics["apo_pdb"]["ensemble"]["f1"]
-        af_delta = metrics["alphafold"]["ensemble_plus_tiebreaker"]["f1"] - metrics["alphafold"]["ensemble"]["f1"]
+        apo_delta = (
+            metrics["apo_pdb"]["ensemble_plus_tiebreaker"]["f1"]
+            - metrics["apo_pdb"]["ensemble"]["f1"]
+        )
+        af_delta = (
+            metrics["alphafold"]["ensemble_plus_tiebreaker"]["f1"]
+            - metrics["alphafold"]["ensemble"]["f1"]
+        )
         apo_ste_delta = (
             metrics["apo_pdb"]["ensemble_plus_tiebreaker"]["pair_metrics"]["ste_f1"]
             - metrics["apo_pdb"]["ensemble"]["pair_metrics"]["ste_f1"]

@@ -99,7 +99,9 @@ def test_feature_dict_completeness_and_finiteness() -> None:
         assert math.isfinite(float(value))
 
 
-def test_extract_from_analysis_marks_no_tunnel_without_collapsing_to_failure(tmp_path: Path) -> None:
+def test_extract_from_analysis_marks_no_tunnel_without_collapsing_to_failure(
+    tmp_path: Path,
+) -> None:
     analysis = tmp_path / "analysis"
     analysis.mkdir()
     (analysis / "tunnels.csv").write_text(
@@ -118,8 +120,7 @@ def test_extract_from_analysis_marks_no_tunnel_without_collapsing_to_failure(tmp
 def test_safe_defaults_on_caver_failure(tmp_path: Path, monkeypatch) -> None:  # type: ignore[no-untyped-def]
     pdb = tmp_path / "protein.pdb"
     pdb.write_text(
-        "ATOM      1  CA  ALA A   1       0.000   0.000   0.000  1.00 20.00           C\n"
-        "END\n",
+        "ATOM      1  CA  ALA A   1       0.000   0.000   0.000  1.00 20.00           C\nEND\n",
         encoding="utf-8",
     )
     jar = tmp_path / "caver.jar"
@@ -145,8 +146,7 @@ def test_process_structure_marks_missing_pocket_context(tmp_path: Path) -> None:
     protein_pdb = tmp_path / "CLR" / "pdb1ABC.pdb"
     protein_pdb.parent.mkdir(parents=True, exist_ok=True)
     protein_pdb.write_text(
-        "ATOM      1  CA  ALA A   1       0.000   0.000   0.000  1.00 20.00           C\n"
-        "END\n",
+        "ATOM      1  CA  ALA A   1       0.000   0.000   0.000  1.00 20.00           C\nEND\n",
         encoding="utf-8",
     )
     task = {
@@ -242,9 +242,7 @@ def test_process_structure_cached_ignores_stale_json(tmp_path: Path) -> None:
         "rows": [],
         "warnings": [],
     }
-    (cache_dir / "CLR__pdb1ABC.pdb.json").write_text(
-        json.dumps(stale_payload), encoding="utf-8"
-    )
+    (cache_dir / "CLR__pdb1ABC.pdb.json").write_text(json.dumps(stale_payload), encoding="utf-8")
 
     result = _process_structure_cached(task)
 
@@ -318,8 +316,16 @@ def test_select_structure_batch_requires_pair() -> None:
 def test_quality_gate_fails_when_profile_missing() -> None:
     frame = pd.DataFrame(
         [
-            {"tunnel_pocket_context_present": 1, "tunnel_caver_profile_present": 0, "tunnel_has_tunnel": 0},
-            {"tunnel_pocket_context_present": 1, "tunnel_caver_profile_present": 0, "tunnel_has_tunnel": 0},
+            {
+                "tunnel_pocket_context_present": 1,
+                "tunnel_caver_profile_present": 0,
+                "tunnel_has_tunnel": 0,
+            },
+            {
+                "tunnel_pocket_context_present": 1,
+                "tunnel_caver_profile_present": 0,
+                "tunnel_has_tunnel": 0,
+            },
         ]
     )
     quality = _quality_metrics(frame)
@@ -335,8 +341,16 @@ def test_quality_gate_fails_when_profile_missing() -> None:
 def test_quality_gate_allows_zero_tunnel_when_context_and_profile_present() -> None:
     frame = pd.DataFrame(
         [
-            {"tunnel_pocket_context_present": 1, "tunnel_caver_profile_present": 1, "tunnel_has_tunnel": 0},
-            {"tunnel_pocket_context_present": 1, "tunnel_caver_profile_present": 1, "tunnel_has_tunnel": 0},
+            {
+                "tunnel_pocket_context_present": 1,
+                "tunnel_caver_profile_present": 1,
+                "tunnel_has_tunnel": 0,
+            },
+            {
+                "tunnel_pocket_context_present": 1,
+                "tunnel_caver_profile_present": 1,
+                "tunnel_has_tunnel": 0,
+            },
         ]
     )
     quality = _quality_metrics(frame)

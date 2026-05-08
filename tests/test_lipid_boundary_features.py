@@ -129,10 +129,7 @@ def _atom_line(serial: int, resname: str, resid: int, x: float, y: float, z: flo
 
 
 def _vert_line(serial: int, x: float, y: float, z: float) -> str:
-    return (
-        f"ATOM  {serial:5d}  AP  STP A{serial:4d}    "
-        f"{x:8.3f}{y:8.3f}{z:8.3f}  0.00  1.50\n"
-    )
+    return f"ATOM  {serial:5d}  AP  STP A{serial:4d}    {x:8.3f}{y:8.3f}{z:8.3f}  0.00  1.50\n"
 
 
 def test_build_training_v_lipid_boundary_parquet_smoke(tmp_path: Path) -> None:

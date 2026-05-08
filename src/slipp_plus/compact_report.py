@@ -265,7 +265,12 @@ def _ablation_delta_lines(
         ),
         (tunnel_chem, v49, "`v49+tunnel_chem` vs `v49`", "tunnel chemistry is a smaller lift"),
         (tunnel_shape, v49, "`v49+tunnel_shape` vs `v49`", "best compact tunnel lift"),
-        (tunnel_geom, v49, "`v49+tunnel_geom` vs `v49`", "ties shape within noise with more columns"),
+        (
+            tunnel_geom,
+            v49,
+            "`v49+tunnel_geom` vs `v49`",
+            "ties shape within noise with more columns",
+        ),
         (
             tunnel_moe,
             tunnel_shape,

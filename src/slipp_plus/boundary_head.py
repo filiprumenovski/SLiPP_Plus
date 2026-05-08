@@ -224,7 +224,9 @@ def apply_boundary_head(
     candidate_labels = rule.candidate_labels
     candidate_idx = np.array([CLASS_10.index(label) for label in candidate_labels], dtype=np.int64)
     positive_idx = CLASS_10.index(rule.positive_label)
-    negative_idx = np.array([CLASS_10.index(label) for label in rule.negative_labels], dtype=np.int64)
+    negative_idx = np.array(
+        [CLASS_10.index(label) for label in rule.negative_labels], dtype=np.int64
+    )
     rank_k = rule.max_rank or len(candidate_idx)
 
     lookup = dict(zip(row_index_lookup.tolist(), positive_proba.tolist(), strict=True))
@@ -357,7 +359,4 @@ def gain_importance(model: Any, feature_columns: list[str]) -> dict[str, float]:
     """Map XGBoost f-index gain importance back to feature names."""
 
     gain_map = model.get_booster().get_score(importance_type="gain")
-    return {
-        feature: float(gain_map.get(f"f{i}", 0.0))
-        for i, feature in enumerate(feature_columns)
-    }
+    return {feature: float(gain_map.get(f"f{i}", 0.0)) for i, feature in enumerate(feature_columns)}

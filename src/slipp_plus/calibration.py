@@ -175,9 +175,7 @@ def collect_probabilities(settings: Settings) -> pl.DataFrame:
     bundles: dict[tuple[str, str], dict] = {}
     for key in MODEL_KEYS:
         bundles[(key, "binary")] = joblib.load(models_dir / f"{key}_binary.joblib")
-        bundles[(key, "multi-class")] = joblib.load(
-            models_dir / f"{key}_multiclass.joblib"
-        )
+        bundles[(key, "multi-class")] = joblib.load(models_dir / f"{key}_multiclass.joblib")
 
     frames: list[pl.DataFrame] = []
     for holdout, df in holdouts.items():
@@ -281,9 +279,7 @@ def _validate(preds: pl.DataFrame, metrics: pl.DataFrame, settings: Settings) ->
     if np.isnan(p).any():
         raise AssertionError("P_lipid contains NaN")
     if (p < 0.0).any() or (p > 1.0).any():
-        raise AssertionError(
-            f"P_lipid out of [0, 1]: min={p.min():.6f} max={p.max():.6f}"
-        )
+        raise AssertionError(f"P_lipid out of [0, 1]: min={p.min():.6f} max={p.max():.6f}")
 
     # (2) Row count.
     holdouts = _load_holdouts(settings)
@@ -321,8 +317,7 @@ def _validate(preds: pl.DataFrame, metrics: pl.DataFrame, settings: Settings) ->
     ece = metrics["ece_10"].to_numpy()
     if (ece < 0.0).any() or (ece > 0.5).any():
         raise AssertionError(
-            f"ECE10 out of sane range [0, 0.5]: "
-            f"min={ece.min():.3f} max={ece.max():.3f}"
+            f"ECE10 out of sane range [0, 0.5]: min={ece.min():.3f} max={ece.max():.3f}"
         )
 
 
@@ -333,12 +328,12 @@ def _validate(preds: pl.DataFrame, metrics: pl.DataFrame, settings: Settings) ->
 
 # (family, formulation) -> (color, linestyle, linewidth, marker, label_prefix)
 _STYLE: dict[tuple[str, str], dict[str, Any]] = {
-    ("rf", "binary"):       {"color": "#88A0A8", "ls": "--", "lw": 1.3, "marker": "o"},
-    ("xgb", "binary"):      {"color": "#7B9E89", "ls": "--", "lw": 1.3, "marker": "s"},
-    ("lgbm", "binary"):     {"color": "#555555", "ls": "--", "lw": 1.5, "marker": "D"},
-    ("rf", "multi-class"):  {"color": "#5B8FB9", "ls": "-",  "lw": 1.8, "marker": "o"},
-    ("xgb", "multi-class"): {"color": "#F2A154", "ls": "-",  "lw": 1.8, "marker": "s"},
-    ("lgbm", "multi-class"):{"color": "#D1495B", "ls": "-",  "lw": 2.4, "marker": "D"},
+    ("rf", "binary"): {"color": "#88A0A8", "ls": "--", "lw": 1.3, "marker": "o"},
+    ("xgb", "binary"): {"color": "#7B9E89", "ls": "--", "lw": 1.3, "marker": "s"},
+    ("lgbm", "binary"): {"color": "#555555", "ls": "--", "lw": 1.5, "marker": "D"},
+    ("rf", "multi-class"): {"color": "#5B8FB9", "ls": "-", "lw": 1.8, "marker": "o"},
+    ("xgb", "multi-class"): {"color": "#F2A154", "ls": "-", "lw": 1.8, "marker": "s"},
+    ("lgbm", "multi-class"): {"color": "#D1495B", "ls": "-", "lw": 2.4, "marker": "D"},
 }
 
 _LABEL: dict[str, str] = {
@@ -354,16 +349,13 @@ _HOLDOUT_PRETTY: dict[str, str] = {
 }
 
 
-def plot_reliability(
-    preds: pl.DataFrame, metrics: pl.DataFrame, out_path: Path
-) -> Path:
+def plot_reliability(preds: pl.DataFrame, metrics: pl.DataFrame, out_path: Path) -> Path:
     fig, axes = plt.subplots(1, 3, figsize=(15, 5.2), dpi=150)
     for ax, holdout in zip(axes, HOLDOUTS, strict=True):
-        ax.plot([0, 1], [0, 1], color="black", ls=":", lw=0.8, alpha=0.6,
-                label="perfect calibration")
-        n_total = int(
-            metrics.filter(pl.col("holdout") == holdout)["n"][0]
+        ax.plot(
+            [0, 1], [0, 1], color="black", ls=":", lw=0.8, alpha=0.6, label="perfect calibration"
         )
+        n_total = int(metrics.filter(pl.col("holdout") == holdout)["n"][0])
         for key in MODEL_KEYS:
             for formulation in FORMULATIONS:
                 sub = preds.filter(
@@ -374,9 +366,7 @@ def plot_reliability(
                 y = sub["y_true_binary"].to_numpy()
                 p = sub["P_lipid"].to_numpy()
                 try:
-                    prob_true, prob_pred = calibration_curve(
-                        y, p, n_bins=10, strategy="uniform"
-                    )
+                    prob_true, prob_pred = calibration_curve(y, p, n_bins=10, strategy="uniform")
                 except ValueError:
                     continue
                 counts = _bin_counts(p, n_bins=10, centers=prob_pred)
@@ -392,16 +382,24 @@ def plot_reliability(
                 style = _STYLE[(key, formulation)]
                 label = f"{_LABEL[key]} {formulation} (ECE={ece:.3f})"
                 ax.plot(
-                    prob_pred, prob_true,
-                    color=style["color"], ls=style["ls"], lw=style["lw"],
-                    marker=style["marker"], markersize=0,
-                    label=label, alpha=0.95,
+                    prob_pred,
+                    prob_true,
+                    color=style["color"],
+                    ls=style["ls"],
+                    lw=style["lw"],
+                    marker=style["marker"],
+                    markersize=0,
+                    label=label,
+                    alpha=0.95,
                 )
                 ax.scatter(
-                    prob_pred, prob_true,
-                    s=ms ** 2 / 3.0,
-                    facecolor=style["color"], edgecolor="white",
-                    linewidth=0.6, zorder=3,
+                    prob_pred,
+                    prob_true,
+                    s=ms**2 / 3.0,
+                    facecolor=style["color"],
+                    edgecolor="white",
+                    linewidth=0.6,
+                    zorder=3,
                 )
 
         ax.set_xlim(0, 1)
@@ -413,7 +411,8 @@ def plot_reliability(
         ax.legend(fontsize=8, loc="upper left", framealpha=0.85)
     fig.suptitle(
         "Reliability diagrams — binary baselines vs multi-class lipid-sum",
-        fontsize=12, y=1.02,
+        fontsize=12,
+        y=1.02,
     )
     fig.tight_layout()
     fig.savefig(out_path, dpi=150, bbox_inches="tight")
@@ -449,23 +448,29 @@ def plot_histograms(preds: pl.DataFrame, out_path: Path) -> Path:
             p = sub["P_lipid"].to_numpy()
             bins = np.linspace(0.0, 1.0, 31)
             ax.hist(
-                p[y == 0], bins=bins, alpha=0.55, color="#5B8FB9",
+                p[y == 0],
+                bins=bins,
+                alpha=0.55,
+                color="#5B8FB9",
                 label=f"non-lipid (n={int((y == 0).sum())})",
             )
             ax.hist(
-                p[y == 1], bins=bins, alpha=0.55, color="#D1495B",
+                p[y == 1],
+                bins=bins,
+                alpha=0.55,
+                color="#D1495B",
                 label=f"lipid (n={int((y == 1).sum())})",
             )
             ax.set_xlim(0, 1)
             ax.set_xlabel("P(lipid)")
             ax.set_ylabel("pocket count")
-            ax.set_title(f"LGBM {formulation} — {_HOLDOUT_PRETTY[holdout]}",
-                         fontsize=10)
+            ax.set_title(f"LGBM {formulation} — {_HOLDOUT_PRETTY[holdout]}", fontsize=10)
             ax.legend(fontsize=8, loc="upper center")
             ax.grid(True, alpha=0.25, lw=0.6)
     fig.suptitle(
         "P(lipid) distributions by true label — LGBM, binary vs multi-class",
-        fontsize=12, y=1.01,
+        fontsize=12,
+        y=1.01,
     )
     fig.tight_layout()
     fig.savefig(out_path, dpi=150, bbox_inches="tight")

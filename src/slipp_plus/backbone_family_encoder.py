@@ -323,9 +323,10 @@ def _validation_loss(
             if teacher_mask_val is None:
                 mask = torch.ones(len(y_val), dtype=torch.bool)
             else:
-                mask = torch.from_numpy(
-                    np.ascontiguousarray(teacher_mask_val.astype(np.float32))
-                ) > 0.5
+                mask = (
+                    torch.from_numpy(np.ascontiguousarray(teacher_mask_val.astype(np.float32)))
+                    > 0.5
+                )
             if bool(mask.any()):
                 loss = loss + distill_weight * kl(
                     torch.log_softmax(logits[mask], dim=1),

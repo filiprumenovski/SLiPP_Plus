@@ -135,7 +135,9 @@ def _read_csv_records(path: Path) -> list[dict[str, str]]:
         reader = csv.DictReader(handle, dialect=dialect)
         records: list[dict[str, str]] = []
         for row in reader:
-            records.append({_normalize_header(str(key)): str(value) for key, value in row.items() if key})
+            records.append(
+                {_normalize_header(str(key)): str(value) for key, value in row.items() if key}
+            )
     return records
 
 
@@ -290,10 +292,10 @@ def parse_caver_tunnels(analysis_dir: Path) -> tuple[CaverTunnel, ...]:
         )
     tunnel_ids = [tunnel.tunnel_id for tunnel in tunnels]
     if len(set(tunnel_ids)) != len(tunnel_ids):
-        duplicates = sorted({tunnel_id for tunnel_id in tunnel_ids if tunnel_ids.count(tunnel_id) > 1})
-        raise ValueError(
-            f"ambiguous tunnel identifiers in {analysis_dir}: {duplicates[:5]}"
+        duplicates = sorted(
+            {tunnel_id for tunnel_id in tunnel_ids if tunnel_ids.count(tunnel_id) > 1}
         )
+        raise ValueError(f"ambiguous tunnel identifiers in {analysis_dir}: {duplicates[:5]}")
     return tuple(tunnels)
 
 
@@ -315,7 +317,9 @@ def select_primary_tunnel(tunnels: Iterable[CaverTunnel]) -> CaverTunnel | None:
     tunnel_list = list(tunnels)
     if not tunnel_list:
         return None
-    return max(tunnel_list, key=lambda tunnel: (tunnel.throughput, tunnel.length, tunnel.avg_radius))
+    return max(
+        tunnel_list, key=lambda tunnel: (tunnel.throughput, tunnel.length, tunnel.avg_radius)
+    )
 
 
 def derive_caver_t12_features(
@@ -358,24 +362,44 @@ def derive_caver_t12_features(
         "caver_primary_length": float(primary.length),
         "caver_total_length": float(np.sum(lengths)) if lengths.size else 0.0,
         "caver_primary_bottleneck_radius": float(primary.bottleneck_radius),
-        "caver_median_bottleneck_radius": float(np.median(bottlenecks)) if bottlenecks.size else 0.0,
-        "caver_primary_mean_radius": float(np.mean(radii)) if radii.size else float(primary.avg_radius),
+        "caver_median_bottleneck_radius": float(np.median(bottlenecks))
+        if bottlenecks.size
+        else 0.0,
+        "caver_primary_mean_radius": float(np.mean(radii))
+        if radii.size
+        else float(primary.avg_radius),
         "caver_primary_radius_std": float(np.std(radii)) if radii.size else 0.0,
-        "caver_primary_radius_min": float(np.min(radii)) if radii.size else float(primary.bottleneck_radius),
-        "caver_primary_radius_max": float(np.max(radii)) if radii.size else float(primary.avg_radius),
+        "caver_primary_radius_min": float(np.min(radii))
+        if radii.size
+        else float(primary.bottleneck_radius),
+        "caver_primary_radius_max": float(np.max(radii))
+        if radii.size
+        else float(primary.avg_radius),
         "caver_primary_radius_skewness": _radius_skewness(radii),
         "caver_primary_straightness": _straightness(primary.profile_points, primary.length),
-        "caver_primary_mean_curvature": float(np.mean(curvature_values)) if curvature_values.size else 0.0,
-        "caver_primary_max_curvature": float(np.max(curvature_values)) if curvature_values.size else 0.0,
-        "caver_primary_high_curvature_count": int(np.sum(curvature_values >= _HIGH_CURVATURE_THRESHOLD)) if curvature_values.size else 0,
-        "caver_primary_alignment_angle_deg": _alignment_angle_deg(primary.profile_points, pocket_principal_axis),
+        "caver_primary_mean_curvature": float(np.mean(curvature_values))
+        if curvature_values.size
+        else 0.0,
+        "caver_primary_max_curvature": float(np.max(curvature_values))
+        if curvature_values.size
+        else 0.0,
+        "caver_primary_high_curvature_count": int(
+            np.sum(curvature_values >= _HIGH_CURVATURE_THRESHOLD)
+        )
+        if curvature_values.size
+        else 0,
+        "caver_primary_alignment_angle_deg": _alignment_angle_deg(
+            primary.profile_points, pocket_principal_axis
+        ),
         "caver_primary_bottleneck_count": _bottleneck_count(radii),
         "caver_primary_length_over_axial": _length_over_axial(primary.length, pocket_axial_length),
     }
     return cast_caver_t12_features(out)
 
 
-def group_tunnels_by_starting_point(tunnels: Iterable[CaverTunnel]) -> dict[int, tuple[CaverTunnel, ...]]:
+def group_tunnels_by_starting_point(
+    tunnels: Iterable[CaverTunnel],
+) -> dict[int, tuple[CaverTunnel, ...]]:
     """Group parsed tunnels by CAVER starting-point index.
 
     Parameters
@@ -435,7 +459,9 @@ def _starting_point_offset(
     pocket_contexts: Iterable[CaverPocketContext],
 ) -> int:
     context_list = list(pocket_contexts)
-    zero_based_hits = sum(len(grouped.get(context.starting_point_index, tuple())) for context in context_list)
+    zero_based_hits = sum(
+        len(grouped.get(context.starting_point_index, tuple())) for context in context_list
+    )
     one_based_hits = sum(
         len(grouped.get(context.starting_point_index + 1, tuple())) for context in context_list
     )

@@ -81,9 +81,7 @@ def build_clr_vs_ste_training(
     )
 
 
-def train_sterol_tiebreaker(
-    X_tr: np.ndarray, y_tr: np.ndarray, seed: int
-) -> XGBClassifier:
+def train_sterol_tiebreaker(X_tr: np.ndarray, y_tr: np.ndarray, seed: int) -> XGBClassifier:
     """Fit a CLR-vs-STE binary XGB head with class-balanced ``scale_pos_weight``."""
     return train_boundary_head(
         X_tr,
@@ -192,17 +190,13 @@ def run_tiebreaker_pipeline(
             summaries[f"v49 {m} only"] = score_summary(sub)
     summaries["v49 ensemble (mean prob)"] = score_summary(ensemble_pred)
     summaries["v49 ensemble + tiebreaker"] = score_summary(
-        augmented.select(
-            ["iteration", "row_index", "y_true_int", "y_pred_int", *PROBA_COLUMNS]
-        )
+        augmented.select(["iteration", "row_index", "y_true_int", "y_pred_int", *PROBA_COLUMNS])
     )
 
     confusions: dict[str, dict[str, int]] = {}
     for m in DEFAULT_MODELS:
         if (base_df["model"] == m).any():
-            confusions[f"v49 {m} only"] = clr_ste_confusion(
-                base_df.filter(pl.col("model") == m)
-            )
+            confusions[f"v49 {m} only"] = clr_ste_confusion(base_df.filter(pl.col("model") == m))
     confusions["v49 ensemble (mean prob)"] = clr_ste_confusion(ensemble_pred)
     confusions["v49 ensemble + tiebreaker"] = clr_ste_confusion(augmented)
 
@@ -337,11 +331,7 @@ def write_tiebreaker_report(
             f"rows/iter (std {diagnostics['fire_std']:.1f}), "
             f"total = {diagnostics['fire_total']} over 25 iterations\n"
         )
-        f.write(
-            "- Per-iteration fire counts: "
-            + ", ".join(str(x) for x in fires)
-            + "\n"
-        )
+        f.write("- Per-iteration fire counts: " + ", ".join(str(x) for x in fires) + "\n")
         f.write(
             f"- Tiebreaker sterol-only binary F1 (CLR vs STE, on true sterol "
             f"test rows): {diagnostics['sterol_binary_f1_mean']:.3f} "
@@ -424,8 +414,12 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="If set, also write a consolidated comparison to this path "
         "(use reports/ensemble/metrics.md).",
     )
-    p.add_argument("--model-bundle", type=Path, default=None,
-                   help="Any v49 iteration-0 joblib bundle (used to infer feature_columns).")
+    p.add_argument(
+        "--model-bundle",
+        type=Path,
+        default=None,
+        help="Any v49 iteration-0 joblib bundle (used to infer feature_columns).",
+    )
     p.add_argument("--workers", type=int, default=6)
     p.add_argument("--margin", type=float, default=TIEBREAKER_MARGIN_DEFAULT)
     p.add_argument("--seed-base", type=int, default=42)
@@ -474,9 +468,7 @@ def main(argv: list[str] | None = None) -> None:
             confusions=result["confusions"],
             diagnostics=result["diagnostics"],
             margin=args.margin,
-            ste_error_breakdown=_ste_error_breakdown(
-                result["augmented_predictions"]
-            ),
+            ste_error_breakdown=_ste_error_breakdown(result["augmented_predictions"]),
         )
         print(f"wrote {args.overall_report}")
 

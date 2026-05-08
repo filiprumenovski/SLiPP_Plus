@@ -25,8 +25,7 @@ def _write_pqr(path: Path, coordinates: list[tuple[float, float, float]]) -> Non
     lines = []
     for serial, (x, y, z) in enumerate(coordinates, start=1):
         lines.append(
-            f"ATOM  {serial:5d}  C   APH A{serial:4d}    "
-            f"{x:8.3f}{y:8.3f}{z:8.3f}  0.00  1.50\n"
+            f"ATOM  {serial:5d}  C   APH A{serial:4d}    {x:8.3f}{y:8.3f}{z:8.3f}  0.00  1.50\n"
         )
     path.write_text("".join(lines), encoding="utf-8")
 
@@ -189,7 +188,11 @@ def test_closest_atom_preferred_over_ca(tmp_path: Path) -> None:
     assert frame["aromatic_count_shell2"].item() == 1
     assert frame["aromatic_count_shell4"].item() == 0
 
-    residue = next(PDBParser(QUIET=True).get_structure("ABCD_0", pockets_dir / "pocket0_atm.pdb").get_residues())
+    residue = next(
+        PDBParser(QUIET=True)
+        .get_structure("ABCD_0", pockets_dir / "pocket0_atm.pdb")
+        .get_residues()
+    )
     direct_distance = _closest_heavy_atom_distance(residue, np.array([0.0, 0.0, 0.0]))
     assert direct_distance == pytest.approx(4.0)
 
@@ -232,7 +235,12 @@ def test_extract_features_end_to_end(tmp_path: Path) -> None:
     for column in frame.columns:
         actual = frame[column].to_list()
         target = expected[column].to_list()
-        if column.endswith("ratio_shell1") or column.endswith("ratio_shell2") or column.endswith("ratio_shell3") or column.endswith("ratio_shell4"):
+        if (
+            column.endswith("ratio_shell1")
+            or column.endswith("ratio_shell2")
+            or column.endswith("ratio_shell3")
+            or column.endswith("ratio_shell4")
+        ):
             assert actual == pytest.approx(target)
         else:
             assert actual == target
@@ -282,7 +290,4 @@ def test_fixture_end_to_end() -> None:
     assert frame.height == expected_rows
     aq3 = frame.filter(pl.col("pocket_id").str.starts_with("8AQ3_"))
     assert aq3.height > 0
-    assert (
-        aq3["aromatic_count_shell1"].sum() > 0
-        or aq3["aromatic_count_shell2"].sum() > 0
-    )
+    assert aq3["aromatic_count_shell1"].sum() > 0 or aq3["aromatic_count_shell2"].sum() > 0

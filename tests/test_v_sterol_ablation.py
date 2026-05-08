@@ -10,21 +10,25 @@ from slipp_plus.v_sterol_ablation import build_v_sterol_ablation_from_v_sterol
 
 def _training_frame() -> pd.DataFrame:
     row = {column: 1.0 for column in FEATURE_SETS["v_sterol"]}
-    row.update({
-        "pdb_ligand": "CLR/pdb1ABC.pdb",
-        "class_10": "CLR",
-        "class_binary": 1,
-    })
+    row.update(
+        {
+            "pdb_ligand": "CLR/pdb1ABC.pdb",
+            "class_10": "CLR",
+            "class_binary": 1,
+        }
+    )
     return pd.DataFrame([row])
 
 
 def _holdout_frame() -> pd.DataFrame:
     row = {column: 1.0 for column in FEATURE_SETS["v_sterol"]}
-    row.update({
-        "structure_id": "1ABC",
-        "ligand": "CLR",
-        "class_binary": 1,
-    })
+    row.update(
+        {
+            "structure_id": "1ABC",
+            "ligand": "CLR",
+            "class_binary": 1,
+        }
+    )
     return pd.DataFrame([row])
 
 

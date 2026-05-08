@@ -60,9 +60,7 @@ def _read_holdout_xlsx(path: Path, id_col: str) -> pd.DataFrame:
     """Load SF2 or SF3. Row 0 in the xlsx is the banner; real header is row 1."""
     raw = pd.read_excel(path, header=1)
     if id_col not in raw.columns:
-        raise ValueError(
-            f"expected column {id_col!r} in {path.name}, got {list(raw.columns)}"
-        )
+        raise ValueError(f"expected column {id_col!r} in {path.name}, got {list(raw.columns)}")
     if "ligand" not in raw.columns:
         raise ValueError(f"expected 'ligand' column in {path.name}")
 
@@ -84,8 +82,7 @@ def _read_holdout_xlsx(path: Path, id_col: str) -> pd.DataFrame:
     if len(dropped) > 0:
         dropped_ids = dropped["structure_id"].unique().tolist()
         _log.warning(
-            "%s: dropping %d/%d holdout rows with NaN descriptors "
-            "(structure_ids: %s)",
+            "%s: dropping %d/%d holdout rows with NaN descriptors (structure_ids: %s)",
             path.name,
             len(dropped),
             n_before,
@@ -121,9 +118,7 @@ def assert_rule_1(full: pd.DataFrame, settings: Settings) -> dict[str, int]:
     total = len(full)
     expected_total = settings.validation.training_total_exact
     if total != expected_total:
-        raise AssertionError(
-            f"Rule 1 FAIL: training total {total} != expected {expected_total}"
-        )
+        raise AssertionError(f"Rule 1 FAIL: training total {total} != expected {expected_total}")
 
     per_class = full["class_10"].value_counts().to_dict()
     expected = settings.validation.per_class_exact
@@ -203,12 +198,10 @@ def run_ingest(settings: Settings) -> dict[str, Path]:
         for k in sorted(counts):
             f.write(f"| {k} | {counts[k]} |\n")
         f.write(
-            f"\n- Apo-PDB holdout: **{len(apo)}** rows "
-            f"(lipids={int(apo['class_binary'].sum())})\n"
+            f"\n- Apo-PDB holdout: **{len(apo)}** rows (lipids={int(apo['class_binary'].sum())})\n"
         )
         f.write(
-            f"- AlphaFold holdout: **{len(af)}** rows "
-            f"(lipids={int(af['class_binary'].sum())})\n"
+            f"- AlphaFold holdout: **{len(af)}** rows (lipids={int(af['class_binary'].sum())})\n"
         )
         f.write(
             f"\n- Feature set: `{settings.feature_set}` "

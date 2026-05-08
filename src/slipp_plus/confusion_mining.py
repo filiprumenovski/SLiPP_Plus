@@ -23,7 +23,9 @@ def _prediction_frame(predictions: pl.DataFrame, *, average_models: bool = True)
     missing = sorted(needed - set(predictions.columns))
     if missing:
         raise ValueError(f"prediction frame missing required columns: {missing}")
-    return predictions.select(["iteration", "row_index", "y_true_int", "y_pred_int", *PROBA_COLUMNS])
+    return predictions.select(
+        ["iteration", "row_index", "y_true_int", "y_pred_int", *PROBA_COLUMNS]
+    )
 
 
 def mine_confusion_edges(
@@ -82,9 +84,7 @@ def mine_confusion_edges(
                 continue
             true_label = CLASS_10[true_idx]
             pred_label = CLASS_10[pred_idx]
-            if lipid_only and (
-                true_label not in LIPID_SET or pred_label not in LIPID_SET
-            ):
+            if lipid_only and (true_label not in LIPID_SET or pred_label not in LIPID_SET):
                 continue
             mask = (y_true == true_idx) & (y_pred == pred_idx)
             count = int(mask.sum())
@@ -110,9 +110,7 @@ def mine_confusion_edges(
                     "mean_true_probability": float(np.mean(true_scores)) if count else 0.0,
                     "mean_pred_probability": float(np.mean(pred_scores)) if count else 0.0,
                     "top2_recoverable_count": int(recoverable.sum()),
-                    "top2_recoverable_fraction": int(recoverable.sum()) / count
-                    if count
-                    else 0.0,
+                    "top2_recoverable_fraction": int(recoverable.sum()) / count if count else 0.0,
                 }
             )
 

@@ -115,9 +115,7 @@ def _build_v_caver_t12_parquet(
 ) -> dict[str, object]:
     base = pd.read_parquet(base_parquet)
     if key_column not in base.columns or "matched_pocket_number" not in base.columns:
-        raise ValueError(
-            f"{base_parquet}: expected {key_column} + matched_pocket_number columns"
-        )
+        raise ValueError(f"{base_parquet}: expected {key_column} + matched_pocket_number columns")
 
     manifest = _read_manifest(manifest_path)
     manifest = _normalize_manifest_columns(manifest, key_column=key_column)
@@ -144,7 +142,9 @@ def _build_v_caver_t12_parquet(
                 ctx.matched_pocket_number: safe_caver_t12_defaults() for ctx in context_rows
             }
         else:
-            feature_map_by_key[key] = derive_caver_t12_features_by_pocket(analysis_dir, context_rows)
+            feature_map_by_key[key] = derive_caver_t12_features_by_pocket(
+                analysis_dir, context_rows
+            )
 
     for _, row in base.iterrows():
         row_dict = row.to_dict()
@@ -160,7 +160,9 @@ def _build_v_caver_t12_parquet(
 
         feature_row.update(
             cast_caver_t12_features(
-                feature_map_by_key.get(key, {}).get(matched_pocket_number, safe_caver_t12_defaults())
+                feature_map_by_key.get(key, {}).get(
+                    matched_pocket_number, safe_caver_t12_defaults()
+                )
             )
         )
         rows.append(feature_row)

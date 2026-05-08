@@ -34,8 +34,7 @@ def feature_matrix(df: pd.DataFrame, settings: Settings) -> np.ndarray:
     missing = [c for c in cols if c not in df.columns]
     if missing:
         raise KeyError(
-            f"feature columns missing from frame: {missing}. "
-            f"feature_set={settings.feature_set}"
+            f"feature columns missing from frame: {missing}. feature_set={settings.feature_set}"
         )
     return df[cols].to_numpy(dtype=np.float64)
 

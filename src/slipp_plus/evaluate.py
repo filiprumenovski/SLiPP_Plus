@@ -76,9 +76,7 @@ def binary_collapse(
     }
 
 
-def multiclass_metrics(
-    y_true_int: np.ndarray, y_pred_int: np.ndarray
-) -> dict[str, float]:
+def multiclass_metrics(y_true_int: np.ndarray, y_pred_int: np.ndarray) -> dict[str, float]:
     """Compute 10-class and per-class metrics for integer predictions.
 
     Parameters
@@ -96,14 +94,18 @@ def multiclass_metrics(
     """
 
     p, r, f, _ = precision_recall_fscore_support(
-        y_true_int, y_pred_int,
+        y_true_int,
+        y_pred_int,
         labels=np.arange(len(CLASS_10)),
         average=None,
         zero_division=0,
     )
     macro_f1 = f1_score(
-        y_true_int, y_pred_int, average="macro",
-        labels=np.arange(len(CLASS_10)), zero_division=0,
+        y_true_int,
+        y_pred_int,
+        average="macro",
+        labels=np.arange(len(CLASS_10)),
+        zero_division=0,
     )
     lipid_mask = np.isin(np.arange(len(CLASS_10)), LIPID_IDX)
     lipid_macro_f1 = float(np.mean(f[lipid_mask]))
@@ -196,9 +198,12 @@ def evaluate_test_predictions(preds: pd.DataFrame) -> pd.DataFrame:
         binary = binary_collapse(y_true, y_pred, proba)
         multi = multiclass_metrics(y_true, y_pred)
         rows.append(
-            {"iteration": int(i), "model": model_key,
-             **{f"binary_{k}": v for k, v in binary.items()},
-             **multi}
+            {
+                "iteration": int(i),
+                "model": model_key,
+                **{f"binary_{k}": v for k, v in binary.items()},
+                **multi,
+            }
         )
     return pd.DataFrame(rows)
 
@@ -224,9 +229,7 @@ def evaluate_holdout(
             f"model bundle class_order {bundle_class_order} does not match "
             f"the canonical CLASS_10 {CLASS_10}. Cannot safely evaluate holdout."
         )
-    lipid_idx = np.array(
-        [i for i, c in enumerate(bundle_class_order) if c in LIPID_CODES]
-    )
+    lipid_idx = np.array([i for i, c in enumerate(bundle_class_order) if c in LIPID_CODES])
 
     cols = model_bundle["feature_columns"]
     missing = [c for c in cols if c not in holdout_df.columns]
@@ -364,9 +367,7 @@ def evaluate_hierarchical_holdouts(
     bundle_path = settings.paths.models_dir / settings.hierarchical.bundle_name
     bundle = load_hierarchical_bundle(bundle_path)
     if list(bundle.get("class_order", CLASS_10)) != list(CLASS_10):
-        raise ValueError(
-            "hierarchical bundle class_order does not match canonical CLASS_10"
-        )
+        raise ValueError("hierarchical bundle class_order does not match canonical CLASS_10")
     if bundle.get("backend") == "family_encoder":
         from .composite_family_train import predict_family_encoder_holdout
 
@@ -476,8 +477,7 @@ def run_evaluation(settings: Settings) -> dict[str, Path]:
                 af_m = evaluate_holdout(bundle, af, settings)
                 holdout_rows[key] = {"apo_pdb": apo_m, "alphafold": af_m}
             except KeyError as e:
-                holdout_rows[key] = {"apo_pdb": {"error": str(e)},
-                                     "alphafold": {"error": str(e)}}
+                holdout_rows[key] = {"apo_pdb": {"error": str(e)}, "alphafold": {"error": str(e)}}
     else:
         try:
             holdout_rows["hierarchical"] = evaluate_hierarchical_holdouts(
@@ -494,18 +494,24 @@ def run_evaluation(settings: Settings) -> dict[str, Path]:
     gt = settings.ground_truth
     with md_path.open("w") as f:
         f.write("# SLiPP++ Day 1 metrics\n\n")
-        f.write(f"_Feature set: `{settings.feature_set}`, "
-                f"{settings.n_iterations} stratified shuffle iterations, "
-                f"pipeline mode: `{settings.pipeline_mode}`._\n\n")
+        f.write(
+            f"_Feature set: `{settings.feature_set}`, "
+            f"{settings.n_iterations} stratified shuffle iterations, "
+            f"pipeline mode: `{settings.pipeline_mode}`._\n\n"
+        )
 
         # --- Section 1: test split, binary-collapsed ---
         f.write("## 1. Binary-collapsed on test split (paper Table 1 line 1)\n\n")
-        f.write("| model | F1 mean±std | F1 95% CI | AUROC mean±std | AUROC 95% CI | accuracy | precision | sensitivity | specificity |\n")
+        f.write(
+            "| model | F1 mean±std | F1 95% CI | AUROC mean±std | AUROC 95% CI | accuracy | precision | sensitivity | specificity |\n"
+        )
         f.write("|---|---|---|---|---|---|---|---|---|\n")
-        f.write(f"| paper (RF) | {gt.test.f1:.3f} | - | {gt.test.auroc:.3f} | - | "
-                f"{gt.test.accuracy or float('nan'):.3f} | "
-                f"{gt.test.precision or float('nan'):.3f} | "
-                f"{gt.test.sensitivity or float('nan'):.3f} | - |\n")
+        f.write(
+            f"| paper (RF) | {gt.test.f1:.3f} | - | {gt.test.auroc:.3f} | - | "
+            f"{gt.test.accuracy or float('nan'):.3f} | "
+            f"{gt.test.precision or float('nan'):.3f} | "
+            f"{gt.test.sensitivity or float('nan'):.3f} | - |\n"
+        )
         for _, row in summary.iterrows():
             mk = row["model"]
             f.write(
@@ -530,8 +536,10 @@ def run_evaluation(settings: Settings) -> dict[str, Path]:
             if "error" in m:
                 f.write(f"| {key} | n/a ({m['error']}) | | | |\n")
                 continue
-            f.write(f"| {key} | {_fmt(m['f1'])} | {_fmt(m['auroc'])} "
-                    f"| {_fmt(m['precision'])} | {_fmt(m['sensitivity'])} |\n")
+            f.write(
+                f"| {key} | {_fmt(m['f1'])} | {_fmt(m['auroc'])} "
+                f"| {_fmt(m['precision'])} | {_fmt(m['sensitivity'])} |\n"
+            )
         f.write("\n### AlphaFold holdout\n\n")
         f.write("| model | F1 | AUROC | precision | sensitivity |\n")
         f.write("|---|---|---|---|---|\n")
@@ -541,12 +549,16 @@ def run_evaluation(settings: Settings) -> dict[str, Path]:
             if "error" in m:
                 f.write(f"| {key} | n/a ({m['error']}) | | | |\n")
                 continue
-            f.write(f"| {key} | {_fmt(m['f1'])} | {_fmt(m['auroc'])} "
-                    f"| {_fmt(m['precision'])} | {_fmt(m['sensitivity'])} |\n")
+            f.write(
+                f"| {key} | {_fmt(m['f1'])} | {_fmt(m['auroc'])} "
+                f"| {_fmt(m['precision'])} | {_fmt(m['sensitivity'])} |\n"
+            )
 
         # --- Section 3: multi-class ---
         f.write("\n## 3. Multi-class (the headline Day 1 result)\n\n")
-        f.write("| model | macro-F1 (10) mean±std | macro-F1 (10) 95% CI | macro-F1 (5 lipids) mean±std | macro-F1 (5 lipids) 95% CI | accuracy |\n")
+        f.write(
+            "| model | macro-F1 (10) mean±std | macro-F1 (10) 95% CI | macro-F1 (5 lipids) mean±std | macro-F1 (5 lipids) 95% CI | accuracy |\n"
+        )
         f.write("|---|---|---|---|---|---|\n")
         for _, row in summary.iterrows():
             f.write(

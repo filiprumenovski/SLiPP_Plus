@@ -62,17 +62,13 @@ CHEMISTRY_GROUP_ORDER: list[str] = [
 
 # Reverse lookup: residue code -> group name.
 _RESIDUE_TO_GROUP: dict[str, str] = {
-    residue: group
-    for group, residues in CHEMISTRY_GROUPS.items()
-    for residue in residues
+    residue: group for group, residues in CHEMISTRY_GROUPS.items() for residue in residues
 }
 
 SHELLS: tuple[int, int, int, int] = (1, 2, 3, 4)
 
 STEROL_CHEMISTRY_SHELL_COLS: list[str] = [
-    f"{group}_count_shell{shell}"
-    for group in CHEMISTRY_GROUP_ORDER
-    for shell in SHELLS
+    f"{group}_count_shell{shell}" for group in CHEMISTRY_GROUP_ORDER for shell in SHELLS
 ] + [f"polar_hydrophobic_ratio_shell{shell}" for shell in SHELLS]
 
 POCKET_GEOMETRY_COLS: list[str] = [
@@ -87,9 +83,7 @@ POCKET_GEOMETRY_COLS: list[str] = [
 STEROL_FEATURES_38: list[str] = STEROL_CHEMISTRY_SHELL_COLS + POCKET_GEOMETRY_COLS
 
 _COUNT_COLUMNS: list[str] = [
-    f"{group}_count_shell{shell}"
-    for group in CHEMISTRY_GROUP_ORDER
-    for shell in SHELLS
+    f"{group}_count_shell{shell}" for group in CHEMISTRY_GROUP_ORDER for shell in SHELLS
 ]
 _RATIO_COLUMNS: list[str] = [f"polar_hydrophobic_ratio_shell{shell}" for shell in SHELLS]
 
@@ -197,7 +191,10 @@ def _polar_hydrophobic_ratios(counts: dict[str, int]) -> dict[str, float]:
     """Symmetric Jeffreys-smoothed log-ratio of polar to hydrophobic counts."""
     ratios: dict[str, float] = {}
     for shell in SHELLS:
-        polar = counts[f"aromatic_polar_count_shell{shell}"] + counts[f"polar_neutral_count_shell{shell}"]
+        polar = (
+            counts[f"aromatic_polar_count_shell{shell}"]
+            + counts[f"polar_neutral_count_shell{shell}"]
+        )
         hydrophobic = (
             counts[f"bulky_hydrophobic_count_shell{shell}"]
             + counts[f"aromatic_pi_count_shell{shell}"]
@@ -316,7 +313,9 @@ def _process_group(task: dict[str, object]) -> dict[str, object]:
                     ratios = _polar_hydrophobic_ratios(counts)
                     pca = _pocket_pca_features(vert_coords)
                     if max_spread > _EPS:
-                        burial = float(np.linalg.norm(pocket_centroid - protein_centroid) / max_spread)
+                        burial = float(
+                            np.linalg.norm(pocket_centroid - protein_centroid) / max_spread
+                        )
                     else:
                         burial = 0.0
                     merged: dict[str, float] = {}
@@ -356,13 +355,10 @@ def build_training_v_sterol_parquet(
 
     base = pd.read_parquet(base_parquet)
     if "pdb_ligand" not in base.columns or "matched_pocket_number" not in base.columns:
-        raise ValueError(
-            f"{base_parquet}: expected pdb_ligand + matched_pocket_number columns"
-        )
+        raise ValueError(f"{base_parquet}: expected pdb_ligand + matched_pocket_number columns")
 
     groups = [
-        (pdb_ligand, frame.copy())
-        for pdb_ligand, frame in base.groupby("pdb_ligand", sort=False)
+        (pdb_ligand, frame.copy()) for pdb_ligand, frame in base.groupby("pdb_ligand", sort=False)
     ]
 
     tasks: list[dict[str, object]] = []
@@ -397,9 +393,7 @@ def build_holdout_v_sterol_parquet(
 
     base = pd.read_parquet(base_parquet)
     if "structure_id" not in base.columns or "matched_pocket_number" not in base.columns:
-        raise ValueError(
-            f"{base_parquet}: expected structure_id + matched_pocket_number columns"
-        )
+        raise ValueError(f"{base_parquet}: expected structure_id + matched_pocket_number columns")
 
     groups = [
         (structure_id, frame.copy())

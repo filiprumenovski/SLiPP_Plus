@@ -25,9 +25,7 @@ def _headline_model(settings: Settings) -> str:
     return settings.models[0]
 
 
-def plot_confusion_matrix(
-    preds_iter0: pd.DataFrame, reports_dir: Path, model_key: str
-) -> Path:
+def plot_confusion_matrix(preds_iter0: pd.DataFrame, reports_dir: Path, model_key: str) -> Path:
     """Render the iteration-0 10-class confusion matrix.
 
     Parameters
@@ -71,9 +69,7 @@ def plot_confusion_matrix(
     return out
 
 
-def plot_per_class_roc(
-    preds_iter0: pd.DataFrame, reports_dir: Path, model_key: str
-) -> Path:
+def plot_per_class_roc(preds_iter0: pd.DataFrame, reports_dir: Path, model_key: str) -> Path:
     """Render one-vs-rest ROC curves for all 10 classes.
 
     Parameters
@@ -117,8 +113,11 @@ def plot_per_class_roc(
 
 
 def plot_pca_colored_by_pred(
-    full: pd.DataFrame, preds_iter0: pd.DataFrame, settings: Settings,
-    reports_dir: Path, model_key: str,
+    full: pd.DataFrame,
+    preds_iter0: pd.DataFrame,
+    settings: Settings,
+    reports_dir: Path,
+    model_key: str,
 ) -> Path:
     """Render PCA projections colored by true and predicted class.
 
@@ -155,8 +154,12 @@ def plot_pca_colored_by_pred(
     for c in CLASS_10:
         mask = truth == c
         axes[0].scatter(
-            pcs[mask, 0], pcs[mask, 1], s=3, alpha=0.3,
-            color=colors_by_class[c], label=c,
+            pcs[mask, 0],
+            pcs[mask, 1],
+            s=3,
+            alpha=0.3,
+            color=colors_by_class[c],
+            label=c,
         )
     axes[0].set_title("PCA colored by true class (all 15,219 pockets)")
     axes[0].legend(markerscale=3, fontsize=8, loc="best")
@@ -164,8 +167,12 @@ def plot_pca_colored_by_pred(
     for i, c in enumerate(CLASS_10):
         mask = y_pred == i
         axes[1].scatter(
-            pcs[test_idx[mask], 0], pcs[test_idx[mask], 1], s=6, alpha=0.6,
-            color=colors_by_class[c], label=c,
+            pcs[test_idx[mask], 0],
+            pcs[test_idx[mask], 1],
+            s=6,
+            alpha=0.6,
+            color=colors_by_class[c],
+            label=c,
         )
     axes[1].set_title(f"PCA colored by predicted class ({model_key}, test iter 0)")
     axes[1].legend(markerscale=2, fontsize=8, loc="best")
@@ -197,29 +204,41 @@ def plot_metrics_comparison(settings: Settings, reports_dir: Path) -> Path:
     """
 
     raw = pd.read_parquet(reports_dir / "raw_metrics.parquet")
-    summary = raw.groupby("model").agg(
-        f1_mean=("binary_f1", "mean"),
-        f1_std=("binary_f1", "std"),
-        auroc_mean=("binary_auroc", "mean"),
-        auroc_std=("binary_auroc", "std"),
-        lipid5_mean=("macro_f1_lipid5", "mean"),
-        lipid5_std=("macro_f1_lipid5", "std"),
-    ).reset_index()
+    summary = (
+        raw.groupby("model")
+        .agg(
+            f1_mean=("binary_f1", "mean"),
+            f1_std=("binary_f1", "std"),
+            auroc_mean=("binary_auroc", "mean"),
+            auroc_std=("binary_auroc", "std"),
+            lipid5_mean=("macro_f1_lipid5", "mean"),
+            lipid5_std=("macro_f1_lipid5", "std"),
+        )
+        .reset_index()
+    )
 
     gt = settings.ground_truth
     fig, ax = plt.subplots(figsize=(9, 5))
     xs = np.arange(len(summary))
     width = 0.25
-    ax.bar(xs - width, summary["f1_mean"], width,
-           yerr=summary["f1_std"], label="Binary F1", capsize=3)
-    ax.bar(xs, summary["auroc_mean"], width,
-           yerr=summary["auroc_std"], label="Binary AUROC", capsize=3)
-    ax.bar(xs + width, summary["lipid5_mean"], width,
-           yerr=summary["lipid5_std"], label="5-lipid macro-F1", capsize=3)
-    ax.axhline(gt.test.f1, color="tab:blue", ls="--", lw=1,
-               label=f"paper F1 ({gt.test.f1:.3f})")
-    ax.axhline(gt.test.auroc, color="tab:orange", ls="--", lw=1,
-               label=f"paper AUROC ({gt.test.auroc:.3f})")
+    ax.bar(
+        xs - width, summary["f1_mean"], width, yerr=summary["f1_std"], label="Binary F1", capsize=3
+    )
+    ax.bar(
+        xs, summary["auroc_mean"], width, yerr=summary["auroc_std"], label="Binary AUROC", capsize=3
+    )
+    ax.bar(
+        xs + width,
+        summary["lipid5_mean"],
+        width,
+        yerr=summary["lipid5_std"],
+        label="5-lipid macro-F1",
+        capsize=3,
+    )
+    ax.axhline(gt.test.f1, color="tab:blue", ls="--", lw=1, label=f"paper F1 ({gt.test.f1:.3f})")
+    ax.axhline(
+        gt.test.auroc, color="tab:orange", ls="--", lw=1, label=f"paper AUROC ({gt.test.auroc:.3f})"
+    )
     ax.set_xticks(xs)
     ax.set_xticklabels(summary["model"])
     ax.set_ylim(0, 1.0)

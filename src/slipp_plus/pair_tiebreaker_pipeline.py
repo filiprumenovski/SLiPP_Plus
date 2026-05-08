@@ -178,9 +178,9 @@ def run_boundary_tiebreaker_iterations(
                 per_iter_results.append(future.result())
 
     per_iter_results.sort(key=lambda row: row["iteration"])
-    augmented = pl.concat(
-        [pl.from_arrow(row["augmented_frame"]) for row in per_iter_results]
-    ).sort(["iteration", "row_index"])
+    augmented = pl.concat([pl.from_arrow(row["augmented_frame"]) for row in per_iter_results]).sort(
+        ["iteration", "row_index"]
+    )
 
     fires = [row["tiebreaker_fired"] for row in per_iter_results]
     binary_f1s = [row["binary_f1"] for row in per_iter_results]

@@ -27,13 +27,10 @@ def _assert_supported_phase_a(settings: Settings) -> None:
             "'teacher_ensemble'. The family_encoder backbone belongs to the "
             "next MoE phase."
         )
-    unsupported_gates = [
-        expert.name for expert in topology.experts if expert.gate == "candidate"
-    ]
+    unsupported_gates = [expert.name for expert in topology.experts if expert.gate == "candidate"]
     if unsupported_gates:
         raise NotImplementedError(
-            "candidate gates are not implemented in composite Phase A: "
-            f"{unsupported_gates}"
+            f"candidate gates are not implemented in composite Phase A: {unsupported_gates}"
         )
 
 
@@ -45,9 +42,7 @@ def _phase_a_hierarchical_settings(settings: Settings) -> Settings:
     raw["pipeline_mode"] = "hierarchical"
     hierarchy = raw.setdefault("hierarchical", {})
 
-    one_vs_neighbors = [
-        expert for expert in topology.experts if expert.kind == "one_vs_neighbors"
-    ]
+    one_vs_neighbors = [expert for expert in topology.experts if expert.kind == "one_vs_neighbors"]
     if len(one_vs_neighbors) > 1:
         raise NotImplementedError(
             "composite Phase A supports one one_vs_neighbors expert; got "

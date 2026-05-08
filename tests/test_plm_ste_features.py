@@ -35,9 +35,7 @@ def test_axial_profile_gradient_is_sign_stable_under_reflection() -> None:
     assert original["axial_radius_gradient"] == pytest.approx(
         mirrored["axial_radius_gradient"], rel=1e-8, abs=1e-8
     )
-    assert original["axial_length"] == pytest.approx(
-        mirrored["axial_length"], rel=1e-8, abs=1e-8
-    )
+    assert original["axial_length"] == pytest.approx(mirrored["axial_length"], rel=1e-8, abs=1e-8)
     assert original["thick_end_asymmetry"] == pytest.approx(
         mirrored["thick_end_asymmetry"], rel=1e-8, abs=1e-8
     )

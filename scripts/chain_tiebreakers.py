@@ -85,9 +85,7 @@ def main() -> None:
     if len(split_files) != 25:
         raise RuntimeError(f"expected 25 splits, got {len(split_files)}")
 
-    tasks = [
-        (i, str(sp), str(FULL_POCKETS), feature_columns) for i, sp in enumerate(split_files)
-    ]
+    tasks = [(i, str(sp), str(FULL_POCKETS), feature_columns) for i, sp in enumerate(split_files)]
     results: dict[int, tuple[np.ndarray, np.ndarray, np.ndarray]] = {}
     with ProcessPoolExecutor(max_workers=8) as ex:
         futs = [ex.submit(process_iter, t) for t in tasks]
@@ -105,7 +103,9 @@ def main() -> None:
         after_plm = apply_plm_ste_tb(sub, pp, idx, margin=PLM_STE_MARGIN)
         chained = apply_clr_ste_tb(
             after_plm.drop(["tiebreaker_fired", "p_STE_binary"]),
-            pc, idx, margin=CLR_STE_MARGIN,
+            pc,
+            idx,
+            margin=CLR_STE_MARGIN,
         )
         chained_frames.append(chained)
 
@@ -120,9 +120,9 @@ def main() -> None:
     only_clr = pl.concat(only_clr_frames).sort(["iteration", "row_index"])
 
     _score(ensemble_df, "baseline ensemble        ")
-    _score(only_plm,    "+ PLM/STE only           ")
-    _score(only_clr,    "+ CLR/STE only           ")
-    _score(chained,     "+ chained PLM/STE+CLR/STE")
+    _score(only_plm, "+ PLM/STE only           ")
+    _score(only_clr, "+ CLR/STE only           ")
+    _score(chained, "+ chained PLM/STE+CLR/STE")
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     chained.write_parquet(OUTPUT)

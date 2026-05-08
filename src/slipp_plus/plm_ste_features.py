@@ -70,32 +70,52 @@ PALMITATE_VS_STERYL_EXTRA_16: list[str] = [
 # Backward-compatible alias kept to avoid broader churn in the current slice.
 PLM_STE_EXTRA_16 = PALMITATE_VS_STERYL_EXTRA_16
 
-_INT_COLS: frozenset[str] = frozenset({
-    "crac_count",
-    "carc_count",
-    "any_sterol_motif",
-    "polar_end_cationic_count",
-    "polar_end_aromatic_polar_count",
-    "polar_end_neutral_polar_count",
-})
+_INT_COLS: frozenset[str] = frozenset(
+    {
+        "crac_count",
+        "carc_count",
+        "any_sterol_motif",
+        "polar_end_cationic_count",
+        "polar_end_aromatic_polar_count",
+        "polar_end_neutral_polar_count",
+    }
+)
 
 # Polar residue groups used to decide "polar end" of the axis.
-_POLAR_GROUPS: frozenset[str] = frozenset({
-    "aromatic_polar",
-    "polar_neutral",
-    "cationic",
-    "anionic",
-})
+_POLAR_GROUPS: frozenset[str] = frozenset(
+    {
+        "aromatic_polar",
+        "polar_neutral",
+        "cationic",
+        "anionic",
+    }
+)
 
 # 3-letter -> 1-letter for the canonical 20 AAs.
 # Non-standard / HETATM residues are represented as 'X' in the sequence so
 # that the linear positional mapping is preserved without accidentally
 # matching motif residue classes.
 _THREE_TO_ONE: dict[str, str] = {
-    "ALA": "A", "ARG": "R", "ASN": "N", "ASP": "D", "CYS": "C",
-    "GLN": "Q", "GLU": "E", "GLY": "G", "HIS": "H", "ILE": "I",
-    "LEU": "L", "LYS": "K", "MET": "M", "PHE": "F", "PRO": "P",
-    "SER": "S", "THR": "T", "TRP": "W", "TYR": "Y", "VAL": "V",
+    "ALA": "A",
+    "ARG": "R",
+    "ASN": "N",
+    "ASP": "D",
+    "CYS": "C",
+    "GLN": "Q",
+    "GLU": "E",
+    "GLY": "G",
+    "HIS": "H",
+    "ILE": "I",
+    "LEU": "L",
+    "LYS": "K",
+    "MET": "M",
+    "PHE": "F",
+    "PRO": "P",
+    "SER": "S",
+    "THR": "T",
+    "TRP": "W",
+    "TYR": "Y",
+    "VAL": "V",
 }
 
 _CRAC_RE = re.compile(r"[LV].{1,5}[Y].{1,5}[RK]")
@@ -442,9 +462,7 @@ def _compute_motif_and_anchor_features(
         residues_in_bin = [r for r in bin_records if r["bin"] == bin_id]
         if not residues_in_bin:
             return 0.0, 0
-        polar = sum(
-            1 for r in residues_in_bin if r["group"] in _POLAR_GROUPS
-        )
+        polar = sum(1 for r in residues_in_bin if r["group"] in _POLAR_GROUPS)
         return polar / len(residues_in_bin), len(residues_in_bin)
 
     density0, _count0 = _polar_density(0)
@@ -464,9 +482,7 @@ def _compute_motif_and_anchor_features(
     aromatic_polar = group_counts["aromatic_polar"]
     polar_neutral = group_counts["polar_neutral"]
 
-    anchor_charge_balance = float(
-        (cationic - anionic) / (cationic + anionic + 1.0)
-    )
+    anchor_charge_balance = float((cationic - anionic) / (cationic + anionic + 1.0))
 
     total_group_residues = sum(group_counts.values())
     if total_group_residues > 0:
@@ -526,9 +542,7 @@ def extract_pocket_plm_ste_features(
     else:
         axial_features = _empty_axial_features()
 
-    motif_and_anchor = _compute_motif_and_anchor_features(
-        chains, pocket_centroid, axial_ctx
-    )
+    motif_and_anchor = _compute_motif_and_anchor_features(chains, pocket_centroid, axial_ctx)
 
     features: dict[str, float] = {}
     features.update(motif_and_anchor)
@@ -626,9 +640,7 @@ def _process_group(task: dict[str, object]) -> dict[str, object]:
                     merged.update(axial_features)
                     pocket_cache[pocket_number] = _cast_row_features(merged)
                 except (OSError, ValueError) as exc:
-                    warnings.append(
-                        f"{label}/pocket{pocket_number}: extraction failed: {exc}"
-                    )
+                    warnings.append(f"{label}/pocket{pocket_number}: extraction failed: {exc}")
                     pocket_cache[pocket_number] = _empty_features()
             # Silence unused-variable lint in the rare case atm_path is unused;
             # keep the reference so future debugging can log both file paths.
@@ -661,13 +673,10 @@ def build_training_v_plm_ste_parquet(
 
     base = pd.read_parquet(base_parquet)
     if "pdb_ligand" not in base.columns or "matched_pocket_number" not in base.columns:
-        raise ValueError(
-            f"{base_parquet}: expected pdb_ligand + matched_pocket_number columns"
-        )
+        raise ValueError(f"{base_parquet}: expected pdb_ligand + matched_pocket_number columns")
 
     groups = [
-        (pdb_ligand, frame.copy())
-        for pdb_ligand, frame in base.groupby("pdb_ligand", sort=False)
+        (pdb_ligand, frame.copy()) for pdb_ligand, frame in base.groupby("pdb_ligand", sort=False)
     ]
 
     tasks: list[dict[str, object]] = []
@@ -702,9 +711,7 @@ def build_holdout_v_plm_ste_parquet(
 
     base = pd.read_parquet(base_parquet)
     if "structure_id" not in base.columns or "matched_pocket_number" not in base.columns:
-        raise ValueError(
-            f"{base_parquet}: expected structure_id + matched_pocket_number columns"
-        )
+        raise ValueError(f"{base_parquet}: expected structure_id + matched_pocket_number columns")
 
     groups = [
         (structure_id, frame.copy())
@@ -757,11 +764,7 @@ def _run_tasks_and_write(
             f"row drift after v_plm_ste join: got {len(enriched)}, expected {len(base)}"
         )
 
-    missing = [
-        column
-        for column in PALMITATE_VS_STERYL_EXTRA_16
-        if column not in enriched.columns
-    ]
+    missing = [column for column in PALMITATE_VS_STERYL_EXTRA_16 if column not in enriched.columns]
     if missing:
         raise ValueError(f"output missing v_plm_ste feature columns: {missing}")
 
@@ -794,9 +797,7 @@ def _parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
 
-    training = sub.add_parser(
-        "training", help="Build processed/v_plm_ste/full_pockets.parquet."
-    )
+    training = sub.add_parser("training", help="Build processed/v_plm_ste/full_pockets.parquet.")
     training.add_argument(
         "--base-parquet",
         type=Path,

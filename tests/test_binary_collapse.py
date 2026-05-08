@@ -41,7 +41,9 @@ def test_mixed_confusion():
     # 2 lipid correct (clr->ste still collapses to lipid); 1 lipid as nonlipid (fn);
     # 1 nonlipid as lipid (fp); 1 nonlipid correct
     y_true = np.array([clr, clr, ste, adn, pp])
-    y_pred = np.array([clr, ste, adn, clr, pp])  # third: lipid predicted as adn (fn); fourth: pp predicted as clr (fp)
+    y_pred = np.array(
+        [clr, ste, adn, clr, pp]
+    )  # third: lipid predicted as adn (fn); fourth: pp predicted as clr (fp)
     proba = np.zeros((5, len(CLASS_10)))
     for i, p in enumerate(y_pred):
         proba[i, p] = 1.0

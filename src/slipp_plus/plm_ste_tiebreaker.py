@@ -91,9 +91,7 @@ def build_plm_vs_ste_training(
     )
 
 
-def train_plm_ste_tiebreaker(
-    X_tr: np.ndarray, y_tr: np.ndarray, seed: int
-) -> XGBClassifier:
+def train_plm_ste_tiebreaker(X_tr: np.ndarray, y_tr: np.ndarray, seed: int) -> XGBClassifier:
     """Fit a PLM-vs-STE binary XGB head with class-balanced ``scale_pos_weight``.
 
     With PLM=718, STE=152 the class imbalance is ~4.72x; ``scale_pos_weight``
@@ -216,9 +214,7 @@ def run_tiebreaker_pipeline(
             summaries[f"{prefix} {m} only"] = score_summary(sub)
     summaries[f"{prefix} ensemble (mean prob)"] = score_summary(ensemble_pred)
     summaries[f"{prefix} ensemble + plm_ste_tiebreaker"] = score_summary(
-        augmented.select(
-            ["iteration", "row_index", "y_true_int", "y_pred_int", *PROBA_COLUMNS]
-        )
+        augmented.select(["iteration", "row_index", "y_true_int", "y_pred_int", *PROBA_COLUMNS])
     )
 
     confusions: dict[str, dict[str, int]] = {}
@@ -235,18 +231,12 @@ def run_tiebreaker_pipeline(
         "fire_mean": float(np.mean(fires)) if fires else 0.0,
         "fire_std": float(np.std(fires)) if fires else 0.0,
         "fire_total": int(np.sum(fires)) if fires else 0,
-        "plm_ste_binary_f1_mean": float(np.mean(plm_ste_bin_f1s))
-        if plm_ste_bin_f1s
-        else 0.0,
-        "plm_ste_binary_f1_std": float(np.std(plm_ste_bin_f1s))
-        if plm_ste_bin_f1s
-        else 0.0,
+        "plm_ste_binary_f1_mean": float(np.mean(plm_ste_bin_f1s)) if plm_ste_bin_f1s else 0.0,
+        "plm_ste_binary_f1_std": float(np.std(plm_ste_bin_f1s)) if plm_ste_bin_f1s else 0.0,
         "feature_importance_iter0": importance or {},
     }
     residual_edges = mine_confusion_edges(
-        augmented.select(
-            ["iteration", "row_index", "y_true_int", "y_pred_int", *PROBA_COLUMNS]
-        ),
+        augmented.select(["iteration", "row_index", "y_true_int", "y_pred_int", *PROBA_COLUMNS]),
         average_models=False,
         lipid_only=True,
         min_count=1,
@@ -257,9 +247,7 @@ def run_tiebreaker_pipeline(
         min_count=1,
         margin=0.99,
     )
-    diagnostics["residual_lipid_confusions"] = residual_edges.head(10).to_dict(
-        orient="records"
-    )
+    diagnostics["residual_lipid_confusions"] = residual_edges.head(10).to_dict(orient="records")
     diagnostics["candidate_boundary_rules"] = [
         {
             "name": rule.name,
@@ -385,9 +373,7 @@ def write_plm_ste_tiebreaker_report(
             )
 
         f.write("\n## PLM vs STE confusion counts (summed over 25 iterations)\n\n")
-        f.write(
-            "| condition | PLM correct | STE correct | PLM\u2192STE | STE\u2192PLM |\n"
-        )
+        f.write("| condition | PLM correct | STE correct | PLM\u2192STE | STE\u2192PLM |\n")
         f.write("|---|---:|---:|---:|---:|\n")
         for cond in condition_order:
             if cond not in confusions:
@@ -405,11 +391,7 @@ def write_plm_ste_tiebreaker_report(
             f"rows/iter (std {diagnostics['fire_std']:.1f}), "
             f"total = {diagnostics['fire_total']} over {len(fires)} iterations\n"
         )
-        f.write(
-            "- Per-iteration fire counts: "
-            + ", ".join(str(x) for x in fires)
-            + "\n"
-        )
+        f.write("- Per-iteration fire counts: " + ", ".join(str(x) for x in fires) + "\n")
         f.write(
             f"- Tiebreaker PLM/STE-only binary F1 (STE=positive, on true PLM+STE "
             f"test rows): {diagnostics['plm_ste_binary_f1_mean']:.3f} "
@@ -573,9 +555,7 @@ def main(argv: list[str] | None = None) -> None:
             confusions=result["confusions"],
             diagnostics=result["diagnostics"],
             margin=args.margin,
-            ste_error_breakdown=_ste_error_breakdown(
-                result["augmented_predictions"]
-            ),
+            ste_error_breakdown=_ste_error_breakdown(result["augmented_predictions"]),
             prefix=args.prefix,
         )
         print(f"wrote {args.overall_report}")

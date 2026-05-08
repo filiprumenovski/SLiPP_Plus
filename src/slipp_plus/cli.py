@@ -17,8 +17,9 @@ app = typer.Typer(
 )
 
 
-_CONFIG_OPT = typer.Option("configs/day1.yaml", "--config", "-c",
-                           help="Path to YAML configuration.")
+_CONFIG_OPT = typer.Option(
+    "configs/day1.yaml", "--config", "-c", help="Path to YAML configuration."
+)
 
 
 def _version_callback(value: bool) -> None:
@@ -89,12 +90,22 @@ def evaluate_cmd(config: Path = _CONFIG_OPT) -> None:
 
 @app.command("holdout-plm-ste")
 def holdout_plm_ste_cmd(
-    config: Path = typer.Option("configs/v_sterol.yaml", "--config", "-c", help="Path to YAML configuration."),
-    full_pockets: Path = typer.Option(..., help="Training parquet used to fit the iteration-0 PLM/STE head."),
-    splits_dir: Path = typer.Option(Path("processed/splits"), help="Directory containing seed_*.parquet split files."),
+    config: Path = typer.Option(
+        "configs/v_sterol.yaml", "--config", "-c", help="Path to YAML configuration."
+    ),
+    full_pockets: Path = typer.Option(
+        ..., help="Training parquet used to fit the iteration-0 PLM/STE head."
+    ),
+    splits_dir: Path = typer.Option(
+        Path("processed/splits"), help="Directory containing seed_*.parquet split files."
+    ),
     output: Path = typer.Option(..., help="Markdown report path for holdout comparison."),
-    predictions_dir: Path | None = typer.Option(None, help="Optional directory for holdout prediction parquets."),
-    margin: float = typer.Option(0.99, help="Top-2 PLM/STE margin threshold for firing the tiebreaker."),
+    predictions_dir: Path | None = typer.Option(
+        None, help="Optional directory for holdout prediction parquets."
+    ),
+    margin: float = typer.Option(
+        0.99, help="Top-2 PLM/STE margin threshold for firing the tiebreaker."
+    ),
 ) -> None:
     """Validate the v_sterol ensemble + PLM/STE tiebreaker on apo/AlphaFold holdouts."""
     from .plm_ste_holdout import run_holdout_validation
@@ -115,10 +126,18 @@ def holdout_plm_ste_cmd(
 
 @app.command("pair-tiebreaker-sweep")
 def pair_tiebreaker_sweep_cmd(
-    full_pockets: Path = typer.Option(..., help="Training parquet used to fit the pairwise binary heads."),
-    predictions: Path = typer.Option(..., help="Base multiclass prediction parquet across iterations."),
-    splits_dir: Path = typer.Option(Path("processed/splits"), help="Directory containing seed_*.parquet split files."),
-    model_bundle: Path = typer.Option(..., help="Any matching multiclass bundle used to infer feature columns."),
+    full_pockets: Path = typer.Option(
+        ..., help="Training parquet used to fit the pairwise binary heads."
+    ),
+    predictions: Path = typer.Option(
+        ..., help="Base multiclass prediction parquet across iterations."
+    ),
+    splits_dir: Path = typer.Option(
+        Path("processed/splits"), help="Directory containing seed_*.parquet split files."
+    ),
+    model_bundle: Path = typer.Option(
+        ..., help="Any matching multiclass bundle used to infer feature columns."
+    ),
     output_report: Path = typer.Option(..., help="Markdown report path for the sweep."),
     output_metrics: Path = typer.Option(..., help="Parquet path for the sweep summary table."),
     output_predictions: Path | None = typer.Option(
@@ -251,7 +270,9 @@ def calibration(config: Path = _CONFIG_OPT) -> None:
 @app.command("compact-report")
 def compact_report_cmd(
     reports_root: Path = typer.Option(Path("reports"), help="Root containing per-run reports."),
-    models_root: Path = typer.Option(Path("models"), help="Root containing per-run model artifacts."),
+    models_root: Path = typer.Option(
+        Path("models"), help="Root containing per-run model artifacts."
+    ),
     output_dir: Path = typer.Option(
         Path("reports/compact_publishable"),
         help="Directory for compact ladder CSV and markdown.",
@@ -275,9 +296,15 @@ def build_caver_t12(
     base_parquet: Path = typer.Option(..., help="Base v_sterol parquet to enrich."),
     manifest: Path = typer.Option(..., help="Pocket-to-analysis manifest (csv/tsv/parquet)."),
     output: Path = typer.Option(..., help="Output parquet path for v_caver_t12."),
-    reports_dir: Path = typer.Option(Path("reports/v_caver_t12"), help="Directory for build reports."),
-    analysis_root: Path | None = typer.Option(None, help="Optional root for manifest analysis_subdir values."),
-    holdout: bool = typer.Option(False, help="Interpret the base parquet as a holdout parquet keyed by structure_id."),
+    reports_dir: Path = typer.Option(
+        Path("reports/v_caver_t12"), help="Directory for build reports."
+    ),
+    analysis_root: Path | None = typer.Option(
+        None, help="Optional root for manifest analysis_subdir values."
+    ),
+    holdout: bool = typer.Option(
+        False, help="Interpret the base parquet as a holdout parquet keyed by structure_id."
+    ),
 ) -> None:
     """Build the persisted-output-first CAVER Tier 1-2 feature parquet."""
     from .caver_t12_features import (
@@ -380,9 +407,15 @@ def build_v_sterol_ablation_cmd(
 @app.command("ste-rescue-sweep")
 def ste_rescue_sweep_cmd(
     full_pockets: Path = typer.Option(..., help="Training parquet used to fit STE rescue heads."),
-    predictions: Path = typer.Option(..., help="Base multiclass prediction parquet across iterations."),
-    splits_dir: Path = typer.Option(Path("processed/splits"), help="Directory containing seed_*.parquet split files."),
-    model_bundle: Path = typer.Option(..., help="Any matching multiclass bundle used to infer feature columns."),
+    predictions: Path = typer.Option(
+        ..., help="Base multiclass prediction parquet across iterations."
+    ),
+    splits_dir: Path = typer.Option(
+        Path("processed/splits"), help="Directory containing seed_*.parquet split files."
+    ),
+    model_bundle: Path = typer.Option(
+        ..., help="Any matching multiclass bundle used to infer feature columns."
+    ),
     output_report: Path = typer.Option(..., help="Markdown report path for the sweep."),
     output_metrics: Path = typer.Option(..., help="Parquet path for the sweep summary table."),
     output_predictions: Path | None = typer.Option(

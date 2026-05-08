@@ -53,14 +53,16 @@ TUNNEL_MISSINGNESS_3: list[str] = [
 
 TUNNEL_FEATURES_18: list[str] = TUNNEL_FEATURES_15 + TUNNEL_MISSINGNESS_3
 
-_INT_COLS = frozenset({
-    "tunnel_count",
-    "tunnel_branching_factor",
-    "tunnel_extends_beyond_pocket",
-    "tunnel_pocket_context_present",
-    "tunnel_caver_profile_present",
-    "tunnel_has_tunnel",
-})
+_INT_COLS = frozenset(
+    {
+        "tunnel_count",
+        "tunnel_branching_factor",
+        "tunnel_extends_beyond_pocket",
+        "tunnel_pocket_context_present",
+        "tunnel_caver_profile_present",
+        "tunnel_has_tunnel",
+    }
+)
 
 _KD = {
     "ALA": 1.8,
@@ -289,7 +291,9 @@ def _tunnels_table_path(analysis_dir: Path) -> Path:
     return analysis_dir / "tunnels.csv"
 
 
-def _parse_profile_points(path: Path) -> dict[str, list[tuple[float, tuple[float, float, float] | None]]]:
+def _parse_profile_points(
+    path: Path,
+) -> dict[str, list[tuple[float, tuple[float, float, float] | None]]]:
     if not path.exists():
         return {}
     profiles: dict[str, list[tuple[float, tuple[float, float, float] | None]]] = defaultdict(list)
@@ -379,7 +383,10 @@ def _shared_first_three_angstrom(
     return matches >= max(1, limit // 2)
 
 
-def _branching_factor(tunnels: list[dict[str, Any]], profiles: dict[str, list[tuple[float, tuple[float, float, float] | None]]]) -> int:
+def _branching_factor(
+    tunnels: list[dict[str, Any]],
+    profiles: dict[str, list[tuple[float, tuple[float, float, float] | None]]],
+) -> int:
     if len(tunnels) <= 1:
         return 0
     branched: set[str] = set()
@@ -439,9 +446,10 @@ def _features_from_tunnels(
 
 
 def _strip_waters(input_pdb: Path, output_pdb: Path) -> None:
-    with input_pdb.open("r", encoding="utf-8", errors="ignore") as src, output_pdb.open(
-        "w", encoding="utf-8"
-    ) as dst:
+    with (
+        input_pdb.open("r", encoding="utf-8", errors="ignore") as src,
+        output_pdb.open("w", encoding="utf-8") as dst,
+    ):
         for line in src:
             if line.startswith("HETATM") and line[17:20].strip().upper() == "HOH":
                 continue
@@ -567,7 +575,11 @@ def _extract_from_analysis(
     pocket_axial_lengths: dict[int, float],
 ) -> dict[int, dict[str, float]]:
     tunnels = _parse_tunnels_csv(_tunnels_table_path(analysis_dir))
-    if len(pocket_order) > 1 and tunnels and not any(tunnel["has_starting_point"] for tunnel in tunnels):
+    if (
+        len(pocket_order) > 1
+        and tunnels
+        and not any(tunnel["has_starting_point"] for tunnel in tunnels)
+    ):
         raise MissingStartingPointColumnError(
             "CAVER tunnel table has no starting-point column for multi-pocket run"
         )
@@ -736,8 +748,10 @@ def _process_structure(task: dict[str, object]) -> dict[str, object]:
     }
     analysis_output_root_raw = task.get("analysis_output_root")
     persisted_analysis_dir: Path | None = None
-    if centroids and protein_pdb.exists() and (
-        bool(settings.get("use_multi_start", False)) or len(centroids) == 1
+    if (
+        centroids
+        and protein_pdb.exists()
+        and (bool(settings.get("use_multi_start", False)) or len(centroids) == 1)
     ):
         analysis, warning, tmp_ref = _run_caver(
             protein_pdb,
@@ -748,8 +762,8 @@ def _process_structure(task: dict[str, object]) -> dict[str, object]:
             shell_depth=float(settings["shell_depth"]),
             clustering_threshold=float(settings["clustering_threshold"]),
             timeout_s=int(settings["timeout_s"]),
-        max_structure_timeout_s=int(settings["max_structure_timeout_s"]),
-        java_heap=str(settings["java_heap"]),
+            max_structure_timeout_s=int(settings["max_structure_timeout_s"]),
+            java_heap=str(settings["java_heap"]),
         )
         if analysis is None and warning and "starting point" in warning.lower():
             analysis, warning, tmp_ref = _run_caver(
@@ -761,8 +775,8 @@ def _process_structure(task: dict[str, object]) -> dict[str, object]:
                 shell_depth=float(settings["shell_depth"]),
                 clustering_threshold=float(settings["clustering_threshold"]),
                 timeout_s=int(settings["timeout_s"]),
-            max_structure_timeout_s=int(settings["max_structure_timeout_s"]),
-            java_heap=str(settings["java_heap"]),
+                max_structure_timeout_s=int(settings["max_structure_timeout_s"]),
+                java_heap=str(settings["java_heap"]),
             )
         if analysis is None:
             warnings.append(f"{label}: {warning or 'CAVER failed'}")
@@ -1149,7 +1163,9 @@ def _run_tasks_and_write(
     if "_row_order" in enriched.columns:
         enriched = enriched.sort_values("_row_order").reset_index(drop=True)
     if len(enriched) != len(base):
-        raise ValueError(f"row drift after v_tunnel join: got {len(enriched)}, expected {len(base)}")
+        raise ValueError(
+            f"row drift after v_tunnel join: got {len(enriched)}, expected {len(base)}"
+        )
 
     for column in TUNNEL_FEATURES_18:
         if column not in enriched.columns:
@@ -1228,7 +1244,9 @@ def _write_reports(
     warnings_lines.append("")
     warnings_lines.append("## All warnings")
     warnings_lines.extend(f"- {warning}" for warning in warnings)
-    (reports_dir / "build_warnings.md").write_text("\n".join(warnings_lines) + "\n", encoding="utf-8")
+    (reports_dir / "build_warnings.md").write_text(
+        "\n".join(warnings_lines) + "\n", encoding="utf-8"
+    )
 
     summary_lines = [
         "# v_tunnel build summary",
@@ -1304,10 +1322,10 @@ def _write_reports(
     summary_lines.extend(
         [
             "",
-        "## Class means",
-        "",
-        class_means_markdown,
-        "",
+            "## Class means",
+            "",
+            class_means_markdown,
+            "",
         ]
     )
     (reports_dir / "build_summary.md").write_text("\n".join(summary_lines), encoding="utf-8")
@@ -1324,7 +1342,9 @@ def _frame_to_markdown(frame: pd.DataFrame) -> str:
     ]
 
     def _fmt(values: list[str]) -> str:
-        return "| " + " | ".join(value.ljust(widths[idx]) for idx, value in enumerate(values)) + " |"
+        return (
+            "| " + " | ".join(value.ljust(widths[idx]) for idx, value in enumerate(values)) + " |"
+        )
 
     lines = [_fmt(columns), "| " + " | ".join("-" * width for width in widths) + " |"]
     lines.extend(_fmt(row) for row in rows)
@@ -1503,20 +1523,34 @@ def _parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
     sub = parser.add_subparsers(dest="command", required=True)
 
     training = sub.add_parser("training", help="Build processed/v_tunnel/full_pockets.parquet.")
-    training.add_argument("--base-parquet", type=Path, default=Path("processed/v_sterol/full_pockets.parquet"))
-    training.add_argument("--source-pdbs-root", type=Path, default=Path("data/structures/source_pdbs"))
+    training.add_argument(
+        "--base-parquet", type=Path, default=Path("processed/v_sterol/full_pockets.parquet")
+    )
+    training.add_argument(
+        "--source-pdbs-root", type=Path, default=Path("data/structures/source_pdbs")
+    )
     training.add_argument("--caver-jar", type=Path, default=None)
-    training.add_argument("--output", type=Path, default=Path("processed/v_tunnel/full_pockets.parquet"))
+    training.add_argument(
+        "--output", type=Path, default=Path("processed/v_tunnel/full_pockets.parquet")
+    )
     training.add_argument("--workers", type=int, default=8)
-    training.add_argument("--cache-dir", type=Path, default=Path("processed/v_tunnel/structure_json"))
-    training.add_argument("--no-cache", action="store_true", help="Disable per-structure JSON cache/resume.")
+    training.add_argument(
+        "--cache-dir", type=Path, default=Path("processed/v_tunnel/structure_json")
+    )
+    training.add_argument(
+        "--no-cache", action="store_true", help="Disable per-structure JSON cache/resume."
+    )
     training.add_argument("--max-missing-structure-frac", type=float, default=0.02)
     training.add_argument("--min-context-present-frac", type=float, default=0.98)
     training.add_argument("--min-profile-present-frac", type=float, default=0.95)
     training.add_argument("--analysis-output-root", type=Path, default=None)
     training.add_argument("--analysis-manifest", type=Path, default=None)
-    training.add_argument("--batch-index", type=int, default=None, help="0-based structure batch index.")
-    training.add_argument("--batch-size", type=int, default=None, help="Number of structures per batch.")
+    training.add_argument(
+        "--batch-index", type=int, default=None, help="0-based structure batch index."
+    )
+    training.add_argument(
+        "--batch-size", type=int, default=None, help="Number of structures per batch."
+    )
     training.add_argument("--reports-dir", type=Path, default=Path("reports/v_tunnel"))
 
     holdout = sub.add_parser("holdout", help="Build a v_tunnel holdout parquet.")
@@ -1526,14 +1560,20 @@ def _parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
     holdout.add_argument("--output", type=Path, required=True)
     holdout.add_argument("--workers", type=int, default=8)
     holdout.add_argument("--cache-dir", type=Path, default=None)
-    holdout.add_argument("--no-cache", action="store_true", help="Disable per-structure JSON cache/resume.")
+    holdout.add_argument(
+        "--no-cache", action="store_true", help="Disable per-structure JSON cache/resume."
+    )
     holdout.add_argument("--max-missing-structure-frac", type=float, default=0.10)
     holdout.add_argument("--min-context-present-frac", type=float, default=0.90)
     holdout.add_argument("--min-profile-present-frac", type=float, default=0.80)
     holdout.add_argument("--analysis-output-root", type=Path, default=None)
     holdout.add_argument("--analysis-manifest", type=Path, default=None)
-    holdout.add_argument("--batch-index", type=int, default=None, help="0-based structure batch index.")
-    holdout.add_argument("--batch-size", type=int, default=None, help="Number of structures per batch.")
+    holdout.add_argument(
+        "--batch-index", type=int, default=None, help="0-based structure batch index."
+    )
+    holdout.add_argument(
+        "--batch-size", type=int, default=None, help="Number of structures per batch."
+    )
     holdout.add_argument("--reports-dir", type=Path, default=Path("reports/v_tunnel"))
 
     parser.add_argument("--log-level", default="INFO")

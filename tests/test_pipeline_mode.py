@@ -250,7 +250,9 @@ def test_composite_phase_a_translates_topology_to_hierarchical_settings() -> Non
     assert translated.hierarchical.boundary_heads[0].positive_label == "OLA"
 
 
-def test_hierarchical_settings_resolve_default_specialist_from_legacy_threshold(tmp_path: Path) -> None:
+def test_hierarchical_settings_resolve_default_specialist_from_legacy_threshold(
+    tmp_path: Path,
+) -> None:
     settings = _settings_with_paths(tmp_path, pipeline_mode="hierarchical")
 
     rule = settings.hierarchical.resolved_specialist_rule()

@@ -26,7 +26,9 @@ def _row(row_index: int, y_true: str, probs: dict[str, float]) -> dict[str, floa
 
 
 def _frame(rows: list[dict[str, float | int]]) -> pl.DataFrame:
-    return pl.DataFrame(rows).select(["iteration", "row_index", "y_true_int", *PROBA_COLUMNS, "y_pred_int"])
+    return pl.DataFrame(rows).select(
+        ["iteration", "row_index", "y_true_int", *PROBA_COLUMNS, "y_pred_int"]
+    )
 
 
 def test_one_vs_neighbors_routes_ste_from_any_configured_neighbor() -> None:
@@ -104,7 +106,11 @@ def test_one_vs_neighbors_no_fire_gates_and_threshold_inclusive() -> None:
     cases = [
         ("STE top1", {"STE": 0.45, "PLM": 0.30, "COA": 0.10, "OLA": 0.08, "PP": 0.07}, 0.90),
         ("PP top1", {"PP": 0.45, "PLM": 0.25, "STE": 0.15, "COA": 0.10, "OLA": 0.05}, 0.90),
-        ("STE rank5", {"PLM": 0.35, "COA": 0.25, "OLA": 0.18, "MYR": 0.12, "STE": 0.09, "PP": 0.01}, 0.90),
+        (
+            "STE rank5",
+            {"PLM": 0.35, "COA": 0.25, "OLA": 0.18, "MYR": 0.12, "STE": 0.09, "PP": 0.01},
+            0.90,
+        ),
         ("below threshold", {"PLM": 0.46, "COA": 0.20, "OLA": 0.15, "STE": 0.14, "PP": 0.05}, 0.39),
         ("at threshold", {"PLM": 0.46, "COA": 0.20, "OLA": 0.15, "STE": 0.14, "PP": 0.05}, 0.40),
     ]

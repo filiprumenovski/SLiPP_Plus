@@ -75,7 +75,9 @@ def _parse_alpha_sphere_line(
     return AlphaSphere(coord=coord, radius=radius, pocket_number=pocket_number, atom_name=atom_name)
 
 
-def load_alpha_spheres(path: Path, *, default_pocket_number: int | None = None) -> list[AlphaSphere]:
+def load_alpha_spheres(
+    path: Path, *, default_pocket_number: int | None = None
+) -> list[AlphaSphere]:
     spheres: list[AlphaSphere] = []
     with path.open("r", encoding="utf-8", errors="ignore") as handle:
         for line in handle:
@@ -168,7 +170,9 @@ def graph_tunnel_features_for_pocket(
     )
     expanded_raw_mask = distances_to_pocket.min(axis=1) <= throat_radius
 
-    expanded_spheres = [sphere for sphere, keep in zip(all_spheres, expanded_raw_mask, strict=True) if keep]
+    expanded_spheres = [
+        sphere for sphere, keep in zip(all_spheres, expanded_raw_mask, strict=True) if keep
+    ]
     if not expanded_spheres:
         expanded_spheres = pocket_spheres
 
@@ -310,7 +314,9 @@ def _run_tasks_and_write(
     if "_row_order" in enriched.columns:
         enriched = enriched.sort_values("_row_order").reset_index(drop=True)
     if len(enriched) != len(base):
-        raise ValueError(f"row drift after v_graph_tunnel join: got {len(enriched)}, expected {len(base)}")
+        raise ValueError(
+            f"row drift after v_graph_tunnel join: got {len(enriched)}, expected {len(base)}"
+        )
 
     for column in GRAPH_TUNNEL_FEATURES_3:
         if column not in enriched.columns:
@@ -383,10 +389,18 @@ def _parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
 
-    training = sub.add_parser("training", help="Build processed/v_graph_tunnel/full_pockets.parquet.")
-    training.add_argument("--base-parquet", type=Path, default=Path("processed/v_sterol/full_pockets.parquet"))
-    training.add_argument("--source-pdbs-root", type=Path, default=Path("data/structures/source_pdbs"))
-    training.add_argument("--output", type=Path, default=Path("processed/v_graph_tunnel/full_pockets.parquet"))
+    training = sub.add_parser(
+        "training", help="Build processed/v_graph_tunnel/full_pockets.parquet."
+    )
+    training.add_argument(
+        "--base-parquet", type=Path, default=Path("processed/v_sterol/full_pockets.parquet")
+    )
+    training.add_argument(
+        "--source-pdbs-root", type=Path, default=Path("data/structures/source_pdbs")
+    )
+    training.add_argument(
+        "--output", type=Path, default=Path("processed/v_graph_tunnel/full_pockets.parquet")
+    )
     training.add_argument("--workers", type=int, default=6)
 
     holdout = sub.add_parser("holdout", help="Build a v_graph_tunnel holdout parquet.")

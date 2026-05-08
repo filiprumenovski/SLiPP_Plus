@@ -154,7 +154,9 @@ def fit_family_scalers(
         mean = train_values.mean(axis=0)
         scale = train_values.std(axis=0)
         scale[scale < 1e-6] = 1.0
-        scalers[spec.name] = FamilyScaler(mean=mean.astype(np.float32), scale=scale.astype(np.float32))
+        scalers[spec.name] = FamilyScaler(
+            mean=mean.astype(np.float32), scale=scale.astype(np.float32)
+        )
     return scalers
 
 

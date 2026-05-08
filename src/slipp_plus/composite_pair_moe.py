@@ -243,7 +243,9 @@ def _write_report(
     final_std = final_metrics.std(numeric_only=True)
     with path.open("w", encoding="utf-8") as handle:
         handle.write("# Composite Pair-MoE Results\n\n")
-        handle.write("| condition | 10-class macro-F1 | 5-lipid macro-F1 | CLR F1 | MYR F1 | OLA F1 | PLM F1 | STE F1 |\n")
+        handle.write(
+            "| condition | 10-class macro-F1 | 5-lipid macro-F1 | CLR F1 | MYR F1 | OLA F1 | PLM F1 | STE F1 |\n"
+        )
         handle.write("|---|---:|---:|---:|---:|---:|---:|---:|\n")
         for label, mean, std in (
             ("teacher baseline", base_mean, base_std),
@@ -260,7 +262,9 @@ def _write_report(
                 f"| {mean['f1_STE']:.3f} |\n"
             )
         handle.write("\n## Delta\n\n")
-        handle.write(f"- 10-class macro-F1: {final_mean['macro_f1_10'] - base_mean['macro_f1_10']:+.4f}\n")
+        handle.write(
+            f"- 10-class macro-F1: {final_mean['macro_f1_10'] - base_mean['macro_f1_10']:+.4f}\n"
+        )
         handle.write(
             f"- 5-lipid macro-F1: {final_mean['macro_f1_lipid5'] - base_mean['macro_f1_lipid5']:+.4f}\n"
         )
@@ -313,9 +317,7 @@ def run_pair_moe_training(settings: Settings) -> dict[str, Path]:
         raise ValueError("teacher_predictions_path must contain one prediction row per test row")
     aux_columns = _auxiliary_columns(base)
     aux_lookup = (
-        base.groupby("row_index", as_index=True)[aux_columns].mean()
-        if aux_columns
-        else None
+        base.groupby("row_index", as_index=True)[aux_columns].mean() if aux_columns else None
     )
 
     final_frames: list[pd.DataFrame] = []
@@ -380,9 +382,11 @@ def run_pair_moe_training(settings: Settings) -> dict[str, Path]:
                         )
                         gate_frame = aux_lookup.loc[gate_idx].reset_index()
                         gate_frame.insert(0, "iteration", iteration)
-                        gate_frame.insert(2, "y_true_int", [
-                            CLASS_10.index(str(label)) for label in y_str[gate_idx]
-                        ])
+                        gate_frame.insert(
+                            2,
+                            "y_true_int",
+                            [CLASS_10.index(str(label)) for label in y_str[gate_idx]],
+                        )
                         gate_base_proba = gate_frame[PROBA_COLUMNS].to_numpy(dtype=np.float64)
                         gate_frame["y_pred_int"] = gate_base_proba.argmax(axis=1).astype(np.int64)
                         gate_local_proba = fit_model.predict_proba(
@@ -504,7 +508,9 @@ def run_pair_moe_training(settings: Settings) -> dict[str, Path]:
         },
         bundle_path,
     )
-    write_artifact_schema_sidecar(bundle_path, metadata | {"artifact_type": "composite_pair_moe_bundle"})
+    write_artifact_schema_sidecar(
+        bundle_path, metadata | {"artifact_type": "composite_pair_moe_bundle"}
+    )
 
     return {
         "predictions": output_predictions,

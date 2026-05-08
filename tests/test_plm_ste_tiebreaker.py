@@ -74,9 +74,7 @@ def test_build_training_split_binary_labels() -> None:
 
     full = pd.read_parquet(full_path)
     feat_cols = list(FEATURE_SETS["v_sterol"])
-    X_tr, y_tr, X_te, y_te, te_idx = build_plm_vs_ste_training(
-        full, feat_cols, split_path
-    )
+    X_tr, y_tr, X_te, y_te, te_idx = build_plm_vs_ste_training(full, feat_cols, split_path)
 
     assert X_tr.shape[1] == len(feat_cols)
     assert X_te.shape[1] == len(feat_cols)
@@ -86,9 +84,11 @@ def test_build_training_split_binary_labels() -> None:
     assert set(np.unique(y_tr).tolist()).issubset({0, 1})
     assert set(np.unique(y_te).tolist()).issubset({0, 1})
 
-    tr_classes = set(full["class_10"].to_numpy()[
-        np.setdiff1d(np.arange(len(full)), te_idx, assume_unique=False)
-    ].tolist())
+    tr_classes = set(
+        full["class_10"]
+        .to_numpy()[np.setdiff1d(np.arange(len(full)), te_idx, assume_unique=False)]
+        .tolist()
+    )
     # te_idx is a subset of test split; y_te matches the STE-positive binary rule
     te_classes = set(full["class_10"].to_numpy()[te_idx].tolist())
     assert te_classes.issubset({"PLM", "STE"})

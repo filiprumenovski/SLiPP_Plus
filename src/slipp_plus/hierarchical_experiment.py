@@ -175,10 +175,7 @@ def combine_hierarchical_softprobs(
 ) -> np.ndarray:
     """Fuse lipid gate, lipid-family head, and non-lipid head into a 10-class simplex."""
 
-    if (
-        len(p_lipid) != len(lipid_family_proba)
-        or len(p_lipid) != len(nonlipid_family_proba)
-    ):
+    if len(p_lipid) != len(lipid_family_proba) or len(p_lipid) != len(nonlipid_family_proba):
         raise ValueError("p_lipid, lipid_family_proba, and nonlipid_family_proba must align")
     if lipid_family_proba.shape[1] != len(LIPID_LABELS):
         raise ValueError(
@@ -455,7 +452,9 @@ def _write_report(
 ) -> None:
     output_report.parent.mkdir(parents=True, exist_ok=True)
     fire_col = specialist_rule.fired_col
-    fire_total = int(specialist_frame[fire_col].sum()) if fire_col in specialist_frame.columns else 0
+    fire_total = (
+        int(specialist_frame[fire_col].sum()) if fire_col in specialist_frame.columns else 0
+    )
     fire_mean = fire_total / max(1, specialist_frame["iteration"].n_unique())
     base_ste = base_summary["per_class_f1"]["STE"]
     staged_ste = staged_summary["per_class_f1"]["STE"]
@@ -582,9 +581,7 @@ def run_hierarchical_experiment(
             by_row = dict(
                 zip(
                     sub["row_index"].to_list(),
-                    sub.select(pl.sum_horizontal(lipid_cols).alias("p_lipid"))[
-                        "p_lipid"
-                    ].to_list(),
+                    sub.select(pl.sum_horizontal(lipid_cols).alias("p_lipid"))["p_lipid"].to_list(),
                     strict=True,
                 )
             )
@@ -610,7 +607,9 @@ def run_hierarchical_experiment(
 
     staged_all = pl.concat(staged_frames).sort(["iteration", "row_index"])
     specialist_all = pl.concat(specialist_frames).sort(["iteration", "row_index"])
-    staged_scoring = staged_all.select(["iteration", "row_index", "y_true_int", "y_pred_int", *PROBA_COLUMNS])
+    staged_scoring = staged_all.select(
+        ["iteration", "row_index", "y_true_int", "y_pred_int", *PROBA_COLUMNS]
+    )
     specialist_scoring = specialist_all.select(
         ["iteration", "row_index", "y_true_int", "y_pred_int", *PROBA_COLUMNS]
     )

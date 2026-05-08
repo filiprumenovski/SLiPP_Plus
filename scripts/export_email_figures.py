@@ -56,7 +56,9 @@ def plot_per_class_f1(y_true: np.ndarray, y_pred: np.ndarray, out: Path, title: 
     labels = np.arange(len(CLASS_10))
     f1 = f1_score(y_true, y_pred, labels=labels, average=None, zero_division=0)
     fig, ax = plt.subplots(figsize=(9, 4.5))
-    colors = ["tab:blue" if c in {"CLR", "MYR", "OLA", "PLM", "STE"} else "tab:gray" for c in CLASS_10]
+    colors = [
+        "tab:blue" if c in {"CLR", "MYR", "OLA", "PLM", "STE"} else "tab:gray" for c in CLASS_10
+    ]
     ax.bar(CLASS_10, f1, color=colors)
     ax.set_ylim(0, 1.05)
     ax.set_ylabel("F1 (per class)")

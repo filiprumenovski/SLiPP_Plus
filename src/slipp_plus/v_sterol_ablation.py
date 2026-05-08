@@ -73,9 +73,7 @@ def build_v_sterol_ablation_from_v_sterol(
     if feature_set not in FEATURE_SETS:
         raise ValueError(f"unknown feature_set {feature_set!r}")
     if feature_set not in (_VDW22_FEATURE_SETS | _DERIVED_FEATURE_SETS):
-        raise ValueError(
-            f"feature_set {feature_set!r} is not a supported v_sterol ablation"
-        )
+        raise ValueError(f"feature_set {feature_set!r} is not a supported v_sterol ablation")
 
     output_dir.mkdir(parents=True, exist_ok=True)
     feature_columns = FEATURE_SETS[feature_set]
@@ -122,10 +120,10 @@ def build_v_sterol_ablation_from_v_sterol(
         "apo_output": apo_path,
         "af_output": af_path,
         "added_columns": [
-            column
-            for column in feature_columns
-            if column not in FEATURE_SETS["v_sterol"]
+            column for column in feature_columns if column not in FEATURE_SETS["v_sterol"]
         ],
-        "derived_columns": list(DERIVED_FEATURES_26) if feature_set in _DERIVED_FEATURE_SETS else [],
+        "derived_columns": list(DERIVED_FEATURES_26)
+        if feature_set in _DERIVED_FEATURE_SETS
+        else [],
         "vdw22_columns": list(EXTRA_VDW22) if feature_set in _VDW22_FEATURE_SETS else [],
     }

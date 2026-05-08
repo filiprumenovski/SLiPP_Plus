@@ -116,7 +116,9 @@ def _worker(
         "row_index_lookup": test_idx.astype(np.int64),
         "ste_proba": p_ste,
         "neighbor_binary_f1": _binary_f1(y_te_neighbor, p_neighbor),
-        "scale_pos_weight": float(((y_tr == 0).sum() / (y_tr == 1).sum()) if (y_tr == 1).sum() else 1.0),
+        "scale_pos_weight": float(
+            ((y_tr == 0).sum() / (y_tr == 1).sum()) if (y_tr == 1).sum() else 1.0
+        ),
         "feature_importance": importance,
     }
 
@@ -289,7 +291,9 @@ def run_ste_rescue_experiment(
         chosen.write_parquet(output_predictions)
     neighbor_f1s = [r["neighbor_binary_f1"] for r in results]
     weights = [r["scale_pos_weight"] for r in results]
-    feature_importance = next((r["feature_importance"] for r in results if r["feature_importance"]), {})
+    feature_importance = next(
+        (r["feature_importance"] for r in results if r["feature_importance"]), {}
+    )
     _write_report(
         output_report,
         base_summary=base_summary,

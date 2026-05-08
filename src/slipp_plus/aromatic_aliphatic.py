@@ -97,7 +97,9 @@ def _extract_features_with_stats(input_dir: Path) -> ExtractionResult:
     if not input_dir.is_dir():
         raise NotADirectoryError(f"input path is not a directory: {input_dir}")
 
-    structure_dirs = sorted(path for path in input_dir.iterdir() if path.is_dir() and path.name.endswith("_out"))
+    structure_dirs = sorted(
+        path for path in input_dir.iterdir() if path.is_dir() and path.name.endswith("_out")
+    )
     if not structure_dirs:
         logging.info("No *_out directories found under %s", input_dir)
         return ExtractionResult(rows=[], processed_structures=0, extracted_pockets=0, warnings=[])
@@ -137,15 +139,21 @@ def _process_structure(structure_dir: Path) -> ExtractionResult:
     pockets_dir = structure_dir / "pockets"
     if not pockets_dir.exists():
         warnings.append(f"{structure_dir.name}: missing pockets directory")
-        return ExtractionResult(rows=[], processed_structures=1, extracted_pockets=0, warnings=warnings)
+        return ExtractionResult(
+            rows=[], processed_structures=1, extracted_pockets=0, warnings=warnings
+        )
     if not pockets_dir.is_dir():
         warnings.append(f"{structure_dir.name}: pockets path is not a directory")
-        return ExtractionResult(rows=[], processed_structures=1, extracted_pockets=0, warnings=warnings)
+        return ExtractionResult(
+            rows=[], processed_structures=1, extracted_pockets=0, warnings=warnings
+        )
 
     pocket_files = sorted(pockets_dir.iterdir())
     if not pocket_files:
         warnings.append(f"{structure_dir.name}: empty pockets directory")
-        return ExtractionResult(rows=[], processed_structures=1, extracted_pockets=0, warnings=warnings)
+        return ExtractionResult(
+            rows=[], processed_structures=1, extracted_pockets=0, warnings=warnings
+        )
 
     pdb_id = structure_dir.name[:-4]
     atm_files: dict[int, Path] = {}
@@ -188,7 +196,9 @@ def _process_structure(structure_dir: Path) -> ExtractionResult:
         except OSError as exc:
             warnings.append(f"{pocket_id}: failed reading atm file: {exc}")
 
-    return ExtractionResult(rows=rows, processed_structures=1, extracted_pockets=len(rows), warnings=warnings)
+    return ExtractionResult(
+        rows=rows, processed_structures=1, extracted_pockets=len(rows), warnings=warnings
+    )
 
 
 def _compute_centroid(pqr_path: Path) -> np.ndarray:
@@ -350,9 +360,13 @@ def _build_arg_parser() -> argparse.ArgumentParser:
         prog="python -m slipp_plus.aromatic_aliphatic",
         description="Extract aromatic/aliphatic residue-shell features from fpocket outputs.",
     )
-    parser.add_argument("--input-dir", type=Path, required=True, help="Directory containing *_out fpocket outputs.")
+    parser.add_argument(
+        "--input-dir", type=Path, required=True, help="Directory containing *_out fpocket outputs."
+    )
     parser.add_argument("--output", type=Path, required=True, help="Output parquet path.")
-    parser.add_argument("--log-level", default="INFO", help="Python logging level, e.g. INFO or DEBUG.")
+    parser.add_argument(
+        "--log-level", default="INFO", help="Python logging level, e.g. INFO or DEBUG."
+    )
     return parser
 
 

@@ -35,7 +35,9 @@ def test_union_feature_columns_includes_stage_specific_columns() -> None:
         "stage2_feature_columns": ["f1", "f2"],
         "nonlipid_feature_columns": ["f3"],
         "stage3_feature_columns": ["f4"],
-        "boundary_heads": [{"rule": BoundaryRule("b", "STE", ("PLM",)), "feature_columns": ["f5", "f2"]}],
+        "boundary_heads": [
+            {"rule": BoundaryRule("b", "STE", ("PLM",)), "feature_columns": ["f5", "f2"]}
+        ],
     }
     assert _union_feature_columns(bundle) == ["f0", "f1", "f2", "f3", "f4", "f5"]
 

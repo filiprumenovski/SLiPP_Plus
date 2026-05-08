@@ -184,8 +184,7 @@ def run_family_encoder_training(settings: Settings) -> dict[str, Path]:
             bundle_payload = {
                 "backend": "family_encoder",
                 "model_state_dict": {
-                    key: value.detach().cpu().numpy()
-                    for key, value in model.state_dict().items()
+                    key: value.detach().cpu().numpy() for key, value in model.state_dict().items()
                 },
                 "train_config": cfg.__dict__,
                 "family_specs": [
@@ -235,7 +234,9 @@ def run_family_encoder_training(settings: Settings) -> dict[str, Path]:
         },
         bundle_path,
     )
-    write_artifact_schema_sidecar(bundle_path, metadata | {"artifact_type": "family_encoder_bundle"})
+    write_artifact_schema_sidecar(
+        bundle_path, metadata | {"artifact_type": "family_encoder_bundle"}
+    )
 
     return {
         "predictions": output_predictions,
@@ -298,8 +299,7 @@ def predict_family_encoder_holdout(
         dropout=train_config.dropout,
     )
     state_dict = {
-        key: torch.as_tensor(np.asarray(value))
-        for key, value in bundle["model_state_dict"].items()
+        key: torch.as_tensor(np.asarray(value)) for key, value in bundle["model_state_dict"].items()
     }
     model.load_state_dict(state_dict)
     proba = predict_family_encoder_proba(model, arrays, masks)

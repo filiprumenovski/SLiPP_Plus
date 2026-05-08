@@ -51,7 +51,9 @@ def _macro_f1(preds: pd.DataFrame, model_key: str) -> tuple[float, float, float,
         y_pred = iter_df["y_pred_int"].to_numpy()
         proba = iter_df[proba_cols].to_numpy()
         macro10.append(
-            f1_score(y_true, y_pred, labels=np.arange(len(CLASS_10)), average="macro", zero_division=0.0)
+            f1_score(
+                y_true, y_pred, labels=np.arange(len(CLASS_10)), average="macro", zero_division=0.0
+            )
         )
         lipid_mask = np.isin(np.arange(len(CLASS_10)), LIPID_IDX)
         _, _, f_per, _ = _per_class_support(y_true, y_pred)
@@ -72,7 +74,9 @@ def _macro_f1(preds: pd.DataFrame, model_key: str) -> tuple[float, float, float,
     )
 
 
-def _per_class_support(y_true: np.ndarray, y_pred: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+def _per_class_support(
+    y_true: np.ndarray, y_pred: np.ndarray
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     from sklearn.metrics import precision_recall_fscore_support
 
     return precision_recall_fscore_support(
@@ -184,11 +188,7 @@ def run_report(v49_dir: Path, v_sterol_dir: Path, output_path: Path) -> Path:
             + "".join(f" {c} |" for c in CLASS_10)
             + " macro-F1 (10) | macro-F1 (5 lipids) | binary F1 | binary AUROC |\n"
         )
-        handle.write(
-            "|---|"
-            + "---|" * len(CLASS_10)
-            + "---|---|---|---|\n"
-        )
+        handle.write("|---|" + "---|" * len(CLASS_10) + "---|---|---|---|\n")
         for key in model_keys:
             v49_f1 = _per_class_f1_mean(v49_preds, key)
             vst_f1 = _per_class_f1_mean(vst_preds, key)
@@ -211,7 +211,9 @@ def run_report(v49_dir: Path, v_sterol_dir: Path, output_path: Path) -> Path:
 
         # --- CLR / STE focused ---
         handle.write("## CLR / STE headline (what we are trying to move)\n\n")
-        handle.write("| model | CLR v49 | CLR v_sterol | CLR Δ | STE v49 | STE v_sterol | STE Δ |\n")
+        handle.write(
+            "| model | CLR v49 | CLR v_sterol | CLR Δ | STE v49 | STE v_sterol | STE Δ |\n"
+        )
         handle.write("|---|---|---|---|---|---|---|\n")
         for key in model_keys:
             v49_f1 = _per_class_f1_mean(v49_preds, key)
@@ -298,13 +300,26 @@ def run_report(v49_dir: Path, v_sterol_dir: Path, output_path: Path) -> Path:
             for rank, (feature, gain_value) in enumerate(top, start=1):
                 new_marker = ""
                 sterol_cols = {
-                    *(f"{g}_count_shell{s}" for g in [
-                        "aromatic_pi", "aromatic_polar", "bulky_hydrophobic",
-                        "small_special", "polar_neutral", "cationic", "anionic",
-                    ] for s in (1, 2, 3, 4)),
+                    *(
+                        f"{g}_count_shell{s}"
+                        for g in [
+                            "aromatic_pi",
+                            "aromatic_polar",
+                            "bulky_hydrophobic",
+                            "small_special",
+                            "polar_neutral",
+                            "cationic",
+                            "anionic",
+                        ]
+                        for s in (1, 2, 3, 4)
+                    ),
                     *(f"polar_hydrophobic_ratio_shell{s}" for s in (1, 2, 3, 4)),
-                    "pocket_lam1", "pocket_lam2", "pocket_lam3",
-                    "pocket_elongation", "pocket_planarity", "pocket_burial",
+                    "pocket_lam1",
+                    "pocket_lam2",
+                    "pocket_lam3",
+                    "pocket_elongation",
+                    "pocket_planarity",
+                    "pocket_burial",
                 }
                 if feature in sterol_cols:
                     new_marker = " ⬥"

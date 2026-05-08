@@ -192,7 +192,11 @@ def validate_feature_schema_metadata(
         )
 
     feature_set = metadata.get("feature_set")
-    if expected_feature_set is not None and feature_set is not None and feature_set != expected_feature_set:
+    if (
+        expected_feature_set is not None
+        and feature_set is not None
+        and feature_set != expected_feature_set
+    ):
         raise ValueError(
             f"{artifact_label} feature_set mismatch: "
             f"expected {expected_feature_set!r}, got {feature_set!r}"

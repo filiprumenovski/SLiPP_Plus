@@ -129,12 +129,16 @@ def extract_fpocket_predictions(structure_out_dir: Path) -> pl.DataFrame:
     for rank, (pocket_number, score) in enumerate(ordered_pockets, start=1):
         vert_path = pockets_dir / f"pocket{pocket_number}_vert.pqr"
         if not vert_path.exists():
-            LOGGER.warning("%s: missing vert file for pocket %d", structure_out_dir.name, pocket_number)
+            LOGGER.warning(
+                "%s: missing vert file for pocket %d", structure_out_dir.name, pocket_number
+            )
             continue
         try:
             centroid = _compute_centroid(vert_path)
         except ValueError as exc:
-            LOGGER.warning("%s: pocket %d centroid failed: %s", structure_out_dir.name, pocket_number, exc)
+            LOGGER.warning(
+                "%s: pocket %d centroid failed: %s", structure_out_dir.name, pocket_number, exc
+            )
             continue
         rows.append(
             {
@@ -248,9 +252,13 @@ def score_structure(
 
     if p2rank_csv is not None and p2rank_csv.exists():
         p2rank_preds = extract_p2rank_predictions(p2rank_csv)
-        frames.append(_annotate_predictions(p2rank_preds, stem, ligand_code, "p2rank", ligand_copies))
+        frames.append(
+            _annotate_predictions(p2rank_preds, stem, ligand_code, "p2rank", ligand_copies)
+        )
     elif p2rank_csv is not None:
-        LOGGER.warning("%s: P2Rank predictions missing at %s; skipping P2Rank rows", stem, p2rank_csv)
+        LOGGER.warning(
+            "%s: P2Rank predictions missing at %s; skipping P2Rank rows", stem, p2rank_csv
+        )
 
     if not frames:
         return pl.DataFrame(schema=SCORE_SCHEMA)
@@ -298,7 +306,9 @@ def run_bakeoff(
     output_parquet.parent.mkdir(parents=True, exist_ok=True)
     combined.write_parquet(output_parquet)
 
-    structures_scored = combined.select(pl.col("structure_id").n_unique()).item() if combined.height else 0
+    structures_scored = (
+        combined.select(pl.col("structure_id").n_unique()).item() if combined.height else 0
+    )
     return {
         "structures": structures_scored,
         "rows": combined.height,
@@ -451,7 +461,11 @@ def _summary_schema() -> dict[str, pl.DataType]:
 
 
 def _summarize_group(df: pl.DataFrame, *, group_class: bool) -> pl.DataFrame:
-    structure_keys = ["detector", "ligand_class", "structure_id"] if group_class else ["detector", "structure_id"]
+    structure_keys = (
+        ["detector", "ligand_class", "structure_id"]
+        if group_class
+        else ["detector", "structure_id"]
+    )
     group_keys = ["detector", "ligand_class"] if group_class else ["detector"]
 
     topk_expressions: list[pl.Expr] = []
@@ -533,7 +547,9 @@ def build_structure_plan(fpocket_root: Path, p2rank_root: Path | None) -> list[d
         for pdb_path in sorted(class_dir.glob("*.pdb")):
             fpocket_dir = class_dir / f"{pdb_path.stem}_out"
             if not fpocket_dir.is_dir():
-                LOGGER.warning("skipping %s: fpocket output dir missing (%s)", pdb_path, fpocket_dir)
+                LOGGER.warning(
+                    "skipping %s: fpocket output dir missing (%s)", pdb_path, fpocket_dir
+                )
                 continue
             p2rank_csv: Path | None = None
             if p2rank_root is not None:

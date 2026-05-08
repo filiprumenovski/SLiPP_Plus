@@ -116,8 +116,12 @@ def _pair_confusion(df: pl.DataFrame, negative_label: str, positive_label: str) 
     return {
         f"{negative_label}_correct": int(((y_true == neg_idx) & (y_pred == neg_idx)).sum()),
         f"{positive_label}_correct": int(((y_true == pos_idx) & (y_pred == pos_idx)).sum()),
-        f"{negative_label}_as_{positive_label}": int(((y_true == neg_idx) & (y_pred == pos_idx)).sum()),
-        f"{positive_label}_as_{negative_label}": int(((y_true == pos_idx) & (y_pred == neg_idx)).sum()),
+        f"{negative_label}_as_{positive_label}": int(
+            ((y_true == neg_idx) & (y_pred == pos_idx)).sum()
+        ),
+        f"{positive_label}_as_{negative_label}": int(
+            ((y_true == pos_idx) & (y_pred == neg_idx)).sum()
+        ),
         f"{negative_label}_support": int((y_true == neg_idx).sum()),
         f"{positive_label}_support": int((y_true == pos_idx).sum()),
     }
@@ -157,8 +161,12 @@ def _worker(
         "iteration": iteration,
         "row_index_lookup": test_idx.astype(np.int64),
         "positive_proba": positive_proba,
-        "pair_binary_f1": float(_pair_only_binary_f1(y_te_pair, model.predict_proba(X_te_pair)[:, 1])),
-        "scale_pos_weight": float(((y_tr == 0).sum() / (y_tr == 1).sum()) if (y_tr == 1).sum() else 1.0),
+        "pair_binary_f1": float(
+            _pair_only_binary_f1(y_te_pair, model.predict_proba(X_te_pair)[:, 1])
+        ),
+        "scale_pos_weight": float(
+            ((y_tr == 0).sum() / (y_tr == 1).sum()) if (y_tr == 1).sum() else 1.0
+        ),
         "feature_importance": importance,
     }
 
@@ -223,7 +231,9 @@ def write_pair_experiment_report(
         if monotonic:
             verdict = f"{positive_label} F1 moves monotonically upward across the tested margins."
         else:
-            verdict = f"{positive_label} F1 does not improve monotonically across the tested margins."
+            verdict = (
+                f"{positive_label} F1 does not improve monotonically across the tested margins."
+            )
         f.write(verdict + "\n")
 
         if feature_importance:
@@ -287,7 +297,9 @@ def run_pair_tiebreaker_experiment(
 
     pair_binary_f1s = [r["pair_binary_f1"] for r in results]
     scale_pos_weights = [r["scale_pos_weight"] for r in results]
-    feature_importance = next((r["feature_importance"] for r in results if r["feature_importance"]), {})
+    feature_importance = next(
+        (r["feature_importance"] for r in results if r["feature_importance"]), {}
+    )
 
     rows: list[dict[str, Any]] = []
     augmented_by_margin: dict[float, pl.DataFrame] = {}
@@ -311,7 +323,11 @@ def run_pair_tiebreaker_experiment(
 
         augmented_all = pl.concat(augmented_per_iter).sort(["iteration", "row_index"])
         augmented_by_margin[float(margin)] = augmented_all
-        summary = score_summary(augmented_all.select(["iteration", "row_index", "y_true_int", "y_pred_int", *PROBA_COLUMNS]))
+        summary = score_summary(
+            augmented_all.select(
+                ["iteration", "row_index", "y_true_int", "y_pred_int", *PROBA_COLUMNS]
+            )
+        )
         confusion = _pair_confusion(augmented_all, negative_label, positive_label)
         rows.append(
             {
@@ -326,8 +342,12 @@ def run_pair_tiebreaker_experiment(
                 f"{positive_label}_f1_std": summary["per_class_f1"][positive_label][1],
                 "fire_mean": float(np.mean(fires)),
                 "fire_total": int(np.sum(fires)),
-                f"{negative_label}_as_{positive_label}": confusion[f"{negative_label}_as_{positive_label}"],
-                f"{positive_label}_as_{negative_label}": confusion[f"{positive_label}_as_{negative_label}"],
+                f"{negative_label}_as_{positive_label}": confusion[
+                    f"{negative_label}_as_{positive_label}"
+                ],
+                f"{positive_label}_as_{negative_label}": confusion[
+                    f"{positive_label}_as_{negative_label}"
+                ],
                 f"{negative_label}_correct": confusion[f"{negative_label}_correct"],
                 f"{positive_label}_correct": confusion[f"{positive_label}_correct"],
                 f"{negative_label}_support": confusion[f"{negative_label}_support"],

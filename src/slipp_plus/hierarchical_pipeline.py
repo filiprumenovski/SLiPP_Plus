@@ -241,7 +241,9 @@ def predict_hierarchical_holdout(
     for item in bundle.get("boundary_heads", []):
         boundary_rule: BoundaryRule = item["rule"]
         boundary_model = item["model"]
-        boundary_feature_columns = list(item.get("feature_columns") or list(bundle["feature_columns"]))
+        boundary_feature_columns = list(
+            item.get("feature_columns") or list(bundle["feature_columns"])
+        )
         X_boundary = _feature_matrix(holdout_df, boundary_feature_columns)
         p_boundary = boundary_model.predict_proba(X_boundary)[:, 1].astype(np.float64)
         specialist_frame = apply_boundary_head(
@@ -318,10 +320,7 @@ def _primary_training_worker(
             "iteration": pl.Series([iteration] * len(test_idx), dtype=pl.Int64),
             "row_index": test_idx.astype(np.int64),
             "y_true_int": y_te_int,
-            **{
-                PROBA_COLUMNS[i]: ensemble_mean_te[:, i]
-                for i in range(len(PROBA_COLUMNS))
-            },
+            **{PROBA_COLUMNS[i]: ensemble_mean_te[:, i] for i in range(len(PROBA_COLUMNS))},
             "y_pred_int": ensemble_pred_te,
         }
     )
@@ -339,9 +338,7 @@ def _primary_training_worker(
 
     lipid_to_int = {label: i for i, label in enumerate(LIPID_LABELS)}
     lipid_train = train_idx[np.isin(y_str[train_idx], list(LIPID_LABELS))]
-    y_family = np.array(
-        [lipid_to_int[str(label)] for label in y_str[lipid_train]], dtype=np.int64
-    )
+    y_family = np.array([lipid_to_int[str(label)] for label in y_str[lipid_train]], dtype=np.int64)
     family_models: dict[str, Any] | None = None
     family: Any = None
     if lipid_family_mode == "binary_ovr":
@@ -358,9 +355,7 @@ def _primary_training_worker(
     y_nonlipid = np.array(
         [nonlipid_to_int[str(label)] for label in y_str[nonlipid_train]], dtype=np.int64
     )
-    nonlipid_model = train_nonlipid_family(
-        X_nonlipid[nonlipid_train], y_nonlipid, seed=seed
-    )
+    nonlipid_model = train_nonlipid_family(X_nonlipid[nonlipid_train], y_nonlipid, seed=seed)
     nonlipid_proba_te = nonlipid_model.predict_proba(X_nonlipid[test_idx]).astype(np.float64)
 
     X_spec, y_spec, _ = build_specialist_training(
@@ -373,7 +368,11 @@ def _primary_training_worker(
     p_specialist = specialist.predict_proba(X_te_stage3)[:, 1].astype(np.float64)
 
     if stage1_source == "trained":
-        p_lipid_tr = gate.predict_proba(X_tr)[:, 1].astype(np.float64) if gate is not None else np.zeros(len(X_tr))
+        p_lipid_tr = (
+            gate.predict_proba(X_tr)[:, 1].astype(np.float64)
+            if gate is not None
+            else np.zeros(len(X_tr))
+        )
     else:
         ensemble_mean_tr = np.mean(
             np.stack([flat_models[key].predict_proba(X_tr) for key in flat_model_keys], axis=0),
@@ -499,10 +498,14 @@ def _primary_training_worker(
             "stage3_nonlipid_family": _gain_importance(nonlipid_model, nonlipid_feature_columns),
         }
         if family is not None:
-            importance["stage2_lipid_family"] = _gain_importance(family, lipid_family_feature_columns)
+            importance["stage2_lipid_family"] = _gain_importance(
+                family, lipid_family_feature_columns
+            )
         if family_models is not None:
             for label, model in family_models.items():
-                importance[f"stage2_lipid_{label}"] = _gain_importance(model, lipid_family_feature_columns)
+                importance[f"stage2_lipid_{label}"] = _gain_importance(
+                    model, lipid_family_feature_columns
+                )
         for item in boundary_models:
             importance[f"boundary_{item['rule'].name}"] = gain_importance(
                 item["model"],
@@ -602,9 +605,7 @@ def run_hierarchical_training(settings: Settings) -> dict[str, Path]:
         if settings.split_strategy == "grouped":
             group_column = settings.split_group_column
             if group_column not in full_split.columns:
-                raise KeyError(
-                    f"group column not found in training parquet: {group_column}"
-                )
+                raise KeyError(f"group column not found in training parquet: {group_column}")
             group_labels = full_split[group_column].to_numpy()
         splits = make_splits(
             class_labels=y_str,
@@ -699,11 +700,14 @@ def run_hierarchical_training(settings: Settings) -> dict[str, Path]:
     ensemble_frames = [row["ensemble_frame"] for row in results]
     specialist_frames = [row["specialist_frame"] for row in results]
     final_frames = [
-        row["boundary_frame"] if boundary_rules else row["specialist_frame"]
-        for row in results
+        row["boundary_frame"] if boundary_rules else row["specialist_frame"] for row in results
     ]
-    ensemble_all = pl.concat(ensemble_frames, how="diagonal_relaxed").sort(["iteration", "row_index"])
-    specialist_all = pl.concat(specialist_frames, how="diagonal_relaxed").sort(["iteration", "row_index"])
+    ensemble_all = pl.concat(ensemble_frames, how="diagonal_relaxed").sort(
+        ["iteration", "row_index"]
+    )
+    specialist_all = pl.concat(specialist_frames, how="diagonal_relaxed").sort(
+        ["iteration", "row_index"]
+    )
     final_all = pl.concat(final_frames, how="diagonal_relaxed").sort(["iteration", "row_index"])
 
     base_summary = score_summary(ensemble_all)

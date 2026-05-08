@@ -52,10 +52,26 @@ EXTRA_VDW22: list[str] = [
 ]
 
 AA20: list[str] = [
-    "ALA", "ARG", "ASN", "ASP", "CYS",
-    "GLN", "GLU", "GLY", "HIS", "ILE",
-    "LEU", "LYS", "MET", "PHE", "PRO",
-    "SER", "THR", "TRP", "TYR", "VAL",
+    "ALA",
+    "ARG",
+    "ASN",
+    "ASP",
+    "CYS",
+    "GLN",
+    "GLU",
+    "GLY",
+    "HIS",
+    "ILE",
+    "LEU",
+    "LYS",
+    "MET",
+    "PHE",
+    "PRO",
+    "SER",
+    "THR",
+    "TRP",
+    "TYR",
+    "VAL",
 ]
 
 # Signal-ranked AA subsets from the 105-feature audit, sorted by seed-0
@@ -408,9 +424,7 @@ DERIVED_FEATURES_26: list[str] = [
 FEATURE_SETS["v_sterol+vdw22"] = FEATURE_SETS["v_sterol"] + EXTRA_VDW22
 FEATURE_SETS["v_sterol+derived"] = FEATURE_SETS["v_sterol"] + DERIVED_FEATURES_26
 FEATURE_SETS["v_sterol+vdw22+derived"] = (
-    FEATURE_SETS["v_sterol"]
-    + EXTRA_VDW22
-    + DERIVED_FEATURES_26
+    FEATURE_SETS["v_sterol"] + EXTRA_VDW22 + DERIVED_FEATURES_26
 )
 FEATURE_SETS["v_sterol_v2"] = FEATURE_SETS["v_sterol+derived"]
 

@@ -18,10 +18,26 @@ import pandas as pd
 # ---------------------------------------------------------------------------
 
 AA20: list[str] = [
-    "ALA", "ARG", "ASN", "ASP", "CYS",
-    "GLN", "GLU", "GLY", "HIS", "ILE",
-    "LEU", "LYS", "MET", "PHE", "PRO",
-    "SER", "THR", "TRP", "TYR", "VAL",
+    "ALA",
+    "ARG",
+    "ASN",
+    "ASP",
+    "CYS",
+    "GLN",
+    "GLU",
+    "GLY",
+    "HIS",
+    "ILE",
+    "LEU",
+    "LYS",
+    "MET",
+    "PHE",
+    "PRO",
+    "SER",
+    "THR",
+    "TRP",
+    "TYR",
+    "VAL",
 ]
 
 # Biophysical AA groupings
@@ -127,9 +143,7 @@ def compute_derived_features(df: pd.DataFrame) -> pd.DataFrame:
     )
     # vdw22 surfaces may be absent in holdout data
     if "surf_pol_vdw22" in df.columns and "surf_apol_vdw22" in df.columns:
-        surf22_total = (
-            df["surf_pol_vdw22"].values + df["surf_apol_vdw22"].values
-        )
+        surf22_total = df["surf_pol_vdw22"].values + df["surf_apol_vdw22"].values
         df["surf_pol_vdw22_frac"] = _safe_ratio(
             df["surf_pol_vdw22"].values,
             surf22_total,
@@ -141,33 +155,27 @@ def compute_derived_features(df: pd.DataFrame) -> pd.DataFrame:
     # --- Spatial gradients ---
     # Inner = shell 1+2, outer = shell 3+4
     bulky_inner = (
-        df["bulky_hydrophobic_count_shell1"].values
-        + df["bulky_hydrophobic_count_shell2"].values
+        df["bulky_hydrophobic_count_shell1"].values + df["bulky_hydrophobic_count_shell2"].values
     ).astype(np.float64)
     bulky_outer = (
-        df["bulky_hydrophobic_count_shell3"].values
-        + df["bulky_hydrophobic_count_shell4"].values
+        df["bulky_hydrophobic_count_shell3"].values + df["bulky_hydrophobic_count_shell4"].values
     ).astype(np.float64)
     df["bulky_hydro_gradient"] = _gradient(bulky_inner, bulky_outer)
 
     polar_inner = (
-        df["polar_neutral_count_shell1"].values
-        + df["polar_neutral_count_shell2"].values
+        df["polar_neutral_count_shell1"].values + df["polar_neutral_count_shell2"].values
     ).astype(np.float64)
     polar_outer = (
-        df["polar_neutral_count_shell3"].values
-        + df["polar_neutral_count_shell4"].values
+        df["polar_neutral_count_shell3"].values + df["polar_neutral_count_shell4"].values
     ).astype(np.float64)
     df["polar_gradient"] = _gradient(polar_inner, polar_outer)
 
-    aro_inner = (
-        df["aromatic_count_shell1"].values
-        + df["aromatic_count_shell2"].values
-    ).astype(np.float64)
-    aro_outer = (
-        df["aromatic_count_shell3"].values
-        + df["aromatic_count_shell4"].values
-    ).astype(np.float64)
+    aro_inner = (df["aromatic_count_shell1"].values + df["aromatic_count_shell2"].values).astype(
+        np.float64
+    )
+    aro_outer = (df["aromatic_count_shell3"].values + df["aromatic_count_shell4"].values).astype(
+        np.float64
+    )
     df["aromatic_gradient"] = _gradient(aro_inner, aro_outer)
 
     charge_inner = (
@@ -189,28 +197,21 @@ def compute_derived_features(df: pd.DataFrame) -> pd.DataFrame:
         df["pocket_lam2"].values,
         df["pocket_lam1"].values,
     )
-    df["elongation_x_hydro"] = (
-        df["pocket_elongation"].values * df["hydrophobicity_score"].values
-    )
+    df["elongation_x_hydro"] = df["pocket_elongation"].values * df["hydrophobicity_score"].values
     df["planarity_x_aromatic_density"] = (
         df["pocket_planarity"].values * df["aromatic_density"].values
     )
-    df["burial_x_polar_surface"] = (
-        df["pocket_burial"].values * df["polar_surface_frac"].values
-    )
-    df["vol_x_polar_surface"] = (
-        df["pock_vol"].values * df["polar_surface_frac"].values
-    )
+    df["burial_x_polar_surface"] = df["pocket_burial"].values * df["polar_surface_frac"].values
+    df["vol_x_polar_surface"] = df["pock_vol"].values * df["polar_surface_frac"].values
 
     # --- Charge asymmetry ---
     df["charge_balance"] = _gradient(
         cat_total.astype(np.float64),
         ani_total.astype(np.float64),
     )
-    df["charge_density_per_vol"] = (
-        (cat_total + ani_total).astype(np.float64)
-        / df["pock_vol"].clip(lower=1.0).values
-    )
+    df["charge_density_per_vol"] = (cat_total + ani_total).astype(np.float64) / df["pock_vol"].clip(
+        lower=1.0
+    ).values
 
     # Validate no NaN introduced
     for col in DERIVED_FEATURE_COLS:

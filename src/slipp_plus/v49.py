@@ -57,7 +57,9 @@ def build_training_v49_parquet(
 
     base = _read_training_csv(training_csv).reset_index(drop=True)
     base.insert(0, "_row_order", np.arange(len(base), dtype=np.int64))
-    groups = [(pdb_ligand, frame.copy()) for pdb_ligand, frame in base.groupby("pdb_ligand", sort=False)]
+    groups = [
+        (pdb_ligand, frame.copy()) for pdb_ligand, frame in base.groupby("pdb_ligand", sort=False)
+    ]
 
     tasks = [
         {
@@ -75,7 +77,11 @@ def build_training_v49_parquet(
         with ProcessPoolExecutor(max_workers=max_workers) as executor:
             matched_groups = list(executor.map(_match_training_group, tasks))
 
-    matched = pd.concat(matched_groups, ignore_index=True).sort_values("_row_order").reset_index(drop=True)
+    matched = (
+        pd.concat(matched_groups, ignore_index=True)
+        .sort_values("_row_order")
+        .reset_index(drop=True)
+    )
     if len(matched) != len(base):
         raise ValueError(f"row drift after v49 join: got {len(matched)}, expected {len(base)}")
 

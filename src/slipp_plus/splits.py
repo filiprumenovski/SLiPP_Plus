@@ -225,17 +225,9 @@ def load_split(path: Path) -> tuple[np.ndarray, np.ndarray]:
 
     df = pl.read_parquet(path)
     train_idx = (
-        df.filter(pl.col("split") == "train")
-        .get_column("index")
-        .to_numpy()
-        .astype(np.int64)
+        df.filter(pl.col("split") == "train").get_column("index").to_numpy().astype(np.int64)
     )
-    test_idx = (
-        df.filter(pl.col("split") == "test")
-        .get_column("index")
-        .to_numpy()
-        .astype(np.int64)
-    )
+    test_idx = df.filter(pl.col("split") == "test").get_column("index").to_numpy().astype(np.int64)
     return train_idx, test_idx
 
 
