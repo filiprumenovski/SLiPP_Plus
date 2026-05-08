@@ -131,7 +131,7 @@ def test_train_tiebreaker_smoke(tmp_path: Path) -> None:
     split_path = tmp_path / "seed_00.parquet"
     split.to_parquet(split_path, index=False)
 
-    X_tr, y_tr, X_te, y_te, te_idx = build_plm_vs_ste_training(full, feats, split_path)
+    X_tr, y_tr, X_te, y_te, _te_idx = build_plm_vs_ste_training(full, feats, split_path)
     assert y_tr.sum() > 0 and y_tr.sum() < len(y_tr)
 
     model = train_plm_ste_tiebreaker(X_tr, y_tr, seed=0)

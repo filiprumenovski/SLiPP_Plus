@@ -23,9 +23,16 @@ import pandas as pd
 import polars as pl
 from xgboost import XGBClassifier
 
-from .boundary_head import BoundaryRule, apply_boundary_head, build_boundary_training, gain_importance, train_boundary_head
+from .boundary_head import (
+    BoundaryRule,
+    apply_boundary_head,
+    build_boundary_training,
+    gain_importance,
+    train_boundary_head,
+)
 from .constants import CLASS_10
 from .ensemble import PROBA_COLUMNS, average_softprobs, load_predictions, score_summary
+from .splits import load_split
 
 DEFAULT_MARGINS: tuple[float, ...] = (0.05, 0.10, 0.15, 0.20, 0.30, 0.40, 0.50, 0.70, 0.90, 0.99)
 

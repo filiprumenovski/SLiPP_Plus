@@ -162,7 +162,7 @@ def _pocket_ids(holdout: str, df: pd.DataFrame) -> np.ndarray:
 
 
 def collect_probabilities(settings: Settings) -> pl.DataFrame:
-    """Score 6 models × 3 holdouts and return a long-format Polars frame.
+    """Score 6 models x 3 holdouts and return a long-format Polars frame.
 
     Columns: pocket_id, holdout, model_family, formulation, P_lipid, y_true_binary.
     """
@@ -258,7 +258,7 @@ def compute_metrics(preds: pl.DataFrame) -> pl.DataFrame:
                         "holdout": holdout,
                         "model_family": key,
                         "formulation": formulation,
-                        "n": int(len(y)),
+                        "n": len(y),
                         "n_lipid": int(y.sum()),
                         "ece_10": ece10,
                         "ece_15": ece15,

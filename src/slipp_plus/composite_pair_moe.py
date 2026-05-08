@@ -199,7 +199,7 @@ def _split_expert_fit_gate(
 ) -> tuple[np.ndarray, np.ndarray]:
     rng = np.random.default_rng(seed)
     shuffled = rng.permutation(train_idx)
-    gate_n = max(1, int(round(0.20 * len(shuffled))))
+    gate_n = max(1, round(0.20 * len(shuffled)))
     return shuffled[gate_n:], shuffled[:gate_n]
 
 

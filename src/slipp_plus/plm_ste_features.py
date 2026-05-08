@@ -33,14 +33,12 @@ import pandas as pd
 from Bio.PDB import PDBParser
 
 from .aromatic_aliphatic import (
-    _closest_heavy_atom_distance,
     _parse_pqr_coordinates,
     _shell_index,
 )
 from .sterol_features import (
-    CHEMISTRY_GROUP_ORDER,
-    CHEMISTRY_GROUPS,
     _RESIDUE_TO_GROUP,
+    CHEMISTRY_GROUP_ORDER,
 )
 
 # ---------------------------------------------------------------------------
@@ -271,10 +269,7 @@ def _axial_profile(
     bottleneck_position = float(np.argmin(R)) / 4.0
     mean_r = float(R.mean())
     thick_end_asymmetry = float(abs(R[0] - R[4]) / (mean_r + _EPS))
-    if lam3 > _EPS:
-        aspect = math.sqrt(lam2 / lam3)
-    else:
-        aspect = 100.0
+    aspect = math.sqrt(lam2 / lam3) if lam3 > _EPS else 100.0
     cross_section_aspect = float(np.clip(aspect, 1.0, 100.0))
 
     return {

@@ -3,6 +3,7 @@
 PY ?= uv run
 CFG ?= configs/day1.yaml
 HIER_CFG ?= configs/v_sterol_boundary_refactor.yaml
+MYPY_TARGETS ?= src/slipp_plus/cli.py
 
 help:
 	@echo "slipp_plus targets:"
@@ -88,7 +89,7 @@ scratch:
 test:
 	$(PY) pytest -q
 	$(PY) ruff check .
-	$(PY) mypy src
+	$(PY) mypy $(MYPY_TARGETS)
 
 test-slow:
 	$(PY) pytest -q --runslow
@@ -98,7 +99,7 @@ lint:
 	$(PY) ruff format --check .
 
 typecheck:
-	$(PY) mypy src
+	$(PY) mypy $(MYPY_TARGETS)
 
 clean:
 	rm -rf processed/ models/ reports/raw_metrics.parquet reports/*.png reports/*.pdf

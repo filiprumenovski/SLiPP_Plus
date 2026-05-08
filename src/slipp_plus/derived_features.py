@@ -13,7 +13,6 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-
 # ---------------------------------------------------------------------------
 # Column name constants
 # ---------------------------------------------------------------------------
@@ -84,7 +83,7 @@ def _gradient(
     inner: np.ndarray,
     outer: np.ndarray,
 ) -> np.ndarray:
-    """Signed gradient: (inner − outer) / (inner + outer + 1)."""
+    """Signed gradient: (inner - outer) / (inner + outer + 1)."""
     return (inner - outer) / (inner + outer + 1.0)
 
 

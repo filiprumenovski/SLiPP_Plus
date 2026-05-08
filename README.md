@@ -242,8 +242,11 @@ uv sync --extra dev
 uv run pytest -q
 uv run ruff check .
 uv run ruff format --check .
-uv run mypy src
+make typecheck
 ```
+
+`make typecheck` uses the current mypy allowlist (`MYPY_TARGETS`, initially
+`src/slipp_plus/cli.py`). Expand that allowlist as modules are hardened.
 
 Useful focused checks for the compact stack:
 

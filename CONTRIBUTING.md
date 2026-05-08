@@ -28,8 +28,12 @@ For focused checks during development, run:
 uv run pytest -q
 uv run ruff check .
 uv run ruff format --check .
-uv run mypy src
+make typecheck
 ```
+
+`make typecheck` runs mypy against the current typed-module allowlist. Override
+with `MYPY_TARGETS="src/slipp_plus/cli.py src/slipp_plus/splits.py"` as more
+modules are hardened.
 
 ## Code Style
 

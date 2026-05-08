@@ -8,6 +8,9 @@ Writes PNGs under reports/v_sterol/email_attachments/ by default.
 from __future__ import annotations
 
 import argparse
+
+# Repo root on PYTHONPATH when run as module; allow script execution too
+import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -15,9 +18,6 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 from sklearn.metrics import confusion_matrix, f1_score
-
-# Repo root on PYTHONPATH when run as module; allow script execution too
-import sys
 
 _ROOT = Path(__file__).resolve().parents[1]
 if str(_ROOT / "src") not in sys.path:

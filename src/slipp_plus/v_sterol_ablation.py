@@ -23,7 +23,6 @@ from .derived_features import compute_derived_features
 from .ingest import _read_training_csv
 from .schemas import validate_holdout, validate_training
 
-
 _VDW22_FEATURE_SETS = frozenset({"v_sterol+vdw22", "v_sterol+vdw22+derived"})
 _DERIVED_FEATURE_SETS = frozenset({"v_sterol+derived", "v_sterol+vdw22+derived", "v_sterol_v2"})
 
