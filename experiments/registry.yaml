@@ -371,3 +371,43 @@
     macro-F1 vs exp-009. The softmax simplex provides free inter-class discriminative
     signal for well-sampled classes; removing it costs more than it gains. Validates
     the current softmax + boundary-head architecture as near-optimal for this data regime.
+
+- id: exp-013-v49-shell6-tunnel-shape
+  date: "2026-05-08"
+  feature_set: v14+aa20+shell6+tunnel_shape
+  config: configs/v49_shell6_tunnel_shape_family_encoder.yaml
+  models: [family_encoder]
+  postprocessing: none
+  status: complete
+  is_current_best: false
+  metrics:
+    binary_f1: "0.900 ± 0.017"
+    binary_auroc: "0.988 ± 0.003"
+    macro_f1_10: "0.766 ± 0.019"
+    lipid_macro_f1: "0.666 ± 0.031"
+    clr_f1: "0.751"
+    myr_f1: "0.704"
+    ola_f1: "0.584"
+    plm_f1: "0.648"
+    ste_f1: "0.642"
+  holdouts:
+    apo_pdb_f1: 0.711
+    apo_pdb_auroc: 0.798
+    alphafold_f1: 0.703
+    alphafold_auroc: 0.849
+  supersedes: null
+  artifacts:
+    predictions: processed/v49_shell6_tunnel_shape/predictions/hierarchical_lipid_predictions.parquet
+    family_predictions: processed/v49_shell6_tunnel_shape/predictions/family_encoder_predictions.parquet
+    models: models/v49_shell6_tunnel_shape_family_encoder/
+    report: reports/v49_shell6_tunnel_shape_family_encoder/metrics_table.md
+    metrics: reports/v49_shell6_tunnel_shape_family_encoder/raw_metrics.parquet
+    bundle: models/v49_shell6_tunnel_shape_family_encoder/family_encoder_bundle.joblib
+  notes: >
+    MIXED/TIE RESULT. Replaced the full shell12 block in the compact tunnel
+    leader with the six screened shell features. Internal macro10 and lipid5
+    tie exp-012 within rounding (0.766 and 0.666), binary F1 is slightly lower
+    (0.900 vs 0.902), and STE is slightly lower (0.642 vs 0.647), so this does
+    not supersede the current internal leader. However, both external holdouts
+    improve materially (apo-PDB F1 0.711 vs 0.696; AlphaFold F1 0.703 vs
+    0.620), making it a useful holdout-robust candidate to preserve.
