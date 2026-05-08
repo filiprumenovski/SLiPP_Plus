@@ -89,6 +89,10 @@ strict = true
 module = "slipp_plus.schemas"
 strict = true
 
+[[tool.mypy.overrides]]
+module = "slipp_plus.run_metadata"
+strict = true
+
 [tool.pytest.ini_options]
 addopts = "-ra --strict-markers"
 testpaths = ["tests"]
