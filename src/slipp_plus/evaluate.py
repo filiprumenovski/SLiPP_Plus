@@ -79,6 +79,22 @@ def binary_collapse(
 def multiclass_metrics(
     y_true_int: np.ndarray, y_pred_int: np.ndarray
 ) -> dict[str, float]:
+    """Compute 10-class and per-class metrics for integer predictions.
+
+    Parameters
+    ----------
+    y_true_int
+        True class indices in ``CLASS_10`` order.
+    y_pred_int
+        Predicted class indices in ``CLASS_10`` order.
+
+    Returns
+    -------
+    dict[str, float]
+        Accuracy, 10-class macro-F1, lipid-class macro-F1, and per-class
+        precision, recall, and F1 values.
+    """
+
     p, r, f, _ = precision_recall_fscore_support(
         y_true_int, y_pred_int,
         labels=np.arange(len(CLASS_10)),
@@ -259,6 +275,21 @@ def evaluate_staged_holdout_predictions(
     holdout_preds: pd.DataFrame,
     holdout_df: pd.DataFrame,
 ) -> dict[str, float]:
+    """Evaluate staged or composite holdout predictions after binary collapse.
+
+    Parameters
+    ----------
+    holdout_preds
+        Prediction table with probability columns named ``p_<CLASS>``.
+    holdout_df
+        Holdout feature table containing ``class_binary``.
+
+    Returns
+    -------
+    dict[str, float]
+        Binary-collapse metrics, sample counts, and confusion counts.
+    """
+
     proba_cols = [f"p_{c}" for c in CLASS_10]
     proba = holdout_preds[proba_cols].to_numpy(dtype=np.float64)
     true_bin = holdout_df["class_binary"].to_numpy(dtype=int)
@@ -304,6 +335,27 @@ def evaluate_hierarchical_holdouts(
     *,
     feature_columns: list[str],
 ) -> dict[str, dict[str, float]]:
+    """Score configured apo-PDB and AlphaFold holdouts for staged pipelines.
+
+    Parameters
+    ----------
+    settings
+        Experiment settings pointing at processed holdout parquets and the
+        persisted staged/composite bundle.
+    feature_columns
+        Expected model feature columns used for schema validation.
+
+    Returns
+    -------
+    dict[str, dict[str, float]]
+        Metrics keyed by holdout name.
+
+    Raises
+    ------
+    ValueError
+        If the persisted bundle class order differs from ``CLASS_10``.
+    """
+
     from .hierarchical_pipeline import load_hierarchical_bundle, predict_hierarchical_holdout
 
     proc = settings.paths.processed_dir
@@ -358,6 +410,20 @@ def _fmt(v: float | int) -> str:
 
 
 def run_evaluation(settings: Settings) -> dict[str, Path]:
+    """Evaluate persisted predictions and write metric reports.
+
+    Parameters
+    ----------
+    settings
+        Loaded experiment configuration.
+
+    Returns
+    -------
+    dict[str, Path]
+        Paths to raw metrics parquet and markdown metrics table, plus holdout
+        metrics in the ``holdouts`` entry.
+    """
+
     paths = settings.paths
     proc = paths.processed_dir
     reports = paths.reports_dir
