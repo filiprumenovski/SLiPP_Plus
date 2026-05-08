@@ -105,6 +105,38 @@ def run_boundary_tiebreaker_iterations(
     rule: BoundaryRule,
     train_kwargs: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
+    """Run a boundary tiebreaker across all persisted split iterations.
+
+    Parameters
+    ----------
+    full_pockets_path
+        Training feature parquet used to fit the local boundary head.
+    predictions_path
+        Base multiclass prediction parquet to augment.
+    splits_dir
+        Directory containing ``seed_*.parquet`` split files.
+    feature_columns
+        Feature columns used by the boundary head.
+    workers
+        Number of worker processes for per-iteration training.
+    margin
+        Boundary-rule firing margin applied during probability redistribution.
+    seed_base
+        Base seed; iteration ``i`` uses ``seed_base + i``.
+    rule
+        Boundary rule defining the positive and negative labels.
+    train_kwargs
+        Optional model-training keyword arguments passed to
+        ``train_boundary_head``.
+
+    Returns
+    -------
+    dict[str, Any]
+        Base ensemble predictions, augmented predictions, per-iteration
+        summaries, fire counts, pairwise binary F1 values, and iteration-0
+        feature importance when available.
+    """
+
     ensemble_pred = average_softprobs(load_predictions(predictions_path))
     split_files = sorted(splits_dir.glob("seed_*.parquet"))
     if not split_files:
