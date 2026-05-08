@@ -1,4 +1,4 @@
-.PHONY: help install ingest train eval figures all scratch build-caver-t12 build-lipid-boundary hierarchical-lipid test test-slow lint typecheck clean
+.PHONY: help install ingest train eval figures all scratch build-caver-t12 build-lipid-boundary build-v-sterol-ablation hierarchical-lipid test test-slow lint typecheck clean
 
 PY ?= uv run
 CFG ?= configs/day1.yaml
@@ -13,6 +13,7 @@ help:
 	@echo "  build-caver-t12  build persisted-output-first CAVER Tier 1-2 parquet"
 	@echo "  build-lipid-boundary  build v_lipid_boundary feature parquet"
 	@echo "  hierarchical-lipid  run staged lipid hierarchy over v_sterol artifacts"
+	@echo "  build-v-sterol-ablation  materialize a v_sterol ablation feature set"
 	@echo "  all         ingest -> train -> eval -> figures"
 	@echo "  scratch     Day 7+: download PDBs, run fpocket, re-ingest from raw"
 	@echo "  test        pytest + ruff + mypy"
@@ -46,6 +47,14 @@ build-lipid-boundary:
 		--output $(or $(OUT),processed/v_lipid_boundary/full_pockets.parquet) \
 		--reports-dir $(or $(REPORTS_DIR),reports/v_lipid_boundary) \
 		--workers $(or $(WORKERS),6)
+
+build-v-sterol-ablation:
+	@echo "Use: make build-v-sterol-ablation FEATURE_SET=... OUT=... [V_STEROL_DIR=...] [TRAINING_CSV=...]"
+	$(PY) python -m slipp_plus.cli ablate-v-sterol \
+		--feature-set $(FEATURE_SET) \
+		--v-sterol-dir $(or $(V_STEROL_DIR),processed/v_sterol) \
+		--output-dir $(OUT) \
+		$(if $(TRAINING_CSV),--training-csv $(TRAINING_CSV),)
 
 hierarchical-lipid:
 	$(PY) python -m slipp_plus.cli hierarchical-lipid \

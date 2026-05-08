@@ -328,6 +328,7 @@ def build_lipid_boundary(
 
 
 @app.command("build-v-sterol-ablation")
+@app.command("ablate-v-sterol")
 def build_v_sterol_ablation_cmd(
     feature_set: str = typer.Option(..., help="Ablation feature_set to materialize."),
     v_sterol_dir: Path = typer.Option(
