@@ -482,6 +482,20 @@ def run_evaluation(settings: Settings) -> dict[str, Path]:
             cells = " | ".join(f"{row[f'f1_{c}_mean']:.3f}" for c in CLASS_10)
             f.write(f"| {row['model']} | {cells} |\n")
 
+        f.write("\n### Per-class precision (mean across iterations)\n\n")
+        f.write("| model |" + "".join(f" {c} |" for c in CLASS_10) + "\n")
+        f.write("|---|" + "---|" * len(CLASS_10) + "\n")
+        for _, row in summary.iterrows():
+            cells = " | ".join(f"{row[f'precision_{c}_mean']:.3f}" for c in CLASS_10)
+            f.write(f"| {row['model']} | {cells} |\n")
+
+        f.write("\n### Per-class recall (mean across iterations)\n\n")
+        f.write("| model |" + "".join(f" {c} |" for c in CLASS_10) + "\n")
+        f.write("|---|" + "---|" * len(CLASS_10) + "\n")
+        for _, row in summary.iterrows():
+            cells = " | ".join(f"{row[f'recall_{c}_mean']:.3f}" for c in CLASS_10)
+            f.write(f"| {row['model']} | {cells} |\n")
+
     return {
         "raw_metrics": raw_path,
         "metrics_table": md_path,
