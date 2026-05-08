@@ -91,6 +91,22 @@ def _train_val_split(train_idx: np.ndarray, seed: int) -> tuple[np.ndarray, np.n
 
 
 def run_family_encoder_training(settings: Settings) -> dict[str, Path]:
+    """Train and persist the composite family-encoder backbone.
+
+    Parameters
+    ----------
+    settings
+        Loaded experiment configuration. ``settings.pipeline_mode`` should be
+        ``"composite"`` and ``settings.composite.backbone.kind`` should be
+        ``"family_encoder"``.
+
+    Returns
+    -------
+    dict[str, Path]
+        Paths to prediction parquet files, model directory, and persisted
+        family-encoder bundle.
+    """
+
     topology = resolve_composite_topology(settings)
     specs = resolve_family_specs(tuple(topology.backbone.feature_families))
     proc = settings.paths.processed_dir
@@ -235,7 +251,23 @@ def predict_family_encoder_holdout(
     holdout_df: pd.DataFrame,
     bundle: dict[str, Any],
 ) -> pd.DataFrame:
-    """Predict holdout probabilities from an iteration-0 family encoder bundle."""
+    """Predict holdout probabilities from an iteration-0 family encoder bundle.
+
+    Parameters
+    ----------
+    holdout_df
+        Holdout feature table with the columns required by the bundle's family
+        specifications.
+    bundle
+        Joblib-loaded family encoder bundle written by
+        ``run_family_encoder_training``.
+
+    Returns
+    -------
+    pd.DataFrame
+        Prediction table containing probabilities in ``PROBA_COLUMNS`` order
+        plus iteration, row index, placeholder true label, and predicted class.
+    """
 
     spec_payload = bundle["family_specs"]
     specs = [

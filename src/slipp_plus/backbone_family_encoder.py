@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
-from typing import Mapping
 
 import numpy as np
-
 import torch
 from torch import nn
 
@@ -91,6 +90,31 @@ def fit_family_encoder(
     config: FamilyEncoderTrainConfig | None = None,
     seed: int = 42,
 ) -> FamilyEncoderNet:
+    """Fit a family-aware encoder on split-local tabular feature blocks.
+
+    Parameters
+    ----------
+    train_arrays
+        Mapping from family name to normalized training feature matrix.
+    train_masks
+        Binary matrix indicating which feature families are present per row.
+    y_train
+        Integer class labels in ``CLASS_10`` order.
+    val_arrays, val_masks, y_val
+        Optional validation split used for early stopping.
+    teacher_train, teacher_mask_train, teacher_val, teacher_mask_val
+        Optional teacher probabilities and availability masks for distillation.
+    config
+        Training hyperparameters. Defaults to ``FamilyEncoderTrainConfig``.
+    seed
+        Torch RNG seed used for initialization and batch ordering.
+
+    Returns
+    -------
+    FamilyEncoderNet
+        Trained model restored to the best validation checkpoint.
+    """
+
     cfg = config or FamilyEncoderTrainConfig()
     torch.manual_seed(seed)
     torch.set_num_threads(1)
@@ -190,6 +214,25 @@ def predict_family_encoder_proba(
     *,
     batch_size: int = 1024,
 ) -> np.ndarray:
+    """Predict class probabilities with a trained family encoder.
+
+    Parameters
+    ----------
+    model
+        Trained family encoder.
+    arrays
+        Mapping from family name to normalized feature matrix.
+    masks
+        Binary family-presence mask aligned to ``arrays``.
+    batch_size
+        Number of rows to score per forward pass.
+
+    Returns
+    -------
+    np.ndarray
+        Probability matrix with columns in ``CLASS_10`` order.
+    """
+
     proba, _z = predict_family_encoder_outputs(
         model,
         arrays,
@@ -206,6 +249,26 @@ def predict_family_encoder_outputs(
     *,
     batch_size: int = 1024,
 ) -> tuple[np.ndarray, np.ndarray]:
+    """Predict class probabilities and latent embeddings.
+
+    Parameters
+    ----------
+    model
+        Trained family encoder.
+    arrays
+        Mapping from family name to normalized feature matrix.
+    masks
+        Binary family-presence mask aligned to ``arrays``.
+    batch_size
+        Number of rows to score per forward pass.
+
+    Returns
+    -------
+    tuple[np.ndarray, np.ndarray]
+        ``(probabilities, embeddings)`` where probabilities follow
+        ``CLASS_10`` order and embeddings are the fused hidden representation.
+    """
+
     tensors = {
         name: torch.from_numpy(np.ascontiguousarray(arrays[name], dtype=np.float32))
         for name in model.family_names
@@ -272,4 +335,17 @@ def _validation_loss(
 
 
 def family_dims_from_specs(specs: list[FeatureFamilySpec]) -> dict[str, int]:
+    """Return model input dimensions for a resolved feature-family list.
+
+    Parameters
+    ----------
+    specs
+        Feature family specifications used by a composite backbone.
+
+    Returns
+    -------
+    dict[str, int]
+        Mapping from family name to number of input columns.
+    """
+
     return {spec.name: len(spec.columns) for spec in specs}

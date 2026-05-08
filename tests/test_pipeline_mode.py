@@ -5,8 +5,8 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-import slipp_plus.hierarchical_pipeline as hierarchical_pipeline
 import slipp_plus.cli as cli
+import slipp_plus.hierarchical_pipeline as hierarchical_pipeline
 from slipp_plus.composite_topology import resolve_composite_topology
 from slipp_plus.config import Settings, load_settings
 from slipp_plus.constants import CLASS_10, HIERARCHICAL_PREDICTIONS_NAME

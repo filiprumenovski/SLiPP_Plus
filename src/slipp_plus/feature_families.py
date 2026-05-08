@@ -88,6 +88,25 @@ class FamilyScaler:
 
 
 def resolve_family_specs(names: tuple[str, ...] | list[str]) -> list[FeatureFamilySpec]:
+    """Resolve configured family names to concrete column specifications.
+
+    Parameters
+    ----------
+    names
+        Family names from ``composite.backbone.feature_families``. An empty
+        sequence selects the default v-sterol family layout.
+
+    Returns
+    -------
+    list[FeatureFamilySpec]
+        Ordered feature-family specs used for scaling and model construction.
+
+    Raises
+    ------
+    KeyError
+        If any configured family name is not registered.
+    """
+
     if not names:
         names = ("paper17", "aa20", "shell12", "sterol_chemistry", "pocket_geometry")
     specs: list[FeatureFamilySpec] = []
@@ -103,6 +122,28 @@ def fit_family_scalers(
     train_idx: np.ndarray,
     specs: list[FeatureFamilySpec],
 ) -> dict[str, FamilyScaler]:
+    """Fit split-local standardization parameters for each feature family.
+
+    Parameters
+    ----------
+    df
+        Full feature table for the current experiment.
+    train_idx
+        Row indices belonging to the training side of the split.
+    specs
+        Ordered feature-family specifications.
+
+    Returns
+    -------
+    dict[str, FamilyScaler]
+        Per-family mean and scale values fitted on ``train_idx`` only.
+
+    Raises
+    ------
+    KeyError
+        If a required family is missing one or more columns.
+    """
+
     scalers: dict[str, FamilyScaler] = {}
     for spec in specs:
         missing = [column for column in spec.columns if column not in df.columns]
@@ -122,6 +163,24 @@ def materialize_family_arrays(
     specs: list[FeatureFamilySpec],
     scalers: Mapping[str, FamilyScaler],
 ) -> tuple[dict[str, np.ndarray], np.ndarray]:
+    """Materialize normalized family matrices and presence masks.
+
+    Parameters
+    ----------
+    df
+        Feature table to transform.
+    specs
+        Ordered feature-family specifications.
+    scalers
+        Split-local scalers returned by ``fit_family_scalers``.
+
+    Returns
+    -------
+    tuple[dict[str, np.ndarray], np.ndarray]
+        Normalized arrays keyed by family name and a binary family-presence
+        mask with shape ``(n_rows, n_families)``.
+    """
+
     arrays: dict[str, np.ndarray] = {}
     masks = np.zeros((len(df), len(specs)), dtype=np.float32)
     for family_index, spec in enumerate(specs):
