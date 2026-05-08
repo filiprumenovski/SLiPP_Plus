@@ -21,6 +21,26 @@ from pathlib import Path
 
 
 def download_all(output_dir: Path) -> None:
+    """Placeholder for the Day 7+ raw-structure download workflow.
+
+    Parameters
+    ----------
+    output_dir:
+        Intended destination root for downloaded PDB and AlphaFold structures.
+        The parameter is accepted now so the CLI contract is stable before the
+        scratch workflow is implemented.
+
+    Returns
+    -------
+    None
+        This function does not currently complete successfully.
+
+    Raises
+    ------
+    NotImplementedError
+        Always raised in the Day 1 release because SLiPP++ consumes the
+        pre-curated descriptor tables shipped with the repository.
+    """
     raise NotImplementedError(
         "Day 7+ from-scratch reproduction. Day 1 uses the pre-curated tables "
         "shipped in reference/SLiPP_2024-main/ and data/raw/supplementary/."
