@@ -221,6 +221,7 @@ targets after `make eval`.
 
 - [`CONTEXT.md`](CONTEXT.md): current project state and caveats.
 - [`RESEARCH_LOG.md`](RESEARCH_LOG.md): decision history and negative results.
+- [`docs/api.md`](docs/api.md): command-line and public Python API reference.
 - [`docs/methods.md`](docs/methods.md): concise methods appendix.
 - [`DATASHEET.md`](DATASHEET.md): data provenance, checksums, counts, and known issues.
 - [`reports/ablation_matrix.md`](reports/ablation_matrix.md): experiment summary table.
