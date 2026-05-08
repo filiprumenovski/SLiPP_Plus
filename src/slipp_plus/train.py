@@ -217,6 +217,21 @@ def _run_flat_training(settings: Settings) -> dict[str, Path]:
 
 
 def run_training(settings: Settings) -> dict[str, Path]:
+    """Train models for the configured pipeline mode.
+
+    Parameters
+    ----------
+    settings
+        Loaded experiment configuration. Flat mode trains RF/XGB/LGBM
+        multiclass models; hierarchical and composite modes delegate to their
+        staged training backends.
+
+    Returns
+    -------
+    dict[str, Path]
+        Paths to prediction artifacts and model directories or bundles.
+    """
+
     if settings.pipeline_mode == "composite":
         from .composite_train import run_composite_training
 
