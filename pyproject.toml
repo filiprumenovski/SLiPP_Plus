@@ -85,6 +85,10 @@ strict = true
 module = "slipp_plus.splits"
 strict = true
 
+[[tool.mypy.overrides]]
+module = "slipp_plus.schemas"
+strict = true
+
 [tool.pytest.ini_options]
 addopts = "-ra --strict-markers"
 testpaths = ["tests"]
