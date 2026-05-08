@@ -26,6 +26,22 @@ from pathlib import Path
 
 
 def extract_pockets(structures_dir: Path, output_dir: Path) -> None:
+    """Placeholder for the Day 7+ dpocket/fpocket extraction path.
+
+    Parameters
+    ----------
+    structures_dir
+        Directory that will contain raw ligand-bound PDB structures.
+    output_dir
+        Destination for extracted pocket descriptor parquets.
+
+    Raises
+    ------
+    NotImplementedError
+        Always raised because the current reproducible path consumes the
+        authors' pre-extracted descriptor tables.
+    """
+
     raise NotImplementedError(
         "Day 7+ from-scratch reproduction. Day 1 uses the pre-extracted "
         "descriptor tables from the authors' supplementary materials."

@@ -20,6 +20,19 @@ from __future__ import annotations
 
 
 def assign_labels(*args: object, **kwargs: object) -> None:
+    """Placeholder for the Day 7+ from-scratch pocket-labeling path.
+
+    Parameters
+    ----------
+    *args, **kwargs
+        Reserved for the future raw-PDB labeling implementation.
+
+    Raises
+    ------
+    NotImplementedError
+        Always raised because Day 1 uses the curated, pre-labeled SLiPP table.
+    """
+
     raise NotImplementedError(
         "Day 7+ from-scratch reproduction. Day 1 consumes pre-labeled data "
         "via src/slipp_plus/ingest.py."

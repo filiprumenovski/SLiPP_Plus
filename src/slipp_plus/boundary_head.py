@@ -77,6 +77,20 @@ class NeighborRescueRule:
 
 
 def validate_boundary_rule(rule: BoundaryRule) -> None:
+    """Validate labels and thresholds for a binary boundary rule.
+
+    Parameters
+    ----------
+    rule
+        Boundary rule to validate against the canonical ``CLASS_10`` label set.
+
+    Raises
+    ------
+    ValueError
+        If labels are unknown, the positive label is also negative, no negative
+        labels are configured, or routing thresholds are out of range.
+    """
+
     labels = {rule.positive_label, *rule.negative_labels}
     unknown = sorted(labels - set(CLASS_10))
     if unknown:
@@ -92,6 +106,20 @@ def validate_boundary_rule(rule: BoundaryRule) -> None:
 
 
 def validate_neighbor_rescue_rule(rule: NeighborRescueRule) -> None:
+    """Validate a top-k neighbor rescue rule.
+
+    Parameters
+    ----------
+    rule
+        Neighbor rescue rule to validate.
+
+    Raises
+    ------
+    ValueError
+        If the embedded boundary rule is invalid or the rescue threshold/top-k
+        settings are out of range.
+    """
+
     validate_boundary_rule(rule.boundary_rule)
     if not 0.0 <= rule.threshold <= 1.0:
         raise ValueError("threshold must be in [0, 1]")

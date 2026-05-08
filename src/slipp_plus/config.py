@@ -67,6 +67,24 @@ LipidFamilyMode = Literal["softmax", "binary_ovr"]
 
 
 def normalize_split_strategy(value: str) -> SplitStrategy:
+    """Normalize configured split strategy names.
+
+    Parameters
+    ----------
+    value
+        Raw split strategy value from YAML.
+
+    Returns
+    -------
+    SplitStrategy
+        Canonical split strategy literal.
+
+    Raises
+    ------
+    ValueError
+        If ``value`` is not a supported split strategy or known alias.
+    """
+
     if value in GROUPED_SPLIT_STRATEGY_ALIASES:
         return CANONICAL_GROUPED_SPLIT_STRATEGY
     if value in SUPPORTED_SPLIT_STRATEGIES:
