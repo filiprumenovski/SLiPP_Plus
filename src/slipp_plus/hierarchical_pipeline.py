@@ -59,6 +59,7 @@ from .hierarchical_experiment import (
     train_one_vs_neighbors,
 )
 from .hierarchical_postprocess import OneVsNeighborsRule, apply_one_vs_neighbors
+from .run_metadata import write_run_metadata_sidecar
 from .specialist_utility_gate import (
     UtilityGateConfig,
     apply_utility_gate,
@@ -692,6 +693,12 @@ def run_hierarchical_training(settings: Settings) -> dict[str, Path]:
                 "class_order": CLASS_10,
                 **schema_metadata,
             },
+        )
+        write_run_metadata_sidecar(
+            bundle_path,
+            settings,
+            seed=settings.seed_base,
+            extra={"artifact_type": "hierarchical_bundle"},
         )
         break
     if bundle_saved is None:

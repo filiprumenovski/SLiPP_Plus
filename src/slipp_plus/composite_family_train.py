@@ -31,6 +31,7 @@ from .feature_families import (
     resolve_family_specs,
 )
 from .features import class10_labels
+from .run_metadata import write_run_metadata_sidecar
 from .splits import load_split
 
 
@@ -236,6 +237,12 @@ def run_family_encoder_training(settings: Settings) -> dict[str, Path]:
     )
     write_artifact_schema_sidecar(
         bundle_path, metadata | {"artifact_type": "family_encoder_bundle"}
+    )
+    write_run_metadata_sidecar(
+        bundle_path,
+        settings,
+        seed=settings.seed_base,
+        extra={"artifact_type": "family_encoder_bundle"},
     )
 
     return {

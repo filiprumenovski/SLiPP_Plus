@@ -10,10 +10,6 @@ see ``hierarchical_pipeline.run_hierarchical_training`` for artifacts
 
 from __future__ import annotations
 
-import json
-import platform
-import subprocess
-from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -27,7 +23,6 @@ from sklearn.utils.class_weight import compute_sample_weight
 from tqdm import tqdm
 from xgboost import XGBClassifier
 
-from .__version__ import __version__
 from .artifact_schema import (
     build_feature_schema_metadata,
     write_artifact_schema_sidecar,
@@ -35,47 +30,8 @@ from .artifact_schema import (
 from .config import Settings
 from .constants import CLASS_10
 from .features import class10_labels, feature_matrix
+from .run_metadata import write_run_metadata_sidecar
 from .splits import load_split, make_splits, persist_splits
-
-
-def _git_commit() -> str:
-    try:
-        result = subprocess.run(
-            ["git", "rev-parse", "HEAD"],
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-    except Exception:
-        return "unknown"
-    return result.stdout.strip() or "unknown"
-
-
-def _write_model_metadata_sidecar(
-    model_path: Path,
-    *,
-    settings: Settings,
-    seed: int,
-) -> Path:
-    metadata = {
-        "slipp_plus_version": __version__,
-        "sklearn_version": sklearn.__version__,
-        "xgboost_version": getattr(__import__("xgboost"), "__version__", "unknown"),
-        "lightgbm_version": getattr(__import__("lightgbm"), "__version__", "unknown"),
-        "numpy_version": np.__version__,
-        "python_version": platform.python_version(),
-        "config_path": str(settings.config_path) if settings.config_path else None,
-        "config_sha256": settings.config_sha256,
-        "git_commit": _git_commit(),
-        "timestamp_utc": datetime.now(UTC).isoformat(),
-        "seed": seed,
-    }
-    sidecar_path = model_path.with_suffix(f"{model_path.suffix}.metadata.json")
-    sidecar_path.write_text(
-        json.dumps(metadata, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
-    return sidecar_path
 
 
 def _build_model(key: str, seed: int) -> Any:
@@ -187,10 +143,11 @@ def _run_flat_training(settings: Settings) -> dict[str, Path]:
                     },
                     model_path,
                 )
-                _write_model_metadata_sidecar(
+                write_run_metadata_sidecar(
                     model_path,
                     settings=settings,
                     seed=settings.seed_base + i,
+                    extra={"artifact_type": "flat_multiclass_model", "model_key": key},
                 )
             df = pd.DataFrame(proba, columns=[f"p_{c}" for c in CLASS_10])
             df.insert(0, "iteration", i)

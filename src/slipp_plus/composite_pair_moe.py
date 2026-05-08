@@ -25,6 +25,7 @@ from .config import Settings
 from .constants import CLASS_10, HIERARCHICAL_METRICS_NAME, HIERARCHICAL_PREDICTIONS_NAME
 from .ensemble import PROBA_COLUMNS
 from .features import class10_labels
+from .run_metadata import write_run_metadata_sidecar
 from .splits import load_split
 
 PAIR_MOE_BUNDLE_VERSION = 1
@@ -510,6 +511,12 @@ def run_pair_moe_training(settings: Settings) -> dict[str, Path]:
     )
     write_artifact_schema_sidecar(
         bundle_path, metadata | {"artifact_type": "composite_pair_moe_bundle"}
+    )
+    write_run_metadata_sidecar(
+        bundle_path,
+        settings,
+        seed=settings.seed_base,
+        extra={"artifact_type": "composite_pair_moe_bundle"},
     )
 
     return {
