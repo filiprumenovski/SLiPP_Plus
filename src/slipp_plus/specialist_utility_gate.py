@@ -135,6 +135,20 @@ def apply_utility_gate(
 
 
 def serialize_utility_model(model: LogisticRegression | None) -> dict[str, Any] | None:
+    """Convert a fitted utility gate into a joblib-friendly payload.
+
+    Parameters
+    ----------
+    model
+        Fitted logistic regression gate, or ``None`` when no utility model was
+        trainable.
+
+    Returns
+    -------
+    dict[str, Any] | None
+        Serializable coefficient/intercept/classes payload, or ``None``.
+    """
+
     if model is None:
         return None
     return {
@@ -145,6 +159,20 @@ def serialize_utility_model(model: LogisticRegression | None) -> dict[str, Any] 
 
 
 def deserialize_utility_model(payload: Mapping[str, Any] | None) -> LogisticRegression | None:
+    """Rehydrate a utility gate from bundle metadata.
+
+    Parameters
+    ----------
+    payload
+        Serialized payload produced by ``serialize_utility_model``.
+
+    Returns
+    -------
+    LogisticRegression | None
+        Restored logistic regression model, or ``None`` when no payload is
+        present.
+    """
+
     if payload is None:
         return None
     coef = np.asarray(payload["coef"], dtype=np.float64)
