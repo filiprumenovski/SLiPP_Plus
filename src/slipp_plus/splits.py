@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 
 import numpy as np
 import polars as pl
+from numpy.typing import NDArray
 from sklearn.model_selection import StratifiedShuffleSplit
 
 from .config import Settings, normalize_split_strategy
@@ -20,12 +21,12 @@ SplitStrategy = Literal[
 ]
 
 
-def _factorize_sorted(values: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+def _factorize_sorted(values: NDArray[Any]) -> tuple[NDArray[np.int64], NDArray[Any]]:
     classes, codes = np.unique(values, return_inverse=True)
     return codes.astype(np.int64), classes
 
 
-def _factorize_preserve_order(values: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+def _factorize_preserve_order(values: NDArray[Any]) -> tuple[NDArray[np.int64], NDArray[Any]]:
     mapping: dict[object, int] = {}
     groups: list[object] = []
     codes = np.empty(len(values), dtype=np.int64)
@@ -41,12 +42,12 @@ def _factorize_preserve_order(values: np.ndarray) -> tuple[np.ndarray, np.ndarra
 
 
 def _make_stratified_shuffle_splits(
-    class_labels: np.ndarray,
+    class_labels: NDArray[Any],
     n_iterations: int,
     test_fraction: float,
     seed_base: int,
-) -> list[tuple[np.ndarray, np.ndarray]]:
-    splits: list[tuple[np.ndarray, np.ndarray]] = []
+) -> list[tuple[NDArray[np.int64], NDArray[np.int64]]]:
+    splits: list[tuple[NDArray[np.int64], NDArray[np.int64]]] = []
     for i in range(n_iterations):
         sss = StratifiedShuffleSplit(
             n_splits=1,
@@ -60,9 +61,9 @@ def _make_stratified_shuffle_splits(
 
 def _score_grouped_selection(
     size: int,
-    counts: np.ndarray,
+    counts: NDArray[np.int64],
     target_size: int,
-    target_class_counts: np.ndarray,
+    target_class_counts: NDArray[np.float64],
 ) -> float:
     size_scale = max(float(target_size), 1.0)
     class_scale = np.maximum(target_class_counts, 1.0)
@@ -72,11 +73,11 @@ def _score_grouped_selection(
 
 
 def _make_grouped_split(
-    class_labels: np.ndarray,
-    group_labels: np.ndarray,
+    class_labels: NDArray[Any],
+    group_labels: NDArray[Any],
     test_fraction: float,
     seed: int,
-) -> tuple[np.ndarray, np.ndarray]:
+) -> tuple[NDArray[np.int64], NDArray[np.int64]]:
     if len(class_labels) != len(group_labels):
         raise ValueError("group_labels must have the same length as class_labels")
 
@@ -131,13 +132,13 @@ def _make_grouped_split(
 
 
 def make_splits(
-    class_labels: np.ndarray,
+    class_labels: NDArray[Any],
     n_iterations: int,
     test_fraction: float,
     seed_base: int,
     strategy: SplitStrategy = "stratified_shuffle",
-    group_labels: np.ndarray | None = None,
-) -> list[tuple[np.ndarray, np.ndarray]]:
+    group_labels: NDArray[Any] | None = None,
+) -> list[tuple[NDArray[np.int64], NDArray[np.int64]]]:
     """Return ``n_iterations`` (train_idx, test_idx) pairs for the configured split.
 
     Seeding: iteration ``i`` uses ``seed_base + i`` to keep each split reproducible
@@ -158,7 +159,7 @@ def make_splits(
     if group_labels is None:
         raise ValueError("group_labels are required when strategy='grouped'")
 
-    splits: list[tuple[np.ndarray, np.ndarray]] = []
+    splits: list[tuple[NDArray[np.int64], NDArray[np.int64]]] = []
     for i in range(n_iterations):
         splits.append(
             _make_grouped_split(
@@ -172,7 +173,7 @@ def make_splits(
 
 
 def persist_splits(
-    splits: list[tuple[np.ndarray, np.ndarray]],
+    splits: list[tuple[NDArray[np.int64], NDArray[np.int64]]],
     out_dir: Path,
 ) -> list[Path]:
     """Write split index pairs as deterministic parquet files.
@@ -209,7 +210,7 @@ def persist_splits(
     return written
 
 
-def load_split(path: Path) -> tuple[np.ndarray, np.ndarray]:
+def load_split(path: Path) -> tuple[NDArray[np.int64], NDArray[np.int64]]:
     """Load one persisted split parquet.
 
     Parameters
@@ -233,8 +234,8 @@ def load_split(path: Path) -> tuple[np.ndarray, np.ndarray]:
 
 def run_splits(
     settings: Settings,
-    class_labels: np.ndarray,
-    group_labels: np.ndarray | None = None,
+    class_labels: NDArray[Any],
+    group_labels: NDArray[Any] | None = None,
 ) -> list[Path]:
     """Generate and persist splits for a loaded experiment configuration.
 

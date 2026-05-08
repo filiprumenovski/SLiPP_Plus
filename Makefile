@@ -3,7 +3,7 @@
 PY ?= uv run
 CFG ?= configs/day1.yaml
 HIER_CFG ?= configs/v_sterol_boundary_refactor.yaml
-MYPY_TARGETS ?= src/slipp_plus/cli.py
+MYPY_TARGETS ?= src/slipp_plus/cli.py src/slipp_plus/splits.py
 
 help:
 	@echo "slipp_plus targets:"
