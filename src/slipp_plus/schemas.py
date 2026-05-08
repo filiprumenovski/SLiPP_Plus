@@ -7,7 +7,11 @@ depend on runtime configuration live in ``ingest.assert_rule_1``.
 from __future__ import annotations
 
 import pandas as pd
-import pandera.pandas as pa
+
+try:
+    import pandera.pandas as pa
+except ImportError:  # pandera<0.20 exposed the pandas API at top level.
+    import pandera as pa
 
 from .constants import CLASS_10, SELECTED_17
 
@@ -19,12 +23,8 @@ def _numeric_feature_columns(columns: list[str]) -> dict[str, pa.Column]:
 def training_schema(feature_columns: list[str]) -> pa.DataFrameSchema:
     """Schema for processed/train_pockets.parquet and test_pockets.parquet."""
     cols: dict[str, pa.Column] = _numeric_feature_columns(feature_columns)
-    cols["class_10"] = pa.Column(
-        str, checks=pa.Check.isin(CLASS_10), nullable=False
-    )
-    cols["class_binary"] = pa.Column(
-        int, checks=pa.Check.isin({0, 1}), nullable=False
-    )
+    cols["class_10"] = pa.Column(str, checks=pa.Check.isin(CLASS_10), nullable=False)
+    cols["class_binary"] = pa.Column(int, checks=pa.Check.isin({0, 1}), nullable=False)
     cols["pdb_ligand"] = pa.Column(str, nullable=False)  # e.g. "ADN/pdb1BX4.pdb"
     return pa.DataFrameSchema(cols, strict="filter", coerce=True)
 
@@ -37,32 +37,26 @@ def holdout_schema(feature_columns: list[str]) -> pa.DataFrameSchema:
     from the ligand annotation in the supporting-file xlsx.
     """
     cols: dict[str, pa.Column] = _numeric_feature_columns(feature_columns)
-    cols["class_binary"] = pa.Column(
-        int, checks=pa.Check.isin({0, 1}), nullable=False
-    )
+    cols["class_binary"] = pa.Column(int, checks=pa.Check.isin({0, 1}), nullable=False)
     cols["structure_id"] = pa.Column(str, nullable=False)
     cols["ligand"] = pa.Column(str, nullable=True)
     return pa.DataFrameSchema(cols, strict="filter", coerce=True)
 
 
-def validate_training(
-    df: pd.DataFrame, feature_columns: list[str]
-) -> pd.DataFrame:
+def validate_training(df: pd.DataFrame, feature_columns: list[str]) -> pd.DataFrame:
     return training_schema(feature_columns).validate(df, lazy=True)
 
 
-def validate_holdout(
-    df: pd.DataFrame, feature_columns: list[str]
-) -> pd.DataFrame:
+def validate_holdout(df: pd.DataFrame, feature_columns: list[str]) -> pd.DataFrame:
     return holdout_schema(feature_columns).validate(df, lazy=True)
 
 
 # Re-export for convenience.
 __all__ = [
-    "SELECTED_17",
     "CLASS_10",
-    "training_schema",
+    "SELECTED_17",
     "holdout_schema",
-    "validate_training",
+    "training_schema",
     "validate_holdout",
+    "validate_training",
 ]
