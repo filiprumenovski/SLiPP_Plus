@@ -10,7 +10,7 @@ scientific evidence in this project.
 ## Current State
 
 - Branch: `main`
-- Latest pushed commit at time of writing: `5c235b1 docs: 6.3 document boundary tiebreaker pipeline`
+- Latest pushed commit at time of writing: `83f4b5f repro: 5.2 write model metadata sidecars`
 - Worktree was clean when this file was written.
 - Current release-facing leader: `exp-012-compact-tunnel-shape`
 - Current best config: `configs/v49_tunnel_shape_family_encoder.yaml`
@@ -54,7 +54,36 @@ Several `handoff.md` item `6.3` docstring slices were completed and pushed:
 - `cf095a1 docs: 6.3 document utility gate serialization`
 - `5c235b1 docs: 6.3 document boundary tiebreaker pipeline`
 
-Focused verification run during those ticks:
+The release-facing README was pushed:
+
+- `aa18641 docs: make README release-candidate focused`
+
+The next-agent root handoff was added:
+
+- `e8be7aa docs: add next agent handoff`
+
+The local quality gate was repaired and pushed:
+
+- `b551bc9 fix: restore local quality gate`
+  - Fixed a real Ruff-discovered bug: missing `load_split` import in
+    `src/slipp_plus/pair_tiebreaker_experiment.py`.
+  - Aligned type checking with the incremental handoff strategy:
+    `make typecheck` runs `mypy $(MYPY_TARGETS)`, defaulting to
+    `src/slipp_plus/cli.py`, and CI calls `make typecheck`.
+- `d8290d7 style: ruff format sweep`
+  - Repo-wide `ruff format` sweep after the gate fix.
+
+Reproducibility hardening was pushed:
+
+- `83f4b5f repro: 5.2 write model metadata sidecars`
+  - Added `src/slipp_plus/run_metadata.py`.
+  - Flat RF/XGB/LGBM bundles, hierarchical bundles, family-encoder bundles,
+    and composite pair-MoE bundles now write adjacent
+    `.joblib.metadata.json` sidecars with package versions, Python version,
+    config path/hash, git commit, UTC timestamp, and seed.
+  - Added `tests/test_run_metadata.py`.
+
+Focused verification runs during these ticks:
 
 - `uv run pytest -q tests/test_feature_families.py tests/test_pipeline_mode.py`: passed
 - `uv run pytest -q tests/test_caver_analysis.py tests/test_caver_t12_features.py`: passed
@@ -62,10 +91,39 @@ Focused verification run during those ticks:
 - `uv run pytest -q tests/test_pipeline_mode.py tests/test_regression_day1.py`: passed with slow regression skipped as intended
 - `uv run pytest -q tests/test_specialist_utility_gate.py`: passed
 - Focused Ruff checks passed for every touched slice
+- `make test`: passed after the quality-gate repair and again after the
+  metadata-sidecar work (`165 passed, 2 skipped` on the latest run).
+- `uv run ruff format --check .`: passed after the format sweep.
+- `uv run mypy src/slipp_plus/run_metadata.py`: passed.
 
 ## Remaining Work
 
-### 1. Finish `handoff.md` item 6.3 docstrings
+### 1. Highest-impact non-docstring work
+
+The user explicitly redirected away from docstring cleanup with "skip docstring
+shit, start high impact work." Prefer these before returning to item 6.3:
+
+1. Full mypy hardening beyond the current `MYPY_TARGETS` allowlist.
+   - Current local gate is intentionally incremental:
+     `MYPY_TARGETS ?= src/slipp_plus/cli.py`.
+   - `make test` is green, but repo-wide `mypy src` is not complete.
+2. Release-candidate reproduction.
+   - `make all CFG=configs/v49_tunnel_shape_family_encoder.yaml` has not been
+     rerun in this handoff window.
+   - If long-run mode is not authorized, do not run it inline; record exact
+     command and expected artifacts instead.
+3. Long-run ablation closure.
+   - See `experiments/queued.md`; these are intentionally queued because they
+     need longer model runs or missing holdout implementation.
+4. CI state.
+   - Local `make test` is green, but GitHub Actions status has not been checked
+     or fixed in this window. The user previously said CI can come later.
+5. Completion audit.
+   - Before marking the active goal complete, map every `handoff.md` item and
+     done criterion to actual files, commands, or explicit deferrals. Do not
+     treat this handoff file as proof by itself.
+
+### 2. `handoff.md` item 6.3 docstrings remain unfinished
 
 Current audit command:
 
@@ -86,8 +144,8 @@ for row in missing:
 PY
 ```
 
-Most recent count before this handoff: `58` public functions still missing
-docstrings.
+Most recent count after `83f4b5f`: `58` public functions still missing
+docstrings. This count did not improve during the high-impact gate/repro work.
 
 Known remaining functions at that point:
 
@@ -152,7 +210,7 @@ src/slipp_plus/v_sterol_report.py:151 run_report
 src/slipp_plus/v_sterol_report.py:331 main
 ```
 
-Recommended next docstring slices:
+Recommended next docstring slices when docstring work is back in scope:
 
 1. `src/slipp_plus/v_sterol_report.py`
 2. `src/slipp_plus/hierarchical_pipeline.py`
@@ -164,7 +222,7 @@ Recommended next docstring slices:
 For each slice, run focused Ruff and any related tests. Keep commits small and
 push after each coherent tick.
 
-### 2. Long-run ablations remain queued, not done
+### 3. Long-run ablations remain queued, not done
 
 See `experiments/queued.md`. Do not delete it. It currently queues:
 
@@ -179,7 +237,7 @@ See `experiments/queued.md`. Do not delete it. It currently queues:
 These require long model runs or new implementation. Do not run them inline
 unless the user explicitly authorizes long-run mode.
 
-### 3. Full completion criteria are still not met
+### 4. Full completion criteria are still not met
 
 Do not mark the goal complete yet. `handoff.md` done criteria still need:
 
@@ -192,7 +250,7 @@ Do not mark the goal complete yet. `handoff.md` done criteria still need:
 - CI green on latest push.
 - Final release/user-action checklist.
 
-### 4. Important docs and artifacts already exist
+### 5. Important docs and artifacts already exist
 
 These files exist and should be preserved:
 
@@ -215,7 +273,7 @@ These files exist and should be preserved:
 - `MODEL_V2_SPEC.md`
 - `experiments/queued.md`
 
-### 5. Remote note
+### 6. Remote note
 
 `git push` succeeds but prints:
 
