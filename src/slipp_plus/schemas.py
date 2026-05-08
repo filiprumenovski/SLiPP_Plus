@@ -21,7 +21,20 @@ def _numeric_feature_columns(columns: list[str]) -> dict[str, pa.Column]:
 
 
 def training_schema(feature_columns: list[str]) -> pa.DataFrameSchema:
-    """Schema for processed/train_pockets.parquet and test_pockets.parquet."""
+    """Build the Pandera schema for processed training pockets.
+
+    Parameters
+    ----------
+    feature_columns:
+        Exact numeric feature columns required by the active feature set.
+
+    Returns
+    -------
+    pandera.DataFrameSchema
+        Schema that keeps only expected columns, coerces feature values to
+        numeric types, and requires ``class_10``, ``class_binary``, and
+        ``pdb_ligand`` labels.
+    """
     cols: dict[str, pa.Column] = _numeric_feature_columns(feature_columns)
     cols["class_10"] = pa.Column(str, checks=pa.Check.isin(CLASS_10), nullable=False)
     cols["class_binary"] = pa.Column(int, checks=pa.Check.isin({0, 1}), nullable=False)
@@ -30,11 +43,24 @@ def training_schema(feature_columns: list[str]) -> pa.DataFrameSchema:
 
 
 def holdout_schema(feature_columns: list[str]) -> pa.DataFrameSchema:
-    """Schema for apo_pdb_holdout.parquet and alphafold_holdout.parquet.
+    """Build the Pandera schema for processed holdout pockets.
 
-    Holdouts carry the same 17 descriptors but a much shorter row list; we do
-    not require balanced per-class counts here. ``class_binary`` is derived
-    from the ligand annotation in the supporting-file xlsx.
+    Holdouts carry the same descriptor family as the active feature set but a
+    much shorter row list; balanced per-class counts are not required here.
+    ``class_binary`` is derived from the ligand annotation in the supporting
+    workbook.
+
+    Parameters
+    ----------
+    feature_columns:
+        Exact numeric feature columns required by the active feature set.
+
+    Returns
+    -------
+    pandera.DataFrameSchema
+        Schema that keeps only expected columns, coerces feature values to
+        numeric types, and requires ``class_binary``, ``structure_id``, and
+        ``ligand`` metadata.
     """
     cols: dict[str, pa.Column] = _numeric_feature_columns(feature_columns)
     cols["class_binary"] = pa.Column(int, checks=pa.Check.isin({0, 1}), nullable=False)
@@ -44,10 +70,50 @@ def holdout_schema(feature_columns: list[str]) -> pa.DataFrameSchema:
 
 
 def validate_training(df: pd.DataFrame, feature_columns: list[str]) -> pd.DataFrame:
+    """Validate a processed training frame against the active feature schema.
+
+    Parameters
+    ----------
+    df:
+        Candidate processed training frame.
+    feature_columns:
+        Exact numeric feature columns required by the active feature set.
+
+    Returns
+    -------
+    pandas.DataFrame
+        Validated and coerced training frame.
+
+    Raises
+    ------
+    pandera.errors.SchemaErrors
+        If required columns are missing, labels are invalid, feature values are
+        null, or feature values cannot be coerced to numeric types.
+    """
     return training_schema(feature_columns).validate(df, lazy=True)
 
 
 def validate_holdout(df: pd.DataFrame, feature_columns: list[str]) -> pd.DataFrame:
+    """Validate a processed holdout frame against the active feature schema.
+
+    Parameters
+    ----------
+    df:
+        Candidate processed holdout frame.
+    feature_columns:
+        Exact numeric feature columns required by the active feature set.
+
+    Returns
+    -------
+    pandas.DataFrame
+        Validated and coerced holdout frame.
+
+    Raises
+    ------
+    pandera.errors.SchemaErrors
+        If required columns are missing, binary labels are invalid, feature
+        values are null, or feature values cannot be coerced to numeric types.
+    """
     return holdout_schema(feature_columns).validate(df, lazy=True)
 
 
