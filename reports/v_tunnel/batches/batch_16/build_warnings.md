@@ -1,0 +1,211 @@
+# v_tunnel build warnings
+
+## Counts by type
+- CAVER produced no tunnel characteristics table: 46
+- CAVER timeout: 155
+
+## Counts by class
+- PLM: 201
+
+## All warnings
+- PLM/pdb6S2M.pdb/pocket1: CAVER produced no tunnel characteristics table
+- PLM/pdb6S2M.pdb/pocket3: CAVER produced no tunnel characteristics table
+- PLM/pdb6S2M.pdb/pocket7: CAVER produced no tunnel characteristics table
+- PLM/pdb7D76.pdb/pocket24: CAVER timeout
+- PLM/pdb6QGS.pdb/pocket7: CAVER timeout
+- PLM/pdb6QGS.pdb/pocket8: CAVER timeout
+- PLM/pdb6QGS.pdb/pocket83: CAVER timeout
+- PLM/pdb6QGS.pdb/pocket86: CAVER timeout
+- PLM/pdb7CZ5.pdb/pocket2: CAVER timeout
+- PLM/pdb7CZ5.pdb/pocket20: CAVER timeout
+- PLM/pdb7CZ5.pdb/pocket24: CAVER timeout
+- PLM/pdb6VN7.pdb/pocket5: CAVER timeout
+- PLM/pdb6VN7.pdb/pocket27: CAVER timeout
+- PLM/pdb6VN7.pdb/pocket32: CAVER timeout
+- PLM/pdb6VN7.pdb/pocket38: CAVER timeout
+- PLM/pdb6VN7.pdb/pocket75: CAVER timeout
+- PLM/pdb6VN7.pdb/pocket87: CAVER timeout
+- PLM/pdb7C9Z.pdb/pocket46: CAVER timeout
+- PLM/pdb7D77.pdb/pocket43: CAVER timeout
+- PLM/pdb7D77.pdb/pocket58: CAVER timeout
+- PLM/pdb7DPF.pdb/pocket29: CAVER timeout
+- PLM/pdb7DPF.pdb/pocket31: CAVER timeout
+- PLM/pdb7O60.pdb: CAVER produced no tunnel characteristics table
+- PLM/pdb7EPT.pdb/pocket1: CAVER timeout
+- PLM/pdb7EPT.pdb/pocket22: CAVER timeout
+- PLM/pdb7EPT.pdb/pocket58: CAVER timeout
+- PLM/pdb7LJD.pdb/pocket6: CAVER timeout
+- PLM/pdb7LJD.pdb/pocket37: CAVER timeout
+- PLM/pdb7LJD.pdb/pocket38: CAVER timeout
+- PLM/pdb7LJD.pdb/pocket41: CAVER timeout
+- PLM/pdb7LJD.pdb/pocket48: CAVER timeout
+- PLM/pdb7LJD.pdb/pocket69: CAVER timeout
+- PLM/pdb7LJD.pdb/pocket75: CAVER timeout
+- PLM/pdb7TAD.pdb/pocket36: CAVER timeout
+- PLM/pdb7TAD.pdb/pocket77: CAVER timeout
+- PLM/pdb7N5D.pdb/pocket8: CAVER timeout
+- PLM/pdb7N5D.pdb/pocket35: CAVER timeout
+- PLM/pdb7N5D.pdb/pocket43: CAVER timeout
+- PLM/pdb7N5D.pdb/pocket49: CAVER timeout
+- PLM/pdb7N5D.pdb/pocket80: CAVER timeout
+- PLM/pdb7N5D.pdb/pocket82: CAVER timeout
+- PLM/pdb7N5D.pdb/pocket129: CAVER timeout
+- PLM/pdb7N5D.pdb/pocket134: CAVER timeout
+- PLM/pdb7N5D.pdb/pocket181: CAVER timeout
+- PLM/pdb7N5D.pdb/pocket184: CAVER timeout
+- PLM/pdb7N5D.pdb/pocket218: CAVER timeout
+- PLM/pdb7N5E.pdb/pocket17: CAVER timeout
+- PLM/pdb7N5E.pdb/pocket34: CAVER timeout
+- PLM/pdb7N5E.pdb/pocket41: CAVER timeout
+- PLM/pdb7N5E.pdb/pocket56: CAVER timeout
+- PLM/pdb7N5E.pdb/pocket59: CAVER timeout
+- PLM/pdb7N5E.pdb/pocket68: CAVER timeout
+- PLM/pdb7N5E.pdb/pocket89: CAVER timeout
+- PLM/pdb7N5E.pdb/pocket97: CAVER timeout
+- PLM/pdb7N5E.pdb/pocket107: CAVER timeout
+- PLM/pdb7N5E.pdb/pocket118: CAVER timeout
+- PLM/pdb7N5E.pdb/pocket119: CAVER timeout
+- PLM/pdb7N5E.pdb/pocket135: CAVER timeout
+- PLM/pdb7N5E.pdb/pocket145: CAVER timeout
+- PLM/pdb7N5E.pdb/pocket173: CAVER timeout
+- PLM/pdb7VFX.pdb/pocket21: CAVER timeout
+- PLM/pdb7VFX.pdb/pocket44: CAVER timeout
+- PLM/pdb7VFX.pdb/pocket54: CAVER timeout
+- PLM/pdb7VFX.pdb/pocket78: CAVER timeout
+- PLM/pdb7VFX.pdb/pocket83: CAVER timeout
+- PLM/pdb7TAC.pdb/pocket21: CAVER timeout
+- PLM/pdb7TAC.pdb/pocket62: CAVER timeout
+- PLM/pdb7TAC.pdb/pocket67: CAVER timeout
+- PLM/pdb7TAC.pdb/pocket74: CAVER timeout
+- PLM/pdb7TAC.pdb/pocket88: CAVER timeout
+- PLM/pdb7TAC.pdb/pocket109: CAVER timeout
+- PLM/pdb7TAC.pdb/pocket132: CAVER timeout
+- PLM/pdb7W17.pdb/pocket58: CAVER timeout
+- PLM/pdb7VYK.pdb/pocket12: CAVER timeout
+- PLM/pdb7VYK.pdb/pocket69: CAVER timeout
+- PLM/pdb7VYK.pdb/pocket70: CAVER timeout
+- PLM/pdb7SB5.pdb/pocket1: CAVER timeout
+- PLM/pdb7SB5.pdb/pocket8: CAVER timeout
+- PLM/pdb7SB5.pdb/pocket56: CAVER timeout
+- PLM/pdb7SB5.pdb/pocket73: CAVER timeout
+- PLM/pdb7SB5.pdb/pocket92: CAVER timeout
+- PLM/pdb7SB5.pdb/pocket95: CAVER timeout
+- PLM/pdb7SB5.pdb/pocket98: CAVER timeout
+- PLM/pdb7SB5.pdb/pocket113: CAVER timeout
+- PLM/pdb7SB5.pdb/pocket162: CAVER timeout
+- PLM/pdb7SB5.pdb/pocket189: CAVER timeout
+- PLM/pdb7SB5.pdb/pocket202: CAVER timeout
+- PLM/pdb7SB5.pdb/pocket214: CAVER timeout
+- PLM/pdb7SB5.pdb/pocket232: CAVER timeout
+- PLM/pdb7SB5.pdb/pocket260: CAVER timeout
+- PLM/pdb7SB5.pdb/pocket297: CAVER timeout
+- PLM/pdb7SB5.pdb/pocket315: CAVER timeout
+- PLM/pdb7VY6.pdb/pocket12: CAVER timeout
+- PLM/pdb7VY6.pdb/pocket28: CAVER timeout
+- PLM/pdb7VY6.pdb/pocket63: CAVER timeout
+- PLM/pdb7VY5.pdb/pocket9: CAVER timeout
+- PLM/pdb7VY5.pdb/pocket34: CAVER timeout
+- PLM/pdb7VY5.pdb/pocket38: CAVER timeout
+- PLM/pdb7VY5.pdb/pocket39: CAVER timeout
+- PLM/pdb7VY5.pdb/pocket60: CAVER timeout
+- PLM/pdb7VY5.pdb/pocket63: CAVER timeout
+- PLM/pdb7VY5.pdb/pocket69: CAVER timeout
+- PLM/pdb8AYL.pdb/pocket1: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket4: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket6: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket7: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket12: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket19: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket20: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket28: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket29: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket38: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket45: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket51: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket53: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket55: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket58: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket79: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket81: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket90: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket98: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket99: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket111: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket116: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket128: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYL.pdb/pocket136: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYN.pdb/pocket2: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYN.pdb/pocket3: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYN.pdb/pocket13: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYN.pdb/pocket15: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYN.pdb/pocket16: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYN.pdb/pocket17: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYN.pdb/pocket18: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYN.pdb/pocket19: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYN.pdb/pocket20: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYN.pdb/pocket23: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYN.pdb/pocket44: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYN.pdb/pocket76: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYN.pdb/pocket96: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYN.pdb/pocket103: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYN.pdb/pocket104: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYN.pdb/pocket106: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYN.pdb/pocket121: CAVER produced no tunnel characteristics table
+- PLM/pdb8AYN.pdb/pocket144: CAVER produced no tunnel characteristics table
+- PLM/pdb7Q21.pdb/pocket12: CAVER timeout
+- PLM/pdb7Q21.pdb/pocket27: CAVER timeout
+- PLM/pdb7Q21.pdb/pocket30: CAVER timeout
+- PLM/pdb7Q21.pdb/pocket31: CAVER timeout
+- PLM/pdb7Q21.pdb/pocket41: CAVER timeout
+- PLM/pdb7Q21.pdb/pocket44: CAVER timeout
+- PLM/pdb7Q21.pdb/pocket55: CAVER timeout
+- PLM/pdb7Q21.pdb/pocket60: CAVER timeout
+- PLM/pdb7Q21.pdb/pocket69: CAVER timeout
+- PLM/pdb7Q21.pdb/pocket75: CAVER timeout
+- PLM/pdb7Q21.pdb/pocket95: CAVER timeout
+- PLM/pdb7Q21.pdb/pocket119: CAVER timeout
+- PLM/pdb7Q21.pdb/pocket126: CAVER timeout
+- PLM/pdb7Q21.pdb/pocket182: CAVER timeout
+- PLM/pdb7Q21.pdb/pocket195: CAVER timeout
+- PLM/pdb7Q21.pdb/pocket199: CAVER timeout
+- PLM/pdb7Q21.pdb/pocket269: CAVER timeout
+- PLM/pdb7Q21.pdb/pocket278: CAVER timeout
+- PLM/pdb7Q21.pdb/pocket287: CAVER timeout
+- PLM/pdb7Q21.pdb/pocket294: CAVER timeout
+- PLM/pdb7Q21.pdb/pocket302: CAVER timeout
+- PLM/pdb7Q21.pdb/pocket308: CAVER timeout
+- PLM/pdb7Q21.pdb/pocket335: CAVER timeout
+- PLM/pdb7X2O.pdb/pocket32: CAVER timeout
+- PLM/pdb7X2O.pdb/pocket44: CAVER timeout
+- PLM/pdb7X2O.pdb/pocket54: CAVER timeout
+- PLM/pdb7X3D.pdb/pocket15: CAVER timeout
+- PLM/pdb7X3D.pdb/pocket34: CAVER timeout
+- PLM/pdb7XXG.pdb/pocket6: CAVER timeout
+- PLM/pdb7XXG.pdb/pocket13: CAVER timeout
+- PLM/pdb7XXG.pdb/pocket40: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket2: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket3: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket4: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket6: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket7: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket10: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket105: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket129: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket130: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket135: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket162: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket165: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket176: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket181: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket199: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket241: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket256: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket268: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket270: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket289: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket298: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket302: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket310: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket332: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket347: CAVER timeout
+- PLM/pdb8HKJ.pdb/pocket350: CAVER timeout

@@ -1,7 +1,7 @@
 # SLiPP++ Project Context
 
 <!-- This is the LLM entry point. Read this file FIRST at the start of any session. -->
-<!-- Last updated: 2026-04-24 -->
+<!-- Last updated: 2026-05-06 -->
 <!-- See AGENTS.md for constraints/rules. See RESEARCH_LOG.md for full history. -->
 
 ## What This Project Is
@@ -13,42 +13,43 @@ The project is in an **active research phase** — past Day 1 reproduction, now 
 ## Current Best Configuration
 
 ```
-experiment_id:   exp-009-v_sterol-boundary-refactor
-feature_set:     v_sterol (87 columns: 17 fpocket + 20 AA + 12 shell + 38 chem-refined)
-models:          [rf, xgb, lgbm] → probability-averaged ensemble
-postprocessing:  grouped STE-vs-neighbors rescue (threshold=0.50) + OLA-vs-PLM pair head (margin=0.05)
-config:          configs/v_sterol.yaml
-predictions:     processed/v_sterol/predictions/ste_rescue_ola_plm_pair_predictions.parquet
-reproduce:       see reports/v_sterol/boundary_refactor_results.md
+experiment_id:   exp-012-compact-tunnel-shape
+feature_set:     v49+tunnel_shape (55 columns: 17 fpocket + 20 AA + 12 shell + 6 compact tunnel)
+backbone:        family encoder distilled from exp-009 teacher predictions
+postprocessing:  none
+config:          configs/v49_tunnel_shape_family_encoder.yaml
+predictions:     processed/v49_tunnel_shape/predictions/hierarchical_lipid_predictions.parquet
+reproduce:       uv run python -m slipp_plus.cli train --config configs/v49_tunnel_shape_family_encoder.yaml
+report:          uv run python -m slipp_plus.cli compact-report
 ```
 
 ## Current Best Metrics
 
 | metric                  | value           | paper baseline | Δ       |
 |---                      |---              |---             |---      |
-| Binary F1 (test)        | 0.899 ± 0.015  | 0.869          | +0.030  |
-| Binary AUROC (test)     | 0.986 ± 0.004  | 0.970          | +0.016  |
-| 10-class macro-F1       | 0.754 ± 0.016  | —              | new     |
-| 5-lipid macro-F1        | 0.641 ± 0.030  | —              | new     |
-| CLR F1                  | 0.728 ± 0.047  | —              | —       |
-| STE F1                  | 0.576 ± 0.105  | —              | weakest |
-| PLM F1                  | 0.649 ± 0.050  | —              | —       |
-| MYR F1                  | 0.697           | —              | —       |
-| OLA F1                  | 0.553           | —              | —       |
-| Apo-PDB F1 (RF)         | 0.716           | 0.726          | −0.010  |
-| AlphaFold F1 (RF)        | 0.725           | 0.643          | +0.082  |
+| Binary F1 (test)        | 0.902 ± 0.017  | 0.869          | +0.033  |
+| Binary AUROC (test)     | 0.988 ± 0.003  | 0.970          | +0.018  |
+| 10-class macro-F1       | 0.766 ± 0.019  | —              | new     |
+| 5-lipid macro-F1        | 0.666 ± 0.032  | —              | new     |
+| CLR F1                  | 0.748           | —              | —       |
+| STE F1                  | 0.647           | —              | weakest |
+| PLM F1                  | 0.647           | —              | —       |
+| MYR F1                  | 0.691           | —              | —       |
+| OLA F1                  | 0.595           | —              | —       |
+| Apo-PDB F1              | 0.696           | 0.726          | conservative |
+| AlphaFold F1            | 0.620           | 0.643          | conservative |
 
 ## Active Hypotheses
 
-1. **STE confusion is dominated by PLM** (38% of STE errors), not CLR (0.8%). The PLM/STE binary tiebreaker addresses this.
+1. **STE confusion is dominated by PLM** (38% of STE errors), not CLR (0.8%). The PLM/STE local neighborhood expert is the current best intervention.
 2. **Aromatic residue composition** (TYR, TRP, PHE) is the primary discriminator for sterol-binding pockets — confirmed by XGB gain analysis.
 3. **fpocket outperforms P2Rank** on lipid-class pocket detection (validated, exp-008).
-4. **Binary arbiters extract pairwise signal** more efficiently than the 10-class softmax can.
+4. **Compact family structure beats raw feature accumulation**. The 55-feature tunnel-shape encoder matches the 105-feature tunnel MoE within split noise with a much smaller artifact.
 
 ## Known Blockers / Weaknesses
 
-- **STE F1 (0.444)** remains the weakest lipid class. Only 152 training rows — data scarcity is the floor.
-- **Apo-PDB holdout** slightly underperforms the paper (0.716 vs 0.726) — the aromatic/aliphatic features don't help apo structures as much.
+- **STE F1 (0.647)** remains the weakest lipid class. Only 152 training rows, so data scarcity is the floor.
+- **External holdouts are conservative** for the compact release candidate: apo-PDB F1 0.696 vs paper 0.726, AlphaFold F1 0.620 vs paper 0.643.
 - **Tiebreaker modules** are heavily duplicated (~1,750 LOC of copy-paste). P2 audit item pending.
 
 ## What Has Been Tried (and failed / abandoned)
@@ -63,18 +64,22 @@ reproduce:       see reports/v_sterol/boundary_refactor_results.md
 ## Feature Set Evolution
 
 ```
-v14 (17 cols)  →  v49 (+20 AA +12 shell = 49)  →  v61 (+12 normalized = 61)
-                                                 →  v_sterol (+38 chem-refined = 87)  ← current best
-                                                 →  v_plm_ste (+16 motif = 103)       ← abandoned
+v14 (17 cols)  →  v14+shell (29)                ← shell12 alone is modest
+               →  v14+aa (37)                   ← major compact recovery
+               →  v49 (+20 AA +12 shell = 49)   ← parsimonious fallback
+               →  v49+tunnel_shape (55)         ← current release candidate
+               →  v_sterol (+38 chem-refined = 87)
+               →  v_tunnel (+18 tunnel = 105)   ← high-complexity reference only
+               →  v_plm_ste (+16 motif = 103)   ← abandoned
 ```
 
 ## Suggested Next Experiments
 
-1. **Apply binary arbiters to other dominant confusion pairs** — PLM/OLA, STE/COA, CLR/OLA. Each is ~1 hour and should compound.
-2. **SMOTE-oversample STE** (152 rows). Quick test, may add 3–5pp to STE F1.
-3. **Explicit H-bond donor/acceptor counts per shell** — should sharpen all polar-anchor-dependent classes (CLR, STE).
-4. **Re-run P2Rank with conservation** (`-c conservation_hmm`). ~a day of compute. May close the fpocket gap on non-sterol classes.
-5. **Split aromatic residues** into PHE/TRP vs TYR/HIS for finer chemical resolution.
+1. **Release hardening for `v49+tunnel_shape_family_encoder`**: freeze config, schema sidecars, and compact-report output.
+2. **Holdout story**: decide whether to publish conservative apo/AlphaFold numbers or add a holdout-safe calibration step.
+3. **Production path**: make compact inference load only the 55 required columns and avoid heavyweight MoE code paths.
+4. **Polars migration**: keep pandas only behind compatibility boundaries such as Pandera and Excel ingest.
+5. **Optional science follow-up**: SMOTE or class-balanced encoder training for STE, but only after release candidate cleanup.
 
 ## Repository Quick Reference
 

@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Literal
 
 import numpy as np
-import pandas as pd
+import polars as pl
 from sklearn.model_selection import StratifiedShuffleSplit
 
 from .config import Settings, normalize_split_strategy
@@ -18,6 +18,26 @@ SplitStrategy = Literal[
     "grouped_uniprot_clustered",
     "grouped_uniprot",
 ]
+
+
+def _factorize_sorted(values: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    classes, codes = np.unique(values, return_inverse=True)
+    return codes.astype(np.int64), classes
+
+
+def _factorize_preserve_order(values: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    mapping: dict[object, int] = {}
+    groups: list[object] = []
+    codes = np.empty(len(values), dtype=np.int64)
+    for i, value in enumerate(values):
+        key = value.item() if isinstance(value, np.generic) else value
+        code = mapping.get(key)
+        if code is None:
+            code = len(groups)
+            mapping[key] = code
+            groups.append(key)
+        codes[i] = code
+    return codes, np.asarray(groups, dtype=values.dtype)
 
 
 def _make_stratified_shuffle_splits(
@@ -60,8 +80,8 @@ def _make_grouped_split(
     if len(class_labels) != len(group_labels):
         raise ValueError("group_labels must have the same length as class_labels")
 
-    class_codes, classes = pd.factorize(class_labels, sort=True)
-    group_codes, groups = pd.factorize(group_labels, sort=False)
+    class_codes, classes = _factorize_sorted(class_labels)
+    group_codes, groups = _factorize_preserve_order(group_labels)
     if len(groups) < 2:
         raise ValueError("grouped splitting requires at least two distinct groups")
 
@@ -71,7 +91,7 @@ def _make_grouped_split(
     group_class_counts = np.zeros((n_groups, n_classes), dtype=np.int64)
     np.add.at(group_class_counts, (group_codes, class_codes), 1)
 
-    target_size = int(round(test_fraction * len(class_labels)))
+    target_size = round(test_fraction * len(class_labels))
     total_class_counts = np.bincount(class_codes, minlength=n_classes).astype(np.int64)
     target_class_counts = total_class_counts * test_fraction
 
@@ -159,7 +179,7 @@ def persist_splits(
     written: list[Path] = []
     for i, (train_idx, test_idx) in enumerate(splits):
         path = out_dir / f"seed_{i:02d}.parquet"
-        df = pd.DataFrame(
+        pl.DataFrame(
             {
                 "index": np.concatenate([train_idx, test_idx]),
                 "split": np.concatenate(
@@ -169,16 +189,25 @@ def persist_splits(
                     ]
                 ),
             }
-        )
-        df.to_parquet(path, index=False)
+        ).write_parquet(path)
         written.append(path)
     return written
 
 
 def load_split(path: Path) -> tuple[np.ndarray, np.ndarray]:
-    df = pd.read_parquet(path)
-    train_idx = df.loc[df["split"] == "train", "index"].to_numpy(dtype=np.int64)
-    test_idx = df.loc[df["split"] == "test", "index"].to_numpy(dtype=np.int64)
+    df = pl.read_parquet(path)
+    train_idx = (
+        df.filter(pl.col("split") == "train")
+        .get_column("index")
+        .to_numpy()
+        .astype(np.int64)
+    )
+    test_idx = (
+        df.filter(pl.col("split") == "test")
+        .get_column("index")
+        .to_numpy()
+        .astype(np.int64)
+    )
     return train_idx, test_idx
 
 

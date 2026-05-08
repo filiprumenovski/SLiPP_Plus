@@ -1,0 +1,305 @@
+[Tue May  5 07:15:58 EDT 2026] starting batch 9
+INFO v_tunnel preflight summary: {'structures_total': 100, 'structures_with_missing_inputs': 0, 'missing_input_frac': 0.0, 'missing_protein_pdb': 0, 'missing_structure_dir': 0, 'missing_pockets_dir': 0, 'example_labels': []}
+WARNING:root:COA/pdb5K04.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5K04.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5K18.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5K18.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5K85.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5K85.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5KF1.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5KF1.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5KF2.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5KF2.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5KF8.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5KF8.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 1/100 structures (0 cached)
+WARNING:root:COA/pdb5KF9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5KF9.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5KGJ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5KGJ.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5KTC.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5KTC.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5KTD.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5KTD.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5LKU.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5LKU.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5MY2.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5MY2.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5N1U.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5N1U.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5O9U.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5O9U.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5O9V.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5O9V.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5SUV.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5SUV.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5SZU.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5SZU.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5SZV.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5SZV.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5SZY.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5SZY.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5SZZ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5SZZ.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5T02.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5T02.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5T7E.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5T7E.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5TVA.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5TVA.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5TVJ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5TVJ.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5UQU.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5UQU.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5US1.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5US1.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5V0Z.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5V0Z.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5V3A.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5V3A.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5VJ1.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5VJ1.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5VXC.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5VXC.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5W40.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5W40.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 25/100 structures (0 cached)
+WARNING:root:COA/pdb5WX3.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5WX3.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5WX6.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5WX6.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5WX7.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5WX7.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5XUH.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5XUH.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5YH7.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5YH7.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5YO9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5YO9.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5YRR.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5YRR.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb5ZBA.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb5ZBA.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6ADD.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6ADD.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6AQP.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6AQP.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6ARB.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6ARB.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6ARE.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6ARE.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6AS5.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6AS5.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6B0U.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6B0U.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6B2M.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6B2M.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6B3T.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6B3T.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6BC3.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6BC3.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6BC5.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6BC5.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6BE0.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6BE0.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6BJA.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6BJA.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6BON.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6BON.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6BOO.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6BOO.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6BVC.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6BVC.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6CT5.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6CT5.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6E1J.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6E1J.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 50/100 structures (0 cached)
+WARNING:root:COA/pdb6EDD.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6EDD.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6EDV.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6EDV.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6EHJ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6EHJ.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6ESQ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6ESQ.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6HE0.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6HE0.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6HSJ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6HSJ.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6HXH.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6HXH.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6HXL.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6HXL.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6HXM.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6HXM.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6HXQ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6HXQ.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6J0P.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6J0P.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6J1E.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6J1E.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6J1F.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6J1F.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6J1I.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6J1I.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6J1J.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6J1J.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6K8T.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6K8T.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6L2C.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6L2C.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6L3P.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6L3P.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6L7J.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6L7J.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6MB6.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6MB6.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6MB9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6MB9.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6MGG.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6MGG.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6NBE.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6NBE.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6NDS.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6NDS.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 75/100 structures (0 cached)
+WARNING:root:COA/pdb6P5U.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6P5U.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6P7K.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6P7K.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6PAV.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6PAV.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6PCD.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6PCD.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6PF1.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6PF1.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6PFN.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6PFN.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6PFZ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6PFZ.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6PGU.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6PGU.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6QFB.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6QFB.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6QRM.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6QRM.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6QWU.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6QWU.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6QXQ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6QXQ.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6QXR.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6QXR.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6QYF.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6QYF.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6QYG.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6QYG.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6RCX.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6RCX.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6SK1.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6SK1.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6SK2.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6SK2.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6SLL.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6SLL.pdb.json: cache_version=3 expected=4
+WARNING:root:COA/pdb6SP0.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/COA__pdb6SP0.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 100/100 structures (0 cached)
+WARNING COA/pdb5O9U.pdb/pocket41: CAVER timeout
+WARNING COA/pdb5K85.pdb/pocket12: CAVER timeout
+WARNING COA/pdb5K85.pdb/pocket23: CAVER timeout
+WARNING COA/pdb5K85.pdb/pocket31: CAVER timeout
+WARNING COA/pdb5K85.pdb/pocket37: CAVER timeout
+WARNING COA/pdb5K85.pdb/pocket48: CAVER timeout
+WARNING COA/pdb5K85.pdb/pocket75: CAVER timeout
+WARNING COA/pdb5K85.pdb/pocket77: CAVER timeout
+WARNING COA/pdb5K85.pdb/pocket82: CAVER timeout
+WARNING COA/pdb5K85.pdb/pocket96: CAVER timeout
+WARNING COA/pdb5K18.pdb/pocket1: CAVER timeout
+WARNING COA/pdb5K18.pdb/pocket18: CAVER timeout
+WARNING COA/pdb5K18.pdb/pocket35: CAVER timeout
+WARNING COA/pdb5K18.pdb/pocket52: CAVER timeout
+WARNING COA/pdb5K18.pdb/pocket78: CAVER timeout
+WARNING COA/pdb5K18.pdb/pocket81: CAVER timeout
+WARNING COA/pdb5K18.pdb/pocket121: CAVER timeout
+WARNING COA/pdb5K18.pdb/pocket128: CAVER timeout
+WARNING COA/pdb5T02.pdb/pocket31: CAVER timeout
+WARNING COA/pdb5T02.pdb/pocket39: CAVER timeout
+WARNING COA/pdb5T7E.pdb/pocket39: CAVER timeout
+WARNING COA/pdb5UQU.pdb/pocket1: CAVER timeout
+WARNING COA/pdb5UQU.pdb/pocket2: CAVER timeout
+WARNING COA/pdb5UQU.pdb/pocket9: CAVER timeout
+WARNING COA/pdb5WX3.pdb/pocket84: CAVER timeout
+WARNING COA/pdb5VJ1.pdb/pocket79: CAVER timeout
+WARNING COA/pdb5VJ1.pdb/pocket105: CAVER timeout
+WARNING COA/pdb5VJ1.pdb/pocket112: CAVER timeout
+WARNING COA/pdb5VJ1.pdb/pocket125: CAVER timeout
+WARNING COA/pdb5MY2.pdb/pocket55: CAVER timeout
+WARNING COA/pdb5MY2.pdb/pocket73: CAVER timeout
+WARNING COA/pdb5MY2.pdb/pocket85: CAVER timeout
+WARNING COA/pdb5MY2.pdb/pocket104: CAVER timeout
+WARNING COA/pdb5MY2.pdb/pocket146: CAVER timeout
+WARNING COA/pdb5MY2.pdb/pocket148: CAVER timeout
+WARNING COA/pdb5MY2.pdb/pocket153: CAVER timeout
+WARNING COA/pdb5MY2.pdb/pocket159: CAVER timeout
+WARNING COA/pdb5MY2.pdb/pocket161: CAVER timeout
+WARNING COA/pdb5MY2.pdb/pocket169: CAVER timeout
+WARNING COA/pdb5MY2.pdb/pocket179: CAVER timeout
+WARNING COA/pdb5MY2.pdb/pocket183: CAVER timeout
+WARNING COA/pdb5WX6.pdb/pocket2: CAVER timeout
+WARNING COA/pdb5WX6.pdb/pocket26: CAVER timeout
+WARNING COA/pdb5YO9.pdb/pocket21: CAVER timeout
+WARNING COA/pdb5W40.pdb/pocket23: CAVER timeout
+WARNING COA/pdb5W40.pdb/pocket40: CAVER timeout
+WARNING COA/pdb5W40.pdb/pocket41: CAVER timeout
+WARNING COA/pdb5W40.pdb/pocket49: CAVER timeout
+WARNING COA/pdb5W40.pdb/pocket63: CAVER timeout
+WARNING COA/pdb5W40.pdb/pocket91: CAVER timeout
+WARNING COA/pdb5US1.pdb/pocket18: CAVER timeout
+WARNING COA/pdb5US1.pdb/pocket22: CAVER timeout
+WARNING COA/pdb5US1.pdb/pocket23: CAVER timeout
+WARNING COA/pdb5US1.pdb/pocket35: CAVER timeout
+WARNING COA/pdb5US1.pdb/pocket67: CAVER timeout
+WARNING COA/pdb5US1.pdb/pocket73: CAVER timeout
+WARNING COA/pdb5US1.pdb/pocket139: CAVER timeout
+WARNING COA/pdb5US1.pdb/pocket144: CAVER timeout
+WARNING COA/pdb5ZBA.pdb/pocket35: CAVER timeout
+WARNING COA/pdb5ZBA.pdb/pocket42: CAVER timeout
+WARNING COA/pdb5ZBA.pdb/pocket44: CAVER timeout
+WARNING COA/pdb5WX7.pdb/pocket2: CAVER timeout
+WARNING COA/pdb5WX7.pdb/pocket82: CAVER timeout
+WARNING COA/pdb5WX7.pdb/pocket94: CAVER timeout
+WARNING COA/pdb6B0U.pdb/pocket13: CAVER timeout
+WARNING COA/pdb6B0U.pdb/pocket23: CAVER timeout
+WARNING COA/pdb6B0U.pdb/pocket47: CAVER timeout
+WARNING COA/pdb6B0U.pdb/pocket72: CAVER timeout
+WARNING COA/pdb6B0U.pdb/pocket86: CAVER timeout
+WARNING COA/pdb6B2M.pdb/pocket14: CAVER timeout
+WARNING COA/pdb6B2M.pdb/pocket36: CAVER timeout
+WARNING COA/pdb6B2M.pdb/pocket85: CAVER timeout
+WARNING COA/pdb6B2M.pdb/pocket96: CAVER timeout
+WARNING COA/pdb6BON.pdb/pocket1: CAVER timeout
+WARNING COA/pdb6BON.pdb/pocket21: CAVER timeout
+WARNING COA/pdb6BON.pdb/pocket26: CAVER timeout
+WARNING COA/pdb6BON.pdb/pocket38: CAVER timeout
+WARNING COA/pdb6BON.pdb/pocket42: CAVER timeout
+WARNING COA/pdb6BOO.pdb/pocket3: CAVER timeout
+WARNING COA/pdb6BOO.pdb/pocket4: CAVER timeout
+WARNING COA/pdb6BOO.pdb/pocket18: CAVER timeout
+WARNING COA/pdb6BOO.pdb/pocket19: CAVER timeout
+WARNING COA/pdb6BOO.pdb/pocket35: CAVER timeout
+WARNING COA/pdb6BOO.pdb/pocket38: CAVER timeout
+WARNING COA/pdb6BOO.pdb/pocket44: CAVER timeout
+WARNING COA/pdb6J0P.pdb/pocket66: CAVER timeout
+WARNING COA/pdb6J0P.pdb/pocket70: CAVER timeout
+WARNING COA/pdb6J0P.pdb/pocket71: CAVER timeout
+WARNING COA/pdb6HXQ.pdb/pocket35: CAVER timeout
+WARNING COA/pdb6HXQ.pdb/pocket45: CAVER timeout
+WARNING COA/pdb6HXQ.pdb/pocket65: CAVER timeout
+WARNING COA/pdb6HXL.pdb/pocket45: CAVER timeout
+WARNING COA/pdb6HXL.pdb/pocket69: CAVER timeout
+WARNING COA/pdb6J1F.pdb/pocket15: CAVER timeout
+WARNING COA/pdb6MB6.pdb/pocket60: CAVER timeout
+WARNING COA/pdb6MB9.pdb/pocket45: CAVER timeout
+WARNING COA/pdb6K8T.pdb/pocket36: CAVER timeout
+WARNING COA/pdb6K8T.pdb/pocket64: CAVER timeout
+WARNING COA/pdb6K8T.pdb/pocket70: CAVER timeout
+WARNING COA/pdb6K8T.pdb/pocket85: CAVER timeout
+WARNING COA/pdb6L2C.pdb/pocket57: CAVER timeout
+WARNING COA/pdb6L2C.pdb/pocket83: CAVER timeout
+WARNING COA/pdb6MGG.pdb/pocket75: CAVER timeout
+WARNING COA/pdb6MGG.pdb/pocket86: CAVER timeout
+WARNING COA/pdb6PF1.pdb/pocket35: CAVER timeout
+WARNING COA/pdb6P5U.pdb/pocket5: CAVER timeout
+WARNING COA/pdb6P5U.pdb/pocket8: CAVER timeout
+WARNING COA/pdb6P5U.pdb/pocket43: CAVER timeout
+WARNING COA/pdb6PFN.pdb/pocket11: CAVER timeout
+WARNING COA/pdb6PFN.pdb/pocket53: CAVER timeout
+WARNING COA/pdb6PFN.pdb/pocket56: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket1: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket3: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket13: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket16: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket34: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket49: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket56: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket61: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket67: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket79: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket84: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket88: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket103: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket104: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket115: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket126: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket155: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket158: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket163: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket165: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket166: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket183: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket194: CAVER timeout
+WARNING COA/pdb6ESQ.pdb/pocket197: CAVER timeout
+WARNING COA/pdb6PFZ.pdb/pocket100: CAVER timeout
+WARNING COA/pdb6PFZ.pdb/pocket111: CAVER timeout
+WARNING COA/pdb6PFZ.pdb/pocket122: CAVER timeout
+WARNING COA/pdb6PFZ.pdb/pocket130: CAVER timeout
+WARNING COA/pdb6QFB.pdb/pocket1: CAVER timeout
+WARNING COA/pdb6QFB.pdb/pocket6: CAVER timeout
+WARNING COA/pdb6QFB.pdb/pocket9: CAVER timeout
+WARNING COA/pdb6QFB.pdb/pocket18: CAVER timeout
+WARNING COA/pdb6QFB.pdb/pocket21: CAVER timeout
+WARNING COA/pdb6QFB.pdb/pocket39: CAVER timeout
+WARNING COA/pdb6QFB.pdb/pocket52: CAVER timeout
+WARNING COA/pdb6QFB.pdb/pocket58: CAVER timeout
+WARNING COA/pdb6QFB.pdb/pocket88: CAVER timeout
+WARNING COA/pdb6QFB.pdb/pocket128: CAVER timeout
+WARNING COA/pdb6QFB.pdb/pocket139: CAVER timeout
+WARNING COA/pdb6QFB.pdb/pocket150: CAVER timeout
+WARNING COA/pdb6QFB.pdb/pocket166: CAVER timeout
+WARNING COA/pdb6QFB.pdb/pocket179: CAVER timeout
+WARNING COA/pdb6QFB.pdb/pocket188: CAVER timeout
+WARNING COA/pdb6QFB.pdb/pocket211: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket3: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket4: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket6: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket8: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket9: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket12: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket16: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket18: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket19: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket20: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket21: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket22: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket23: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket24: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket28: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket30: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket37: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket42: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket48: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket49: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket53: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket83: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket119: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket144: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket214: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket238: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket260: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket263: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket387: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket399: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket415: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket424: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket441: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket448: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket454: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket456: CAVER timeout
+WARNING COA/pdb6HXH.pdb/pocket496: CAVER timeout
+Rows: 964
+Structures: 100
+Batch: 9 size=100 structures=100/1780 range=[900,1000)
+Warnings: 192
+Output: processed/v_tunnel/batches/batch_9.parquet (0.3 MB)
+[Tue May  5 08:42:05 EDT 2026] completed batch 9

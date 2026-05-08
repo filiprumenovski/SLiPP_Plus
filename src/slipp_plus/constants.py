@@ -58,6 +58,32 @@ AA20: list[str] = [
     "SER", "THR", "TRP", "TYR", "VAL",
 ]
 
+# Signal-ranked AA subsets from the 105-feature audit, sorted by seed-0
+# permutation lipid5 drop. These are locked before encoder retraining to avoid
+# post-hoc feature picking.
+AA_SIGNAL_12: list[str] = [
+    "LEU",
+    "HIS",
+    "TYR",
+    "MET",
+    "ARG",
+    "ALA",
+    "GLY",
+    "VAL",
+    "ASP",
+    "GLU",
+    "CYS",
+    "ILE",
+]
+
+AA_SIGNAL_16: list[str] = [
+    *AA_SIGNAL_12,
+    "THR",
+    "TRP",
+    "LYS",
+    "PHE",
+]
+
 AROMATIC_ALIPHATIC_12: list[str] = [
     "aromatic_count_shell1",
     "aromatic_count_shell2",
@@ -71,6 +97,15 @@ AROMATIC_ALIPHATIC_12: list[str] = [
     "aromatic_aliphatic_ratio_shell2",
     "aromatic_aliphatic_ratio_shell3",
     "aromatic_aliphatic_ratio_shell4",
+]
+
+SHELL_SIGNAL_6: list[str] = [
+    "aliphatic_count_shell3",
+    "aromatic_count_shell4",
+    "aliphatic_count_shell2",
+    "aliphatic_count_shell4",
+    "aromatic_aliphatic_ratio_shell4",
+    "aromatic_aliphatic_ratio_shell3",
 ]
 
 AROMATIC_ALIPHATIC_RATIOS_4: list[str] = [
@@ -228,6 +263,44 @@ TUNNEL_MISSINGNESS_3: list[str] = [
 
 TUNNEL_FEATURES_18: list[str] = TUNNEL_FEATURES_15 + TUNNEL_MISSINGNESS_3
 
+# Compact tunnel slices for paper-facing ablations. These were selected from
+# aligned v_tunnel LGBM/XGB screens to avoid shipping the full redundant tunnel
+# block as the headline model.
+TUNNEL_SHAPE_AVAIL_6: list[str] = [
+    "tunnel_has_tunnel",
+    "tunnel_caver_profile_present",
+    "tunnel_count",
+    "tunnel_primary_bottleneck_radius",
+    "tunnel_length_over_axial",
+    "tunnel_extends_beyond_pocket",
+]
+
+TUNNEL_SHAPE_SIGNAL_3: list[str] = [
+    "tunnel_caver_profile_present",
+    "tunnel_count",
+    "tunnel_primary_bottleneck_radius",
+]
+
+TUNNEL_CHEM_5: list[str] = [
+    "tunnel_has_tunnel",
+    "tunnel_caver_profile_present",
+    "tunnel_primary_hydrophobicity",
+    "tunnel_primary_charge",
+    "tunnel_primary_aromatic_fraction",
+]
+
+TUNNEL_GEOM_9: list[str] = [
+    "tunnel_has_tunnel",
+    "tunnel_caver_profile_present",
+    "tunnel_count",
+    "tunnel_primary_length",
+    "tunnel_primary_bottleneck_radius",
+    "tunnel_primary_curvature",
+    "tunnel_total_length",
+    "tunnel_min_bottleneck",
+    "tunnel_length_over_axial",
+]
+
 # v_graph_tunnel - cheap alpha-sphere graph tunnel-depth proxy.
 GRAPH_TUNNEL_FEATURES_3: list[str] = [
     "tunnel_length",
@@ -261,6 +334,7 @@ FEATURE_SETS: dict[str, list[str]] = {
     "v14": SELECTED_17,
     "v14+v22": SELECTED_17 + EXTRA_VDW22,
     "v14+aa": SELECTED_17 + AA20,
+    "v14+shell": SELECTED_17 + AROMATIC_ALIPHATIC_12,
     "v14+v22+aa": SELECTED_17 + EXTRA_VDW22 + AA20,
     "v49": SELECTED_17 + AA20 + AROMATIC_ALIPHATIC_12,
     "v61": SELECTED_17 + AA20 + AROMATIC_ALIPHATIC_12 + AROMATIC_ALIPHATIC_NORMALIZED_12,
@@ -275,6 +349,17 @@ FEATURE_SETS: dict[str, list[str]] = {
 FEATURE_SETS["v_plm_ste"] = FEATURE_SETS["v_sterol"] + PALMITATE_VS_STERYL_EXTRA_16
 FEATURE_SETS["v_lipid_boundary"] = FEATURE_SETS["v_sterol"] + LIPID_BOUNDARY_FEATURES_22
 FEATURE_SETS["v_tunnel"] = FEATURE_SETS["v_sterol"] + TUNNEL_FEATURES_18
+FEATURE_SETS["v14+aa+tunnel_shape"] = FEATURE_SETS["v14+aa"] + TUNNEL_SHAPE_AVAIL_6
+FEATURE_SETS["v14+shell+tunnel_shape"] = FEATURE_SETS["v14+shell"] + TUNNEL_SHAPE_AVAIL_6
+FEATURE_SETS["v14+aa12+tunnel_shape"] = SELECTED_17 + AA_SIGNAL_12 + TUNNEL_SHAPE_AVAIL_6
+FEATURE_SETS["v14+aa16+tunnel_shape"] = SELECTED_17 + AA_SIGNAL_16 + TUNNEL_SHAPE_AVAIL_6
+FEATURE_SETS["v14+aa20+shell6+tunnel_shape"] = (
+    SELECTED_17 + AA20 + SHELL_SIGNAL_6 + TUNNEL_SHAPE_AVAIL_6
+)
+FEATURE_SETS["v49+tunnel_shape3"] = FEATURE_SETS["v49"] + TUNNEL_SHAPE_SIGNAL_3
+FEATURE_SETS["v49+tunnel_shape"] = FEATURE_SETS["v49"] + TUNNEL_SHAPE_AVAIL_6
+FEATURE_SETS["v49+tunnel_chem"] = FEATURE_SETS["v49"] + TUNNEL_CHEM_5
+FEATURE_SETS["v49+tunnel_geom"] = FEATURE_SETS["v49"] + TUNNEL_GEOM_9
 FEATURE_SETS["v_graph_tunnel"] = FEATURE_SETS["v_sterol"] + GRAPH_TUNNEL_FEATURES_3
 FEATURE_SETS["v_caver_t12"] = FEATURE_SETS["v_sterol"] + CAVER_T12_FEATURES_17
 

@@ -1,0 +1,238 @@
+[Mon May  4 23:09:51 EDT 2026] starting batch 4
+/Users/runner/work/crossbow/crossbow/arrow/cpp/src/arrow/util/cpu_info.cc:242: IOError: sysctlbyname failed for 'hw.l1dcachesize'. Detail: [errno 1] Operation not permitted
+/Users/runner/work/crossbow/crossbow/arrow/cpp/src/arrow/util/cpu_info.cc:242: IOError: sysctlbyname failed for 'hw.l2cachesize'. Detail: [errno 1] Operation not permitted
+/Users/runner/work/crossbow/crossbow/arrow/cpp/src/arrow/util/cpu_info.cc:242: IOError: sysctlbyname failed for 'hw.l3cachesize'. Detail: [errno 1] Operation not permitted
+/Users/runner/work/crossbow/crossbow/arrow/cpp/src/arrow/util/cpu_info.cc:242: IOError: sysctlbyname failed for 'hw.optional.neon'. Detail: [errno 1] Operation not permitted
+INFO v_tunnel preflight summary: {'structures_total': 100, 'structures_with_missing_inputs': 0, 'missing_input_frac': 0.0, 'missing_protein_pdb': 0, 'missing_structure_dir': 0, 'missing_pockets_dir': 0, 'example_labels': []}
+ERROR v_tunnel build failed: [Errno 1] Operation not permitted
+[Mon May  4 23:12:17 EDT 2026] starting batch 4
+INFO v_tunnel preflight summary: {'structures_total': 100, 'structures_with_missing_inputs': 0, 'missing_input_frac': 0.0, 'missing_protein_pdb': 0, 'missing_structure_dir': 0, 'missing_pockets_dir': 0, 'example_labels': []}
+WARNING:root:BGC/pdb5DZF.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5DZF.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5DZE.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5DZE.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5EQC.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5EQC.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5GNX.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5GNX.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5GNY.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5GNY.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5GNZ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5GNZ.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5GW7.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5GW7.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 1/100 structures (0 cached)
+WARNING:root:BGC/pdb5GZK.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5GZK.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5HCA.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5HCA.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5HCF.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5HCF.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5JP0.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5JP0.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5JRK.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5JRK.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5JU6.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5JU6.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5K6M.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5K6M.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5KWS.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5KWS.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5KZW.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5KZW.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5KZX.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5KZX.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5L7W.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5L7W.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5M60.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5M60.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5O42.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5O42.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5O43.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5O43.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5O6O.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5O6O.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5O7C.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5O7C.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5UHS.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5UHS.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5X7Q.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5X7Q.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5X7R.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5X7R.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5X9R.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5X9R.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5XXO.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5XXO.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5YLF.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5YLF.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5Z3F.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5Z3F.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb5Z9S.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5Z9S.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 25/100 structures (0 cached)
+WARNING:root:BGC/pdb5ZQT.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb5ZQT.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6B1D.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6B1D.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6BGC.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6BGC.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6CAM.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6CAM.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6DA0.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6DA0.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6FFB.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6FFB.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6G4L.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6G4L.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6GSZ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6GSZ.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6GUQ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6GUQ.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6GXV.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6GXV.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6H0M.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6H0M.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6H7D.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6H7D.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6IMV.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6IMV.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6JFP.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6JFP.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6JJ7.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6JJ7.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6JJ9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6JJ9.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6KUF.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6KUF.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6L64.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6L64.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6O1X.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6O1X.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6Q68.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6Q68.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6R5O.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6R5O.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6R5P.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6R5P.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6RFZ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6RFZ.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6RGJ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6RGJ.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 50/100 structures (0 cached)
+WARNING:root:BGC/pdb6RNP.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6RNP.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6SBH.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6SBH.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6SDU.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6SDU.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6SZ6.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6SZ6.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6UAZ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6UAZ.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6UB1.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6UB1.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6UJF.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6UJF.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6V7Z.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6V7Z.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6VZZ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6VZZ.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6XUU.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6XUU.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb6ZT2.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb6ZT2.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb7AAQ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb7AAQ.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb7AAR.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb7AAR.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb7F71.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb7F71.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb7FE4.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb7FE4.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb7FH3.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb7FH3.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb7LVY.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb7LVY.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb7MZR.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb7MZR.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb7P6J.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb7P6J.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb7P8G.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb7P8G.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb7RY8.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb7RY8.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb7VKX.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb7VKX.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb7VT6.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb7VT6.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb7W2S.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb7W2S.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb7W2T.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb7W2T.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 75/100 structures (0 cached)
+WARNING:root:BGC/pdb7W2V.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb7W2V.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb7WDO.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb7WDO.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb7WDV.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb7WDV.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb7X0H.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb7X0H.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb7XDQ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb7XDQ.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb7XR9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb7XR9.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb8DL4.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb8DL4.pdb.json: cache_version=3 expected=4
+WARNING:root:BGC/pdb8DTC.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/BGC__pdb8DTC.pdb.json: cache_version=3 expected=4
+WARNING:root:CLR/pdb1LRI.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/CLR__pdb1LRI.pdb.json: cache_version=3 expected=4
+WARNING:root:CLR/pdb1N83.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/CLR__pdb1N83.pdb.json: cache_version=3 expected=4
+WARNING:root:CLR/pdb1ZHY.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/CLR__pdb1ZHY.pdb.json: cache_version=3 expected=4
+WARNING:root:CLR/pdb3GKI.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/CLR__pdb3GKI.pdb.json: cache_version=3 expected=4
+WARNING:root:CLR/pdb3JD8.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/CLR__pdb3JD8.pdb.json: cache_version=3 expected=4
+WARNING:root:CLR/pdb3N9Y.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/CLR__pdb3N9Y.pdb.json: cache_version=3 expected=4
+WARNING:root:CLR/pdb4BOE.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/CLR__pdb4BOE.pdb.json: cache_version=3 expected=4
+WARNING:root:CLR/pdb4BQU.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/CLR__pdb4BQU.pdb.json: cache_version=3 expected=4
+WARNING:root:CLR/pdb4HYT.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/CLR__pdb4HYT.pdb.json: cache_version=3 expected=4
+WARNING:root:CLR/pdb4RET.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/CLR__pdb4RET.pdb.json: cache_version=3 expected=4
+WARNING:root:CLR/pdb4XE5.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/CLR__pdb4XE5.pdb.json: cache_version=3 expected=4
+WARNING:root:CLR/pdb4XPF.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/CLR__pdb4XPF.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 100/100 structures (0 cached)
+WARNING BGC/pdb5GW7.pdb/pocket58: CAVER timeout
+WARNING BGC/pdb5JP0.pdb/pocket43: CAVER timeout
+WARNING BGC/pdb5JRK.pdb/pocket20: CAVER timeout
+WARNING BGC/pdb5JRK.pdb/pocket21: CAVER timeout
+WARNING BGC/pdb5JRK.pdb/pocket61: CAVER timeout
+WARNING BGC/pdb5JRK.pdb/pocket69: CAVER timeout
+WARNING BGC/pdb5HCF.pdb/pocket17: CAVER timeout
+WARNING BGC/pdb5HCF.pdb/pocket21: CAVER timeout
+WARNING BGC/pdb5HCF.pdb/pocket27: CAVER timeout
+WARNING BGC/pdb5HCF.pdb/pocket47: CAVER timeout
+WARNING BGC/pdb5HCF.pdb/pocket99: CAVER timeout
+WARNING BGC/pdb5GNY.pdb/pocket50: CAVER timeout
+WARNING BGC/pdb5GNY.pdb/pocket77: CAVER timeout
+WARNING BGC/pdb5GNY.pdb/pocket118: CAVER timeout
+WARNING BGC/pdb5GNY.pdb/pocket120: CAVER timeout
+WARNING BGC/pdb5GNY.pdb/pocket123: CAVER timeout
+WARNING BGC/pdb5GNY.pdb/pocket128: CAVER timeout
+WARNING BGC/pdb5JU6.pdb/pocket71: CAVER timeout
+WARNING BGC/pdb5JU6.pdb/pocket91: CAVER timeout
+WARNING BGC/pdb5JU6.pdb/pocket119: CAVER timeout
+WARNING BGC/pdb5X9R.pdb/pocket16: CAVER timeout
+WARNING BGC/pdb5X9R.pdb/pocket38: CAVER timeout
+WARNING BGC/pdb5X9R.pdb/pocket39: CAVER timeout
+WARNING BGC/pdb5Z9S.pdb/pocket29: CAVER timeout
+WARNING BGC/pdb5Z9S.pdb/pocket48: CAVER timeout
+WARNING BGC/pdb5Z9S.pdb/pocket54: CAVER timeout
+WARNING BGC/pdb5Z9S.pdb/pocket73: CAVER timeout
+WARNING BGC/pdb5GNZ.pdb/pocket96: CAVER timeout
+WARNING BGC/pdb5GNZ.pdb/pocket114: CAVER timeout
+WARNING BGC/pdb5GNZ.pdb/pocket123: CAVER timeout
+WARNING BGC/pdb5GNZ.pdb/pocket158: CAVER timeout
+WARNING BGC/pdb5GNZ.pdb/pocket199: CAVER timeout
+WARNING BGC/pdb5GNZ.pdb/pocket203: CAVER timeout
+WARNING BGC/pdb5GNZ.pdb/pocket232: CAVER timeout
+WARNING BGC/pdb6GSZ.pdb/pocket26: CAVER timeout
+WARNING BGC/pdb5ZQT.pdb/pocket15: CAVER timeout
+WARNING BGC/pdb5ZQT.pdb/pocket26: CAVER timeout
+WARNING BGC/pdb5ZQT.pdb/pocket47: CAVER timeout
+WARNING BGC/pdb5ZQT.pdb/pocket78: CAVER timeout
+WARNING BGC/pdb5X7Q.pdb/pocket10: CAVER timeout
+WARNING BGC/pdb5X7Q.pdb/pocket24: CAVER timeout
+WARNING BGC/pdb5X7Q.pdb/pocket74: CAVER timeout
+WARNING BGC/pdb5X7Q.pdb/pocket106: CAVER timeout
+WARNING BGC/pdb5X7Q.pdb/pocket112: CAVER timeout
+WARNING BGC/pdb5X7Q.pdb/pocket113: CAVER timeout
+WARNING BGC/pdb5X7Q.pdb/pocket119: CAVER timeout
+WARNING BGC/pdb5X7Q.pdb/pocket133: CAVER timeout
+WARNING BGC/pdb5X7R.pdb/pocket49: CAVER timeout
+WARNING BGC/pdb5X7R.pdb/pocket75: CAVER timeout
+WARNING BGC/pdb5X7R.pdb/pocket94: CAVER timeout
+WARNING BGC/pdb5X7R.pdb/pocket97: CAVER timeout
+WARNING BGC/pdb5X7R.pdb/pocket109: CAVER timeout
+WARNING BGC/pdb5X7R.pdb/pocket111: CAVER timeout
+WARNING BGC/pdb6O1X.pdb/pocket24: CAVER timeout
+WARNING BGC/pdb6JFP.pdb/pocket2: CAVER timeout
+WARNING BGC/pdb6JFP.pdb/pocket22: CAVER timeout
+WARNING BGC/pdb6JFP.pdb/pocket40: CAVER timeout
+WARNING BGC/pdb6R5O.pdb/pocket29: CAVER timeout
+WARNING BGC/pdb6R5O.pdb/pocket33: CAVER timeout
+WARNING BGC/pdb6JJ7.pdb/pocket39: CAVER timeout
+WARNING BGC/pdb6JJ7.pdb/pocket89: CAVER timeout
+WARNING BGC/pdb6SZ6.pdb/pocket31: CAVER timeout
+WARNING BGC/pdb6R5P.pdb/pocket19: CAVER timeout
+WARNING BGC/pdb6SDU.pdb/pocket28: CAVER timeout
+WARNING BGC/pdb6JJ9.pdb/pocket30: CAVER timeout
+WARNING BGC/pdb6JJ9.pdb/pocket45: CAVER timeout
+WARNING BGC/pdb6JJ9.pdb/pocket63: CAVER timeout
+WARNING BGC/pdb6JJ9.pdb/pocket70: CAVER timeout
+WARNING BGC/pdb6JJ9.pdb/pocket77: CAVER timeout
+WARNING BGC/pdb6JJ9.pdb/pocket90: CAVER timeout
+WARNING BGC/pdb7FH3.pdb/pocket22: CAVER timeout
+WARNING BGC/pdb7P6J.pdb/pocket17: CAVER timeout
+WARNING BGC/pdb7P6J.pdb/pocket47: CAVER timeout
+WARNING BGC/pdb7P6J.pdb/pocket84: CAVER timeout
+WARNING BGC/pdb7FE4.pdb/pocket39: CAVER timeout
+WARNING BGC/pdb7FE4.pdb/pocket101: CAVER timeout
+WARNING BGC/pdb7FE4.pdb/pocket111: CAVER timeout
+WARNING BGC/pdb7FE4.pdb/pocket115: CAVER timeout
+WARNING BGC/pdb7W2T.pdb/pocket43: CAVER timeout
+WARNING BGC/pdb7W2T.pdb/pocket62: CAVER timeout
+WARNING BGC/pdb7X0H.pdb/pocket60: CAVER timeout
+WARNING BGC/pdb7VKX.pdb/pocket2: CAVER timeout
+WARNING BGC/pdb7VKX.pdb/pocket8: CAVER timeout
+WARNING BGC/pdb7VKX.pdb/pocket31: CAVER timeout
+WARNING BGC/pdb7VKX.pdb/pocket70: CAVER timeout
+WARNING CLR/pdb3N9Y.pdb/pocket52: CAVER timeout
+WARNING CLR/pdb3JD8.pdb/pocket30: CAVER timeout
+WARNING CLR/pdb3JD8.pdb/pocket38: CAVER timeout
+WARNING CLR/pdb3JD8.pdb/pocket86: CAVER timeout
+WARNING CLR/pdb4XE5.pdb/pocket27: CAVER timeout
+WARNING CLR/pdb4XE5.pdb/pocket38: CAVER timeout
+WARNING CLR/pdb4XE5.pdb/pocket70: CAVER timeout
+WARNING CLR/pdb4XE5.pdb/pocket96: CAVER timeout
+WARNING BGC/pdb7XR9.pdb/pocket16: CAVER timeout
+WARNING BGC/pdb7XR9.pdb/pocket36: CAVER timeout
+WARNING BGC/pdb7XR9.pdb/pocket98: CAVER timeout
+WARNING BGC/pdb7XR9.pdb/pocket110: CAVER timeout
+WARNING BGC/pdb7XR9.pdb/pocket115: CAVER timeout
+WARNING CLR/pdb4HYT.pdb/pocket2: CAVER timeout
+WARNING CLR/pdb4HYT.pdb/pocket31: CAVER timeout
+WARNING CLR/pdb4HYT.pdb/pocket35: CAVER timeout
+WARNING CLR/pdb4HYT.pdb/pocket63: CAVER timeout
+WARNING CLR/pdb4HYT.pdb/pocket99: CAVER timeout
+WARNING CLR/pdb4HYT.pdb/pocket128: CAVER timeout
+WARNING CLR/pdb4HYT.pdb/pocket133: CAVER timeout
+WARNING CLR/pdb4HYT.pdb/pocket138: CAVER timeout
+WARNING CLR/pdb4HYT.pdb/pocket164: CAVER timeout
+WARNING CLR/pdb4RET.pdb/pocket27: CAVER timeout
+WARNING CLR/pdb4RET.pdb/pocket35: CAVER timeout
+WARNING CLR/pdb4RET.pdb/pocket68: CAVER timeout
+WARNING CLR/pdb4RET.pdb/pocket95: CAVER timeout
+WARNING CLR/pdb4RET.pdb/pocket98: CAVER timeout
+WARNING CLR/pdb4RET.pdb/pocket133: CAVER timeout
+WARNING CLR/pdb4RET.pdb/pocket137: CAVER timeout
+WARNING CLR/pdb4RET.pdb/pocket146: CAVER timeout
+WARNING CLR/pdb4RET.pdb/pocket166: CAVER timeout
+WARNING CLR/pdb4RET.pdb/pocket176: CAVER timeout
+WARNING CLR/pdb4RET.pdb/pocket182: CAVER timeout
+Rows: 723
+Structures: 100
+Batch: 4 size=100 structures=100/1780 range=[400,500)
+Warnings: 118
+Output: processed/v_tunnel/batches/batch_4.parquet (0.2 MB)
+[Tue May  5 00:06:47 EDT 2026] completed batch 4

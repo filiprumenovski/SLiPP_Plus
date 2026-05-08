@@ -1,0 +1,64 @@
+seed_base: 42
+n_iterations: 25
+test_fraction: 0.10
+
+feature_set: v14+aa16+tunnel_shape
+pipeline_mode: composite
+
+models:
+  - rf
+  - xgb
+  - lgbm
+
+hierarchical:
+  bundle_name: family_encoder_bundle.joblib
+
+composite:
+  teacher_predictions_path: processed/v_sterol/predictions/ste_rescue_ola_plm_pair_predictions.parquet
+  backbone:
+    kind: family_encoder
+    teacher_init: compact_paper17_aa16_tunnel_shape
+    feature_families: [paper17, aa_signal16, tunnel_shape]
+  heads:
+    - name: global_10
+      kind: multiclass
+      labels: [ADN, B12, BGC, CLR, COA, MYR, OLA, PLM, PP, STE]
+      feature_set: v14+aa16+tunnel_shape
+  execution_order:
+    - global_10
+
+ground_truth:
+  test:
+    f1: 0.869
+    auroc: 0.970
+    accuracy: 0.968
+    precision: 0.926
+    sensitivity: 0.818
+  apo_pdb:
+    f1: 0.726
+    auroc: 0.828
+  alphafold:
+    f1: 0.643
+    auroc: 0.851
+
+paths:
+  training_csv: reference/SLiPP_2024-main/training_pockets.csv
+  supporting_file_2_xlsx: data/raw/supplementary/ci5c01076_si_003.xlsx
+  supporting_file_3_xlsx: data/raw/supplementary/ci5c01076_si_004.xlsx
+  processed_dir: processed/paper17_aa16_tunnel_shape
+  models_dir: models/paper17_aa16_tunnel_shape_family_encoder
+  reports_dir: reports/paper17_aa16_tunnel_shape_family_encoder
+
+validation:
+  training_total_exact: 15219
+  per_class_exact:
+    CLR: 358
+    MYR: 424
+    OLA: 329
+    PLM: 718
+    STE: 152
+    ADN: 414
+    B12: 373
+    BGC: 526
+    COA: 2020
+    PP: 9905

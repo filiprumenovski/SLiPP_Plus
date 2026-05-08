@@ -3,7 +3,7 @@
 Flat mode (``pipeline_mode=flat``): 10-class RF/XGB/LGBM, iteration-0 joblibs,
 and ``test_predictions.parquet``.
 
-Hierarchical mode (``pipeline_mode=hierarchical``): staged lipid pipeline only;
+Hierarchical/composite modes: staged lipid/MoE pipeline only;
 see ``hierarchical_pipeline.run_hierarchical_training`` for artifacts
 (including ``hierarchical_bundle.joblib`` and staged prediction parquet).
 """
@@ -109,7 +109,10 @@ def _build_model(key: str, seed: int) -> Any:
 
 
 def _fit_predict(
-    key: str, seed: int, X_tr: np.ndarray, y_tr_int: np.ndarray,
+    key: str,
+    seed: int,
+    X_tr: np.ndarray,
+    y_tr_int: np.ndarray,
     X_te: np.ndarray,
 ) -> tuple[Any, np.ndarray, np.ndarray]:
     """Fit and return (model, pred_int, pred_proba) on test set."""
@@ -214,6 +217,10 @@ def _run_flat_training(settings: Settings) -> dict[str, Path]:
 
 
 def run_training(settings: Settings) -> dict[str, Path]:
+    if settings.pipeline_mode == "composite":
+        from .composite_train import run_composite_training
+
+        return run_composite_training(settings)
     if settings.pipeline_mode == "hierarchical":
         from .hierarchical_pipeline import run_hierarchical_training
 

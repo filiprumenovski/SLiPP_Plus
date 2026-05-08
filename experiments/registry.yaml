@@ -210,7 +210,7 @@
   models: [rf, xgb, lgbm]
   postprocessing: "ensemble(mean_prob) + ste_rescue(threshold=0.50) + ola_vs_plm(margin=0.05)"
   status: complete
-  is_current_best: true
+  is_current_best: false
   metrics:
     binary_f1: "0.899 ± 0.016"
     binary_auroc: "0.986 ± 0.004"
@@ -234,6 +234,85 @@
     shared local-arbitration architecture. Main gain is STE F1: 0.444 -> 0.576
     vs exp-007, with binary F1/AUROC unchanged. OLA/PLM margin=0.05 adds a
     small stacked improvement; PLM/MYR stacking was neutral-to-regressive.
+
+- id: exp-011-family-plus-moe
+  date: "2026-04-28"
+  feature_set: v_sterol
+  config: configs/v_sterol_family_plus_moe.yaml
+  models: [family_encoder, xgb_local_experts]
+  postprocessing: "family_encoder + CLR local MoE + MYR/PLM pair + PLM/STE pair + PLM/STE/COA/MYR/OLA local MoE"
+  status: complete
+  is_current_best: false
+  metrics:
+    binary_f1: "0.901 ± 0.016"
+    binary_auroc: "0.989 ± 0.003"
+    macro_f1_10: "0.762 ± 0.015"
+    lipid_macro_f1: "0.660 ± 0.029"
+    clr_f1: "0.727"
+    myr_f1: "0.694"
+    ola_f1: "0.587"
+    plm_f1: "0.658"
+    ste_f1: "0.635"
+  holdouts:
+    apo_pdb_f1: null
+    alphafold_f1: null
+  supersedes: exp-009-v_sterol-boundary-refactor
+  artifacts:
+    predictions: processed/v_sterol/predictions/hierarchical_lipid_predictions.parquet
+    teacher_predictions: processed/v_sterol/predictions/family_encoder_predictions.parquet
+    models: models/v_sterol_family_plus_moe/
+    report: reports/v_sterol_family_plus_moe/composite_pair_moe_report.md
+    metrics: reports/v_sterol_family_plus_moe/metrics_table.md
+    bundle: models/v_sterol_family_plus_moe/family_plus_moe_bundle.joblib
+  notes: >
+    Current champion. Adds a second local multiclass expert over PLM/STE/COA/MYR/OLA
+    after the fixed CLR neighborhood local MoE. Net lift vs family encoder teacher:
+    +0.0048 macro-F1 and +0.0085 lipid macro-F1; net lift vs prior fixed local MoE:
+    about +0.001 macro-F1 and +0.002 lipid macro-F1. Main gain is STE recovery
+    (0.627 -> 0.635) without losing binary-collapsed performance. Holdout inference
+    for composite pair/local MoE bundles is not implemented yet.
+
+- id: exp-012-compact-tunnel-shape
+  date: "2026-05-06"
+  feature_set: v49+tunnel_shape
+  config: configs/v49_tunnel_shape_family_encoder.yaml
+  models: [family_encoder]
+  postprocessing: none
+  status: complete
+  is_current_best: true
+  metrics:
+    binary_f1: "0.902 ± 0.017"
+    binary_auroc: "0.988 ± 0.003"
+    macro_f1_10: "0.766 ± 0.019"
+    lipid_macro_f1: "0.666 ± 0.032"
+    clr_f1: "0.748"
+    myr_f1: "0.691"
+    ola_f1: "0.595"
+    plm_f1: "0.647"
+    ste_f1: "0.647"
+  holdouts:
+    apo_pdb_f1: 0.696
+    apo_pdb_auroc: 0.789
+    alphafold_f1: 0.620
+    alphafold_auroc: 0.845
+  supersedes: exp-011-family-plus-moe
+  artifacts:
+    predictions: processed/v49_tunnel_shape/predictions/hierarchical_lipid_predictions.parquet
+    family_predictions: processed/v49_tunnel_shape/predictions/family_encoder_predictions.parquet
+    models: models/v49_tunnel_shape_family_encoder/
+    report: reports/v49_tunnel_shape_family_encoder/metrics_table.md
+    compact_report: reports/compact_publishable/summary.md
+    compact_metrics: reports/compact_publishable/compact_ladder_metrics.csv
+    bundle: models/v49_tunnel_shape_family_encoder/family_encoder_bundle.joblib
+  notes: >
+    Release-facing compact leader. Uses 55 features and a 433K family encoder
+    artifact, matching the 105-feature tunnel MoE within split noise
+    (lipid macro-F1 0.666 vs 0.664) while avoiding pair/MoE specialists.
+    Clean ablation shows AA20 carries the major compact recovery
+    (paper17+aa20 lipid macro-F1 0.645), shell12 alone is modest
+    (0.567), v49 is the parsimony fallback (0.649), and compact tunnel
+    shape adds the final lift (+0.017 over v49). External holdouts remain
+    conservative and should be framed accordingly.
 
 - id: exp-008-detector-bakeoff
   date: "2026-04-23"

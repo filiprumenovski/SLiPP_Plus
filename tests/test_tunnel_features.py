@@ -13,18 +13,19 @@ import pytest
 
 from slipp_plus.constants import FEATURE_SETS
 from slipp_plus.tunnel_features import (
-    TunnelBuildThresholds,
-    TUNNEL_FEATURES_18,
     TUNNEL_FEATURES_15,
+    TUNNEL_FEATURES_18,
+    TunnelBuildThresholds,
     _cache_fingerprint,
     _enforce_quality_gates,
     _extract_from_analysis,
     _preflight_validate_task_inputs,
-    _quality_metrics,
-    _run_tasks_and_write,
     _process_structure,
     _process_structure_cached,
+    _quality_metrics,
+    _run_tasks_and_write,
     _safe_defaults,
+    _select_structure_batch,
     extract_pocket_tunnel_features,
 )
 
@@ -212,6 +213,45 @@ def test_process_structure_cached_reads_existing_json(tmp_path: Path) -> None:
     assert result["rows"] == payload["rows"]
 
 
+def test_process_structure_cached_ignores_stale_json(tmp_path: Path) -> None:
+    cache_dir = tmp_path / "cache"
+    cache_dir.mkdir()
+    task = {
+        "label": "CLR/pdb1ABC.pdb",
+        "rows": [{"pdb_ligand": "CLR/pdb1ABC.pdb", "matched_pocket_number": 1}],
+        "structure_dir": str(tmp_path / "missing_out"),
+        "protein_pdb": str(tmp_path / "missing.pdb"),
+        "caver_jar": str(tmp_path / "missing.jar"),
+        "settings": {
+            "probe_radius": 0.9,
+            "shell_radius": 3.0,
+            "shell_depth": 4.0,
+            "clustering_threshold": 3.5,
+            "timeout_s": 45,
+            "max_structure_timeout_s": 300,
+            "use_multi_start": False,
+            "java_heap": "768m",
+        },
+        "cache_dir": str(cache_dir),
+    }
+    stale_payload = {
+        "cache_version": 3,
+        "caver_config_version": 2,
+        "settings_fingerprint": _cache_fingerprint(task),
+        "label": "CLR/pdb1ABC.pdb",
+        "rows": [],
+        "warnings": [],
+    }
+    (cache_dir / "CLR__pdb1ABC.pdb.json").write_text(
+        json.dumps(stale_payload), encoding="utf-8"
+    )
+
+    result = _process_structure_cached(task)
+
+    assert result["cached"] is False
+    assert result["rows"][0]["tunnel_pocket_context_present"] == 0
+
+
 def test_preflight_rejects_missing_structure_inputs() -> None:
     tasks = [
         {
@@ -232,6 +272,47 @@ def test_preflight_rejects_missing_structure_inputs() -> None:
     )
     with pytest.raises(ValueError, match="preflight failed"):
         _preflight_validate_task_inputs(tasks, thresholds=thresholds)
+
+
+def test_select_structure_batch_filters_tasks_and_base_rows() -> None:
+    base = pd.DataFrame(
+        [
+            {"pdb_ligand": "A/one.pdb", "matched_pocket_number": 1},
+            {"pdb_ligand": "A/one.pdb", "matched_pocket_number": 2},
+            {"pdb_ligand": "B/two.pdb", "matched_pocket_number": 1},
+            {"pdb_ligand": "C/three.pdb", "matched_pocket_number": 1},
+        ]
+    )
+    tasks = [
+        {"label": "A/one.pdb"},
+        {"label": "B/two.pdb"},
+        {"label": "C/three.pdb"},
+    ]
+
+    selected_tasks, selected_base, batch = _select_structure_batch(
+        tasks,
+        base,
+        key_column="pdb_ligand",
+        batch_index=0,
+        batch_size=2,
+    )
+
+    assert [task["label"] for task in selected_tasks] == ["A/one.pdb", "B/two.pdb"]
+    assert selected_base["pdb_ligand"].tolist() == ["A/one.pdb", "A/one.pdb", "B/two.pdb"]
+    assert batch is not None
+    assert batch.selected_structures == 2
+    assert batch.total_structures == 3
+
+
+def test_select_structure_batch_requires_pair() -> None:
+    with pytest.raises(ValueError, match="must be provided together"):
+        _select_structure_batch(
+            [{"label": "A"}],
+            pd.DataFrame([{"pdb_ligand": "A"}]),
+            key_column="pdb_ligand",
+            batch_index=0,
+            batch_size=None,
+        )
 
 
 def test_quality_gate_fails_when_profile_missing() -> None:

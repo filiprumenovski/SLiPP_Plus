@@ -591,15 +591,7 @@ def run_hierarchical_training(settings: Settings) -> dict[str, Path]:
         feature_columns=feature_columns,
     )
 
-    from .hierarchical_experiment import DEFAULT_STE_NEIGHBORS
-
-    rule = OneVsNeighborsRule(
-        name="ste_specialist",
-        positive_label="STE",
-        neighbor_labels=DEFAULT_STE_NEIGHBORS,
-        top_k=4,
-        min_positive_proba=hierarchy.ste_threshold,
-    )
+    rule = hierarchy.resolved_specialist_rule()
 
     splits_dir = proc / "splits"
     split_files = sorted(splits_dir.glob("seed_*.parquet"))

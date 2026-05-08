@@ -1,0 +1,86 @@
+{
+  "v_sterol_only": [],
+  "tunnel_all18": [
+    "tunnel_count",
+    "tunnel_primary_length",
+    "tunnel_primary_bottleneck_radius",
+    "tunnel_primary_avg_radius",
+    "tunnel_primary_curvature",
+    "tunnel_primary_throughput",
+    "tunnel_primary_hydrophobicity",
+    "tunnel_primary_charge",
+    "tunnel_primary_aromatic_fraction",
+    "tunnel_max_length",
+    "tunnel_total_length",
+    "tunnel_min_bottleneck",
+    "tunnel_branching_factor",
+    "tunnel_length_over_axial",
+    "tunnel_extends_beyond_pocket",
+    "tunnel_pocket_context_present",
+    "tunnel_caver_profile_present",
+    "tunnel_has_tunnel"
+  ],
+  "tunnel_no_dead15": [
+    "tunnel_count",
+    "tunnel_primary_length",
+    "tunnel_primary_bottleneck_radius",
+    "tunnel_primary_curvature",
+    "tunnel_primary_throughput",
+    "tunnel_primary_hydrophobicity",
+    "tunnel_primary_charge",
+    "tunnel_primary_aromatic_fraction",
+    "tunnel_max_length",
+    "tunnel_total_length",
+    "tunnel_min_bottleneck",
+    "tunnel_length_over_axial",
+    "tunnel_extends_beyond_pocket",
+    "tunnel_caver_profile_present",
+    "tunnel_has_tunnel"
+  ],
+  "tunnel_lean13": [
+    "tunnel_has_tunnel",
+    "tunnel_caver_profile_present",
+    "tunnel_count",
+    "tunnel_primary_length",
+    "tunnel_primary_bottleneck_radius",
+    "tunnel_primary_curvature",
+    "tunnel_primary_hydrophobicity",
+    "tunnel_primary_charge",
+    "tunnel_primary_aromatic_fraction",
+    "tunnel_total_length",
+    "tunnel_min_bottleneck",
+    "tunnel_length_over_axial",
+    "tunnel_extends_beyond_pocket"
+  ],
+  "tunnel_geom9": [
+    "tunnel_has_tunnel",
+    "tunnel_caver_profile_present",
+    "tunnel_count",
+    "tunnel_primary_length",
+    "tunnel_primary_bottleneck_radius",
+    "tunnel_primary_curvature",
+    "tunnel_total_length",
+    "tunnel_min_bottleneck",
+    "tunnel_length_over_axial"
+  ],
+  "tunnel_chem5": [
+    "tunnel_has_tunnel",
+    "tunnel_caver_profile_present",
+    "tunnel_primary_hydrophobicity",
+    "tunnel_primary_charge",
+    "tunnel_primary_aromatic_fraction"
+  ],
+  "tunnel_shape_avail6": [
+    "tunnel_has_tunnel",
+    "tunnel_caver_profile_present",
+    "tunnel_count",
+    "tunnel_primary_bottleneck_radius",
+    "tunnel_length_over_axial",
+    "tunnel_extends_beyond_pocket"
+  ],
+  "tunnel_single_best3": [
+    "tunnel_primary_hydrophobicity",
+    "tunnel_primary_charge",
+    "tunnel_primary_aromatic_fraction"
+  ]
+}

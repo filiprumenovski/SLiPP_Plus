@@ -1,0 +1,299 @@
+[Tue May  5 10:08:52 EDT 2026] starting batch 12
+INFO v_tunnel preflight summary: {'structures_total': 100, 'structures_with_missing_inputs': 0, 'missing_input_frac': 0.0, 'missing_protein_pdb': 0, 'missing_structure_dir': 0, 'missing_pockets_dir': 0, 'example_labels': []}
+WARNING:root:MYR/pdb6U73.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6U73.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6VVQ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6VVQ.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6WUW.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6WUW.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6XK0.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6XK0.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6XV0.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6XV0.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6Y20.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6Y20.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 1/100 structures (0 cached)
+WARNING:root:MYR/pdb6YG9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6YG9.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb7CB3.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb7CB3.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb7ELL.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb7ELL.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb7JWN.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb7JWN.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb7NXG.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb7NXG.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb7OV1.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb7OV1.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb7OV5.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb7OV5.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb7OV6.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb7OV6.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb7PN6.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb7PN6.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb7QFE.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb7QFE.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb7TQS.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb7TQS.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb7TQT.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb7TQT.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb7TQU.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb7TQU.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb7VR9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb7VR9.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb7WOJ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb7WOJ.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb7WUA.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb7WUA.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb7YML.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb7YML.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb7Z57.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb7Z57.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb8A8R.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb8A8R.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb8CKS.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb8CKS.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb8EW4.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb8EW4.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb8EW7.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb8EW7.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb8EY5.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb8EY5.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb1DKF.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb1DKF.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb1FE3.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb1FE3.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 25/100 structures (0 cached)
+WARNING:root:OLA/pdb1FK5.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb1FK5.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb1G74.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb1G74.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb1GNI.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb1GNI.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb1GT6.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb1GT6.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb1HMS.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb1HMS.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb1ICN.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb1ICN.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb1J7E.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb1J7E.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb1LFO.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb1LFO.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb1LID.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb1LID.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb1PMP.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb1PMP.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb1VYF.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb1VYF.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb2AF9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb2AF9.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb2AG2.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb2AG2.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb2E9L.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb2E9L.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb2E9M.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb2E9M.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb2EV1.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb2EV1.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb2EV2.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb2EV2.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb2EV3.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb2EV3.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb2EV4.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb2EV4.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb2FLJ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb2FLJ.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb2FTB.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb2FTB.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb2JU8.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb2JU8.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb2LKK.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb2LKK.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb2MO5.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb2MO5.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 50/100 structures (0 cached)
+WARNING:root:OLA/pdb2WQ9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb2WQ9.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb2WQA.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb2WQA.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb2ZOX.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb2ZOX.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb3LSP.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb3LSP.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb3O19.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb3O19.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb3O22.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb3O22.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb3O2Y.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb3O2Y.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb3PGU.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb3PGU.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb3UG9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb3UG9.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb3V2R.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb3V2R.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb3VKK.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb3VKK.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb3WEB.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb3WEB.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb4DQ3.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb4DQ3.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb4EA3.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb4EA3.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb4IB4.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb4IB4.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb4IKV.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb4IKV.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb4JKV.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb4JKV.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb4K5Y.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb4K5Y.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb4KPP.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb4KPP.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb4LUR.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb4LUR.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb4NYQ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb4NYQ.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb4OO9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb4OO9.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb4U4T.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb4U4T.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb4X6D.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb4X6D.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb4X9X.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb4X9X.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb5CE4.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb5CE4.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 75/100 structures (0 cached)
+WARNING:root:OLA/pdb5CGC.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb5CGC.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb5CGD.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb5CGD.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb5DHH.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb5DHH.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb5EPQ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb5EPQ.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb5FJG.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb5FJG.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb5G2C.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb5G2C.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb5G2D.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb5G2D.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb5G54.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb5G54.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb5GLI.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb5GLI.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb5K2B.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb5K2B.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb5K2D.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb5K2D.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb5LWY.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb5LWY.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb5LX9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb5LX9.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb5LXA.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb5LXA.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb5MZP.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb5MZP.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb5O9H.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb5O9H.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb5OLH.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb5OLH.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb5TGZ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb5TGZ.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb5WIU.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb5WIU.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 100/100 structures (0 cached)
+WARNING MYR/pdb6VVQ.pdb/pocket26: CAVER timeout
+WARNING MYR/pdb6WUW.pdb/pocket62: CAVER timeout
+WARNING MYR/pdb6WUW.pdb/pocket64: CAVER timeout
+WARNING MYR/pdb6WUW.pdb/pocket85: CAVER timeout
+WARNING MYR/pdb7OV5.pdb/pocket92: CAVER timeout
+WARNING MYR/pdb7OV6.pdb/pocket30: CAVER timeout
+WARNING MYR/pdb7OV6.pdb/pocket37: CAVER timeout
+WARNING MYR/pdb7OV6.pdb/pocket52: CAVER timeout
+WARNING MYR/pdb7OV6.pdb/pocket85: CAVER timeout
+WARNING MYR/pdb7VR9.pdb/pocket18: CAVER timeout
+WARNING MYR/pdb7VR9.pdb/pocket92: CAVER timeout
+WARNING MYR/pdb7TQU.pdb/pocket1: CAVER timeout
+WARNING MYR/pdb7TQU.pdb/pocket64: CAVER timeout
+WARNING MYR/pdb7TQU.pdb/pocket76: CAVER timeout
+WARNING MYR/pdb7TQU.pdb/pocket85: CAVER timeout
+WARNING MYR/pdb7TQU.pdb/pocket87: CAVER timeout
+WARNING MYR/pdb7TQU.pdb/pocket91: CAVER timeout
+WARNING MYR/pdb7TQU.pdb/pocket116: CAVER timeout
+WARNING MYR/pdb7TQU.pdb/pocket122: CAVER timeout
+WARNING MYR/pdb7TQU.pdb/pocket125: CAVER timeout
+WARNING MYR/pdb7TQU.pdb/pocket143: CAVER timeout
+WARNING MYR/pdb7TQU.pdb/pocket147: CAVER timeout
+WARNING MYR/pdb7TQU.pdb/pocket170: CAVER timeout
+WARNING MYR/pdb7WUA.pdb/pocket33: CAVER timeout
+WARNING MYR/pdb7WUA.pdb/pocket79: CAVER timeout
+WARNING MYR/pdb7WUA.pdb/pocket112: CAVER timeout
+WARNING MYR/pdb7WUA.pdb/pocket119: CAVER timeout
+WARNING MYR/pdb7WUA.pdb/pocket136: CAVER timeout
+WARNING MYR/pdb7WUA.pdb/pocket145: CAVER timeout
+WARNING MYR/pdb7YML.pdb/pocket3: CAVER timeout
+WARNING MYR/pdb7YML.pdb/pocket16: CAVER timeout
+WARNING MYR/pdb7YML.pdb/pocket18: CAVER timeout
+WARNING MYR/pdb7YML.pdb/pocket37: CAVER timeout
+WARNING MYR/pdb7YML.pdb/pocket44: CAVER timeout
+WARNING MYR/pdb7YML.pdb/pocket46: CAVER timeout
+WARNING MYR/pdb7YML.pdb/pocket60: CAVER timeout
+WARNING MYR/pdb7YML.pdb/pocket85: CAVER timeout
+WARNING MYR/pdb7YML.pdb/pocket138: CAVER timeout
+WARNING MYR/pdb7YML.pdb/pocket141: CAVER timeout
+WARNING OLA/pdb1J7E.pdb/pocket19: CAVER timeout
+WARNING OLA/pdb1J7E.pdb/pocket22: CAVER timeout
+WARNING OLA/pdb1J7E.pdb/pocket52: CAVER timeout
+WARNING OLA/pdb1J7E.pdb/pocket55: CAVER timeout
+WARNING OLA/pdb5CE4.pdb/pocket1: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb5CE4.pdb/pocket2: CAVER produced no tunnel characteristics table
+WARNING MYR/pdb7TQT.pdb/pocket1: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket2: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket3: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket4: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket5: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket13: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket14: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket22: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket25: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket28: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket33: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket36: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket44: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket53: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket55: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket67: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket69: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket72: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket79: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket86: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket87: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket101: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket110: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket113: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket122: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket155: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket163: CAVER timeout
+WARNING MYR/pdb7TQT.pdb/pocket166: CAVER timeout
+WARNING OLA/pdb4K5Y.pdb/pocket23: CAVER timeout
+WARNING OLA/pdb4K5Y.pdb/pocket30: CAVER timeout
+WARNING OLA/pdb4K5Y.pdb/pocket40: CAVER timeout
+WARNING OLA/pdb4K5Y.pdb/pocket62: CAVER timeout
+WARNING OLA/pdb4K5Y.pdb/pocket65: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket1: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket2: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket3: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket4: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket5: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket14: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket19: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket22: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket30: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket31: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket33: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket54: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket86: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket96: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket107: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket114: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket118: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket119: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket129: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket135: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket137: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket155: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket163: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket172: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket179: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket185: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket197: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket198: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket216: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket218: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket220: CAVER timeout
+WARNING MYR/pdb7TQS.pdb/pocket226: CAVER timeout
+WARNING OLA/pdb4X6D.pdb/pocket21: CAVER timeout
+WARNING OLA/pdb4X6D.pdb/pocket47: CAVER timeout
+WARNING OLA/pdb4X6D.pdb/pocket57: CAVER timeout
+WARNING OLA/pdb4X6D.pdb/pocket73: CAVER timeout
+WARNING OLA/pdb4X6D.pdb/pocket79: CAVER timeout
+WARNING OLA/pdb4X6D.pdb/pocket93: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket1: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket2: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket3: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket4: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket5: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket6: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket7: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket8: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket10: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket11: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket13: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket22: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket23: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket24: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket39: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket48: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket70: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket79: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket107: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket110: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket113: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket115: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket125: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket128: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket133: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket168: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket170: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket172: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket177: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket183: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket186: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket194: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket219: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket221: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket227: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket231: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket242: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket246: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket258: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket276: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket309: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket312: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket324: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket330: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket333: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket356: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket360: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket376: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket393: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket414: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket422: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket428: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket429: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket437: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket446: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket448: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket462: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket467: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket472: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket512: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket520: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket536: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket554: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket563: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket581: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket591: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket600: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket609: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket615: CAVER timeout
+WARNING MYR/pdb7ELL.pdb/pocket637: CAVER timeout
+Rows: 773
+Structures: 100
+Batch: 12 size=100 structures=100/1780 range=[1200,1300)
+Warnings: 186
+Output: processed/v_tunnel/batches/batch_12.parquet (0.2 MB)
+[Tue May  5 11:23:16 EDT 2026] completed batch 12

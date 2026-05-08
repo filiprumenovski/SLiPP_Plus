@@ -1,0 +1,149 @@
+[Tue May  5 12:07:23 EDT 2026] starting batch 15
+INFO v_tunnel preflight summary: {'structures_total': 100, 'structures_with_missing_inputs': 0, 'missing_input_frac': 0.0, 'missing_protein_pdb': 0, 'missing_structure_dir': 0, 'missing_pockets_dir': 0, 'example_labels': []}
+WARNING:root:PLM/pdb4JIV.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb4JIV.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb4JJ2.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb4JJ2.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb4KU0.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb4KU0.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb4KVL.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb4KVL.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb4KVQ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb4KVQ.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb4N03.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb4N03.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 1/100 structures (0 cached)
+WARNING:root:PLM/pdb4OSD.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb4OSD.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb4RSC.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb4RSC.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb4RSE.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb4RSE.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb4RYX.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb4RYX.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb4RYY.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb4RYY.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb4RYZ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb4RYZ.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb4TKJ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb4TKJ.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb4XB9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb4XB9.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb4XBV.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb4XBV.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb4XBW.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb4XBW.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb4XCP.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb4XCP.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb4Z69.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb4Z69.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb4ZFB.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb4ZFB.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5AZB.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5AZB.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5B27.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5B27.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5B28.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5B28.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5B29.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5B29.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5CA6.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5CA6.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5D1W.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5D1W.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5DCO.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5DCO.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5DCR.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5DCR.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5DCS.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5DCS.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5DIC.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5DIC.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5E7X.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5E7X.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 25/100 structures (0 cached)
+WARNING:root:PLM/pdb5EKB.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5EKB.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5F2T.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5F2T.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5F2Z.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5F2Z.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5F31.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5F31.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5GIX.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5GIX.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5GIY.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5GIY.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5GN0.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5GN0.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5GP9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5GP9.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5HGU.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5HGU.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5I9K.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5I9K.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5IA9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5IA9.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5J5K.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5J5K.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5JNQ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5JNQ.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5LGD.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5LGD.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5LJG.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5LJG.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5N4M.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5N4M.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5N4P.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5N4P.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5N4Q.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5N4Q.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5NCC.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5NCC.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5NTY.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5NTY.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5NU2.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5NU2.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5NU6.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5NU6.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5NU8.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5NU8.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5NU9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5NU9.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5OCE.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5OCE.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 50/100 structures (0 cached)
+WARNING:root:PLM/pdb5OMJ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5OMJ.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5OMK.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5OMK.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5TW2.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5TW2.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5TW5.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5TW5.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5UL5.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5UL5.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5ULG.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5ULG.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5UTO.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5UTO.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5VCJ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5VCJ.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5VNW.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5VNW.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5VRG.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5VRG.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5W78.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5W78.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5YB1.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5YB1.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5YS3.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5YS3.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb5Z0B.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb5Z0B.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6AQ1.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6AQ1.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6BMS.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6BMS.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6C5M.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6C5M.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6C69.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6C69.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6C6H.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6C6H.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6C6J.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6C6J.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6CW6.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6CW6.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6CW9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6CW9.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6CWB.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6CWB.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6CWE.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6CWE.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6CX5.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6CX5.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 75/100 structures (0 cached)
+WARNING:root:PLM/pdb6CX7.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6CX7.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6DKE.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6DKE.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6EW2.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6EW2.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6EW4.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6EW4.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6EW5.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6EW5.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6F6C.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6F6C.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6F6E.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6F6E.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6F6F.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6F6F.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6F6G.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6F6G.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6F6H.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6F6H.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6F6L.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6F6L.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6F6M.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6F6M.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6HBG.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6HBG.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6I90.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6I90.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6KA3.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6KA3.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6KAX.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6KAX.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6L4K.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6L4K.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6LX6.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6LX6.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6MH9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6MH9.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb6NBF.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb6NBF.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 100/100 structures (0 cached)
+WARNING PLM/pdb4Z69.pdb/pocket9: CAVER timeout
+WARNING PLM/pdb4Z69.pdb/pocket32: CAVER timeout
+WARNING PLM/pdb4Z69.pdb/pocket47: CAVER timeout
+WARNING PLM/pdb4Z69.pdb/pocket81: CAVER timeout
+WARNING PLM/pdb5GN0.pdb/pocket33: CAVER timeout
+WARNING PLM/pdb5GN0.pdb/pocket68: CAVER timeout
+WARNING PLM/pdb5OCE.pdb/pocket17: CAVER timeout
+WARNING PLM/pdb5GIX.pdb/pocket18: CAVER timeout
+WARNING PLM/pdb5GIX.pdb/pocket26: CAVER timeout
+WARNING PLM/pdb5GIX.pdb/pocket33: CAVER timeout
+WARNING PLM/pdb5GIX.pdb/pocket71: CAVER timeout
+WARNING PLM/pdb5D1W.pdb/pocket63: CAVER timeout
+WARNING PLM/pdb5D1W.pdb/pocket72: CAVER timeout
+WARNING PLM/pdb5D1W.pdb/pocket108: CAVER timeout
+WARNING PLM/pdb6BMS.pdb/pocket1: CAVER produced no tunnel characteristics table
+WARNING PLM/pdb6BMS.pdb/pocket2: CAVER produced no tunnel characteristics table
+WARNING PLM/pdb6BMS.pdb/pocket3: CAVER produced no tunnel characteristics table
+WARNING PLM/pdb5Z0B.pdb/pocket130: CAVER timeout
+WARNING PLM/pdb5VNW.pdb/pocket99: CAVER timeout
+WARNING PLM/pdb5YB1.pdb/pocket24: CAVER timeout
+WARNING PLM/pdb5YB1.pdb/pocket60: CAVER timeout
+WARNING PLM/pdb5YB1.pdb/pocket70: CAVER timeout
+WARNING PLM/pdb5YB1.pdb/pocket77: CAVER timeout
+WARNING PLM/pdb5YB1.pdb/pocket90: CAVER timeout
+WARNING PLM/pdb5NCC.pdb/pocket4: CAVER timeout
+WARNING PLM/pdb5NCC.pdb/pocket5: CAVER timeout
+WARNING PLM/pdb5NCC.pdb/pocket61: CAVER timeout
+WARNING PLM/pdb5NCC.pdb/pocket133: CAVER timeout
+WARNING PLM/pdb5NCC.pdb/pocket136: CAVER timeout
+WARNING PLM/pdb5NCC.pdb/pocket155: CAVER timeout
+WARNING PLM/pdb5NCC.pdb/pocket161: CAVER timeout
+WARNING PLM/pdb5NCC.pdb/pocket176: CAVER timeout
+WARNING PLM/pdb6L4K.pdb/pocket22: CAVER timeout
+WARNING PLM/pdb6NBF.pdb/pocket19: CAVER timeout
+WARNING PLM/pdb6NBF.pdb/pocket54: CAVER timeout
+WARNING PLM/pdb6NBF.pdb/pocket70: CAVER timeout
+Rows: 602
+Structures: 100
+Batch: 15 size=100 structures=100/1780 range=[1500,1600)
+Warnings: 36
+Output: processed/v_tunnel/batches/batch_15.parquet (0.2 MB)
+[Tue May  5 12:29:35 EDT 2026] completed batch 15

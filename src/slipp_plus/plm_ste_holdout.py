@@ -22,14 +22,11 @@ import pandas as pd
 import polars as pl
 
 from .artifact_schema import validate_feature_schema_metadata
+from .boundary_head import BoundaryRule, apply_boundary_head, build_boundary_training, train_boundary_head
 from .config import Settings, load_settings
 from .constants import CLASS_10, LIG_TO_CLASS
 from .ensemble import DEFAULT_MODELS, LIPID_IDX, PROBA_COLUMNS
-from .plm_ste_tiebreaker import (
-    apply_tiebreaker,
-    build_plm_vs_ste_training,
-    train_plm_ste_tiebreaker,
-)
+from .plm_ste_tiebreaker import PLM_STE_RULE
 
 
 PLM = "PLM"
@@ -151,8 +148,25 @@ def train_iteration0_tiebreaker(
     seed: int,
 ):
     full = pd.read_parquet(full_pockets_path)
-    X_tr, y_tr, _, _, _ = build_plm_vs_ste_training(full, feature_columns, split_path)
-    return train_plm_ste_tiebreaker(X_tr, y_tr, seed=seed)
+    X_tr, y_tr, _, _, _ = build_boundary_training(
+        full,
+        feature_columns,
+        split_path,
+        PLM_STE_RULE,
+    )
+    return train_boundary_head(X_tr, y_tr, seed=seed)
+
+
+def _holdout_rule(margin: float) -> BoundaryRule:
+    return BoundaryRule(
+        name=PLM_STE_RULE.name,
+        positive_label=PLM_STE_RULE.positive_label,
+        negative_labels=PLM_STE_RULE.negative_labels,
+        margin=margin,
+        max_rank=PLM_STE_RULE.max_rank,
+        fired_column=PLM_STE_RULE.fired_column,
+        score_column=PLM_STE_RULE.score_column,
+    )
 
 
 def score_holdout_condition(frame: pl.DataFrame, true_bin: np.ndarray) -> dict[str, float]:
@@ -348,11 +362,11 @@ def run_holdout_validation(
         X_holdout = holdout_df[list(xgb_bundle["feature_columns"])].to_numpy(dtype=np.float64)
         p_ste = tiebreaker_model.predict_proba(X_holdout)[:, 1]
         row_lookup = np.arange(len(holdout_df), dtype=np.int64)
-        augmented = apply_tiebreaker(
+        augmented = apply_boundary_head(
             ensemble_df,
             p_ste,
             row_lookup,
-            margin=margin,
+            _holdout_rule(margin),
         )
 
         base_metrics = score_holdout_condition(ensemble_df, true_bin)

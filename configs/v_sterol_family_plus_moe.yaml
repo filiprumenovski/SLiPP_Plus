@@ -1,0 +1,95 @@
+seed_base: 42
+n_iterations: 25
+test_fraction: 0.10
+
+feature_set: v_sterol
+pipeline_mode: composite
+
+models:
+  - rf
+  - xgb
+  - lgbm
+
+hierarchical:
+  bundle_name: family_plus_moe_bundle.joblib
+
+composite:
+  teacher_predictions_path: processed/v_sterol/predictions/family_encoder_predictions.parquet
+  backbone:
+    kind: teacher_ensemble
+    teacher_init: v_sterol_family_encoder
+    feature_families: [paper17, aa20, shell12, sterol_chemistry, pocket_geometry]
+  experts:
+    - name: clr_neighborhood_expert
+      kind: local_multiclass
+      labels: [CLR, OLA, PLM, COA, PP]
+      gate: heuristic
+      combine: closed_world_redistribute
+      feature_set: v_sterol
+      margin: 0.75
+      max_rank: 3
+    - name: myr_plm_pair_expert
+      kind: binary_boundary
+      labels: [MYR, PLM]
+      gate: heuristic
+      combine: pair_swap
+      feature_set: v_sterol
+      margin: 0.05
+      max_rank: 2
+    - name: plm_ste_pair_expert
+      kind: binary_boundary
+      labels: [PLM, STE]
+      gate: heuristic
+      combine: pair_swap
+      feature_set: v_sterol
+      margin: 0.05
+      max_rank: 2
+    - name: plm_ste_neighborhood_expert
+      kind: local_multiclass
+      labels: [PLM, STE, COA, MYR, OLA]
+      gate: heuristic
+      combine: closed_world_redistribute
+      feature_set: v_sterol
+      margin: 0.75
+      max_rank: 5
+  execution_order:
+    - clr_neighborhood_expert
+    - myr_plm_pair_expert
+    - plm_ste_pair_expert
+    - plm_ste_neighborhood_expert
+
+ground_truth:
+  test:
+    f1: 0.869
+    auroc: 0.970
+    accuracy: 0.968
+    precision: 0.926
+    sensitivity: 0.818
+  apo_pdb:
+    f1: 0.726
+    auroc: 0.828
+  alphafold:
+    f1: 0.643
+    auroc: 0.851
+
+paths:
+  training_csv: reference/SLiPP_2024-main/training_pockets.csv
+  supporting_file_2_xlsx: data/raw/supplementary/ci5c01076_si_003.xlsx
+  supporting_file_3_xlsx: data/raw/supplementary/ci5c01076_si_004.xlsx
+  processed_dir: processed/v_sterol
+  models_dir: models/v_sterol_family_plus_moe
+  reports_dir: reports/v_sterol_family_plus_moe
+
+validation:
+  training_total_exact: 15219
+  per_class_exact:
+    CLR: 358
+    MYR: 424
+    OLA: 329
+    PLM: 718
+    STE: 152
+    ADN: 414
+    B12: 373
+    BGC: 526
+    COA: 2020
+    PP: 9905

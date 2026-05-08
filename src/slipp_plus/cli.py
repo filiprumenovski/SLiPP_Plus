@@ -248,6 +248,28 @@ def calibration(config: Path = _CONFIG_OPT) -> None:
         typer.echo(f"  {k}: {v}")
 
 
+@app.command("compact-report")
+def compact_report_cmd(
+    reports_root: Path = typer.Option(Path("reports"), help="Root containing per-run reports."),
+    models_root: Path = typer.Option(Path("models"), help="Root containing per-run model artifacts."),
+    output_dir: Path = typer.Option(
+        Path("reports/compact_publishable"),
+        help="Directory for compact ladder CSV and markdown.",
+    ),
+) -> None:
+    """Regenerate the compact release-candidate ablation report."""
+    from .compact_report import run_compact_report
+
+    out = run_compact_report(
+        reports_root=reports_root,
+        models_root=models_root,
+        output_dir=output_dir,
+    )
+    typer.echo("compact-report OK:")
+    for k, v in out.items():
+        typer.echo(f"  {k}: {v}")
+
+
 @app.command("build-caver-t12")
 def build_caver_t12(
     base_parquet: Path = typer.Option(..., help="Base v_sterol parquet to enrich."),
@@ -402,73 +424,30 @@ def ste_rescue_sweep_cmd(
 
 @app.command("hierarchical-lipid")
 def hierarchical_lipid_cmd(
-    full_pockets: Path = typer.Option(
-        Path("processed/v_sterol/full_pockets.parquet"),
-        help="Training parquet used to fit staged lipid hierarchy.",
+    config: Path = typer.Option(
+        "configs/v_sterol_boundary_refactor.yaml",
+        "--config",
+        "-c",
+        help="Path to hierarchical YAML configuration.",
     ),
-    predictions: Path = typer.Option(
-        Path("processed/v_sterol/predictions/test_predictions.parquet"),
-        help="Base multiclass prediction parquet across iterations.",
-    ),
-    splits_dir: Path = typer.Option(
-        Path("processed/v_sterol/splits"),
-        help="Directory containing seed_*.parquet split files.",
-    ),
-    model_bundle: Path = typer.Option(
-        Path("models/v_sterol/xgb_multiclass.joblib"),
-        help="Any matching multiclass bundle used to infer feature columns.",
-    ),
-    output_report: Path = typer.Option(
-        Path("reports/v_sterol/hierarchical_lipid_report.md"),
-        help="Markdown report path for the staged hierarchy.",
-    ),
-    output_metrics: Path = typer.Option(
-        Path("reports/v_sterol/hierarchical_lipid_metrics.parquet"),
-        help="Parquet path for the staged hierarchy summary table.",
-    ),
-    output_predictions: Path | None = typer.Option(
-        Path("processed/v_sterol/predictions/hierarchical_lipid_predictions.parquet"),
-        help="Optional parquet path for augmented staged predictions.",
-    ),
-    ste_threshold: float = typer.Option(0.40, help="STE specialist probability threshold."),
-    stage1_source: str = typer.Option(
-        "ensemble",
-        help="Use 'ensemble' lipid mass for binary parity, or train a separate 'trained' gate.",
-    ),
-    workers: int = typer.Option(8, help="Maximum worker processes."),
 ) -> None:
-    """Run Stage 1 lipid gate, Stage 2 lipid-family head, and STE specialist."""
-    from .hierarchical_experiment import (
-        DEFAULT_STE_NEIGHBORS,
-        OneVsNeighborsRule,
-        run_hierarchical_experiment,
-    )
+    """Run the config-driven hierarchical train + eval pipeline."""
+    from .evaluate import run_evaluation
+    from .train import run_training
 
-    rule = OneVsNeighborsRule(
-        name="ste_specialist",
-        positive_label="STE",
-        neighbor_labels=DEFAULT_STE_NEIGHBORS,
-        top_k=4,
-        min_positive_proba=ste_threshold,
-    )
-    result = run_hierarchical_experiment(
-        full_pockets_path=full_pockets,
-        predictions_path=predictions,
-        splits_dir=splits_dir,
-        model_bundle_path=model_bundle,
-        output_report=output_report,
-        output_metrics=output_metrics,
-        output_predictions=output_predictions,
-        specialist_rule=rule,
-        stage1_source=stage1_source,
-        workers=workers,
-    )
+    settings = _load_settings(config)
+    if settings.pipeline_mode != "hierarchical":
+        raise typer.BadParameter(
+            "hierarchical-lipid requires a config with pipeline_mode: hierarchical",
+            param_hint="config",
+        )
+
+    train_out = run_training(settings)
+    eval_out = run_evaluation(settings)
     typer.echo("hierarchical-lipid OK:")
-    typer.echo(f"  report: {result['report']}")
-    typer.echo(f"  metrics: {result['metrics']}")
-    typer.echo(f"  fire_total: {result['fire_total']}")
-    if result["predictions"] is not None:
-        typer.echo(f"  predictions: {result['predictions']}")
+    typer.echo(f"  predictions: {train_out['predictions']}")
+    typer.echo(f"  metrics_table: {eval_out['metrics_table']}")
+    typer.echo(f"  raw_metrics: {eval_out['raw_metrics']}")
 
 
 @app.command()

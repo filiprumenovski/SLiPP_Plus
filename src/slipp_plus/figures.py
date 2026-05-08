@@ -13,7 +13,7 @@ from sklearn.metrics import auc, confusion_matrix, roc_curve
 from sklearn.preprocessing import StandardScaler
 
 from .config import Settings
-from .constants import CLASS_10, LIPID_CODES
+from .constants import CLASS_10, HIERARCHICAL_PREDICTIONS_NAME, LIPID_CODES
 from .features import class10_labels, feature_matrix
 
 
@@ -171,9 +171,14 @@ def run_figures(settings: Settings) -> dict[str, Path]:
     reports = settings.paths.reports_dir
     reports.mkdir(parents=True, exist_ok=True)
 
-    preds = pd.read_parquet(proc / "predictions" / "test_predictions.parquet")
-    model_key = _headline_model(settings)
-    iter0 = preds[(preds["iteration"] == 0) & (preds["model"] == model_key)]
+    staged_mode = settings.pipeline_mode in {"hierarchical", "composite"}
+    preds_name = HIERARCHICAL_PREDICTIONS_NAME if staged_mode else "test_predictions.parquet"
+    preds = pd.read_parquet(proc / "predictions" / preds_name)
+    model_key = settings.pipeline_mode if staged_mode else _headline_model(settings)
+    if "model" in preds.columns:
+        iter0 = preds[(preds["iteration"] == 0) & (preds["model"] == model_key)]
+    else:
+        iter0 = preds[preds["iteration"] == 0]
     full = pd.read_parquet(proc / "full_pockets.parquet")
 
     out_paths: dict[str, Path] = {}

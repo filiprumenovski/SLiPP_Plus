@@ -23,11 +23,23 @@ import pandas as pd
 import polars as pl
 from xgboost import XGBClassifier
 
+from .boundary_head import BoundaryRule, apply_boundary_head, build_boundary_training, gain_importance, train_boundary_head
 from .constants import CLASS_10
 from .ensemble import PROBA_COLUMNS, average_softprobs, load_predictions, score_summary
-from .splits import load_split
 
 DEFAULT_MARGINS: tuple[float, ...] = (0.05, 0.10, 0.15, 0.20, 0.30, 0.40, 0.50, 0.70, 0.90, 0.99)
+
+
+def _pair_rule(negative_label: str, positive_label: str, margin: float) -> BoundaryRule:
+    return BoundaryRule(
+        name=f"{positive_label.lower()}_vs_{negative_label.lower()}",
+        positive_label=positive_label,
+        negative_labels=(negative_label,),
+        margin=margin,
+        max_rank=2,
+        fired_column="tiebreaker_fired",
+        score_column=f"p_{positive_label}_binary",
+    )
 
 
 def _load_prediction_substrate(predictions_path: Path) -> pl.DataFrame:
@@ -50,40 +62,16 @@ def build_pair_training(
     negative_label: str,
     positive_label: str,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    train_idx, test_idx = load_split(split_parquet)
-    X_all = full_pockets[feature_columns].to_numpy(dtype=np.float64)
-    y_all = full_pockets["class_10"].to_numpy()
-
-    def _pair_mask(idx: np.ndarray) -> np.ndarray:
-        return np.isin(y_all[idx], [negative_label, positive_label])
-
-    tr_sel = train_idx[_pair_mask(train_idx)]
-    te_sel = test_idx[_pair_mask(test_idx)]
-    X_tr = X_all[tr_sel]
-    y_tr = (y_all[tr_sel] == positive_label).astype(np.int64)
-    X_te = X_all[te_sel]
-    y_te = (y_all[te_sel] == positive_label).astype(np.int64)
-    return X_tr, y_tr, X_te, y_te, te_sel
+    return build_boundary_training(
+        full_pockets,
+        feature_columns,
+        split_parquet,
+        _pair_rule(negative_label, positive_label, margin=DEFAULT_MARGINS[0]),
+    )
 
 
 def train_pair_tiebreaker(X_tr: np.ndarray, y_tr: np.ndarray, seed: int) -> XGBClassifier:
-    n_pos = int((y_tr == 1).sum())
-    n_neg = int((y_tr == 0).sum())
-    scale_pos_weight = (n_neg / n_pos) if n_pos > 0 else 1.0
-    model = XGBClassifier(
-        objective="binary:logistic",
-        max_depth=5,
-        n_estimators=250,
-        learning_rate=0.05,
-        scale_pos_weight=scale_pos_weight,
-        random_state=seed,
-        n_jobs=-1,
-        eval_metric="logloss",
-        tree_method="hist",
-        verbosity=0,
-    )
-    model.fit(X_tr, y_tr)
-    return model
+    return train_boundary_head(X_tr, y_tr, seed=seed)
 
 
 def apply_pair_tiebreaker(
@@ -95,49 +83,11 @@ def apply_pair_tiebreaker(
     positive_label: str,
     margin: float,
 ) -> pl.DataFrame:
-    if len(positive_proba) != len(row_index_lookup):
-        raise ValueError("positive_proba and row_index_lookup must align")
-
-    negative_idx = CLASS_10.index(negative_label)
-    positive_idx = CLASS_10.index(positive_label)
-    lookup = dict(zip(row_index_lookup.tolist(), positive_proba.tolist(), strict=True))
-
-    proba = ensemble_df.select(PROBA_COLUMNS).to_numpy().copy()
-    row_indices = ensemble_df["row_index"].to_numpy()
-    n = proba.shape[0]
-    fired = np.zeros(n, dtype=bool)
-    positive_bin = np.full(n, np.nan, dtype=np.float64)
-
-    top2 = np.argpartition(-proba, kth=1, axis=1)[:, :2]
-    row_max = np.arange(n)
-    top1 = top2[row_max, np.argmax(proba[row_max[:, None], top2], axis=1)]
-    top2_other = top2[row_max, np.argmin(proba[row_max[:, None], top2], axis=1)]
-
-    for i in range(n):
-        pair = {int(top1[i]), int(top2_other[i])}
-        if pair != {negative_idx, positive_idx}:
-            continue
-        gap = float(proba[i, top1[i]] - proba[i, top2_other[i]])
-        if gap >= margin:
-            continue
-        row_idx = int(row_indices[i])
-        if row_idx not in lookup:
-            continue
-        p_pos = float(lookup[row_idx])
-        positive_bin[i] = p_pos
-        mass = float(proba[i, negative_idx] + proba[i, positive_idx])
-        proba[i, positive_idx] = mass * p_pos
-        proba[i, negative_idx] = mass * (1.0 - p_pos)
-        fired[i] = True
-
-    new_y_pred = proba.argmax(axis=1).astype(np.int64)
-    out = ensemble_df.clone()
-    replacements = [pl.Series(c, proba[:, i]) for i, c in enumerate(PROBA_COLUMNS)]
-    return out.with_columns(
-        *replacements,
-        pl.Series("y_pred_int", new_y_pred),
-        pl.Series("tiebreaker_fired", fired),
-        pl.Series(f"p_{positive_label}_binary", positive_bin),
+    return apply_boundary_head(
+        ensemble_df,
+        positive_proba,
+        row_index_lookup,
+        _pair_rule(negative_label, positive_label, margin=margin),
     )
 
 
@@ -194,11 +144,7 @@ def _worker(
 
     importance: dict[str, float] | None = None
     if persist_importance:
-        gain_map = model.get_booster().get_score(importance_type="gain")
-        importance = {
-            feature: float(gain_map.get(f"f{i}", 0.0))
-            for i, feature in enumerate(feature_columns)
-        }
+        importance = gain_importance(model, feature_columns)
 
     return {
         "iteration": iteration,

@@ -1,0 +1,105 @@
+seed_base: 42
+n_iterations: 25
+test_fraction: 0.10
+
+feature_set: v_sterol
+pipeline_mode: composite
+
+models:
+  - rf
+  - xgb
+  - lgbm
+
+hierarchical:
+  bundle_name: pair_moe_bundle.joblib
+  workers: 8
+
+composite:
+  teacher_predictions_path: processed/v_sterol/predictions/ste_rescue_ola_plm_pair_predictions.parquet
+  backbone:
+    kind: teacher_ensemble
+    teacher_init: exp_009_boundary_refactor
+    feature_families: [paper17, aa20, shell12, sterol_chemistry, pocket_geometry]
+  experts:
+    - name: plm_ste_pair_expert
+      kind: binary_boundary
+      labels: [PLM, STE]
+      gate: heuristic
+      combine: pair_swap
+      feature_set: v_sterol
+      margin: 0.99
+      max_rank: 2
+    - name: clr_ola_pair_expert
+      kind: binary_boundary
+      labels: [CLR, OLA]
+      gate: heuristic
+      combine: pair_swap
+      feature_set: v_sterol
+      margin: 0.10
+      max_rank: 2
+    - name: myr_plm_pair_expert
+      kind: binary_boundary
+      labels: [MYR, PLM]
+      gate: heuristic
+      combine: pair_swap
+      feature_set: v_sterol
+      margin: 0.05
+      max_rank: 2
+    - name: coa_adn_pair_expert
+      kind: binary_boundary
+      labels: [COA, ADN]
+      gate: heuristic
+      combine: pair_swap
+      feature_set: v_sterol
+      margin: 0.10
+      max_rank: 2
+    - name: coa_b12_pair_expert
+      kind: binary_boundary
+      labels: [COA, B12]
+      gate: heuristic
+      combine: pair_swap
+      feature_set: v_sterol
+      margin: 0.05
+      max_rank: 2
+  execution_order:
+    - plm_ste_pair_expert
+    - clr_ola_pair_expert
+    - myr_plm_pair_expert
+    - coa_adn_pair_expert
+    - coa_b12_pair_expert
+
+ground_truth:
+  test:
+    f1: 0.869
+    auroc: 0.970
+    accuracy: 0.968
+    precision: 0.926
+    sensitivity: 0.818
+  apo_pdb:
+    f1: 0.726
+    auroc: 0.828
+  alphafold:
+    f1: 0.643
+    auroc: 0.851
+
+paths:
+  training_csv: reference/SLiPP_2024-main/training_pockets.csv
+  supporting_file_2_xlsx: data/raw/supplementary/ci5c01076_si_003.xlsx
+  supporting_file_3_xlsx: data/raw/supplementary/ci5c01076_si_004.xlsx
+  processed_dir: processed/v_sterol
+  models_dir: models/v_sterol_pair_moe
+  reports_dir: reports/v_sterol_pair_moe
+
+validation:
+  training_total_exact: 15219
+  per_class_exact:
+    CLR: 358
+    MYR: 424
+    OLA: 329
+    PLM: 718
+    STE: 152
+    ADN: 414
+    B12: 373
+    BGC: 526
+    COA: 2020
+    PP: 9905

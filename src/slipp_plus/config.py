@@ -13,6 +13,7 @@ from typing import Literal
 import yaml
 from pydantic import BaseModel, Field, field_validator, model_validator
 
+from .composite_config import CompositeSettings
 from .constants import CLASS_10, FEATURE_SETS, HIERARCHICAL_BUNDLE_NAME
 
 CANONICAL_GROUPED_SPLIT_STRATEGY = "grouped"
@@ -31,6 +32,7 @@ FeatureSet = Literal[
     "v14",
     "v14+v22",
     "v14+aa",
+    "v14+shell",
     "v14+v22+aa",
     "v49",
     "v61",
@@ -43,12 +45,21 @@ FeatureSet = Literal[
     "v_plm_ste",
     "v_lipid_boundary",
     "v_tunnel",
+    "v14+aa+tunnel_shape",
+    "v14+shell+tunnel_shape",
+    "v14+aa12+tunnel_shape",
+    "v14+aa16+tunnel_shape",
+    "v14+aa20+shell6+tunnel_shape",
+    "v49+tunnel_shape3",
+    "v49+tunnel_shape",
+    "v49+tunnel_chem",
+    "v49+tunnel_geom",
     "v_graph_tunnel",
     "v_caver_t12",
 ]
 ModelKey = Literal["rf", "xgb", "lgbm"]
 SplitStrategy = Literal["stratified_shuffle", "grouped"]
-PipelineMode = Literal["flat", "hierarchical"]
+PipelineMode = Literal["flat", "hierarchical", "composite"]
 Stage1Source = Literal["ensemble", "trained"]
 NonlipidSource = Literal["dedicated_head", "flat_fallback"]
 SpecialistGateMode = Literal["heuristic", "utility"]
@@ -60,10 +71,7 @@ def normalize_split_strategy(value: str) -> SplitStrategy:
         return CANONICAL_GROUPED_SPLIT_STRATEGY
     if value in SUPPORTED_SPLIT_STRATEGIES:
         return value  # type: ignore[return-value]
-    raise ValueError(
-        "split_strategy must be one of "
-        f"{sorted(SUPPORTED_SPLIT_STRATEGIES)}"
-    )
+    raise ValueError(f"split_strategy must be one of {sorted(SUPPORTED_SPLIT_STRATEGIES)}")
 
 
 class Paths(BaseModel):
@@ -151,6 +159,52 @@ class BoundaryHeadSettings(BaseModel):
         )
 
 
+class SpecialistRuleSettings(BaseModel):
+    name: str = "ste_specialist"
+    positive_label: str = "STE"
+    neighbor_labels: tuple[str, ...] = ("PLM", "COA", "OLA", "MYR")
+    top_k: int = Field(default=4, ge=2, le=len(CLASS_10))
+    min_positive_proba: float | None = Field(default=None, ge=0.0, le=1.0)
+    max_margin: float | None = Field(default=None, ge=0.0)
+
+    @field_validator("positive_label")
+    @classmethod
+    def specialist_positive_label_known(cls, value: str) -> str:
+        if value not in CLASS_10:
+            raise ValueError(f"unknown positive_label {value!r}; expected one of {CLASS_10}")
+        return value
+
+    @field_validator("neighbor_labels")
+    @classmethod
+    def specialist_neighbor_labels_known(cls, value: tuple[str, ...]) -> tuple[str, ...]:
+        if not value:
+            raise ValueError("neighbor_labels cannot be empty")
+        unknown = sorted(set(value) - set(CLASS_10))
+        if unknown:
+            raise ValueError(f"unknown neighbor_labels: {unknown}")
+        if len(set(value)) != len(value):
+            raise ValueError("neighbor_labels cannot contain duplicates")
+        return value
+
+    @model_validator(mode="after")
+    def specialist_positive_not_neighbor(self) -> SpecialistRuleSettings:
+        if self.positive_label in self.neighbor_labels:
+            raise ValueError("positive_label cannot also appear in neighbor_labels")
+        return self
+
+    def to_rule(self):
+        from .hierarchical_postprocess import OneVsNeighborsRule
+
+        return OneVsNeighborsRule(
+            name=self.name,
+            positive_label=self.positive_label,
+            neighbor_labels=self.neighbor_labels,
+            top_k=self.top_k,
+            min_positive_proba=self.min_positive_proba,
+            max_margin=self.max_margin,
+        )
+
+
 class HierarchicalSettings(BaseModel):
     stage1_source: Stage1Source = "ensemble"
     ste_threshold: float = Field(default=0.40, ge=0.0, le=1.0)
@@ -166,6 +220,13 @@ class HierarchicalSettings(BaseModel):
     lipid_family_feature_set: FeatureSet | None = None
     specialist_feature_set: FeatureSet | None = None
     nonlipid_feature_set: FeatureSet | None = None
+    specialist_rule: SpecialistRuleSettings | None = None
+
+    def resolved_specialist_rule(self):
+        if self.specialist_rule is not None:
+            return self.specialist_rule.to_rule()
+
+        return SpecialistRuleSettings(min_positive_proba=self.ste_threshold).to_rule()
 
 
 class Settings(BaseModel):
@@ -180,6 +241,7 @@ class Settings(BaseModel):
     split_group_column: str | None = None
     models: list[ModelKey] = Field(default_factory=lambda: ["rf", "xgb", "lgbm"])
     hierarchical: HierarchicalSettings = Field(default_factory=HierarchicalSettings)
+    composite: CompositeSettings = Field(default_factory=CompositeSettings)
     paths: Paths
     ground_truth: GroundTruth
     validation: Validation
@@ -200,13 +262,9 @@ class Settings(BaseModel):
 
     @model_validator(mode="after")
     def grouped_split_requires_group_column(self) -> Settings:
-        if (
-            self.split_strategy == CANONICAL_GROUPED_SPLIT_STRATEGY
-            and not self.split_group_column
-        ):
+        if self.split_strategy == CANONICAL_GROUPED_SPLIT_STRATEGY and not self.split_group_column:
             raise ValueError(
-                "split_group_column is required when split_strategy resolves to "
-                "'grouped'"
+                "split_group_column is required when split_strategy resolves to 'grouped'"
             )
         return self
 

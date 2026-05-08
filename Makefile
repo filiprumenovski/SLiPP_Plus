@@ -1,7 +1,8 @@
-.PHONY: help install ingest train eval figures all scratch build-caver-t12 build-lipid-boundary build-v-sterol-ablation hierarchical-lipid test test-slow lint typecheck clean
+.PHONY: help install ingest train eval figures all scratch build-caver-t12 build-caver-batch build-lipid-boundary build-v-sterol-ablation hierarchical-lipid test test-slow lint typecheck clean
 
 PY ?= uv run
 CFG ?= configs/day1.yaml
+HIER_CFG ?= configs/v_sterol_boundary_refactor.yaml
 
 help:
 	@echo "slipp_plus targets:"
@@ -11,9 +12,10 @@ help:
 	@echo "  eval        per-class + binary-collapse metrics + holdouts"
 	@echo "  figures     confusion / ROC / PCA / comparison plots"
 	@echo "  build-caver-t12  build persisted-output-first CAVER Tier 1-2 parquet"
+	@echo "  build-caver-batch  run v_tunnel CAVER on one structure batch (BATCH=0 BATCH_SIZE=100)"
 	@echo "  build-lipid-boundary  build v_lipid_boundary feature parquet"
-	@echo "  hierarchical-lipid  run staged lipid hierarchy over v_sterol artifacts"
 	@echo "  build-v-sterol-ablation  materialize a v_sterol ablation feature set"
+	@echo "  hierarchical-lipid  ingest + train + eval the config-driven boundary-head hierarchy"
 	@echo "  all         ingest -> train -> eval -> figures"
 	@echo "  scratch     Day 7+: download PDBs, run fpocket, re-ingest from raw"
 	@echo "  test        pytest + ruff + mypy"
@@ -39,6 +41,21 @@ build-caver-t12:
 	@echo "Use: make build-caver-t12 BASE=... MANIFEST=... OUT=... [ANALYSIS_ROOT=...] [HOLDOUT=1]"
 	$(PY) python -m slipp_plus.cli build-caver-t12 --base-parquet $(BASE) --manifest $(MANIFEST) --output $(OUT) $(if $(ANALYSIS_ROOT),--analysis-root $(ANALYSIS_ROOT),) $(if $(HOLDOUT),--holdout,)
 
+build-caver-batch:
+	$(PY) python -m slipp_plus.tunnel_features training \
+		--base-parquet $(or $(BASE),processed/v_sterol/full_pockets.parquet) \
+		--source-pdbs-root $(or $(SOURCE_PDBS_ROOT),data/structures/source_pdbs) \
+		--caver-jar $(or $(CAVER_JAR),tools/caver/caver.jar) \
+		--output $(or $(OUT),processed/v_tunnel/batches/batch_$(or $(BATCH),0).parquet) \
+		--reports-dir $(or $(REPORTS_DIR),reports/v_tunnel/batches/batch_$(or $(BATCH),0)) \
+		--workers $(or $(WORKERS),6) \
+		--cache-dir $(or $(CACHE_DIR),processed/v_tunnel/structure_json) \
+		--batch-index $(or $(BATCH),0) \
+		--batch-size $(or $(BATCH_SIZE),100) \
+		--max-missing-structure-frac $(or $(MAX_MISSING_STRUCTURE_FRAC),0.02) \
+		--min-context-present-frac $(or $(MIN_CONTEXT_PRESENT_FRAC),0.0) \
+		--min-profile-present-frac $(or $(MIN_PROFILE_PRESENT_FRAC),0.0)
+
 build-lipid-boundary:
 	$(PY) python -m slipp_plus.cli build-lipid-boundary \
 		--base-parquet $(or $(BASE),processed/v_sterol/full_pockets.parquet) \
@@ -57,17 +74,9 @@ build-v-sterol-ablation:
 		$(if $(TRAINING_CSV),--training-csv $(TRAINING_CSV),)
 
 hierarchical-lipid:
-	$(PY) python -m slipp_plus.cli hierarchical-lipid \
-		--full-pockets $(or $(FULL),processed/v_sterol/full_pockets.parquet) \
-		--predictions $(or $(PREDICTIONS),processed/v_sterol/predictions/test_predictions.parquet) \
-		--splits-dir $(or $(SPLITS_DIR),processed/v_sterol/splits) \
-		--model-bundle $(or $(MODEL_BUNDLE),models/v_sterol/xgb_multiclass.joblib) \
-		--output-report $(or $(REPORT),reports/v_sterol/hierarchical_lipid_report.md) \
-		--output-metrics $(or $(METRICS),reports/v_sterol/hierarchical_lipid_metrics.parquet) \
-		--output-predictions $(or $(OUT),processed/v_sterol/predictions/hierarchical_lipid_predictions.parquet) \
-		--stage1-source $(or $(STAGE1_SOURCE),ensemble) \
-		--ste-threshold $(or $(STE_THRESHOLD),0.40) \
-		--workers $(or $(WORKERS),8)
+	$(PY) python -m slipp_plus.cli ingest --config $(HIER_CFG)
+	$(PY) python -m slipp_plus.cli train --config $(HIER_CFG)
+	$(PY) python -m slipp_plus.cli eval --config $(HIER_CFG)
 
 all: ingest train eval figures
 

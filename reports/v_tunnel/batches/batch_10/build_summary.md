@@ -1,0 +1,45 @@
+# v_tunnel build summary
+
+- rows: 1014
+- structures: 100
+- warnings: 182
+- elapsed_s: 3821.3
+- output: processed/v_tunnel/batches/batch_10.parquet
+- output_size_mb: 0.3
+- cache_dir: processed/v_tunnel/structure_json
+- analysis_output_root: None
+- analysis_manifest_path: None
+
+## Batch
+
+- batch_index: 10
+- batch_size: 100
+- total_structures: 1780
+- selected_structures: 100
+- structure_range: [1000, 1100)
+
+## Preflight
+
+- structures_total: 100
+- structures_with_missing_inputs: 0
+- missing_input_frac: 0.000
+- missing_protein_pdb: 0
+- missing_structure_dir: 0
+- missing_pockets_dir: 0
+
+## Quality
+
+- context_present_frac: 1.000
+- profile_present_frac: 0.821
+- has_tunnel_frac: 0.735
+- min_context_present_frac: 0.000
+- min_profile_present_frac: 0.000
+- max_missing_structure_frac: 0.020
+
+## Class means
+
+| class_10 | tunnel_count       | tunnel_primary_length | tunnel_primary_bottleneck_radius | tunnel_primary_avg_radius | tunnel_primary_curvature | tunnel_primary_throughput | tunnel_primary_hydrophobicity | tunnel_primary_charge | tunnel_primary_aromatic_fraction | tunnel_max_length  | tunnel_total_length | tunnel_min_bottleneck | tunnel_branching_factor | tunnel_length_over_axial | tunnel_extends_beyond_pocket | tunnel_pocket_context_present | tunnel_caver_profile_present | tunnel_has_tunnel  |
+| -------- | ------------------ | --------------------- | -------------------------------- | ------------------------- | ------------------------ | ------------------------- | ----------------------------- | --------------------- | -------------------------------- | ------------------ | ------------------- | --------------------- | ----------------------- | ------------------------ | ---------------------------- | ----------------------------- | ---------------------------- | ------------------ |
+| COA      | 3.9714285714285715 | 5.5896186542818       | 1.2010654109496437               | 0.0                       | 1.1582769218778728       | 0.5593629564707492        | -0.2601179394016329           | 0.2857142857142857    | 0.097991992565287                | 22.741488678530036 | 113.92223154125108  | 0.7556680567335172    | 0.0                     | 0.5458088958463836       | 0.09610389610389611          | 1.0                           | 0.9298701298701298           | 0.7142857142857143 |
+| MYR      | 11.608695652173912 | 8.092479741889832     | 1.614538237078043                | 0.0                       | 1.1817526647118972       | 0.7425106216560198        | 0.14688688262328872           | 0.17391304347826086   | 0.16441733496848002              | 51.035112625390134 | 420.44577683123896  | 0.9948820783803071    | 0.0                     | 0.406195364951854        | 0.0                          | 1.0                           | 1.0                          | 1.0                |
+| PP       | 5.033003300330033  | 3.7390359792758834    | 1.9806899796943938               | 0.0                       | 1.153230292543356        | 0.6871503801169132        | -0.635853345043155            | -0.052805280528052806 | 0.0900221874490102               | 23.827078980662815 | 161.60330438955313  | 0.9354774953630358    | 0.0                     | 0.5720415150262657       | 0.05115511551155116          | 1.0                           | 0.7442244224422442           | 0.7376237623762376 |

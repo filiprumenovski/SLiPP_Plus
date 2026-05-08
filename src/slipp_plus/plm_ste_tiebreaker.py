@@ -25,7 +25,6 @@ The tie-breaker operates on whatever feature columns the caller supplies
 from __future__ import annotations
 
 import argparse
-from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 from typing import Any
 
@@ -40,7 +39,6 @@ from .boundary_head import (
     apply_boundary_head,
     boundary_confusion,
     build_boundary_training,
-    gain_importance,
     train_boundary_head,
 )
 from .confusion_mining import candidate_boundary_rules, mine_confusion_edges
@@ -48,11 +46,10 @@ from .constants import CLASS_10, FEATURE_SETS
 from .ensemble import (
     DEFAULT_MODELS,
     PROBA_COLUMNS,
-    average_softprobs,
     load_predictions,
     score_summary,
 )
-from .splits import load_split
+from .pair_tiebreaker_pipeline import run_boundary_tiebreaker_iterations
 
 # Slightly wider than the CLR-STE margin (0.15) because the base models are
 # "confidently wrong" on PLM-vs-STE ties. We want to catch more candidate rows.
@@ -165,65 +162,6 @@ def plm_ste_confusion(df: pl.DataFrame) -> dict[str, int]:
 
 
 # ---------------------------------------------------------------------------
-# Per-iteration worker (ProcessPoolExecutor target)
-# ---------------------------------------------------------------------------
-def _process_iteration(
-    *,
-    iteration: int,
-    seed: int,
-    full_pockets_path: Path,
-    feature_columns: list[str],
-    split_path: Path,
-    iteration_pred_path: Path,
-    margin: float,
-    persist_importance: bool,
-) -> dict[str, Any]:
-    """Train + apply tiebreaker for a single iteration. Worker-safe."""
-    full = pd.read_parquet(full_pockets_path)
-    X_tr, y_tr, X_te_pair, _, te_pair_idx = build_plm_vs_ste_training(
-        full, feature_columns, split_path
-    )
-    model = train_plm_ste_tiebreaker(X_tr, y_tr, seed=seed)
-
-    # Score every test row of the ensemble (not just PLM/STE true labels) so
-    # the tiebreaker is available whenever the margin fires.
-    _, test_idx = load_split(split_path)
-    X_all = full[feature_columns].to_numpy(dtype=np.float64)
-    X_te_full = X_all[test_idx]
-    proba_all = model.predict_proba(X_te_full)[:, 1]
-
-    ensemble_iter = pl.read_parquet(iteration_pred_path)
-    augmented = apply_tiebreaker(
-        ensemble_iter, proba_all, test_idx.astype(np.int64), margin=margin
-    )
-
-    tie_fired = int(augmented["tiebreaker_fired"].sum())
-
-    importance: dict[str, float] | None = None
-    if persist_importance:
-        importance = gain_importance(model, feature_columns)
-
-    y_te_pair_binary = (full.iloc[te_pair_idx]["class_10"].values == "STE").astype(int)
-    p_te_pair = model.predict_proba(X_te_pair)[:, 1]
-    pred_pair = (p_te_pair >= 0.5).astype(int)
-    tp = int(((pred_pair == 1) & (y_te_pair_binary == 1)).sum())
-    fp = int(((pred_pair == 1) & (y_te_pair_binary == 0)).sum())
-    fn = int(((pred_pair == 0) & (y_te_pair_binary == 1)).sum())
-    sens = tp / (tp + fn) if (tp + fn) else 0.0
-    prec = tp / (tp + fp) if (tp + fp) else 0.0
-    bin_f1 = 2 * prec * sens / (prec + sens) if (prec + sens) else 0.0
-
-    return {
-        "iteration": iteration,
-        "augmented_frame": augmented.to_arrow(),
-        "tiebreaker_fired": tie_fired,
-        "n_test": augmented.shape[0],
-        "plm_ste_binary_f1": float(bin_f1),
-        "feature_importance": importance,
-    }
-
-
-# ---------------------------------------------------------------------------
 # Driver
 # ---------------------------------------------------------------------------
 def run_tiebreaker_pipeline(
@@ -243,48 +181,18 @@ def run_tiebreaker_pipeline(
 
     Returns a dict with the summary dicts + paths + diagnostics.
     """
-    ensemble_pred = average_softprobs(load_predictions(predictions_path))
-    split_files = sorted(splits_dir.glob("seed_*.parquet"))
-    if not split_files:
-        raise FileNotFoundError(f"no seed_*.parquet under {splits_dir}")
-
-    import tempfile
-
-    with tempfile.TemporaryDirectory(prefix="plm_ste_tiebreaker_") as tmpd:
-        tmp = Path(tmpd)
-        per_iter_paths: dict[int, Path] = {}
-        for it in ensemble_pred["iteration"].unique().to_list():
-            p = tmp / f"ensemble_iter_{int(it):02d}.parquet"
-            ensemble_pred.filter(pl.col("iteration") == it).write_parquet(p)
-            per_iter_paths[int(it)] = p
-
-        tasks = []
-        with ProcessPoolExecutor(max_workers=workers) as ex:
-            for idx, sp in enumerate(split_files):
-                if idx not in per_iter_paths:
-                    continue
-                tasks.append(
-                    ex.submit(
-                        _process_iteration,
-                        iteration=idx,
-                        seed=seed_base + idx,
-                        full_pockets_path=full_pockets_path,
-                        feature_columns=list(feature_columns),
-                        split_path=sp,
-                        iteration_pred_path=per_iter_paths[idx],
-                        margin=margin,
-                        persist_importance=(idx == 0),
-                    )
-                )
-
-            per_iter_results: list[dict[str, Any]] = []
-            for fut in as_completed(tasks):
-                per_iter_results.append(fut.result())
-
-    per_iter_results.sort(key=lambda r: r["iteration"])
-    augmented = pl.concat(
-        [pl.from_arrow(r["augmented_frame"]) for r in per_iter_results]
-    ).sort(["iteration", "row_index"])
+    core = run_boundary_tiebreaker_iterations(
+        full_pockets_path=full_pockets_path,
+        predictions_path=predictions_path,
+        splits_dir=splits_dir,
+        feature_columns=feature_columns,
+        workers=workers,
+        margin=margin,
+        seed_base=seed_base,
+        rule=PLM_STE_RULE,
+    )
+    ensemble_pred = core["ensemble_predictions"]
+    augmented = core["augmented_predictions"]
 
     if tiebreaker_predictions_path is not None:
         tiebreaker_predictions_path.parent.mkdir(parents=True, exist_ok=True)
@@ -294,12 +202,9 @@ def run_tiebreaker_pipeline(
         ensemble_predictions_path.parent.mkdir(parents=True, exist_ok=True)
         ensemble_pred.write_parquet(ensemble_predictions_path)
 
-    fires = [r["tiebreaker_fired"] for r in per_iter_results]
-    plm_ste_bin_f1s = [r["plm_ste_binary_f1"] for r in per_iter_results]
-    importance = next(
-        (r["feature_importance"] for r in per_iter_results if r["feature_importance"]),
-        None,
-    )
+    fires = core["fire_counts"]
+    plm_ste_bin_f1s = core["binary_f1s"]
+    importance = core["feature_importance"]
 
     summaries: dict[str, dict[str, Any]] = {}
     base_df = load_predictions(predictions_path)

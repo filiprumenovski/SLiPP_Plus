@@ -1,0 +1,302 @@
+[Tue May  5 11:23:16 EDT 2026] starting batch 13
+INFO v_tunnel preflight summary: {'structures_total': 100, 'structures_with_missing_inputs': 0, 'missing_input_frac': 0.0, 'missing_protein_pdb': 0, 'missing_structure_dir': 0, 'missing_pockets_dir': 0, 'example_labels': []}
+WARNING:root:OLA/pdb5WIV.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb5WIV.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6CSO.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6CSO.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6DJ6.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6DJ6.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6DRY.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6DRY.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6DRZ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6DRZ.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6E12.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6E12.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 1/100 structures (0 cached)
+WARNING:root:OLA/pdb6FFI.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6FFI.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6GPX.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6GPX.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6I9F.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6I9F.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6KRZ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6KRZ.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6KS1.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6KS1.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6LX8.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6LX8.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6MD0.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6MD0.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6MD1.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6MD1.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6MD4.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6MD4.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6ME2.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6ME2.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6ME3.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6ME3.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6ME5.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6ME5.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6MXT.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6MXT.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6O1T.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6O1T.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6PS1.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6PS1.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6PS2.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6PS2.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6PS4.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6PS4.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6PS5.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6PS5.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6PT2.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6PT2.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6RZ5.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6RZ5.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6TPN.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6TPN.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6VUM.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6VUM.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6XBW.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6XBW.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6XYT.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6XYT.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6YT4.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6YT4.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 25/100 structures (0 cached)
+WARNING:root:OLA/pdb6YX9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6YX9.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6YXD.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6YXD.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6YXF.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6YXF.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6YXG.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6YXG.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6ZDV.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6ZDV.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb6ZG9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb6ZG9.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb7AKX.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb7AKX.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb7ARO.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb7ARO.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb7BMH.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb7BMH.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb7KAY.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb7KAY.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb7KAZ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb7KAZ.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb7KHR.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb7KHR.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb7N6Q.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb7N6Q.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb7N6R.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb7N6R.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb7O8L.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb7O8L.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb7O8O.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb7O8O.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb7O8Z.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb7O8Z.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb7OTS.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb7OTS.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb7PX4.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb7PX4.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb7PYR.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb7PYR.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb7QAA.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb7QAA.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb7T71.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb7T71.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb7URA.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb7URA.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb7URD.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb7URD.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 50/100 structures (0 cached)
+WARNING:root:OLA/pdb7V3K.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb7V3K.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb7W7H.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb7W7H.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb7WE5.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb7WE5.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb7WZM.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb7WZM.pdb.json: cache_version=3 expected=4
+WARNING:root:OLA/pdb8DU3.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/OLA__pdb8DU3.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1B0O.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1B0O.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1B56.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1B56.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1BE2.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1BE2.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1COV.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1COV.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1E7H.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1E7H.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1EV1.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1EV1.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1GXA.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1GXA.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1HXS.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1HXS.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1LIE.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1LIE.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1LV2.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1LV2.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1M66.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1M66.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1M67.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1M67.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1MDC.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1MDC.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1MGP.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1MGP.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1MZM.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1MZM.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1N1G.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1N1G.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1O6U.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1O6U.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1O8V.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1O8V.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1PQ2.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1PQ2.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1PZ4.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1PZ4.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 75/100 structures (0 cached)
+WARNING:root:PLM/pdb1PZX.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1PZX.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1U19.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1U19.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1URE.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1URE.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb1VPV.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb1VPV.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb2DEB.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb2DEB.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb2DQY.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb2DQY.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb2DQZ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb2DQZ.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb2DT8.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb2DT8.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb2E9L.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb2E9L.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb2E9M.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb2E9M.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb2FIK.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb2FIK.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb2G87.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb2G87.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb2GO3.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb2GO3.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb2HMB.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb2HMB.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb2HNX.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb2HNX.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb2HPY.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb2HPY.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb2IER.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb2IER.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb2IES.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb2IES.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb2IFB.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb2IFB.pdb.json: cache_version=3 expected=4
+WARNING:root:PLM/pdb2IU8.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/PLM__pdb2IU8.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 100/100 structures (0 cached)
+WARNING OLA/pdb6VUM.pdb/pocket4: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket6: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket8: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket9: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket10: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket14: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket18: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket19: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket25: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket31: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket42: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket48: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket51: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket55: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket57: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket61: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket71: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket93: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket95: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket97: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket105: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket107: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket108: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket112: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket120: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket132: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket148: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6VUM.pdb/pocket149: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6RZ5.pdb/pocket23: CAVER timeout
+WARNING OLA/pdb6XBW.pdb/pocket4: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket5: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket7: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket8: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket10: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket14: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket21: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket30: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket48: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket57: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket72: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket83: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket95: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket98: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket104: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket105: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket148: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket166: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket170: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket172: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket206: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket222: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket226: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket233: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket235: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket250: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket262: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket269: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket302: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket325: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket336: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket337: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket344: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket347: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket375: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket386: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket405: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket418: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket430: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket439: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket440: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket459: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket461: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket474: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket505: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket514: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket515: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket535: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket556: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket581: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XBW.pdb/pocket590: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6YT4.pdb/pocket47: CAVER timeout
+WARNING OLA/pdb6YT4.pdb/pocket64: CAVER timeout
+WARNING OLA/pdb6KRZ.pdb/pocket62: CAVER timeout
+WARNING OLA/pdb6KRZ.pdb/pocket71: CAVER timeout
+WARNING OLA/pdb6KRZ.pdb/pocket78: CAVER timeout
+WARNING OLA/pdb6KRZ.pdb/pocket80: CAVER timeout
+WARNING OLA/pdb6KRZ.pdb/pocket88: CAVER timeout
+WARNING OLA/pdb7KHR.pdb/pocket4: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket9: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket12: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket22: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket26: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket38: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket43: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket46: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket49: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket59: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket63: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket67: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket80: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket81: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket89: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket102: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket107: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket136: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket147: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket151: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket177: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket193: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket200: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket203: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket225: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket235: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket239: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket245: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket259: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket260: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket261: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket264: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket267: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket271: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket286: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket290: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket294: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket308: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket317: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket318: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket319: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket334: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket336: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket338: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket363: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket407: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket416: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket436: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket442: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket447: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket476: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket481: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket499: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket516: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb7KHR.pdb/pocket554: CAVER produced no tunnel characteristics table
+WARNING OLA/pdb6XYT.pdb/pocket3: CAVER timeout
+WARNING OLA/pdb6XYT.pdb/pocket19: CAVER timeout
+WARNING OLA/pdb7KAY.pdb/pocket104: CAVER timeout
+WARNING OLA/pdb7KAZ.pdb/pocket72: CAVER timeout
+WARNING OLA/pdb7W7H.pdb/pocket14: CAVER timeout
+WARNING OLA/pdb7N6Q.pdb/pocket2: CAVER timeout
+WARNING OLA/pdb7N6Q.pdb/pocket4: CAVER timeout
+WARNING OLA/pdb7N6Q.pdb/pocket7: CAVER timeout
+WARNING OLA/pdb7N6Q.pdb/pocket9: CAVER timeout
+WARNING OLA/pdb7N6Q.pdb/pocket11: CAVER timeout
+WARNING OLA/pdb7N6Q.pdb/pocket21: CAVER timeout
+WARNING OLA/pdb7N6Q.pdb/pocket35: CAVER timeout
+WARNING OLA/pdb7N6Q.pdb/pocket85: CAVER timeout
+WARNING OLA/pdb7N6Q.pdb/pocket106: CAVER timeout
+WARNING OLA/pdb7N6Q.pdb/pocket116: CAVER timeout
+WARNING OLA/pdb7N6Q.pdb/pocket128: CAVER timeout
+WARNING PLM/pdb2DEB.pdb/pocket40: CAVER timeout
+WARNING PLM/pdb2DEB.pdb/pocket63: CAVER timeout
+WARNING PLM/pdb2DEB.pdb/pocket67: CAVER timeout
+WARNING PLM/pdb1PQ2.pdb/pocket5: CAVER timeout
+WARNING PLM/pdb1PQ2.pdb/pocket23: CAVER timeout
+WARNING PLM/pdb1PQ2.pdb/pocket33: CAVER timeout
+WARNING PLM/pdb2DQY.pdb/pocket14: CAVER timeout
+WARNING PLM/pdb2DQY.pdb/pocket25: CAVER timeout
+WARNING PLM/pdb2DQY.pdb/pocket49: CAVER timeout
+WARNING PLM/pdb1O6U.pdb/pocket11: CAVER timeout
+WARNING PLM/pdb1O6U.pdb/pocket12: CAVER timeout
+WARNING PLM/pdb1O6U.pdb/pocket18: CAVER timeout
+WARNING PLM/pdb1O6U.pdb/pocket28: CAVER timeout
+WARNING PLM/pdb1O6U.pdb/pocket60: CAVER timeout
+WARNING PLM/pdb1O6U.pdb/pocket63: CAVER timeout
+WARNING PLM/pdb1O6U.pdb/pocket66: CAVER timeout
+WARNING OLA/pdb7N6R.pdb/pocket3: CAVER timeout
+WARNING OLA/pdb7N6R.pdb/pocket4: CAVER timeout
+WARNING OLA/pdb7N6R.pdb/pocket5: CAVER timeout
+WARNING OLA/pdb7N6R.pdb/pocket6: CAVER timeout
+WARNING OLA/pdb7N6R.pdb/pocket9: CAVER timeout
+WARNING OLA/pdb7N6R.pdb/pocket20: CAVER timeout
+WARNING OLA/pdb7N6R.pdb/pocket67: CAVER timeout
+WARNING OLA/pdb7N6R.pdb/pocket79: CAVER timeout
+WARNING OLA/pdb7N6R.pdb/pocket92: CAVER timeout
+WARNING OLA/pdb7N6R.pdb/pocket120: CAVER timeout
+WARNING OLA/pdb7N6R.pdb/pocket129: CAVER timeout
+WARNING PLM/pdb2DQZ.pdb/pocket4: CAVER timeout
+WARNING PLM/pdb2DQZ.pdb/pocket5: CAVER timeout
+WARNING PLM/pdb2DQZ.pdb/pocket14: CAVER timeout
+WARNING PLM/pdb2DQZ.pdb/pocket46: CAVER timeout
+Rows: 743
+Structures: 100
+Batch: 13 size=100 structures=100/1780 range=[1300,1400)
+Warnings: 189
+Output: processed/v_tunnel/batches/batch_13.parquet (0.2 MB)
+[Tue May  5 11:49:06 EDT 2026] completed batch 13

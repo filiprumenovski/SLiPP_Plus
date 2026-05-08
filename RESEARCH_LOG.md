@@ -5,6 +5,24 @@ _Template at the bottom of this file._
 
 ---
 
+## 2026-04-28 — Family Plus MoE Champion
+
+**Goal:** Upgrade the best family-encoder/local-MoE stack without changing the curated training data.
+**Hypothesis:** Residual PLM/STE errors are no longer clean pair-boundary mistakes; a small local multiclass expert over the full PLM/STE neighborhood should recover STE while preserving the softmax/teacher signal for larger classes.
+**Changes:**
+- Added `configs/v_sterol_family_plus_moe.yaml`.
+- Kept the promoted CLR local expert and narrow MYR/PLM + PLM/STE pair heads.
+- Added `plm_ste_neighborhood_expert` over `[PLM, STE, COA, MYR, OLA]` with confidence threshold `0.75`.
+**Result:**
+- Final 25-iteration metrics: binary F1 `0.901 ± 0.016`, binary AUROC `0.989 ± 0.003`, 10-class macro-F1 `0.762 ± 0.015`, 5-lipid macro-F1 `0.660 ± 0.029`.
+- Per-lipid F1: CLR `0.727`, MYR `0.694`, OLA `0.587`, PLM `0.658`, STE `0.635`.
+- Delta vs family-encoder teacher: `+0.0048` macro-F1, `+0.0085` lipid macro-F1.
+- Delta vs prior fixed local MoE: about `+0.001` macro-F1, `+0.002` lipid macro-F1, with STE `0.627 -> 0.635`.
+**Decision:** Promote `configs/v_sterol_family_plus_moe.yaml` as the current champion. Composite holdout inference remains pending, so holdout results should still be read from the family encoder until bundle inference is implemented for local/pair MoE.
+**Refs:** `configs/v_sterol_family_plus_moe.yaml`, `reports/v_sterol_family_plus_moe/composite_pair_moe_report.md`, `reports/v_sterol_family_plus_moe/metrics_table.md`
+
+---
+
 ## 2026-04-25 — v_sterol_v2: Chemistry-Derived Feature Engineering
 
 **Goal:** Add 26 biophysically motivated derived features to the v_sterol base (87 → 115 features) to improve lipid subclass discrimination. Features include AA composition fractions, size-normalized densities, surface chemistry ratios, spatial shell gradients, and shape-chemistry interaction terms.

@@ -116,6 +116,16 @@ class TunnelBuildThresholds:
     min_profile_present_frac: float = 0.90
 
 
+@dataclass(frozen=True)
+class StructureBatch:
+    index: int
+    size: int
+    total_structures: int
+    start: int
+    end: int
+    selected_structures: int
+
+
 def load_caver_settings(path: Path = Path("configs/caver.yaml")) -> CaverSettings:
     with path.open("r", encoding="utf-8") as handle:
         raw = yaml.safe_load(handle) or {}
@@ -870,7 +880,7 @@ def _process_structure_cached(task: dict[str, object]) -> dict[str, object]:
                 "cached": True,
                 "label": label,
             }
-        except (OSError, json.JSONDecodeError, KeyError, TypeError) as exc:
+        except (OSError, json.JSONDecodeError, KeyError, TypeError, ValueError) as exc:
             logging.warning("%s: ignoring corrupt tunnel cache %s: %s", label, cache_path, exc)
 
     result = _process_structure(task)
@@ -908,6 +918,69 @@ def _validate_thresholds(thresholds: TunnelBuildThresholds) -> TunnelBuildThresh
         ),
         min_profile_present_frac=_threshold_in_unit_interval(
             "min_profile_present_frac", thresholds.min_profile_present_frac
+        ),
+    )
+
+
+def _validate_java_runtime() -> None:
+    try:
+        result = subprocess.run(
+            ["java", "-version"],
+            check=False,
+            timeout=10,
+            capture_output=True,
+            text=True,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        raise RuntimeError(f"java runtime unavailable: {exc}") from exc
+    if result.returncode != 0:
+        detail = (result.stderr or result.stdout or "").strip().splitlines()
+        message = "; ".join(detail[:3]) if detail else f"exit code {result.returncode}"
+        raise RuntimeError(f"java runtime unavailable: {message}")
+
+
+def _select_structure_batch(
+    tasks: list[dict[str, object]],
+    base: pd.DataFrame,
+    *,
+    key_column: str,
+    batch_index: int | None,
+    batch_size: int | None,
+) -> tuple[list[dict[str, object]], pd.DataFrame, StructureBatch | None]:
+    if batch_index is None and batch_size is None:
+        return tasks, base, None
+    if batch_index is None or batch_size is None:
+        raise ValueError("--batch-index and --batch-size must be provided together")
+    if batch_index < 0:
+        raise ValueError(f"--batch-index must be >= 0, got {batch_index}")
+    if batch_size <= 0:
+        raise ValueError(f"--batch-size must be > 0, got {batch_size}")
+
+    total = len(tasks)
+    start = batch_index * batch_size
+    end = min(start + batch_size, total)
+    if start >= total:
+        raise ValueError(
+            f"batch {batch_index} is out of range for {total} structures at size {batch_size}"
+        )
+
+    selected_tasks = tasks[start:end]
+    selected_labels = {str(task["label"]) for task in selected_tasks}
+    selected_base = base[base[key_column].astype(str).isin(selected_labels)].copy()
+    if selected_base.empty:
+        raise ValueError(
+            f"batch {batch_index} selected structures but no base rows matched {key_column}"
+        )
+    return (
+        selected_tasks,
+        selected_base,
+        StructureBatch(
+            index=batch_index,
+            size=batch_size,
+            total_structures=total,
+            start=start,
+            end=end,
+            selected_structures=len(selected_tasks),
         ),
     )
 
@@ -1026,12 +1099,14 @@ def _run_tasks_and_write(
     thresholds: TunnelBuildThresholds,
     analysis_manifest_path: Path | None = None,
     analysis_output_root: Path | None = None,
+    batch: StructureBatch | None = None,
 ) -> dict[str, object]:
     thresholds = _validate_thresholds(thresholds)
     start = time.time()
-    preflight = _preflight_validate_task_inputs(tasks, thresholds=thresholds)
     if analysis_manifest_path is not None and analysis_output_root is None:
         raise ValueError("analysis_manifest_path requires analysis_output_root to be set")
+    _validate_java_runtime()
+    preflight = _preflight_validate_task_inputs(tasks, thresholds=thresholds)
     if analysis_output_root is not None:
         analysis_output_root.mkdir(parents=True, exist_ok=True)
     if cache_dir is not None:
@@ -1108,6 +1183,7 @@ def _run_tasks_and_write(
         "thresholds": thresholds,
         "analysis_output_root": analysis_output_root,
         "analysis_manifest_path": analysis_manifest_path,
+        "batch": batch,
     }
     _write_reports(enriched, warnings, summary, reports_dir)
     return summary
@@ -1167,9 +1243,22 @@ def _write_reports(
         f"- analysis_output_root: {summary.get('analysis_output_root')}",
         f"- analysis_manifest_path: {summary.get('analysis_manifest_path')}",
         "",
-        "## Preflight",
-        "",
     ]
+    batch = summary.get("batch")
+    if isinstance(batch, StructureBatch):
+        summary_lines.extend(
+            [
+                "## Batch",
+                "",
+                f"- batch_index: {batch.index}",
+                f"- batch_size: {batch.size}",
+                f"- total_structures: {batch.total_structures}",
+                f"- selected_structures: {batch.selected_structures}",
+                f"- structure_range: [{batch.start}, {batch.end})",
+                "",
+            ]
+        )
+    summary_lines.extend(["## Preflight", ""])
     preflight = summary.get("preflight", {})
     if isinstance(preflight, dict) and preflight:
         summary_lines.extend(
@@ -1254,6 +1343,9 @@ def build_training_v_tunnel_parquet(
     min_profile_present_frac: float = 0.95,
     analysis_output_root: Path | None = None,
     analysis_manifest_path: Path | None = None,
+    batch_index: int | None = None,
+    batch_size: int | None = None,
+    reports_dir: Path = Path("reports/v_tunnel"),
 ) -> dict[str, object]:
     settings = load_caver_settings()
     if caver_jar is not None:
@@ -1297,12 +1389,19 @@ def build_training_v_tunnel_parquet(
                 },
             }
         )
+    tasks, base, batch = _select_structure_batch(
+        tasks,
+        base,
+        key_column="pdb_ligand",
+        batch_index=batch_index,
+        batch_size=batch_size,
+    )
     return _run_tasks_and_write(
         tasks,
         base,
         output_path,
         workers,
-        Path("reports/v_tunnel"),
+        reports_dir,
         cache_dir,
         TunnelBuildThresholds(
             max_missing_structure_frac=max_missing_structure_frac,
@@ -1311,6 +1410,7 @@ def build_training_v_tunnel_parquet(
         ),
         analysis_manifest_path=analysis_manifest_path,
         analysis_output_root=analysis_output_root,
+        batch=batch,
     )
 
 
@@ -1326,6 +1426,9 @@ def build_holdout_v_tunnel_parquet(
     min_profile_present_frac: float = 0.80,
     analysis_output_root: Path | None = None,
     analysis_manifest_path: Path | None = None,
+    batch_index: int | None = None,
+    batch_size: int | None = None,
+    reports_dir: Path = Path("reports/v_tunnel"),
 ) -> dict[str, object]:
     settings = load_caver_settings()
     if caver_jar is not None:
@@ -1370,12 +1473,19 @@ def build_holdout_v_tunnel_parquet(
         )
     if cache_dir is None:
         cache_dir = output_path.parent / "structure_json" / output_path.stem
+    tasks, base, batch = _select_structure_batch(
+        tasks,
+        base,
+        key_column="structure_id",
+        batch_index=batch_index,
+        batch_size=batch_size,
+    )
     return _run_tasks_and_write(
         tasks,
         base,
         output_path,
         workers,
-        Path("reports/v_tunnel"),
+        reports_dir,
         cache_dir,
         TunnelBuildThresholds(
             max_missing_structure_frac=max_missing_structure_frac,
@@ -1384,6 +1494,7 @@ def build_holdout_v_tunnel_parquet(
         ),
         analysis_manifest_path=analysis_manifest_path,
         analysis_output_root=analysis_output_root,
+        batch=batch,
     )
 
 
@@ -1404,6 +1515,9 @@ def _parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
     training.add_argument("--min-profile-present-frac", type=float, default=0.95)
     training.add_argument("--analysis-output-root", type=Path, default=None)
     training.add_argument("--analysis-manifest", type=Path, default=None)
+    training.add_argument("--batch-index", type=int, default=None, help="0-based structure batch index.")
+    training.add_argument("--batch-size", type=int, default=None, help="Number of structures per batch.")
+    training.add_argument("--reports-dir", type=Path, default=Path("reports/v_tunnel"))
 
     holdout = sub.add_parser("holdout", help="Build a v_tunnel holdout parquet.")
     holdout.add_argument("--base-parquet", type=Path, required=True)
@@ -1418,6 +1532,9 @@ def _parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
     holdout.add_argument("--min-profile-present-frac", type=float, default=0.80)
     holdout.add_argument("--analysis-output-root", type=Path, default=None)
     holdout.add_argument("--analysis-manifest", type=Path, default=None)
+    holdout.add_argument("--batch-index", type=int, default=None, help="0-based structure batch index.")
+    holdout.add_argument("--batch-size", type=int, default=None, help="Number of structures per batch.")
+    holdout.add_argument("--reports-dir", type=Path, default=Path("reports/v_tunnel"))
 
     parser.add_argument("--log-level", default="INFO")
     return parser.parse_args(list(argv) if argv is not None else None)
@@ -1443,6 +1560,9 @@ def main(argv: Iterable[str] | None = None) -> int:
                 min_profile_present_frac=args.min_profile_present_frac,
                 analysis_output_root=args.analysis_output_root,
                 analysis_manifest_path=args.analysis_manifest,
+                batch_index=args.batch_index,
+                batch_size=args.batch_size,
+                reports_dir=args.reports_dir,
             )
         elif args.command == "holdout":
             summary = build_holdout_v_tunnel_parquet(
@@ -1457,6 +1577,9 @@ def main(argv: Iterable[str] | None = None) -> int:
                 min_profile_present_frac=args.min_profile_present_frac,
                 analysis_output_root=args.analysis_output_root,
                 analysis_manifest_path=args.analysis_manifest,
+                batch_index=args.batch_index,
+                batch_size=args.batch_size,
+                reports_dir=args.reports_dir,
             )
         else:
             raise ValueError(f"unknown command {args.command}")
@@ -1466,6 +1589,13 @@ def main(argv: Iterable[str] | None = None) -> int:
 
     print(f"Rows: {summary['rows']}")
     print(f"Structures: {summary['structures']}")
+    batch = summary.get("batch")
+    if isinstance(batch, StructureBatch):
+        print(
+            "Batch: "
+            f"{batch.index} size={batch.size} structures={batch.selected_structures}/"
+            f"{batch.total_structures} range=[{batch.start},{batch.end})"
+        )
     print(f"Warnings: {summary['warnings']}")
     print(f"Output: {summary['output_path']} ({summary['output_size_mb']:.1f} MB)")
     return 0

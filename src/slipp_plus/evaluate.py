@@ -315,6 +315,22 @@ def evaluate_hierarchical_holdouts(
         raise ValueError(
             "hierarchical bundle class_order does not match canonical CLASS_10"
         )
+    if bundle.get("backend") == "family_encoder":
+        from .composite_family_train import predict_family_encoder_holdout
+
+        outputs: dict[str, dict[str, float]] = {}
+        for holdout_name in ("apo_pdb", "alphafold"):
+            holdout_df = pd.read_parquet(proc / f"{holdout_name}_holdout.parquet")
+            holdout_preds = predict_family_encoder_holdout(holdout_df, bundle)
+            holdout_preds.to_parquet(
+                holdout_dir / f"family_encoder_{holdout_name}_predictions.parquet",
+                index=False,
+            )
+            outputs[holdout_name] = evaluate_staged_holdout_predictions(
+                holdout_preds,
+                holdout_df,
+            )
+        return outputs
 
     outputs: dict[str, dict[str, float]] = {}
     for holdout_name in ("apo_pdb", "alphafold"):
@@ -348,9 +364,10 @@ def run_evaluation(settings: Settings) -> dict[str, Path]:
     reports.mkdir(parents=True, exist_ok=True)
 
     feature_columns = settings.feature_columns()
+    staged_modes = {"hierarchical", "composite"}
     preds_name = (
         HIERARCHICAL_PREDICTIONS_NAME
-        if settings.pipeline_mode == "hierarchical"
+        if settings.pipeline_mode in staged_modes
         else "test_predictions.parquet"
     )
     preds_path = proc / "predictions" / preds_name
@@ -374,7 +391,7 @@ def run_evaluation(settings: Settings) -> dict[str, Path]:
     summary = _aggregate(metrics, group_cols=["model"])
 
     holdout_rows: dict[str, dict[str, dict[str, float]]] = {}
-    if settings.pipeline_mode != "hierarchical":
+    if settings.pipeline_mode not in staged_modes:
         apo = pd.read_parquet(proc / "apo_pdb_holdout.parquet")
         af = pd.read_parquet(proc / "alphafold_holdout.parquet")
         for key in settings.models:
@@ -401,8 +418,8 @@ def run_evaluation(settings: Settings) -> dict[str, Path]:
                 settings,
                 feature_columns=feature_columns,
             )
-        except KeyError as e:
-            holdout_rows["hierarchical"] = {
+        except Exception as e:
+            holdout_rows[settings.pipeline_mode] = {
                 "apo_pdb": {"error": str(e)},
                 "alphafold": {"error": str(e)},
             }

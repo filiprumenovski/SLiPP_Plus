@@ -1,0 +1,142 @@
+[Tue May  5 09:45:50 EDT 2026] starting batch 11
+INFO v_tunnel preflight summary: {'structures_total': 100, 'structures_with_missing_inputs': 0, 'missing_input_frac': 0.0, 'missing_protein_pdb': 0, 'missing_structure_dir': 0, 'missing_pockets_dir': 0, 'example_labels': []}
+WARNING:root:MYR/pdb1HA2.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb1HA2.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb1HBK.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb1HBK.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb1HK4.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb1HK4.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb1HK5.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb1HK5.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb1ICM.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb1ICM.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb1N5U.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb1N5U.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 1/100 structures (0 cached)
+WARNING:root:MYR/pdb1ND2.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb1ND2.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb1O9X.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb1O9X.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb1OPJ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb1OPJ.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb1OPK.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb1OPK.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb1OPL.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb1OPL.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb1P42.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb1P42.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb1PZL.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb1PZL.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb1TED.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb1TED.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb1UVA.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb1UVA.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb1Z7S.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb1Z7S.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb2BXI.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb2BXI.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb2BXK.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb2BXK.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb2BXL.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb2BXL.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb2BXM.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb2BXM.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb2BXN.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb2BXN.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb2BXO.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb2BXO.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb2BXP.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb2BXP.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb2BXQ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb2BXQ.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb2E56.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb2E56.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb2FO0.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb2FO0.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb2GO3.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb2GO3.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb2I2Z.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb2I2Z.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb2I30.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb2I30.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb2J65.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb2J65.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 25/100 structures (0 cached)
+WARNING:root:MYR/pdb2PWN.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb2PWN.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb2WEW.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb2WEW.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb2XSI.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb2XSI.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb2XVV.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb2XVV.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb2XVW.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb2XVW.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb3A73.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb3A73.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb3B9L.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb3B9L.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb3B9M.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb3B9M.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb3CX9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb3CX9.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb3EE4.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb3EE4.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb3FS1.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb3FS1.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb3MLM.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb3MLM.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb3PXP.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb3PXP.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb3SQJ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb3SQJ.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb3SZ1.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb3SZ1.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb3TDL.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb3TDL.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb3UEV.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb3UEV.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb3UIV.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb3UIV.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb3USX.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb3USX.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb3V2N.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb3V2N.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb3W9K.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb3W9K.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb4AC8.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb4AC8.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb4G0S.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb4G0S.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb4HPU.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb4HPU.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb4IQR.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb4IQR.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 50/100 structures (0 cached)
+WARNING:root:MYR/pdb4KU3.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb4KU3.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb4L8U.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb4L8U.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb4LB9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb4LB9.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb4NTS.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb4NTS.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb4RDZ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb4RDZ.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb4RE0.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb4RE0.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb4TKH.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb4TKH.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb5EZU.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb5EZU.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb5GTO.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb5GTO.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb5GTP.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb5GTP.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb5HTD.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb5HTD.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb5HYB.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb5HYB.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb5IFO.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb5IFO.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb5K06.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb5K06.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb5LKE.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb5LKE.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb5LKF.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb5LKF.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb5UC9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb5UC9.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb5UR9.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb5UR9.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb5W78.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb5W78.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb5W7D.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb5W7D.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb5WOO.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb5WOO.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb5YHJ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb5YHJ.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6B80.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6B80.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6DY1.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6DY1.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6FYJ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6FYJ.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 75/100 structures (0 cached)
+WARNING:root:MYR/pdb6GE3.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6GE3.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6GK6.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6GK6.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6HIL.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6HIL.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6HSC.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6HSC.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6I3V.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6I3V.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6I8W.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6I8W.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6IWP.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6IWP.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6NM1.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6NM1.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6NOK.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6NOK.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6NYU.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6NYU.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6O6O.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6O6O.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6PAV.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6PAV.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6RWP.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6RWP.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6RWQ.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6RWQ.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6RWR.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6RWR.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6S64.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6S64.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6S69.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6S69.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6S6J.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6S6J.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6THD.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6THD.pdb.json: cache_version=3 expected=4
+WARNING:root:MYR/pdb6THN.pdb: ignoring corrupt tunnel cache processed/v_tunnel/structure_json/MYR__pdb6THN.pdb.json: cache_version=3 expected=4
+INFO v_tunnel CAVER progress: 100/100 structures (0 cached)
+WARNING MYR/pdb1Z7S.pdb/pocket60: CAVER timeout
+WARNING MYR/pdb1ND2.pdb/pocket29: CAVER timeout
+WARNING MYR/pdb1ND2.pdb/pocket30: CAVER timeout
+WARNING MYR/pdb1OPL.pdb/pocket17: CAVER timeout
+WARNING MYR/pdb1TED.pdb/pocket33: CAVER timeout
+WARNING MYR/pdb1TED.pdb/pocket54: CAVER timeout
+WARNING MYR/pdb1TED.pdb/pocket58: CAVER timeout
+WARNING MYR/pdb1TED.pdb/pocket61: CAVER timeout
+WARNING MYR/pdb1TED.pdb/pocket87: CAVER timeout
+WARNING MYR/pdb3A73.pdb/pocket27: CAVER timeout
+WARNING MYR/pdb3A73.pdb/pocket42: CAVER timeout
+WARNING MYR/pdb3SQJ.pdb/pocket86: CAVER timeout
+WARNING MYR/pdb3UIV.pdb/pocket16: CAVER timeout
+WARNING MYR/pdb3UIV.pdb/pocket36: CAVER timeout
+WARNING MYR/pdb3UIV.pdb/pocket48: CAVER timeout
+WARNING MYR/pdb4IQR.pdb/pocket91: CAVER timeout
+WARNING MYR/pdb4IQR.pdb/pocket125: CAVER timeout
+WARNING MYR/pdb4IQR.pdb/pocket126: CAVER timeout
+WARNING MYR/pdb5UR9.pdb/pocket33: CAVER timeout
+WARNING MYR/pdb5UR9.pdb/pocket48: CAVER timeout
+WARNING MYR/pdb5UR9.pdb/pocket51: CAVER timeout
+WARNING MYR/pdb5UR9.pdb/pocket67: CAVER timeout
+WARNING MYR/pdb5UC9.pdb/pocket1: CAVER timeout
+WARNING MYR/pdb5UC9.pdb/pocket2: CAVER timeout
+WARNING MYR/pdb5UC9.pdb/pocket39: CAVER timeout
+WARNING MYR/pdb5UC9.pdb/pocket42: CAVER timeout
+WARNING MYR/pdb5UC9.pdb/pocket43: CAVER timeout
+WARNING MYR/pdb6HSC.pdb/pocket24: CAVER timeout
+WARNING MYR/pdb6HSC.pdb/pocket43: CAVER timeout
+Rows: 668
+Structures: 100
+Batch: 11 size=100 structures=100/1780 range=[1100,1200)
+Warnings: 29
+Output: processed/v_tunnel/batches/batch_11.parquet (0.2 MB)
+[Tue May  5 10:08:52 EDT 2026] completed batch 11
