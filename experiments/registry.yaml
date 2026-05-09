@@ -762,3 +762,78 @@
     apo-PDB and AlphaFold slightly worsens every checked condition, confirming
     that the low-threshold holdout gains reflect external domain shift rather
     than a calibration rule recoverable from the current internal split protocol.
+
+- id: exp-024-domain-shift-false-negative-features
+  date: "2026-05-08"
+  feature_set: v49+tunnel_shape feature basis
+  config: reports/domain_shift_false_negative_features.md
+  models: [family_encoder]
+  postprocessing: "false_negative_feature_audit(exp-019)"
+  status: complete
+  is_current_best: false
+  metrics: {}
+  holdouts: {}
+  supersedes: null
+  artifacts:
+    report: reports/domain_shift_false_negative_features.md
+    feature_table: reports/domain_shift_false_negative_features.csv
+    summary: reports/domain_shift_false_negative_summary.csv
+  notes: >
+    DOMAIN-SHIFT DIAGNOSTIC. Exp-019 false-negative true lipid pockets have
+    mean lipid probabilities close to non-lipid background (apo-PDB 0.246 vs
+    0.225; AlphaFold 0.269 vs 0.154), while recalled true lipids are much
+    higher. Missed external lipids are depleted in hydrophobic/aromatic shell
+    and size-density signals such as LEU, PHE, aliphatic shell3/4 counts,
+    as_density, and as_max_dst. Apo-PDB false negatives also show higher
+    planarity/elongation. This points to external lipid pockets falling outside
+    the internal compact feature manifold rather than a simple threshold bug.
+
+- id: exp-025-domain-shift-nearest-neighbors
+  date: "2026-05-08"
+  feature_set: v49+tunnel_shape feature basis
+  config: reports/domain_shift_nearest_neighbors.md
+  models: [family_encoder]
+  postprocessing: "nearest_neighbor_audit(exp-019)"
+  status: complete
+  is_current_best: false
+  metrics: {}
+  holdouts: {}
+  supersedes: null
+  artifacts:
+    report: reports/domain_shift_nearest_neighbors.md
+    neighbors: reports/domain_shift_nearest_neighbors.csv
+    summary: reports/domain_shift_nearest_neighbors_summary.csv
+  notes: >
+    DOMAIN-SHIFT DIAGNOSTIC. In standardized v49+tunnel_shape feature space,
+    exp-019 false-negative true lipid holdout pockets are much less lipid-like
+    locally than recalled holdout lipids. Apo-PDB false negatives have only
+    0.190 lipid fraction among nearest 10 internal neighbors vs 0.681 for true
+    positives; AlphaFold false negatives have 0.271 vs 0.702. The hardest false
+    negatives are commonly surrounded by PP/COA neighbors, explaining why
+    lowering the binary threshold helps recall but does not address the
+    underlying feature-manifold mismatch.
+
+- id: exp-026-domain-shift-component-rescue
+  date: "2026-05-08"
+  feature_set: compact component prediction artifacts
+  config: reports/domain_shift_component_rescue.md
+  models: [family_encoder]
+  postprocessing: "component_rescue_audit(exp-019_false_negatives)"
+  status: complete
+  is_current_best: false
+  metrics: {}
+  holdouts: {}
+  supersedes: null
+  artifacts:
+    report: reports/domain_shift_component_rescue.md
+    summary: reports/domain_shift_component_rescue_summary.csv
+    rows: reports/domain_shift_component_rescue_rows.csv
+  notes: >
+    DOMAIN-SHIFT DIAGNOSTIC. No individual compact component rescues most
+    exp-019 holdout false negatives at the deployable 0.5 lipid-probability
+    threshold. On apo-PDB, shell6_shape and chem are the best rescue components
+    (each rescuing 22.6% of exp-019 false negatives), matching the
+    holdout-balanced ensemble signal. On AlphaFold, rescue is diffuse and weak:
+    the best component, shape3, rescues 25.0% of false negatives at 0.5. This
+    suggests the transfer gap is shared across compact variants rather than a
+    simple matter of choosing one component as an override.

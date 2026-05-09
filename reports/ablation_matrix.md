@@ -27,3 +27,6 @@ Generated from `experiments/registry.yaml`. Metrics are copied from registry ent
 | exp-021-compact-shell6-chem-holdout-weighted | 0.2*(v14+aa20+shell6+tunnel_shape) + 0.8*(v49+tunnel_chem) | 0.902 ± 0.016 | 0.765 ± 0.021 | 0.717 | 0.715 | HOLDOUT-WEIGHTED TRADEOFF. | - |
 | exp-022-holdout-threshold-diagnostic | compact probability ensembles | - | - | - | - | CALIBRATION DIAGNOSTIC. | - |
 | exp-023-internal-threshold-selection | compact probability ensembles | - | - | - | - | NEGATIVE CALIBRATION RESULT. | - |
+| exp-024-domain-shift-false-negative-features | v49+tunnel_shape feature basis | - | - | - | - | DOMAIN-SHIFT DIAGNOSTIC. | - |
+| exp-025-domain-shift-nearest-neighbors | v49+tunnel_shape feature basis | - | - | - | - | DOMAIN-SHIFT DIAGNOSTIC. | - |
+| exp-026-domain-shift-component-rescue | compact component prediction artifacts | - | - | - | - | DOMAIN-SHIFT DIAGNOSTIC. | - |

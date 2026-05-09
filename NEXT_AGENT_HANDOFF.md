@@ -37,7 +37,12 @@ exp-018. The subset/weight sweep found a better holdout-balanced two-way blend
 lower internal lipid5 F1 0.664. The latest threshold diagnostic shows the
 holdout regression is mostly a recall/calibration issue at the default `0.5`
 lipid-probability threshold, but internal split threshold selection does not
-transfer to apo-PDB/AlphaFold. Do not hide that tradeoff.
+transfer to apo-PDB/AlphaFold. The latest false-negative feature audit points to
+external missed lipids being low in hydrophobic/aromatic shell and size-density
+signals relative to recalled holdout lipids; the nearest-neighbor audit shows
+many hard misses sit closest to internal `PP`/`COA` pockets. Component-rescue
+analysis shows no single compact component fixes most misses. Do not hide that
+tradeoff.
 
 ## Recently Completed
 
@@ -268,6 +273,9 @@ Closed from existing artifacts:
 - CAVER/tunnel marginal value ablation: `reports/caver_ablation.md`
 - Holdout threshold diagnostic: `reports/holdout_threshold_ablation.md`
 - Internal threshold selection: `reports/internal_threshold_selection_ablation.md`
+- Domain-shift false-negative feature audit: `reports/domain_shift_false_negative_features.md`
+- Domain-shift nearest-neighbor audit: `reports/domain_shift_nearest_neighbors.md`
+- Domain-shift component-rescue audit: `reports/domain_shift_component_rescue.md`
 
 The still-queued items require long model runs or new implementation. Do not run
 them inline unless the user explicitly authorizes long-run mode.

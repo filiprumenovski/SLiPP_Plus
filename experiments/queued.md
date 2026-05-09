@@ -94,3 +94,30 @@ These handoff items require long model runs or additional implementation and sho
    - This closes the obvious holdout-safe threshold-calibration idea as a
      negative result; the low-threshold holdout gains are domain-shift evidence,
      not an internally recoverable threshold rule.
+
+7. Domain-shift false-negative feature audit
+   - Report: `reports/domain_shift_false_negative_features.md`
+   - Result: exp-019 holdout false negatives have lipid probabilities near
+     non-lipid background and are depleted in hydrophobic/aromatic shell plus
+     size-density signals (`LEU`, `PHE`, shell3/4 aliphatic counts,
+     `as_density`, `as_max_dst`). Apo-PDB false negatives also show higher
+     planarity/elongation.
+   - This suggests external misses are feature-manifold/domain-shift failures,
+     not just threshold mistakes.
+
+8. Domain-shift nearest-neighbor audit
+   - Report: `reports/domain_shift_nearest_neighbors.md`
+   - Result: exp-019 holdout false negatives are locally much less lipid-like
+     than recalled holdout lipids. Apo-PDB FN nearest-10 lipid fraction is
+     `0.190` vs `0.681` for TP; AlphaFold FN is `0.271` vs `0.702`.
+   - The hardest false negatives are often surrounded by internal `PP`/`COA`
+     neighbors, explaining why lower thresholds recover recall but do not solve
+     the underlying feature-space mismatch.
+
+9. Domain-shift component-rescue audit
+   - Report: `reports/domain_shift_component_rescue.md`
+   - Result: no single compact component rescues most exp-019 holdout false
+     negatives at `p_lipid >= 0.5`. `shell6_shape` and `chem` are best on
+     apo-PDB (22.6% rescue each), while AlphaFold rescue is weak and diffuse
+     (`shape3` rescues 25.0%).
+   - This rules out a simple component override as the next easy fix.
