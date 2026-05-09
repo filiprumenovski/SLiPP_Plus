@@ -23,3 +23,4 @@ Generated from `experiments/registry.yaml`. Metrics are copied from registry ent
 | exp-017-compact-shape3-shape6-ensemble | v49+tunnel_shape3 + v49+tunnel_shape | 0.904 ± 0.015 | 0.775 ± 0.017 | 0.69 | 0.676 | NEW INTERNAL LEADER. | exp-018-compact-shape3-shape6-shell6-ensemble |
 | exp-018-compact-shape3-shape6-shell6-ensemble | v49+tunnel_shape3 + v49+tunnel_shape + v14+aa20+shell6+tunnel_shape | 0.903 ± 0.017 | 0.776 ± 0.015 | 0.712 | 0.671 | NEW INTERNAL LEADER. | exp-019-compact-five-way-shape-chem-ensemble |
 | **exp-019-compact-five-way-shape-chem-ensemble** | v49+tunnel_shape + v14+aa20+shell6+tunnel_shape3 + v49+tunnel_shape_hydro4 + v49+tunnel_geom + v49+tunnel_chem | 0.906 ± 0.015 | 0.778 ± 0.017 | 0.649 | 0.623 | NEW INTERNAL LEADER, HOLDOUT-REGRESSIVE. | - |
+| exp-020-compact-subset-sweep-holdout-anchor | v14+aa20+shell6+tunnel_shape + v49+tunnel_chem | 0.902 ± 0.016 | 0.772 ± 0.017 | 0.717 | 0.698 | HOLDOUT-BALANCED SIGNAL. | - |

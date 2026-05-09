@@ -10,13 +10,12 @@ scientific evidence in this project.
 ## Current State
 
 - Branch: `main`
-- Latest pushed experiment commit at time of writing: `933312e experiments: record five-way compact ensemble`
-- Latest handoff refresh: this file's commit.
-- Worktree was clean when this file was written.
+- Latest pushed commit before this update: `9255625 reports: close tiebreaker ablation`
+- Worktree contains a new subset-sweep ablation report.
 - Current internal leader: `exp-019-compact-five-way-shape-chem-ensemble`
 - Current internal best command: `uv run python scripts/compact_probability_ensemble.py`
 - Best single compact model: `exp-014-v49-tunnel-shape3`
-- Holdout-balanced compact ensemble: `exp-018-compact-shape3-shape6-shell6-ensemble`
+- Holdout-balanced compact ensemble: `exp-020-compact-subset-sweep-holdout-anchor`
 - Current best report: `reports/compact_shape6_shell6shape3_hydro4_geom_chem_ensemble/metrics.md`
 - Current best registry entry: `experiments/registry.yaml` entry `exp-019-compact-five-way-shape-chem-ensemble`
 
@@ -31,9 +30,11 @@ Current headline metrics from the registry/README:
 | Apo-PDB F1 | `0.649` |
 | AlphaFold F1 | `0.623` |
 
-The new internal leader is explicitly holdout-regressive: lipid macro, macro10,
-and binary F1 improve internally, but apo-PDB and AlphaFold F1 drop vs exp-018.
-Do not hide that.
+The current internal leader is explicitly holdout-regressive: lipid macro,
+macro10, and binary F1 improve internally, but apo-PDB and AlphaFold F1 drop vs
+exp-018. The new subset sweep found a better holdout-balanced two-way blend
+(`shell6_shape+chem`: apo-PDB F1 0.717, AlphaFold F1 0.698) with lower internal
+lipid5 F1 0.673. Do not hide that tradeoff.
 
 ## Recently Completed
 
@@ -254,12 +255,16 @@ See `experiments/queued.md`. Do not delete it. It currently queues:
 - Holdout completion for `exp-009-v_sterol-boundary-refactor`
 - Composite holdout inference/metrics for `exp-011-family-plus-moe`
 - STE class-imbalance handling ablation
-- Ensemble vs best single model ablation
-- Tiebreaker on/off ablation
 - CAVER/tunnel marginal value ablation
 
-These require long model runs or new implementation. Do not run them inline
-unless the user explicitly authorizes long-run mode.
+Closed from existing artifacts:
+
+- Ensemble vs best single model ablation: `reports/ensemble_ablation.md`
+- Tiebreaker on/off ablation: `reports/tiebreaker_ablation.md`
+- Compact subset sweep: `reports/compact_subset_ensemble_sweep/summary.md`
+
+The still-queued items require long model runs or new implementation. Do not run
+them inline unless the user explicitly authorizes long-run mode.
 
 ### 4. Full completion criteria are still not met
 

@@ -644,3 +644,38 @@
     holdout F1s relative to exp-018, so it is an internal-validation ablation
     leader rather than a release-candidate replacement without further holdout
     analysis.
+
+- id: exp-020-compact-subset-sweep-holdout-anchor
+  date: "2026-05-08"
+  feature_set: v14+aa20+shell6+tunnel_shape + v49+tunnel_chem
+  config: scripts/compact_subset_ensemble_sweep.py
+  models: [family_encoder, family_encoder]
+  postprocessing: "mean_probability_ensemble(shell6_shape, chem)"
+  status: complete
+  is_current_best: false
+  metrics:
+    binary_f1: "0.902 ± 0.016"
+    macro_f1_10: "0.772 ± 0.017"
+    lipid_macro_f1: "0.673 ± 0.028"
+    clr_f1: "0.762"
+    myr_f1: "0.711"
+    ola_f1: "0.603"
+    plm_f1: "0.644"
+    ste_f1: "0.646"
+  holdouts:
+    apo_pdb_f1: 0.717
+    apo_pdb_auroc: 0.804
+    alphafold_f1: 0.698
+    alphafold_auroc: 0.854
+  supersedes: null
+  artifacts:
+    sweep_report: reports/compact_subset_ensemble_sweep/summary.md
+    sweep_metrics: reports/compact_subset_ensemble_sweep/subset_metrics.csv
+  notes: >
+    HOLDOUT-BALANCED SIGNAL. Exhaustive equal-weight subset sweep over seven
+    existing compact family-encoder prediction artifacts found that the
+    two-way shell6_shape + chem blend is the best holdout-balanced candidate:
+    apo-PDB F1 0.717 and AlphaFold F1 0.698, both above exp-019 and exp-018,
+    while retaining lipid5 macro-F1 0.673. The result suggests shell6_shape is
+    the external holdout anchor and chem adds complementary external signal,
+    whereas hydro4/geom primarily help internal validation.

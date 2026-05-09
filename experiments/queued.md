@@ -58,3 +58,12 @@ These handoff items require long model runs or additional implementation and sho
      (`+0.038` to `+0.040` lipid macro-F1, `+0.178` STE F1).
    - No new model training was run; this used persisted `v_sterol` prediction
      artifacts.
+
+3. Compact subset ensemble sweep
+   - Report: `reports/compact_subset_ensemble_sweep/summary.md`
+   - Result: the five-way shape/chem blend remains the internal leader
+     (`0.684` lipid5 macro-F1), but `shell6_shape+chem` is the best
+     holdout-balanced compact blend found so far (apo-PDB F1 `0.717`,
+     AlphaFold F1 `0.698`, lipid5 macro-F1 `0.673`).
+   - No new model training was run; this swept equal-probability subsets over
+     existing compact prediction artifacts.
