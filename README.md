@@ -34,7 +34,7 @@ tests pass on synthetic fixtures; real-data runs are gated on having
 `processed/` parquet artifacts available.
 
 **BioDolphin extension (proposed):** See
-[`BIODOLPHIN_EXTENSION.md`](BIODOLPHIN_EXTENSION.md). Chou et al. used a 27
+[`BIODOLPHIN_EXTENSION.md`](docs/BIODOLPHIN_EXTENSION.md). Chou et al. used a 27
 April 2023 PDB snapshot with a five-lipid filter; BioDolphin v1.1 covers
 14,891 PDB structures, 127,359 entries, and 2,619 distinct lipid molecules
 through 6 September 2024 — roughly 19× the structure coverage. Documented
@@ -181,7 +181,7 @@ If you already have the upstream repo cloned elsewhere, copy `training_pockets.c
 
 Current committed holdout ID lists are workbook-derived and contain 117 apo-PDB
 IDs and 149 AlphaFold IDs. Older notes that mention 131/177 are stale for this
-checkout. See [`DATASHEET.md`](DATASHEET.md) and
+checkout. See [`DATASHEET.md`](docs/DATASHEET.md) and
 [`data/holdouts/README.md`](data/holdouts/README.md).
 
 ## Reproduce
@@ -318,8 +318,8 @@ uv run ruff check src/slipp_plus/backbone_family_encoder.py src/slipp_plus/compo
 ## Documentation Map
 
 - [`README.md`](README.md): this file. Headline metrics, install, current state.
-- [`BIODOLPHIN_EXTENSION.md`](BIODOLPHIN_EXTENSION.md): proposed next-stage extension to the BioDolphin lipid-pocket database (collaboration ask).
-- [`DATASHEET.md`](DATASHEET.md): data provenance, checksums, class counts, and known issues.
+- [`BIODOLPHIN_EXTENSION.md`](docs/BIODOLPHIN_EXTENSION.md): proposed next-stage extension to the BioDolphin lipid-pocket database (collaboration ask).
+- [`DATASHEET.md`](docs/DATASHEET.md): data provenance, checksums, class counts, and known issues.
 - [`RESEARCH_LOG.md`](RESEARCH_LOG.md): decision history and negative results.
 - [`experiments/registry.yaml`](experiments/registry.yaml): structured experiment registry (machine-readable).
 - [`reports/compact_publishable/summary.md`](reports/compact_publishable/summary.md): compact release-candidate ladder.

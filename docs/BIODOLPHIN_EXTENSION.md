@@ -41,7 +41,7 @@ proposal with the Dassama lab.
 ## Why this matters
 
 The largest unresolved caveat in this repository's submission narrative is
-the [holdout-overfitting trap](reports/holdout_threshold_ablation.md):
+the [holdout-overfitting trap](../reports/holdout_threshold_ablation.md):
 internal-validation leaders (exp-019, five-way compact ensemble) regress on
 the external holdouts (apo-PDB F1 0.649, AlphaFold F1 0.623) compared with
 the deployable artifact (exp-021: apo-PDB 0.717, AlphaFold 0.715).
@@ -105,8 +105,8 @@ pocket with ≥10 residues within 8 Å of the bound ligand center of mass.
 BioDolphin already provides the bound-lipid identity and binding residues,
 so the extraction is a structurally identical recipe applied to the larger
 BioDolphin coverage. The repo's existing
-[`src/slipp_plus/pocket_extraction.py`](src/slipp_plus/pocket_extraction.py)
-and [`src/slipp_plus/download.py`](src/slipp_plus/download.py) stubs
+[`src/slipp_plus/pocket_extraction.py`](../src/slipp_plus/pocket_extraction.py)
+and [`src/slipp_plus/download.py`](../src/slipp_plus/download.py) stubs
 contain the intended scaffold; they have been intentionally never exercised
 because the curated `training_pockets.csv` was sufficient for the SLiPP++
 binary-comparable submission.
@@ -119,7 +119,7 @@ PDB structure plus its fpocket output directory.
 ### 3. Sequence-identity-grouped CV
 
 The current SLiPP++ split strategies include `grouped_uniprot_clustered`
-([`src/slipp_plus/splits.py`](src/slipp_plus/splits.py)). This was added
+([`src/slipp_plus/splits.py`](../src/slipp_plus/splits.py)). This was added
 preemptively in anticipation of exactly this scaling: with 14,891 PDB
 structures (vs. 780), homology between train and test pockets becomes
 substantially more likely without principled grouping, and the
@@ -129,7 +129,7 @@ numbers, by contrast, used stratified shuffle and are therefore
 homology-leaked relative to a grouped-CV evaluation.
 
 The grouped CV protocol is implemented in
-[`src/slipp_plus/splits.py`](src/slipp_plus/splits.py) under the
+[`src/slipp_plus/splits.py`](../src/slipp_plus/splits.py) under the
 `grouped_uniprot_clustered` strategy and was added preemptively for
 exactly this scaling regime.
 
@@ -138,13 +138,13 @@ exactly this scaling regime.
 The optimization scaffold landed in this submission branch is *exactly the
 right tool* for a BioDolphin-scale dataset:
 
-- **Multi-objective Hyperband HPO** ([`tools/optuna_hpo.py`](tools/optuna_hpo.py))
+- **Multi-objective Hyperband HPO** ([`tools/optuna_hpo.py`](../tools/optuna_hpo.py))
   becomes more useful with more training data, because the
   internal-vs-holdout Pareto front actually has room to move.
 - **CatBoost as a fourth ensemble base learner** matters more on larger
   data because CatBoost's ordered-boosting inductive bias helps most when
   there is enough signal to stabilize gradient sampling.
-- **The stacked meta-learner** ([`src/slipp_plus/stacking.py`](src/slipp_plus/stacking.py))
+- **The stacked meta-learner** ([`src/slipp_plus/stacking.py`](../src/slipp_plus/stacking.py))
   benefits from the larger-data regime for the same reason.
 - **Multi-specialist support** in the configuration layer (`SpecialistRuleSettings`
   list, with the `composite_train.py` constraint lifted) makes it cheap to
