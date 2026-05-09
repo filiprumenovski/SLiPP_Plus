@@ -128,9 +128,10 @@ mandatory for any serious BioDolphin extension; the published SLiPP
 numbers, by contrast, used stratified shuffle and are therefore
 homology-leaked relative to a grouped-CV evaluation.
 
-This is documented in detail in
-[`refactoring_prompt.md`](refactoring_prompt.md), specifically the section
-on grouped MMseqs2 / UniProt cluster splits.
+The grouped CV protocol is implemented in
+[`src/slipp_plus/splits.py`](src/slipp_plus/splits.py) under the
+`grouped_uniprot_clustered` strategy and was added preemptively for
+exactly this scaling regime.
 
 ## What we have already built that supports this extension
 

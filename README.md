@@ -126,7 +126,6 @@ Full audit trail:
 - [`experiments/registry.yaml`](experiments/registry.yaml): structured experiment index.
 - [`reports/compact_publishable/summary.md`](reports/compact_publishable/summary.md): compact ladder and deltas.
 - [`RESEARCH_LOG.md`](RESEARCH_LOG.md): decisions, failures, and abandoned ideas.
-- [`CONTEXT.md`](CONTEXT.md): current operator state.
 
 ## Install
 
@@ -305,18 +304,15 @@ uv run ruff check src/slipp_plus/backbone_family_encoder.py src/slipp_plus/compo
 
 ## Documentation Map
 
-- [`CONTEXT.md`](CONTEXT.md): current state, best config, and caveats.
+- [`README.md`](README.md): this file. Headline metrics, install, current state.
+- [`BIODOLPHIN_EXTENSION.md`](BIODOLPHIN_EXTENSION.md): proposed next-stage extension to the BioDolphin lipid-pocket database (collaboration ask).
+- [`DATASHEET.md`](DATASHEET.md): data provenance, checksums, class counts, and known issues.
 - [`RESEARCH_LOG.md`](RESEARCH_LOG.md): decision history and negative results.
-- [`experiments/registry.yaml`](experiments/registry.yaml): structured experiment registry.
-- [`MODEL_V2_SPEC.md`](MODEL_V2_SPEC.md): composite/family encoder design notes.
-- [`docs/api.md`](docs/api.md): CLI and public Python API reference.
-- [`docs/methods.md`](docs/methods.md): concise methods appendix.
-- [`DATASHEET.md`](DATASHEET.md): data provenance, checksums, counts, and known issues.
+- [`experiments/registry.yaml`](experiments/registry.yaml): structured experiment registry (machine-readable).
 - [`reports/compact_publishable/summary.md`](reports/compact_publishable/summary.md): compact release-candidate ladder.
+- [`reports/publication/`](reports/publication/): submission-ready figures (PNG / PDF / SVG).
+- [`docs/api.md`](docs/api.md), [`docs/methods.md`](docs/methods.md): CLI / API reference and methods appendix.
 - [`examples/`](examples/): runnable reviewer examples.
-
-Some planning notes are intentionally preserved for auditability. Prefer current
-code, configs, registry entries, and generated reports over stale handoff text.
 
 ## Cite
 
