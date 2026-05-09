@@ -71,8 +71,9 @@ figures/*.pdf
 figures/*.png
 figures/*.svg
 
-# Memo / one-off PDFs and LaTeX build products (keep .tex and refs.bib in repo)
+# Memo / one-off PDFs and LaTeX build products (local only)
 preprint.pdf
+summary_for_dassama.tex
 summary_for_dassama.pdf
 summary_for_dassama.aux
 summary_for_dassama.bbl
