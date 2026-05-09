@@ -78,6 +78,10 @@ Internal-validation leader remains `exp-019-compact-five-way-shape-chem-ensemble
    major negative ablations. Stale docs are a known project risk.
 6. Remaining queued holdout completions are `exp-009-v_sterol-boundary-refactor`
    and `exp-011-family-plus-moe`; `exp-005` is closed.
+7. Do not close `exp-009` with `make eval CFG=configs/v_sterol_boundary_refactor.yaml`
+   until the prediction source is fixed. That command currently reads the
+   generic `hierarchical_lipid_predictions.parquet`, which is an exp-011
+   composite pair-MoE artifact. See `reports/boundary_refactor_holdout_attempt.md`.
 
 ## Verification To Re-run
 

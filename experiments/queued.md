@@ -12,6 +12,10 @@ Generated from the registry after `reports/ablation_matrix.md` was created.
    - Config: `configs/v_sterol.yaml`
    - Current gap: registry has no `holdouts` block for the boundary-refactor postprocessing.
    - Suggested command: run the holdout validation path for the saved `ste_rescue_ola_plm_pair` predictions or regenerate the postprocessed holdout predictions, then update the registry with apo-PDB and AlphaFold metrics.
+   - Failed shortcut: `make eval CFG=configs/v_sterol_boundary_refactor.yaml`
+     reads the generic `hierarchical_lipid_predictions.parquet`, which is now
+     an exp-011 composite pair-MoE artifact, not the exp-009 boundary-refactor
+     predictions. See `reports/boundary_refactor_holdout_attempt.md`.
 
 2. `exp-011-family-plus-moe`
    - Config: `configs/v_sterol_family_plus_moe.yaml`
