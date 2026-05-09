@@ -98,6 +98,18 @@ holdout-negative.
 - Decision: exp-031's gain is a real domain-shift clue, but these two
   holdout-safe rescue-selection methods do not make it deployable.
 
+`exp-033-covariate-shift-threshold-negative` is closed negative.
+
+- Report: `reports/covariate_shift_threshold_ablation_2026_05_09.md`
+- Method: train a source-vs-holdout domain classifier in exp-028 probability
+  space, use unlabeled target density-ratio weights to select a binary lipid
+  threshold on internal rows, then apply once to holdouts.
+- Result: domain AUROC is high (`0.932` apo-PDB, `0.967` AlphaFold), but
+  selected thresholds remain near `0.5`. Holdout F1 drops to apo-PDB `0.667`
+  and AlphaFold `0.605`.
+- Decision: probability-space covariate reweighting documents domain shift but
+  is not a threshold-selection mechanism.
+
 `exp-005-v_sterol-ensemble` holdouts are now complete from existing artifacts.
 
 - Report: `reports/v_sterol_holdout_completion.md`
@@ -127,20 +139,18 @@ holdout reporting.
    labels. The holdout threshold diagnostic showed lower deployable thresholds
    would help externally, but internal threshold selection did not reproduce
    those thresholds.
-2. Build a holdout-safe calibration or domain-adaptation experiment using only
-   internal split predictions and unlabeled holdout feature distributions.
-3. Revisit targeted STE handling only if it is more local than a global class
+2. Revisit targeted STE handling only if it is more local than a global class
    weight: e.g. a calibrated PLM/STE/COA/MYR/OLA expert, confidence gating, or
    a data-extension path that adds STE-like pockets.
-4. If running more compact ensembles, keep exp-028 as the deployable anchor and
+3. If running more compact ensembles, keep exp-028 as the deployable anchor and
    report both internal lipid5 macro-F1 and apo-PDB/AlphaFold F1. Do not promote
    an internal-only improvement that reproduces exp-019/exp-030 holdout
    regression.
-5. Keep README current with the deployable recommendation, internal leader, and
+4. Keep README current with the deployable recommendation, internal leader, and
    major negative ablations. Stale docs are a known project risk.
-6. Registry holdout-completion gaps from the 2026-05-08 audit are closed:
+5. Registry holdout-completion gaps from the 2026-05-08 audit are closed:
    `exp-005`, `exp-009`, and `exp-011`.
-7. Do not use generic test-split metrics from
+6. Do not use generic test-split metrics from
    `make eval CFG=configs/v_sterol_boundary_refactor.yaml` for exp-009. That
    command reads `hierarchical_lipid_predictions.parquet`, which is an exp-011
    composite pair-MoE artifact. Use the registry's exp-009 internal metrics.

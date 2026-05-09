@@ -1069,3 +1069,29 @@
     trained only on internal split prediction features is also negative
     (apo-PDB F1 0.699, AlphaFold F1 0.667). The exp-031 holdout-scored gain is
     a real domain-shift clue, but not recoverable by these holdout-safe rules.
+
+- id: exp-033-covariate-shift-threshold-negative
+  date: "2026-05-09"
+  feature_set: exp-028 probability space
+  config: reports/covariate_shift_threshold_ablation_2026_05_09.md
+  models: [family_encoder, random_forest_domain_classifier]
+  postprocessing: "unlabeled_target_density_weighted_threshold_selection"
+  status: complete
+  is_current_best: false
+  metrics: {}
+  holdouts:
+    apo_pdb_f1: 0.667
+    apo_pdb_auroc: 0.733
+    alphafold_f1: 0.605
+    alphafold_auroc: 0.661
+  supersedes: null
+  artifacts:
+    report: reports/covariate_shift_threshold_ablation_2026_05_09.md
+  notes: >
+    NEGATIVE COVARIATE-SHIFT RESULT. Unlabeled holdout probability
+    distributions are easy to distinguish from internal predictions
+    (domain AUROC 0.93 for apo-PDB and 0.97 for AlphaFold), but using
+    domain-classifier density-ratio weights for internal binary-threshold
+    selection still chooses thresholds near 0.5. Applied to holdouts, F1 drops
+    to 0.667 on apo-PDB and 0.605 on AlphaFold. Probability-space covariate
+    reweighting is evidence of shift, not a useful threshold-selection rule.
