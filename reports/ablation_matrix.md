@@ -35,3 +35,4 @@ Generated from `experiments/registry.yaml`. Metrics are copied from registry ent
 | exp-029-compact-weight-local-refinement | compact probability ensembles | - | - | - | - | NEGATIVE LOCAL REFINEMENT. | - |
 | exp-030-probability-blend-internal-leader | probability blend over saved compact/v_sterol artifacts | 0.908 ± 0.015 | 0.781 ± 0.018 | 0.643 | 0.536 | NEW INTERNAL LEADER, HOLDOUT-NEGATIVE. | - |
 | exp-031-legacy-rescue-rule-diagnostic | exp-028 + paper17_family_encoder + v_sterol probabilities | 0.899 ± 0.017 | 0.766 | 0.748 | 0.733 | HOLDOUT-POSITIVE DIAGNOSTIC. | - |
+| exp-032-legacy-rescue-holdout-safe-negative | exp-028 + paper17_family_encoder + v_sterol probabilities | 0.903 ± 0.016 | - | 0.694 | 0.658 | NEGATIVE HOLDOUT-SAFE RESCUE RESULT. | - |

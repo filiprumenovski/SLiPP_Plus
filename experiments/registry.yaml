@@ -1041,3 +1041,31 @@
     at 0.666. Do not promote yet: thresholds were found by a holdout-scored
     diagnostic grid. Next step is internal split threshold selection or a
     25-split trained rescue gate.
+
+- id: exp-032-legacy-rescue-holdout-safe-negative
+  date: "2026-05-09"
+  feature_set: exp-028 + paper17_family_encoder + v_sterol probabilities
+  config: reports/legacy_rescue_holdout_safe_ablation_2026_05_09.md
+  models: [family_encoder, logistic_gate]
+  postprocessing: "internal_threshold_selection_and_logistic_rescue_gate"
+  status: complete
+  is_current_best: false
+  metrics:
+    binary_f1: "0.903 ± 0.016"
+    lipid_macro_f1: "0.669"
+  holdouts:
+    apo_pdb_f1: 0.694
+    apo_pdb_auroc: 0.749
+    alphafold_f1: 0.658
+    alphafold_auroc: 0.701
+  supersedes: null
+  artifacts:
+    report: reports/legacy_rescue_holdout_safe_ablation_2026_05_09.md
+  notes: >
+    NEGATIVE HOLDOUT-SAFE RESCUE RESULT. Internal split threshold selection
+    chooses a strict rescue rule (paper17 >=0.50, v_sterol >=0.85, margin 0)
+    that fires on only 0.03% of internal rows and fails externally
+    (apo-PDB F1 0.694, AlphaFold F1 0.658). A simple logistic rescue gate
+    trained only on internal split prediction features is also negative
+    (apo-PDB F1 0.699, AlphaFold F1 0.667). The exp-031 holdout-scored gain is
+    a real domain-shift clue, but not recoverable by these holdout-safe rules.
