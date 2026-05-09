@@ -40,19 +40,34 @@ def _holdout_prediction_path(component_dir: Path, holdout_name: str) -> Path:
     )
 
 
-def _average_prediction_frames(paths: list[Path], model_name: str) -> pd.DataFrame:
+def _average_prediction_frames(
+    paths: list[Path],
+    model_name: str,
+    *,
+    weights: list[float] | None = None,
+) -> pd.DataFrame:
     frames = [
         pd.read_parquet(path).sort_values(["iteration", "row_index"]).reset_index(drop=True)
         for path in paths
     ]
     if not frames:
         raise ValueError("at least one prediction parquet is required")
+    if weights is None:
+        weights = [1.0] * len(frames)
+    if len(weights) != len(frames):
+        raise ValueError("component weights must match component directories")
+    weight_sum = sum(weights)
+    if weight_sum <= 0:
+        raise ValueError("component weights must sum to a positive value")
     base = frames[0].copy()
     keys = ["iteration", "row_index", "y_true_int"]
     for path, frame in zip(paths[1:], frames[1:], strict=False):
         if not base[keys].equals(frame[keys]):
             raise ValueError(f"prediction keys do not align: {path}")
-    averaged = sum(frame[PROBA_COLUMNS].to_numpy(dtype=float) for frame in frames) / len(frames)
+    averaged = sum(
+        (weight / weight_sum) * frame[PROBA_COLUMNS].to_numpy(dtype=float)
+        for weight, frame in zip(weights, frames, strict=True)
+    )
     base[PROBA_COLUMNS] = averaged
     base["y_pred_int"] = averaged.argmax(axis=1)
     base["model"] = model_name
@@ -92,6 +107,7 @@ def run_compact_probability_ensemble(
     output_report_dir: Path,
     model_name: str = DEFAULT_MODEL_NAME,
     report_title: str = DEFAULT_REPORT_TITLE,
+    component_weights: list[float] | None = None,
 ) -> dict[str, Path]:
     """Average compact-model predictions and write metrics."""
 
@@ -102,6 +118,7 @@ def run_compact_probability_ensemble(
     averaged = _average_prediction_frames(
         [_prediction_path(component_dir) for component_dir in component_dirs],
         model_name=model_name,
+        weights=component_weights,
     )
     predictions_path = output_predictions_dir / "test_predictions.parquet"
     averaged.to_parquet(predictions_path, index=False)
@@ -122,6 +139,7 @@ def run_compact_probability_ensemble(
                 for component_dir in component_dirs
             ],
             model_name=model_name,
+            weights=component_weights,
         )
         holdout_preds_path = output_predictions_dir / f"{holdout_name}_predictions.parquet"
         holdout_preds.to_parquet(holdout_preds_path, index=False)
@@ -155,6 +173,14 @@ def main() -> None:
     parser.add_argument("--model-name", default=DEFAULT_MODEL_NAME)
     parser.add_argument("--report-title", default=DEFAULT_REPORT_TITLE)
     parser.add_argument(
+        "--component-weight",
+        action="append",
+        dest="component_weights",
+        type=float,
+        default=None,
+        help="Component weight aligned with --component-dir order. Repeat for weighted blends.",
+    )
+    parser.add_argument(
         "--output-predictions-dir",
         type=Path,
         default=Path("processed/compact_shape6_shell6shape3_hydro4_geom_chem_ensemble/predictions"),
@@ -171,6 +197,7 @@ def main() -> None:
         output_report_dir=args.output_report_dir,
         model_name=args.model_name,
         report_title=args.report_title,
+        component_weights=args.component_weights,
     )
     for label, path in outputs.items():
         print(f"{label}: {path}")

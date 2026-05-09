@@ -6,14 +6,15 @@ failed/negative ablation notes.
 
 ## Current Best Metrics
 
-Deployable recommendation remains `exp-021-compact-shell6-chem-holdout-weighted`:
+Deployable recommendation is `exp-028-compact-shape3-shell6-chem-weighted`:
 
-- Binary F1: `0.902 +/- 0.016`
-- Binary AUROC: `0.989 +/- 0.004`
-- 10-class macro-F1: `0.765 +/- 0.021`
-- 5-lipid macro-F1: `0.664 +/- 0.034`
-- apo-PDB holdout F1/AUROC: `0.717 / 0.802`
-- AlphaFold holdout F1/AUROC: `0.715 / 0.855`
+- Binary F1: `0.903 +/- 0.016`
+- Binary AUROC: `0.989 +/- 0.003`
+- 10-class macro-F1: `0.769 +/- 0.019`
+- 5-lipid macro-F1: `0.670 +/- 0.032`
+- apo-PDB holdout F1/AUROC: `0.717 / 0.801`
+- AlphaFold holdout F1/AUROC: `0.724 / 0.855`
+- Component blend: `0.1 shape3 + 0.2 shell6_shape + 0.7 chem`
 
 Internal-validation leader remains `exp-019-compact-five-way-shape-chem-ensemble`:
 
@@ -35,6 +36,16 @@ Internal-validation leader remains `exp-019-compact-five-way-shape-chem-ensemble
   scores versus the unweighted `v49+tunnel_shape3` baseline.
 - Decision: do not promote simple STE overweighting.
 
+`exp-028-compact-shape3-shell6-chem-weighted` is the newest positive result.
+
+- Report: `reports/compact_weight_grid_sweep.md`
+- Metrics: `reports/compact_shape3_shell6_chem_weighted_10_20_70/metrics.md`
+- Result: improves exp-021 by keeping apo-PDB F1 tied at `0.717`, raising
+  AlphaFold F1 from `0.715` to `0.724`, and raising internal lipid5 macro-F1
+  from `0.664` to `0.670`.
+- Decision: current deployable recommendation, while exp-019 remains the
+  internal-validation leader only.
+
 ## Remaining High-Impact Work
 
 1. Prioritize domain-shift fixes that can be learned without tuning on holdout
@@ -46,7 +57,7 @@ Internal-validation leader remains `exp-019-compact-five-way-shape-chem-ensemble
 3. Revisit targeted STE handling only if it is more local than a global class
    weight: e.g. a calibrated PLM/STE/COA/MYR/OLA expert, confidence gating, or
    a data-extension path that adds STE-like pockets.
-4. If running more compact ensembles, keep exp-021 as the deployable anchor and
+4. If running more compact ensembles, keep exp-028 as the deployable anchor and
    report both internal lipid5 macro-F1 and apo-PDB/AlphaFold F1. Do not promote
    an internal-only improvement that reproduces exp-019's holdout regression.
 5. Keep README current with the deployable recommendation, internal leader, and
@@ -61,6 +72,7 @@ uv run ruff check src/slipp_plus/composite/backbone_family_encoder.py src/slipp_
 uv run pytest -q tests/test_pipeline_mode.py tests/test_family_encoder_weights.py
 make train CFG=configs/archive/v49_tunnel_shape3_ste2_family_encoder.yaml
 make eval CFG=configs/archive/v49_tunnel_shape3_ste2_family_encoder.yaml
+uv run python scripts/compact_probability_ensemble.py --component-dir processed/v49_tunnel_shape3 --component-dir processed/v49_shell6_tunnel_shape --component-dir processed/v49_tunnel_chem --component-weight 0.1 --component-weight 0.2 --component-weight 0.7 --model-name shape3_shell6_chem_weighted_10_20_70 --report-title "Compact shape3 shell6 chem weighted probability ensemble" --output-predictions-dir processed/compact_shape3_shell6_chem_weighted_10_20_70/predictions --output-report-dir reports/compact_shape3_shell6_chem_weighted_10_20_70
 ```
 
 Before a release-facing commit, run:

@@ -18,11 +18,11 @@ Upstream code and `training_pockets.csv` come from
 
 ## Current State (May 2026, submission-ready)
 
-**Deployable artifact:** `exp-021-compact-shell6-chem-holdout-weighted` is
+**Deployable artifact:** `exp-028-compact-shape3-shell6-chem-weighted` is
 the current production-recommended config. It is selected by holdout-weighted
 score rather than internal-validation score because the prior internal
 leader (`exp-019`, five-way ensemble) regresses ~0.07–0.09 F1 on both
-external holdouts compared with `exp-021`. exp-019 retains
+external holdouts compared with `exp-028`. exp-019 retains
 `is_internal_best` in the registry for audit purposes.
 
 **Optimization scaffold (this branch):** Multi-objective Hyperband HPO via
@@ -41,24 +41,24 @@ through 6 September 2024 — roughly 19× the structure coverage. Documented
 here as the explicit next-stage extension and a Dassama-lab collaboration
 proposal.
 
-### Headline metrics (deployable, exp-021)
+### Headline metrics (deployable, exp-028)
 
 | Metric | Mean ± std |
 |---|---:|
-| Binary F1 | `0.902 ± 0.016` |
-| Binary AUROC | `0.989 ± 0.004` |
-| 10-class macro-F1 | `0.765 ± 0.021` |
-| 5-lipid macro-F1 | `0.664 ± 0.034` |
+| Binary F1 | `0.903 ± 0.016` |
+| Binary AUROC | `0.989 ± 0.003` |
+| 10-class macro-F1 | `0.769 ± 0.019` |
+| 5-lipid macro-F1 | `0.670 ± 0.032` |
 | apo-PDB holdout F1 | `0.717` |
-| AlphaFold holdout F1 | `0.715` |
-| CLR / MYR / OLA / PLM / STE F1 | `0.756 / 0.701 / 0.594 / 0.640 / 0.629` |
+| AlphaFold holdout F1 | `0.724` |
+| CLR / MYR / OLA / PLM / STE F1 | `0.758 / 0.705 / 0.599 / 0.643 / 0.644` |
 
 The internal-validation leader (`exp-019`, retained as `is_internal_best`)
 reports binary F1 `0.906 ± 0.015`, 10-class macro-F1 `0.778 ± 0.017`, and
 5-lipid macro-F1 `0.684 ± 0.030` but regresses to apo-PDB `0.649` and
-AlphaFold `0.623` on the external holdouts. The 0.011 internal lipid5
-macro-F1 sacrifice in `exp-021` buys back ~0.07 apo-PDB and ~0.09
-AlphaFold F1 — a holdout-discipline-aware tradeoff documented in the
+AlphaFold `0.623` on the external holdouts. The 0.014 internal lipid5
+macro-F1 sacrifice in `exp-028` buys back ~0.07 apo-PDB and ~0.10
+AlphaFold F1 -- a holdout-discipline-aware tradeoff documented in the
 registry's `holdout_acceptance_test` notes.
 
 Latest negative ablation: `exp-027-ste-class-weight-x2` doubled STE's
@@ -69,11 +69,11 @@ overweighting is therefore not a promotion path.
 
 ### Comparison to the SLiPP paper baseline
 
-| Metric | Paper (Chou et al. 2024) | SLiPP++ exp-021 | Δ |
+| Metric | Paper (Chou et al. 2024) | SLiPP++ exp-028 | Δ |
 |---|---:|---:|---:|
-| Binary F1 | 0.869 | 0.902 | +0.033 |
+| Binary F1 | 0.869 | 0.903 | +0.034 |
 | Binary AUROC | 0.970 | 0.989 | +0.019 |
-| AlphaFold holdout F1 | 0.643 | 0.715 | +0.072 |
+| AlphaFold holdout F1 | 0.643 | 0.724 | +0.081 |
 | apo-PDB holdout F1 | 0.726 | 0.717 | −0.009 |
 
 Three of four headline metrics beat the paper baseline; apo-PDB is

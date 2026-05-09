@@ -24,10 +24,11 @@ Generated from `experiments/registry.yaml`. Metrics are copied from registry ent
 | exp-018-compact-shape3-shape6-shell6-ensemble | v49+tunnel_shape3 + v49+tunnel_shape + v14+aa20+shell6+tunnel_shape | 0.903 ± 0.017 | 0.776 ± 0.015 | 0.712 | 0.671 | NEW INTERNAL LEADER. | exp-019-compact-five-way-shape-chem-ensemble |
 | exp-019-compact-five-way-shape-chem-ensemble | v49+tunnel_shape + v14+aa20+shell6+tunnel_shape3 + v49+tunnel_shape_hydro4 + v49+tunnel_geom + v49+tunnel_chem | 0.906 ± 0.015 | 0.778 ± 0.017 | 0.649 | 0.623 | NEW INTERNAL LEADER, HOLDOUT-REGRESSIVE. | - |
 | exp-020-compact-subset-sweep-holdout-anchor | v14+aa20+shell6+tunnel_shape + v49+tunnel_chem | 0.902 ± 0.016 | 0.772 ± 0.017 | 0.717 | 0.698 | HOLDOUT-BALANCED SIGNAL. | - |
-| **exp-021-compact-shell6-chem-holdout-weighted** | 0.2*(v14+aa20+shell6+tunnel_shape) + 0.8*(v49+tunnel_chem) | 0.902 ± 0.016 | 0.765 ± 0.021 | 0.717 | 0.715 | HOLDOUT-WEIGHTED TRADEOFF. | - |
+| exp-021-compact-shell6-chem-holdout-weighted | 0.2*(v14+aa20+shell6+tunnel_shape) + 0.8*(v49+tunnel_chem) | 0.902 ± 0.016 | 0.765 ± 0.021 | 0.717 | 0.715 | HOLDOUT-WEIGHTED TRADEOFF. | exp-028-compact-shape3-shell6-chem-weighted |
 | exp-022-holdout-threshold-diagnostic | compact probability ensembles | - | - | - | - | CALIBRATION DIAGNOSTIC. | - |
 | exp-023-internal-threshold-selection | compact probability ensembles | - | - | - | - | NEGATIVE CALIBRATION RESULT. | - |
 | exp-024-domain-shift-false-negative-features | v49+tunnel_shape feature basis | - | - | - | - | DOMAIN-SHIFT DIAGNOSTIC. | - |
 | exp-025-domain-shift-nearest-neighbors | v49+tunnel_shape feature basis | - | - | - | - | DOMAIN-SHIFT DIAGNOSTIC. | - |
 | exp-026-domain-shift-component-rescue | compact component prediction artifacts | - | - | - | - | DOMAIN-SHIFT DIAGNOSTIC. | - |
 | exp-027-ste-class-weight-x2 | v49+tunnel_shape3 | 0.896 ± 0.016 | 0.760 ± 0.019 | 0.649 | 0.711 | NEGATIVE STE IMBALANCE RESULT. | - |
+| **exp-028-compact-shape3-shell6-chem-weighted** | 0.1*(v49+tunnel_shape3) + 0.2*(v14+aa20+shell6+tunnel_shape) + 0.7*(v49+tunnel_chem) | 0.903 ± 0.016 | 0.769 ± 0.019 | 0.717 | 0.724 | NEW DEPLOYABLE LEADER. | - |

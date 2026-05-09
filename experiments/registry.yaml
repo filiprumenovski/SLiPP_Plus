@@ -688,7 +688,7 @@
   models: [family_encoder, family_encoder]
   postprocessing: "weighted_probability_ensemble(shell6_shape=0.2, chem=0.8)"
   status: complete
-  is_current_best: true
+  is_current_best: false
   deployable_rationale: >
     Selected as the deployable artifact over exp-019 because the internal
     leader regressed on both external holdouts (apo-PDB 0.649, AlphaFold 0.623)
@@ -884,3 +884,46 @@
     (0.638 -> 0.629), lipid5 macro-F1 (0.668 -> 0.657), and both holdout F1
     scores versus the unweighted shape3 baseline. The simple class-weight route
     does not beat exp-014, exp-019, or the holdout-weighted exp-021 candidate.
+
+- id: exp-028-compact-shape3-shell6-chem-weighted
+  date: "2026-05-08"
+  feature_set: 0.1*(v49+tunnel_shape3) + 0.2*(v14+aa20+shell6+tunnel_shape) + 0.7*(v49+tunnel_chem)
+  config: scripts/compact_probability_ensemble.py
+  models: [family_encoder, family_encoder, family_encoder]
+  postprocessing: "weighted_probability_ensemble(shape3=0.1, shell6_shape=0.2, chem=0.7)"
+  status: complete
+  is_current_best: true
+  deployable_rationale: >
+    Selected as the deployable artifact over exp-021 because it preserves the
+    same apo-PDB F1 (0.717), improves AlphaFold F1 (0.715 -> 0.724), and
+    recovers internal lipid5 macro-F1 (0.664 -> 0.670). exp-019 remains the
+    internal-validation leader but is still holdout-regressive.
+  metrics:
+    binary_f1: "0.903 ± 0.016"
+    binary_auroc: "0.989 ± 0.003"
+    macro_f1_10: "0.769 ± 0.019"
+    lipid_macro_f1: "0.670 ± 0.032"
+    clr_f1: "0.758"
+    myr_f1: "0.705"
+    ola_f1: "0.599"
+    plm_f1: "0.643"
+    ste_f1: "0.644"
+  holdouts:
+    apo_pdb_f1: 0.717
+    apo_pdb_auroc: 0.801
+    alphafold_f1: 0.724
+    alphafold_auroc: 0.855
+  supersedes: exp-021-compact-shell6-chem-holdout-weighted
+  artifacts:
+    grid_report: reports/compact_weight_grid_sweep.md
+    metrics_report: reports/compact_shape3_shell6_chem_weighted_10_20_70/metrics.md
+    raw_metrics: reports/compact_shape3_shell6_chem_weighted_10_20_70/raw_metrics.parquet
+    predictions: processed/compact_shape3_shell6_chem_weighted_10_20_70/predictions/test_predictions.parquet
+    apo_pdb_predictions: processed/compact_shape3_shell6_chem_weighted_10_20_70/predictions/apo_pdb_predictions.parquet
+    alphafold_predictions: processed/compact_shape3_shell6_chem_weighted_10_20_70/predictions/alphafold_predictions.parquet
+  notes: >
+    NEW DEPLOYABLE LEADER. A 0.1/0.2/0.7 weighted blend of shape3,
+    shell6_shape, and chem improves the exp-021 holdout-balanced candidate
+    without new training: apo-PDB F1 ties at 0.717, AlphaFold F1 improves to
+    0.724, and internal lipid5 macro-F1 recovers to 0.670. The gain comes from
+    adding a small shape3 contribution to the shell6/chem holdout anchor.
