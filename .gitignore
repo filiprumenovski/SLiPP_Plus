@@ -63,3 +63,22 @@ PROMPT.md
 # Scratch
 /tmp_*
 scratch/
+
+# ---------------------------------------------------------------------------
+# Generated publication assets (rebuild: python tools/build_publication_figures.py)
+# ---------------------------------------------------------------------------
+figures/*.pdf
+figures/*.png
+figures/*.svg
+
+# Memo / one-off PDFs and LaTeX build products (keep .tex and refs.bib in repo)
+preprint.pdf
+summary_for_dassama.pdf
+summary_for_dassama.aux
+summary_for_dassama.bbl
+summary_for_dassama.blg
+summary_for_dassama.log
+summary_for_dassama.out
+
+# Historical report snapshots — keep locally only (large, churn-heavy)
+reports/archive/
