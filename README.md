@@ -58,9 +58,8 @@ reports binary F1 `0.906 ± 0.015`, 10-class macro-F1 `0.778 ± 0.017`, and
 5-lipid macro-F1 `0.684 ± 0.030` but regresses to apo-PDB `0.649` and
 AlphaFold `0.623` on the external holdouts. The 0.011 internal lipid5
 macro-F1 sacrifice in `exp-021` buys back ~0.07 apo-PDB and ~0.09
-AlphaFold F1 — a holdout-discipline-aware tradeoff. See
-[`figures/figure_holdout_vs_internal.png`](figures/figure_holdout_vs_internal.png)
-for the Pareto-front visualization across all 23 experiments.
+AlphaFold F1 — a holdout-discipline-aware tradeoff documented in the
+registry's `holdout_acceptance_test` notes.
 
 ### Comparison to the SLiPP paper baseline
 
@@ -77,7 +76,7 @@ current supplementary workbooks (vs. the 131 the paper reports).
 
 ### Publication figure set
 
-Six publication-grade figures are rendered to `figures/` in
+Five publication-grade figures are rendered to `figures/` in
 PNG / PDF / SVG:
 
 - [`figure7_plus_feature_landscape`](figures/figure7_plus_feature_landscape.png)
@@ -85,8 +84,6 @@ PNG / PDF / SVG:
   softmax breaking the lipid bucket open.
 - [`figure_per_class_forest`](figures/figure_per_class_forest.png)
   — per-class F1 across the experiment ladder.
-- [`figure_holdout_vs_internal`](figures/figure_holdout_vs_internal.png)
-  — Pareto front of internal vs. external evaluation.
 - [`figure_ablation_ladder`](figures/figure_ablation_ladder.png)
   — sequential lipid5 macro-F1 deltas from `paper17` to `exp-021`.
 - [`figure_data_coverage_gap`](figures/figure_data_coverage_gap.png)

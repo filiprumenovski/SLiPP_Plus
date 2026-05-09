@@ -534,7 +534,7 @@ def figure_per_class_forest(
     stem: str = "figure_per_class_forest",
     formats: Sequence[str] = DEFAULT_FORMATS,
     title: str = "Per-class F1 across the SLiPP++ experiment ladder",
-    subtitle: str = "Lipid sub-classes (warm) and non-lipid classes (cool); paper baseline shown as a dashed reference.",
+    subtitle: str = "Five lipid sub-classes per experiment; vertical dashed lines mark the Chou et al. 2024 paper baseline for the same class.",
 ) -> dict[str, Path]:
     """Forest plot of per-class F1 across selected experiments.
 
@@ -543,20 +543,25 @@ def figure_per_class_forest(
     """
 
     apply_publication_style()
-    n_classes = len(CLASS_10)
-    n_exps = len(results)
-    fig_height = max(4.5, 0.85 * n_exps + 2.5)
+    # Lipid-only forest: drop any experiment row that doesn't have all five
+    # lipid sub-classes recorded, so the plot never has visual gaps.
+    lipid_classes = [c for c in CLASS_10 if c in LIPID_CODES]
+    complete = [r for r in results if all(c in r.per_class_f1 for c in lipid_classes)]
+    if not complete:
+        complete = results  # fallback: render whatever we have
+    n_exps = len(complete)
+    fig_height = max(4.0, 0.75 * n_exps + 2.6)
     fig, ax = plt.subplots(figsize=(12.5, fig_height))
 
     # Y axis: experiments stacked vertically, top is best (last in list)
     y_positions = np.arange(n_exps)
-    for i, result in enumerate(results):
-        for j, cls in enumerate(CLASS_10):
+    for i, result in enumerate(complete):
+        for j, cls in enumerate(lipid_classes):
             value = result.per_class_f1.get(cls)
             if value is None:
                 continue
             std = result.per_class_f1_std.get(cls, 0.0)
-            x_jitter = (j - (n_classes - 1) / 2) * 0.012  # tiny horizontal stagger to break ties
+            x_jitter = (j - (len(lipid_classes) - 1) / 2) * 0.012
             ax.errorbar(
                 value,
                 i + x_jitter * 6,
@@ -566,17 +571,17 @@ def figure_per_class_forest(
                 ecolor=CLASS_PALETTE[cls],
                 elinewidth=1.0,
                 capsize=2,
-                markersize=7,
+                markersize=8,
                 alpha=0.95,
                 markeredgecolor="white",
                 markeredgewidth=0.6,
                 zorder=3,
             )
 
-    # Paper baseline reference lines per class
+    # Paper baseline reference lines per class (lipid only)
     if paper_baseline_per_class:
         for cls, baseline in paper_baseline_per_class.items():
-            if cls not in CLASS_PALETTE:
+            if cls not in lipid_classes:
                 continue
             ax.axvline(
                 baseline,
@@ -588,7 +593,7 @@ def figure_per_class_forest(
             )
 
     ax.set_yticks(y_positions)
-    ax.set_yticklabels([r.label for r in results], fontsize=10.0)
+    ax.set_yticklabels([r.label for r in complete], fontsize=10.0)
     ax.invert_yaxis()  # top = first; flip so the deployable lands at top visually
     ax.set_xlabel("Class F1")
     ax.set_xlim(0.2, 1.0)
@@ -596,144 +601,22 @@ def figure_per_class_forest(
     ax.set_axisbelow(True)
     set_title_block(fig, title, subtitle, title_size=14.5, subtitle_size=9.8)
 
-    # Legend grouped by lipid / non-lipid, placed BELOW the plot so it never
-    # overlaps the data points.
-    lipid_handles = [mpatches.Patch(color=CLASS_PALETTE[c], label=c) for c in CLASS_10 if c in LIPID_CODES]
-    nonlipid_handles = [mpatches.Patch(color=CLASS_PALETTE[c], label=c) for c in CLASS_10 if c not in LIPID_CODES]
-    leg1 = fig.legend(
+    # Single lipid-only legend, centered below the plot. Non-lipid classes
+    # are deliberately omitted because per-class F1 for them is not tracked
+    # in the registry; including their patches would falsely imply they are
+    # plotted somewhere on this figure.
+    lipid_handles = [mpatches.Patch(color=CLASS_PALETTE[c], label=c) for c in lipid_classes]
+    fig.legend(
         handles=lipid_handles,
         title="lipid sub-classes",
-        loc="lower left",
-        bbox_to_anchor=(0.34, 0.005),
-        fontsize=9.0,
-        ncol=5,
-        title_fontsize=9.5,
-    )
-    fig.add_artist(leg1)
-    fig.legend(
-        handles=nonlipid_handles,
-        title="non-lipid classes",
-        loc="lower left",
-        bbox_to_anchor=(0.66, 0.005),
-        fontsize=9.0,
-        ncol=5,
-        title_fontsize=9.5,
+        loc="lower center",
+        bbox_to_anchor=(0.5, 0.01),
+        fontsize=9.5,
+        ncol=len(lipid_classes),
+        title_fontsize=10.0,
     )
 
-    plt.subplots_adjust(left=0.32, right=0.985, top=0.84, bottom=0.18)
-    return save_figure(fig, out_dir, stem, formats)
-
-
-# ----------------------------------------------------------------------
-# Holdout vs internal scatter
-# ----------------------------------------------------------------------
-
-
-def figure_holdout_vs_internal(
-    *,
-    experiments: list[ExperimentSummary],
-    out_dir: Path,
-    stem: str = "figure_holdout_vs_internal",
-    formats: Sequence[str] = DEFAULT_FORMATS,
-    title: str = "Internal validation vs. external holdout — the SLiPP++ Pareto front",
-    subtitle: str = "Each marker is one experiment. Deployable artifact (exp-021) navigates the holdout-overfitting trap that traps the internal leader (exp-019).",
-) -> dict[str, Path]:
-    """Scatter showing the internal-vs-external tradeoff across all experiments.
-
-    Highlights the deployable, the internal best, and the paper baseline.
-    """
-
-    apply_publication_style()
-    fig, ax = plt.subplots(figsize=(10.5, 7.0))
-
-    xs: list[float] = []
-    ys: list[float] = []
-    labels: list[str] = []
-    colors: list[str] = []
-    for exp in experiments:
-        if exp.apo_pdb_f1 is None or exp.alphafold_f1 is None:
-            continue
-        x = exp.lipid5_macro_f1
-        y = float(np.mean([exp.apo_pdb_f1, exp.alphafold_f1]))
-        xs.append(x)
-        ys.append(y)
-        labels.append(exp.label)
-        if exp.is_deployable:
-            colors.append("#16A085")
-        elif exp.is_internal_best:
-            colors.append("#B0413E")
-        elif exp.is_paper_baseline:
-            colors.append("#444444")
-        else:
-            colors.append("#9AA0A6")
-
-    xs_a = np.array(xs)
-    ys_a = np.array(ys)
-
-    # Pareto front (maximize both): keep points that aren't dominated.
-    pareto_mask = np.zeros(len(xs_a), dtype=bool)
-    for i in range(len(xs_a)):
-        dominated = np.any((xs_a > xs_a[i]) & (ys_a > ys_a[i]))
-        pareto_mask[i] = not dominated
-    if pareto_mask.any():
-        order = np.argsort(xs_a[pareto_mask])
-        pf_x = xs_a[pareto_mask][order]
-        pf_y = ys_a[pareto_mask][order]
-        ax.plot(
-            pf_x,
-            pf_y,
-            color="#16A085",
-            linestyle="--",
-            linewidth=1.2,
-            alpha=0.45,
-            zorder=1,
-            label="Pareto front",
-        )
-
-    # Per-experiment label offsets, hand-tuned so close-together points don't
-    # stack their labels on top of each other (exp-013 / exp-020 / exp-018 sit
-    # in a tight cluster at lipid5≈0.67, holdout≈0.69-0.71).
-    label_offsets: dict[str, tuple[int, int]] = {
-        "exp-021 (chem-weighted, deployable)": (8, 8),
-        "exp-019 (5-way ensemble)": (10, -4),
-        "exp-013 (shell6+tunnel)": (-95, 8),
-        "exp-020 (shell6_shape+chem)": (8, 12),
-        "exp-018 (3-way ensemble)": (8, -14),
-        "exp-014 (v49+tunnel_shape3)": (-115, -2),
-        "exp-009 (boundary refactor)": (8, -14),
-        "exp-007 (v_sterol+tb)": (-100, 8),
-        "exp-002 (v49)": (-70, 9),
-        "exp-001 (paper17)": (8, 6),
-        "Chou et al. 2024": (10, -4),
-    }
-    for x, y, lbl, c in zip(xs, ys, labels, colors, strict=True):
-        ax.scatter(x, y, s=110, color=c, alpha=0.92, edgecolor="white", linewidth=1.0, zorder=3)
-        offset = label_offsets.get(lbl, (8, 6))
-        ax.annotate(
-            lbl,
-            (x, y),
-            xytext=offset,
-            textcoords="offset points",
-            fontsize=8.5,
-            color="#222222",
-            zorder=4,
-        )
-
-    ax.set_xlabel("Internal validation — 5-lipid macro-F1 (25-iter CV mean)")
-    ax.set_ylabel("External holdout — mean(apo-PDB, AlphaFold) F1")
-    ax.grid(linestyle=":", linewidth=0.5, alpha=0.7)
-    ax.set_axisbelow(True)
-    set_title_block(fig, title, subtitle, title_size=14.5, subtitle_size=9.8)
-
-    handles = [
-        mpatches.Patch(color="#16A085", label="Deployable (exp-021)"),
-        mpatches.Patch(color="#B0413E", label="Internal best (exp-019, holdout-regressive)"),
-        mpatches.Patch(color="#444444", label="Paper baseline reference"),
-        mpatches.Patch(color="#9AA0A6", label="Other SLiPP++ experiments"),
-    ]
-    ax.legend(handles=handles, loc="lower left", title="legend")
-
-    plt.subplots_adjust(left=0.085, right=0.985, top=0.85, bottom=0.10)
+    plt.subplots_adjust(left=0.32, right=0.985, top=0.84, bottom=0.20)
     return save_figure(fig, out_dir, stem, formats)
 
 

@@ -1,18 +1,16 @@
 """Render the SLiPP++ publication figure set.
 
-Six figures, all written to ``figures/`` as PNG + PDF + SVG:
+Five figures, all written to ``figures/`` as PNG + PDF + SVG:
 
 1. ``figure7_plus_feature_landscape`` — the headline four-panel figure
    (feature-family importance, top features, per-class violin, PCA with
    density contours). Direct upgrade over Chou et al. 2024 Fig. 7.
 2. ``figure_per_class_forest`` — per-class F1 across the ablation ladder.
-3. ``figure_holdout_vs_internal`` — internal-CV vs. external-holdout scatter
-   with the SLiPP++ Pareto front and the deployable / internal-best calls.
-4. ``figure_ablation_ladder`` — sequential lipid5 macro-F1 deltas from
+3. ``figure_ablation_ladder`` — sequential lipid5 macro-F1 deltas from
    paper17 to exp-021.
-5. ``figure_data_coverage_gap`` — Chou et al. vs. BioDolphin v1.1 coverage,
+4. ``figure_data_coverage_gap`` — Chou et al. vs. BioDolphin v1.1 coverage,
    the data-availability finding underwriting the proposed extension.
-6. ``figure_pipeline_schematic`` — six-stage pipeline schematic, the
+5. ``figure_pipeline_schematic`` — six-stage pipeline schematic, the
    spiritual successor to Chou et al. Fig. 7's development overview.
 
 Usage::
@@ -47,14 +45,12 @@ from slipp_plus.constants import CLASS_10, LIPID_CODES  # noqa: E402
 from slipp_plus.publication_figures import (  # noqa: E402
     DEFAULT_FORMATS,
     EmbeddingData,
-    ExperimentSummary,
     FeatureImportanceData,
     PerClassFeatureDistribution,
     PerClassResult,
     figure_7_plus,
     figure_ablation_ladder,
     figure_data_coverage_gap,
-    figure_holdout_vs_internal,
     figure_per_class_forest,
     figure_pipeline_schematic,
 )
@@ -75,121 +71,34 @@ CLASS_SIZES: dict[str, int] = {
 }
 
 
-def _experiments_for_holdout_panel() -> list[ExperimentSummary]:
-    """Hand-coded summary rows from ``experiments/registry.yaml``."""
-
-    return [
-        ExperimentSummary(
-            exp_id="paper",
-            label="Chou et al. 2024",
-            lipid5_macro_f1=0.520,  # exp-001 paper17 baseline approximates it
-            apo_pdb_f1=0.726,
-            alphafold_f1=0.643,
-            is_paper_baseline=True,
-        ),
-        ExperimentSummary(
-            exp_id="exp-001",
-            label="exp-001 (paper17)",
-            lipid5_macro_f1=0.514,
-            apo_pdb_f1=0.746,
-            alphafold_f1=0.732,
-        ),
-        ExperimentSummary(
-            exp_id="exp-002",
-            label="exp-002 (v49)",
-            lipid5_macro_f1=0.590,
-            apo_pdb_f1=0.709,
-            alphafold_f1=0.753,
-        ),
-        ExperimentSummary(
-            exp_id="exp-007",
-            label="exp-007 (v_sterol+tb)",
-            lipid5_macro_f1=0.610,
-            apo_pdb_f1=0.716,
-            alphafold_f1=0.725,
-        ),
-        ExperimentSummary(
-            exp_id="exp-009",
-            label="exp-009 (boundary refactor)",
-            lipid5_macro_f1=0.641,
-            apo_pdb_f1=0.716,
-            alphafold_f1=0.725,
-        ),
-        ExperimentSummary(
-            exp_id="exp-013",
-            label="exp-013 (shell6+tunnel)",
-            lipid5_macro_f1=0.666,
-            apo_pdb_f1=0.711,
-            alphafold_f1=0.703,
-        ),
-        ExperimentSummary(
-            exp_id="exp-014",
-            label="exp-014 (v49+tunnel_shape3)",
-            lipid5_macro_f1=0.668,
-            apo_pdb_f1=0.667,
-            alphafold_f1=0.724,
-        ),
-        ExperimentSummary(
-            exp_id="exp-018",
-            label="exp-018 (3-way ensemble)",
-            lipid5_macro_f1=0.678,
-            apo_pdb_f1=0.712,
-            alphafold_f1=0.671,
-        ),
-        ExperimentSummary(
-            exp_id="exp-019",
-            label="exp-019 (5-way ensemble)",
-            lipid5_macro_f1=0.684,
-            apo_pdb_f1=0.649,
-            alphafold_f1=0.623,
-            is_internal_best=True,
-        ),
-        ExperimentSummary(
-            exp_id="exp-020",
-            label="exp-020 (shell6_shape+chem)",
-            lipid5_macro_f1=0.673,
-            apo_pdb_f1=0.717,
-            alphafold_f1=0.698,
-        ),
-        ExperimentSummary(
-            exp_id="exp-021",
-            label="exp-021 (chem-weighted, deployable)",
-            lipid5_macro_f1=0.664,
-            apo_pdb_f1=0.717,
-            alphafold_f1=0.715,
-            is_deployable=True,
-        ),
-    ]
-
-
 def _per_class_results_for_forest() -> list[PerClassResult]:
-    """Per-class F1 numbers from the registry, lipid-class focused."""
+    """Per-class F1 numbers from the registry, lipid-class focused.
+
+    Only experiments with all five lipid sub-classes recorded are included;
+    earlier rows like exp-001 reported just CLR/STE/PLM and would render as
+    visual gaps on the forest.
+    """
 
     return [
         PerClassResult(
-            exp_id="exp-001",
-            label="exp-001 (paper17 baseline)",
-            per_class_f1={"CLR": 0.669, "STE": 0.313, "PLM": 0.564},
-        ),
-        PerClassResult(
             exp_id="exp-002",
-            label="exp-002 (v49)",
-            per_class_f1={"CLR": 0.708, "STE": 0.415, "PLM": 0.623, "MYR": 0.682, "OLA": 0.522},
+            label="exp-002 (v49 baseline)",
+            per_class_f1={"CLR": 0.708, "MYR": 0.682, "OLA": 0.522, "PLM": 0.623, "STE": 0.415},
         ),
         PerClassResult(
             exp_id="exp-014",
             label="exp-014 (v49+tunnel_shape3)",
-            per_class_f1={"CLR": 0.747, "STE": 0.638, "PLM": 0.642, "MYR": 0.700, "OLA": 0.610},
+            per_class_f1={"CLR": 0.747, "MYR": 0.700, "OLA": 0.610, "PLM": 0.642, "STE": 0.638},
         ),
         PerClassResult(
             exp_id="exp-019",
             label="exp-019 (internal best)",
-            per_class_f1={"CLR": 0.773, "STE": 0.645, "PLM": 0.655, "MYR": 0.714, "OLA": 0.631},
+            per_class_f1={"CLR": 0.773, "MYR": 0.714, "OLA": 0.631, "PLM": 0.655, "STE": 0.645},
         ),
         PerClassResult(
             exp_id="exp-021",
             label="exp-021 (deployable)",
-            per_class_f1={"CLR": 0.756, "STE": 0.629, "PLM": 0.640, "MYR": 0.701, "OLA": 0.594},
+            per_class_f1={"CLR": 0.756, "MYR": 0.701, "OLA": 0.594, "PLM": 0.640, "STE": 0.629},
         ),
     ]
 
@@ -453,11 +362,6 @@ def main(argv: list[str] | None = None) -> int:
     written["per_class_forest"] = figure_per_class_forest(
         results=_per_class_results_for_forest(),
         paper_baseline_per_class={"CLR": 0.669, "STE": 0.313, "PLM": 0.564},
-        out_dir=args.out_dir,
-        formats=formats,
-    )
-    written["holdout_vs_internal"] = figure_holdout_vs_internal(
-        experiments=_experiments_for_holdout_panel(),
         out_dir=args.out_dir,
         formats=formats,
     )
