@@ -60,6 +60,13 @@ Internal-validation leader remains `exp-019-compact-five-way-shape-chem-ensemble
 - Result: apo-PDB F1/AUROC `0.679 / 0.812`; AlphaFold F1/AUROC
   `0.708 / 0.864`.
 
+`exp-011-family-plus-moe` holdouts are now complete.
+
+- Report: `reports/family_plus_moe_holdout_completion.md`
+- Result: apo-PDB F1/AUROC `0.723 / 0.807`; AlphaFold F1/AUROC
+  `0.703 / 0.838`.
+- Decision: useful but not deployable over exp-028 because AlphaFold is weaker.
+
 ## Remaining High-Impact Work
 
 1. Prioritize domain-shift fixes that can be learned without tuning on holdout
@@ -76,8 +83,8 @@ Internal-validation leader remains `exp-019-compact-five-way-shape-chem-ensemble
    an internal-only improvement that reproduces exp-019's holdout regression.
 5. Keep README current with the deployable recommendation, internal leader, and
    major negative ablations. Stale docs are a known project risk.
-6. Remaining queued holdout completions are `exp-009-v_sterol-boundary-refactor`
-   and `exp-011-family-plus-moe`; `exp-005` is closed.
+6. Remaining queued holdout completion is `exp-009-v_sterol-boundary-refactor`;
+   `exp-005` and `exp-011` are closed.
 7. Do not close `exp-009` with `make eval CFG=configs/v_sterol_boundary_refactor.yaml`
    until the prediction source is fixed. That command currently reads the
    generic `hierarchical_lipid_predictions.parquet`, which is an exp-011

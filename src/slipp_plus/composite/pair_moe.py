@@ -453,6 +453,7 @@ def run_pair_moe_training(settings: Settings) -> dict[str, Path]:
                         "model": model,
                         "labels": tuple(expert.labels),
                         "margin": expert.margin,
+                        "max_rank": expert.max_rank,
                         "kind": expert.kind,
                         "feature_columns": feature_columns + aux_columns,
                     }
@@ -528,3 +529,68 @@ def run_pair_moe_training(settings: Settings) -> dict[str, Path]:
         "composite_predictions": output_predictions,
         "composite_bundle": bundle_path,
     }
+
+
+def predict_pair_moe_holdout(
+    holdout_df: pd.DataFrame,
+    bundle: dict[str, Any],
+    teacher_predictions: pd.DataFrame,
+) -> pd.DataFrame:
+    """Apply an iteration-0 pair/local-MoE bundle to holdout teacher predictions."""
+
+    frame = teacher_predictions.reset_index(drop=True).copy()
+    if "iteration" not in frame.columns:
+        frame.insert(0, "iteration", 0)
+    if "row_index" not in frame.columns:
+        frame.insert(1, "row_index", np.arange(len(frame), dtype=np.int64))
+    if "y_true_int" not in frame.columns:
+        frame.insert(2, "y_true_int", -1)
+    proba = frame[PROBA_COLUMNS].to_numpy(dtype=np.float64)
+    frame["y_pred_int"] = proba.argmax(axis=1).astype(np.int64)
+
+    if len(frame) != len(holdout_df):
+        raise ValueError(
+            "teacher holdout predictions and holdout feature table must have the same row count"
+        )
+
+    feature_frame = pd.concat(
+        [
+            holdout_df.reset_index(drop=True),
+            frame[PROBA_COLUMNS].reset_index(drop=True),
+        ],
+        axis=1,
+    )
+    topology_experts = {
+        str(expert.get("name")): expert
+        for expert in bundle.get("topology", {}).get("experts", [])
+        if isinstance(expert, dict)
+    }
+    for expert in bundle.get("experts", []):
+        expert_name = str(expert["name"])
+        columns = list(expert["feature_columns"])
+        missing = [column for column in columns if column not in feature_frame.columns]
+        if missing:
+            raise KeyError(f"holdout missing pair-MoE expert columns for {expert_name}: {missing}")
+        X = feature_frame[columns].to_numpy(dtype=np.float64)
+        labels = tuple(expert["labels"])
+        if expert["kind"] == "binary_boundary":
+            proba_positive = expert["model"].predict_proba(X)[:, 1].astype(np.float64)
+            frame, _fired = _apply_pair_expert(
+                frame,
+                proba_positive=proba_positive,
+                negative_label=labels[0],
+                positive_label=labels[1],
+                margin=float(expert["margin"]),
+            )
+        elif expert["kind"] == "local_multiclass":
+            local_proba = expert["model"].predict_proba(X).astype(np.float64)
+            frame, _fired = _apply_local_multiclass_expert(
+                frame,
+                local_proba=local_proba,
+                labels=labels,
+                min_confidence=float(expert["margin"]),
+                max_rank=expert.get("max_rank", topology_experts.get(expert_name, {}).get("max_rank")),
+            )
+        else:
+            raise NotImplementedError(f"unsupported pair-MoE expert kind: {expert['kind']}")
+    return frame

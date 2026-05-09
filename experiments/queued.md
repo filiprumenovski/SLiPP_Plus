@@ -17,12 +17,6 @@ Generated from the registry after `reports/ablation_matrix.md` was created.
      an exp-011 composite pair-MoE artifact, not the exp-009 boundary-refactor
      predictions. See `reports/boundary_refactor_holdout_attempt.md`.
 
-2. `exp-011-family-plus-moe`
-   - Config: `configs/v_sterol_family_plus_moe.yaml`
-   - Current gap: registry holdout fields are explicitly `null`.
-   - Current blocker from registry notes: holdout inference for composite pair/local MoE bundles is not implemented yet.
-   - Suggested command: implement or wire composite holdout inference for `models/v_sterol_family_plus_moe/family_plus_moe_bundle.joblib`, then update holdout metrics.
-
 ### No Inline Completion Planned
 
 1. `exp-003-v49-ensemble-clr-ste-tb`
@@ -146,3 +140,12 @@ Generated from the registry after `reports/ablation_matrix.md` was created.
      predictions. apo-PDB F1/AUROC `0.679 / 0.812`; AlphaFold F1/AUROC
      `0.708 / 0.864`.
    - No retraining was run.
+
+14. `exp-011-family-plus-moe` holdout completion
+   - Report: `reports/family_plus_moe_holdout_completion.md`
+   - Result: pair/local-MoE holdout inference now starts from family-encoder
+     teacher holdout predictions and applies saved iteration-0 experts. apo-PDB
+     F1/AUROC `0.723 / 0.807`; AlphaFold F1/AUROC `0.703 / 0.838`.
+   - This closes the composite pair/local-MoE holdout blocker, but does not
+     change the deployable recommendation because exp-028 is stronger on
+     AlphaFold.

@@ -264,8 +264,10 @@
     plm_f1: "0.658"
     ste_f1: "0.635"
   holdouts:
-    apo_pdb_f1: null
-    alphafold_f1: null
+    apo_pdb_f1: 0.723
+    apo_pdb_auroc: 0.807
+    alphafold_f1: 0.703
+    alphafold_auroc: 0.838
   supersedes: exp-009-v_sterol-boundary-refactor
   artifacts:
     predictions: processed/v_sterol/predictions/hierarchical_lipid_predictions.parquet
@@ -274,13 +276,17 @@
     report: reports/v_sterol_family_plus_moe/composite_pair_moe_report.md
     metrics: reports/v_sterol_family_plus_moe/metrics_table.md
     bundle: models/v_sterol_family_plus_moe/family_plus_moe_bundle.joblib
+    holdout_completion: reports/family_plus_moe_holdout_completion.md
+    apo_pdb_predictions: processed/v_sterol/predictions/holdouts/pair_moe_apo_pdb_predictions.parquet
+    alphafold_predictions: processed/v_sterol/predictions/holdouts/pair_moe_alphafold_predictions.parquet
   notes: >
     Current champion. Adds a second local multiclass expert over PLM/STE/COA/MYR/OLA
     after the fixed CLR neighborhood local MoE. Net lift vs family encoder teacher:
     +0.0048 macro-F1 and +0.0085 lipid macro-F1; net lift vs prior fixed local MoE:
     about +0.001 macro-F1 and +0.002 lipid macro-F1. Main gain is STE recovery
     (0.627 -> 0.635) without losing binary-collapsed performance. Holdout inference
-    for composite pair/local MoE bundles is not implemented yet.
+    now gives apo-PDB F1 0.723 and AlphaFold F1 0.703, which is useful but not
+    deployable over the compact weighted exp-028 blend.
 
 - id: exp-012-compact-tunnel-shape
   date: "2026-05-06"

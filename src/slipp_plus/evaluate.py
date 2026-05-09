@@ -384,6 +384,31 @@ def evaluate_hierarchical_holdouts(
                 holdout_df,
             )
         return outputs
+    if bundle.get("composite_backend") == "pair_moe":
+        from .composite.pair_moe import predict_pair_moe_holdout
+
+        pair_outputs: dict[str, dict[str, float]] = {}
+        for holdout_name in ("apo_pdb", "alphafold"):
+            holdout_df = pd.read_parquet(proc / f"{holdout_name}_holdout.parquet")
+            teacher_path = holdout_dir / f"family_encoder_{holdout_name}_predictions.parquet"
+            if not teacher_path.exists():
+                raise FileNotFoundError(
+                    f"pair-MoE holdout inference requires teacher predictions: {teacher_path}"
+                )
+            holdout_preds = predict_pair_moe_holdout(
+                holdout_df,
+                bundle,
+                pd.read_parquet(teacher_path),
+            )
+            holdout_preds.to_parquet(
+                holdout_dir / f"pair_moe_{holdout_name}_predictions.parquet",
+                index=False,
+            )
+            pair_outputs[holdout_name] = evaluate_staged_holdout_predictions(
+                holdout_preds,
+                holdout_df,
+            )
+        return pair_outputs
 
     outputs: dict[str, dict[str, float]] = {}
     for holdout_name in ("apo_pdb", "alphafold"):
