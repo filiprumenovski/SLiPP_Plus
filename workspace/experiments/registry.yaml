@@ -1315,3 +1315,45 @@
     train split, and those rows are already near-perfect (F1 about 0.98). A
     real leave-structure or leave-cluster selection experiment requires
     retraining with grouped splits.
+
+- id: exp-042-structure-grouped-family-encoder-negative
+  date: "2026-05-09"
+  feature_set: v49+tunnel_shape3
+  config: configs/archive/v49_tunnel_shape3_structure_grouped_family_encoder.yaml
+  models: [family_encoder]
+  postprocessing: "structure_grouped_splits(split_group_column=structure_id)"
+  status: complete
+  is_current_best: false
+  metrics:
+    binary_f1: "0.894 ± 0.009"
+    binary_auroc: "0.989 ± 0.001"
+    macro_f1_10: "0.607 ± 0.019"
+    lipid_macro_f1: "0.421 ± 0.021"
+    clr_f1: "0.537"
+    myr_f1: "0.588"
+    ola_f1: "0.286"
+    plm_f1: "0.099"
+    ste_f1: "0.597"
+  holdouts:
+    apo_pdb_f1: 0.712
+    apo_pdb_auroc: 0.813
+    alphafold_f1: 0.680
+    alphafold_auroc: 0.862
+  supersedes: null
+  artifacts:
+    report: reports/structure_grouped_family_encoder_ablation_2026_05_09.md
+    materialization_report: reports/v49_tunnel_shape3_structure_grouped_family_encoder/structure_grouped_materialization.md
+    metrics_table: reports/v49_tunnel_shape3_structure_grouped_family_encoder/metrics_table.md
+    raw_metrics: reports/v49_tunnel_shape3_structure_grouped_family_encoder/raw_metrics.parquet
+    predictions: processed/v49_tunnel_shape3_structure_grouped/predictions/family_encoder_predictions.parquet
+    config: configs/archive/v49_tunnel_shape3_structure_grouped_family_encoder.yaml
+    materializer: scripts/materialize_structure_grouped_experiment.py
+  notes: >
+    NEGATIVE GROUPED-SPLIT RESULT. A real structure-grouped family-encoder
+    retrain produces valid non-overlapping grouped splits, but it is not
+    deployable and does not directly solve exp-037 selection. Binary F1 is
+    0.894 +/- 0.009 and AUROC is 0.989 +/- 0.001, but macro10 drops to
+    0.607 +/- 0.019 and lipid5 macro-F1 drops to 0.421 +/- 0.021, with PLM F1
+    only 0.099. Holdouts also trail exp-035: apo-PDB F1 0.712 and AlphaFold
+    F1 0.680. Treat grouped retraining as stress-test infrastructure, not a
+    model replacement.

@@ -28,6 +28,14 @@ reports/raw_metrics.parquet
 reports/**/raw_metrics.parquet
 reports/**/*.parquet
 
+# Bundled reports tree (`reports/` is a symlink → `workspace/reports/`)
+workspace/reports/*.png
+workspace/reports/*.pdf
+workspace/reports/raw_metrics.parquet
+workspace/reports/**/raw_metrics.parquet
+workspace/reports/**/*.parquet
+workspace/reports/archive/
+
 # Upstream/reference fork kept locally for comparison only
 reference/SLiPP_2024-main/
 

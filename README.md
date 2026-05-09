@@ -374,6 +374,7 @@ uv run ruff check src/slipp_plus/backbone_family_encoder.py src/slipp_plus/compo
 ## Documentation Map
 
 - [`README.md`](README.md): this file. Headline metrics, install, current state.
+- [`workspace/README.md`](workspace/README.md): bundled docs, reports, experiment registry, and examples (top-level `reports/`, `docs/`, `experiments/`, `examples/` are symlinks for backward-compatible paths).
 - [`BIODOLPHIN_EXTENSION.md`](docs/BIODOLPHIN_EXTENSION.md): proposed next-stage extension to the BioDolphin lipid-pocket database (collaboration ask).
 - [`DATASHEET.md`](docs/DATASHEET.md): data provenance, checksums, class counts, and known issues.
 - [`experiments/registry.yaml`](experiments/registry.yaml): structured experiment registry (machine-readable).
