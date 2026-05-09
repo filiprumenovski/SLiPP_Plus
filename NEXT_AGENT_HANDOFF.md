@@ -10,8 +10,8 @@ scientific evidence in this project.
 ## Current State
 
 - Branch: `main`
-- Latest pushed commit before this update: `06d61c5 experiments: promote three-way compact ensemble`
-- Worktree had the five-way ensemble record in progress when this file was written.
+- Latest pushed commit at time of writing: `933312e experiments: record five-way compact ensemble`
+- Worktree was clean when this file was written.
 - Current internal leader: `exp-019-compact-five-way-shape-chem-ensemble`
 - Current internal best command: `uv run python scripts/compact_probability_ensemble.py`
 - Best single compact model: `exp-014-v49-tunnel-shape3`
