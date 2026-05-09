@@ -19,7 +19,7 @@ numpy arrays, dicts) so it can be tested against synthetic fixtures and run
 against the real prediction / model artifacts when they are available.
 
 Output: SVG (editorial), PDF (journal), and 300-DPI PNG (slides) per figure,
-written under ``reports/publication/``.
+written under ``figures/`` at the repository root.
 """
 
 from __future__ import annotations
@@ -128,6 +128,27 @@ def save_figure(fig: plt.Figure, out_dir: Path, stem: str, formats: Sequence[str
         fig.savefig(path, format=fmt)
         paths[fmt] = path
     return paths
+
+
+def set_title_block(
+    fig: plt.Figure,
+    title: str,
+    subtitle: str,
+    *,
+    x: float = 0.06,
+    title_size: float = 15.0,
+    subtitle_size: float = 10.5,
+) -> None:
+    """Apply the standard two-line publication title block.
+
+    The title and subtitle are positioned with enough vertical breathing room
+    that the title's descenders never touch the subtitle's ascenders, even at
+    print resolution. Callers are responsible for `subplots_adjust(top=...)`
+    so the panel headers don't crowd the subtitle from below.
+    """
+
+    fig.suptitle(title, x=x, y=0.985, ha="left", va="top", fontsize=title_size, fontweight="bold")
+    fig.text(x, 0.935, subtitle, ha="left", va="top", fontsize=subtitle_size, color="#555555")
 
 
 # ----------------------------------------------------------------------
@@ -246,15 +267,14 @@ def figure_7_plus(
     """
 
     apply_publication_style()
-    fig = plt.figure(figsize=(14.0, 11.0))
+    fig = plt.figure(figsize=(14.0, 11.5))
     gs = fig.add_gridspec(2, 2, hspace=0.50, wspace=0.30, left=0.06, right=0.985, top=0.86, bottom=0.06)
     ax_a = fig.add_subplot(gs[0, 0])
     ax_b = fig.add_subplot(gs[1, 0])
     ax_c = fig.add_subplot(gs[0, 1])
     ax_d = fig.add_subplot(gs[1, 1])
 
-    fig.suptitle(title, x=0.06, y=0.965, ha="left", fontsize=15.5, fontweight="bold")
-    fig.text(0.06, 0.918, subtitle, ha="left", fontsize=10.5, color="#555555")
+    set_title_block(fig, title, subtitle, title_size=15.5)
 
     _draw_panel_a_family_importance(ax_a, importance)
     _draw_panel_b_top_features(ax_b, importance)
@@ -574,8 +594,7 @@ def figure_per_class_forest(
     ax.set_xlim(0.2, 1.0)
     ax.grid(axis="x", linestyle=":", linewidth=0.5, alpha=0.7)
     ax.set_axisbelow(True)
-    fig.suptitle(title, x=0.06, y=0.965, ha="left", fontsize=14.5, fontweight="bold")
-    fig.text(0.06, 0.918, subtitle, ha="left", fontsize=9.8, color="#555555")
+    set_title_block(fig, title, subtitle, title_size=14.5, subtitle_size=9.8)
 
     # Legend grouped by lipid / non-lipid, placed BELOW the plot so it never
     # overlaps the data points.
@@ -601,7 +620,7 @@ def figure_per_class_forest(
         title_fontsize=9.5,
     )
 
-    plt.subplots_adjust(left=0.32, right=0.985, top=0.86, bottom=0.18)
+    plt.subplots_adjust(left=0.32, right=0.985, top=0.84, bottom=0.18)
     return save_figure(fig, out_dir, stem, formats)
 
 
@@ -704,8 +723,7 @@ def figure_holdout_vs_internal(
     ax.set_ylabel("External holdout — mean(apo-PDB, AlphaFold) F1")
     ax.grid(linestyle=":", linewidth=0.5, alpha=0.7)
     ax.set_axisbelow(True)
-    fig.suptitle(title, x=0.06, y=0.965, ha="left", fontsize=14.5, fontweight="bold")
-    fig.text(0.06, 0.925, subtitle, ha="left", fontsize=9.8, color="#555555")
+    set_title_block(fig, title, subtitle, title_size=14.5, subtitle_size=9.8)
 
     handles = [
         mpatches.Patch(color="#16A085", label="Deployable (exp-021)"),
@@ -715,7 +733,7 @@ def figure_holdout_vs_internal(
     ]
     ax.legend(handles=handles, loc="lower left", title="legend")
 
-    plt.subplots_adjust(left=0.085, right=0.985, top=0.88, bottom=0.10)
+    plt.subplots_adjust(left=0.085, right=0.985, top=0.85, bottom=0.10)
     return save_figure(fig, out_dir, stem, formats)
 
 
@@ -789,15 +807,14 @@ def figure_ablation_ladder(
     ax.set_ylim(min(ys) - 0.07, max(ys) + 0.06)
     ax.grid(axis="y", linestyle=":", linewidth=0.5, alpha=0.7)
     ax.set_axisbelow(True)
-    fig.suptitle(title, x=0.06, y=0.97, ha="left", fontsize=14.5, fontweight="bold")
-    fig.text(0.06, 0.93, subtitle, ha="left", fontsize=9.8, color="#555555")
+    set_title_block(fig, title, subtitle, title_size=14.5, subtitle_size=9.8)
 
     # Family legend
-    used = pd.unique(families)
+    used = list(pd.unique(pd.Series(families)))
     handles = [mpatches.Patch(color=FAMILY_PALETTE[f], label=f) for f in used if f in FAMILY_PALETTE]
     ax.legend(handles=handles, title="dominant feature family", loc="lower right")
 
-    plt.subplots_adjust(left=0.075, right=0.985, top=0.88, bottom=0.20)
+    plt.subplots_adjust(left=0.075, right=0.985, top=0.85, bottom=0.20)
     return save_figure(fig, out_dir, stem, formats)
 
 
@@ -875,8 +892,7 @@ def figure_data_coverage_gap(
         "lipid molecules",
     )
 
-    fig.suptitle(title, x=0.05, y=0.97, ha="left", fontsize=14.5, fontweight="bold")
-    fig.text(0.05, 0.925, subtitle, ha="left", fontsize=9.8, color="#555555")
+    set_title_block(fig, title, subtitle, x=0.05, title_size=14.5, subtitle_size=9.8)
     fig.text(
         0.05,
         0.022,
@@ -887,7 +903,7 @@ def figure_data_coverage_gap(
         style="italic",
     )
 
-    plt.subplots_adjust(left=0.06, right=0.985, top=0.80, bottom=0.13, wspace=0.32)
+    plt.subplots_adjust(left=0.06, right=0.985, top=0.78, bottom=0.13, wspace=0.32)
     return save_figure(fig, out_dir, stem, formats)
 
 
@@ -1009,8 +1025,7 @@ def figure_pipeline_schematic(
         color="#5C2E08",
     )
 
-    fig.suptitle(title, x=0.04, y=0.965, ha="left", fontsize=15.5, fontweight="bold")
-    fig.text(0.04, 0.91, subtitle, ha="left", fontsize=10.5, color="#555555")
+    set_title_block(fig, title, subtitle, x=0.04, title_size=15.5)
 
-    plt.subplots_adjust(left=0.0, right=1.0, top=0.86, bottom=0.04)
+    plt.subplots_adjust(left=0.0, right=1.0, top=0.84, bottom=0.04)
     return save_figure(fig, out_dir, stem, formats)

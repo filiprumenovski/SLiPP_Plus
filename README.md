@@ -59,7 +59,7 @@ reports binary F1 `0.906 ± 0.015`, 10-class macro-F1 `0.778 ± 0.017`, and
 AlphaFold `0.623` on the external holdouts. The 0.011 internal lipid5
 macro-F1 sacrifice in `exp-021` buys back ~0.07 apo-PDB and ~0.09
 AlphaFold F1 — a holdout-discipline-aware tradeoff. See
-[`reports/publication/figure_holdout_vs_internal.png`](reports/publication/figure_holdout_vs_internal.png)
+[`figures/figure_holdout_vs_internal.png`](figures/figure_holdout_vs_internal.png)
 for the Pareto-front visualization across all 23 experiments.
 
 ### Comparison to the SLiPP paper baseline
@@ -77,21 +77,21 @@ current supplementary workbooks (vs. the 131 the paper reports).
 
 ### Publication figure set
 
-Six publication-grade figures are rendered to `reports/publication/` in
+Six publication-grade figures are rendered to `figures/` in
 PNG / PDF / SVG:
 
-- [`figure7_plus_feature_landscape`](reports/publication/figure7_plus_feature_landscape.png)
+- [`figure7_plus_feature_landscape`](figures/figure7_plus_feature_landscape.png)
   — direct upgrade over Chou et al. Fig. 7 with the SLiPP++ ten-class
   softmax breaking the lipid bucket open.
-- [`figure_per_class_forest`](reports/publication/figure_per_class_forest.png)
+- [`figure_per_class_forest`](figures/figure_per_class_forest.png)
   — per-class F1 across the experiment ladder.
-- [`figure_holdout_vs_internal`](reports/publication/figure_holdout_vs_internal.png)
+- [`figure_holdout_vs_internal`](figures/figure_holdout_vs_internal.png)
   — Pareto front of internal vs. external evaluation.
-- [`figure_ablation_ladder`](reports/publication/figure_ablation_ladder.png)
+- [`figure_ablation_ladder`](figures/figure_ablation_ladder.png)
   — sequential lipid5 macro-F1 deltas from `paper17` to `exp-021`.
-- [`figure_data_coverage_gap`](reports/publication/figure_data_coverage_gap.png)
+- [`figure_data_coverage_gap`](figures/figure_data_coverage_gap.png)
   — Chou et al. vs. BioDolphin coverage.
-- [`figure_pipeline_schematic`](reports/publication/figure_pipeline_schematic.png)
+- [`figure_pipeline_schematic`](figures/figure_pipeline_schematic.png)
   — six-stage pipeline overview.
 
 Render with: `python tools/build_publication_figures.py`. Pass
@@ -151,13 +151,26 @@ already present in this checkout.
 
 ## Data Contract
 
-The core training table is the paper's curated 5-fold balanced set:
+The core training table is the paper's curated 5-fold balanced set, sourced from the public Dassama-lab SLiPP repository ([`dassamalab/SLiPP_2024`](https://github.com/dassamalab/SLiPP_2024)):
 
 | File | Role |
 |---|---|
 | `reference/SLiPP_2024-main/training_pockets.csv` | 15,219 pockets with paper descriptors, labels, amino-acid counts, and free surface variants |
 | `data/raw/supplementary/ci5c01076_si_003.xlsx` | apo-PDB holdout workbook |
 | `data/raw/supplementary/ci5c01076_si_004.xlsx` | AlphaFold holdout workbook |
+
+First-time setup populates `reference/`:
+
+```bash
+mkdir -p reference
+git clone https://github.com/dassamalab/SLiPP_2024 reference/SLiPP_2024-main
+shasum -a 256 reference/SLiPP_2024-main/training_pockets.csv
+# expected: 4d27636b4381dc3c1b9e27451db5b788e6b16f13919c4ed36f8c2ba108097711
+wc -l reference/SLiPP_2024-main/training_pockets.csv
+# expected: 15220 (header + 15,219 rows enforced by the Rule 1 ingestion gate)
+```
+
+If you already have the upstream repo cloned elsewhere, copy `training_pockets.csv` into `reference/SLiPP_2024-main/` instead. The companion `slipp.py` / `slipp_utils.py` scripts in the upstream repo are the published binary inference pipeline; SLiPP++ is a separate codebase that consumes the same CSV rows for fair comparison. The peer-reviewed version of the work is Chou et al., *J. Chem. Inf. Model.* 2024 ([preprint](https://doi.org/10.1101/2024.01.26.577452)) — Table 1 in that PDF is the source of the `ground_truth` blocks in `configs/*.yaml`.
 
 `make ingest` enforces the Rule 1 gate before training:
 
@@ -310,7 +323,7 @@ uv run ruff check src/slipp_plus/backbone_family_encoder.py src/slipp_plus/compo
 - [`RESEARCH_LOG.md`](RESEARCH_LOG.md): decision history and negative results.
 - [`experiments/registry.yaml`](experiments/registry.yaml): structured experiment registry (machine-readable).
 - [`reports/compact_publishable/summary.md`](reports/compact_publishable/summary.md): compact release-candidate ladder.
-- [`reports/publication/`](reports/publication/): submission-ready figures (PNG / PDF / SVG).
+- [`figures/`](figures/): submission-ready figures (PNG / PDF / SVG).
 - [`docs/api.md`](docs/api.md), [`docs/methods.md`](docs/methods.md): CLI / API reference and methods appendix.
 - [`examples/`](examples/): runnable reviewer examples.
 

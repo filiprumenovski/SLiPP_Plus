@@ -1,6 +1,6 @@
 """Render the SLiPP++ publication figure set.
 
-Five figures, all written to ``reports/publication/`` as PNG + PDF + SVG:
+Six figures, all written to ``figures/`` as PNG + PDF + SVG:
 
 1. ``figure7_plus_feature_landscape`` — the headline four-panel figure
    (feature-family importance, top features, per-class violin, PCA with
@@ -408,7 +408,7 @@ def _real_importance_from_bundle(bundle_path: Path) -> FeatureImportanceData | N
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n", 1)[0] if __doc__ else "")
     parser.add_argument(
-        "--out-dir", type=Path, default=Path("reports/publication"),
+        "--out-dir", type=Path, default=Path("figures"),
         help="Where to write the figure files.",
     )
     parser.add_argument(

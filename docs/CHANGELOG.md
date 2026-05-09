@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Optimization scaffold: multi-objective Optuna NSGA-II + Hyperband HPO driver (`tools/optuna_hpo.py`), CatBoost as a fourth flat-mode base learner, OOF stacked meta-learner module (`src/slipp_plus/stacking.py`), and configuration-layer support for multiple boundary specialists.
 - Per-stage `XGBHyperparameters` / `FlatModelHyperparameters` dataclasses and HPO plumbing through every XGB call site without changing existing experiment results.
-- `src/slipp_plus/publication_figures.py` and `tools/build_publication_figures.py`: a six-figure publication set rendered to `reports/publication/` in PNG / PDF / SVG, including a direct upgrade over Chou et al. 2024 Fig. 7.
+- `src/slipp_plus/publication_figures.py` and `tools/build_publication_figures.py`: a six-figure publication set rendered to `figures/` in PNG / PDF / SVG, including a direct upgrade over Chou et al. 2024 Fig. 7.
 - `BIODOLPHIN_EXTENSION.md`: data-availability finding documenting the 19× PDB coverage gap between Chou et al. 2024 and BioDolphin v1.1, framed as the proposed next-stage extension.
 
 ### Changed
