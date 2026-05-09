@@ -153,6 +153,21 @@ deployable result.
 - Decision: do not promote. The internally highest binary-F1 threshold is too
   conservative externally.
 
+`exp-037-legacy-rescue-maxlegacy-diagnostic` is the strongest holdout-scored
+lead.
+
+- Report: `reports/legacy_rescue_gate_diagnostic_sweep_2026_05_09.md`
+- Sweep rows: `reports/legacy_rescue_gate_diagnostic_sweep.csv`
+- Rerun report: `reports/legacy_rescue_logistic_gate_maxlegacy_t90/metrics.md`
+- Policy: logistic gate, threshold `0.90`, rewrite fired rows to whichever
+  legacy model (`paper17_family_encoder` or `v_sterol`) has higher lipid
+  probability.
+- Result: internal binary F1/AUROC `0.895 +/- 0.015 / 0.988 +/- 0.003`,
+  lipid5 macro-F1 `0.658`, apo-PDB F1/AUROC `0.756 / 0.791`, AlphaFold
+  F1/AUROC `0.807 / 0.829`.
+- Decision: do not promote yet. This beats exp-035 externally, but the rewrite
+  mode and threshold came from a holdout-scored diagnostic sweep.
+
 `exp-005-v_sterol-ensemble` holdouts are now complete from existing artifacts.
 
 - Report: `reports/v_sterol_holdout_completion.md`
@@ -179,11 +194,9 @@ holdout reporting.
 ## Remaining High-Impact Work
 
 1. Try to beat exp-035 without using holdout labels for selection. Best next
-   directions: threshold policy selected from internal prediction features,
-   asymmetric thresholding by domain-risk score, or a small meta-gate that
-   preserves AlphaFold AUROC while recovering more apo-PDB recall. The simple
-   stricter threshold ablation (`exp-036`, threshold `0.99`) did not beat
-   exp-035.
+   direction: make the exp-037 `maxlegacy`/`0.90` recall-heavy policy
+   selectable from internal-only evidence. The simple stricter threshold
+   ablation (`exp-036`, threshold `0.99`) did not beat exp-035.
 2. Prioritize domain-shift fixes that can be learned without tuning on holdout
    labels. The holdout threshold diagnostic showed lower deployable thresholds
    would help externally, but internal threshold selection did not reproduce

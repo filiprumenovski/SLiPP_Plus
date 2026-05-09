@@ -77,3 +77,22 @@ def test_apply_rescue_gate_does_not_rewrite_base_positive_rows() -> None:
     assert out["legacy_rescue_gate_fired"].item() is False
     assert out["p_PP"].item() == pytest.approx(0.4)
     assert out["p_STE"].item() == pytest.approx(0.6)
+
+
+def test_apply_rescue_gate_can_use_max_lipid_legacy_rewrite() -> None:
+    base = _frame(pp=0.8, ste=0.2)
+    paper17 = _frame(pp=0.6, ste=0.4)
+    v_sterol = _frame(pp=0.3, ste=0.7)
+
+    out = apply_rescue_gate(
+        base,
+        paper17,
+        v_sterol,
+        np.array([0.96]),
+        threshold=0.95,
+        rewrite_mode="maxlegacy",
+    )
+
+    assert out["legacy_rescue_gate_fired"].item() is True
+    assert out["p_PP"].item() == pytest.approx(0.3)
+    assert out["p_STE"].item() == pytest.approx(0.7)

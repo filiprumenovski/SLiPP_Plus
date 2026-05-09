@@ -82,6 +82,12 @@ internally highest binary-F1 threshold (`0.99`). It improves over exp-028 but
 does not beat exp-035: apo-PDB F1 falls to `0.727` and AlphaFold F1 falls to
 `0.752`.
 
+Best holdout-scored diagnostic: `exp-037-legacy-rescue-maxlegacy-diagnostic`
+uses a recall-heavy `maxlegacy` rewrite at threshold `0.90`. It reaches
+apo-PDB F1 `0.756` and AlphaFold F1 `0.807`, beating exp-035 externally, but
+is not deployable because the rewrite/threshold were found by a holdout-scored
+sweep. The next ablation should make this selection internal-only.
+
 Holdout-label audit: `exp-034-holdout-label-source-audit` found a row-order
 trap, not a semantic label conflict. Root holdout files and component-specific
 holdout feature files have the same identities but different row order; labels

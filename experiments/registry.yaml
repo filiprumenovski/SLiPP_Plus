@@ -1189,3 +1189,41 @@
     0.901 +/- 0.017 and still beats exp-028 on both holdout F1 scores. It does
     not beat exp-035: apo-PDB F1 falls to 0.727 and AlphaFold F1 falls to
     0.752. The extra internal conservatism costs too much external recall.
+
+- id: exp-037-legacy-rescue-maxlegacy-diagnostic
+  date: "2026-05-09"
+  feature_set: exp-028 + paper17_family_encoder + v_sterol probabilities
+  config: scripts/legacy_rescue_gate.py
+  models: [family_encoder, logistic_gate]
+  postprocessing: "diagnostic_holdout_scored_maxlegacy_rewrite(threshold=0.90)"
+  status: complete
+  is_current_best: false
+  metrics:
+    binary_f1: "0.895 ± 0.015"
+    binary_auroc: "0.988 ± 0.003"
+    macro_f1_10: "0.762 ± 0.019"
+    lipid_macro_f1: "0.658"
+  holdouts:
+    apo_pdb_f1: 0.756
+    apo_pdb_auroc: 0.791
+    alphafold_f1: 0.807
+    alphafold_auroc: 0.829
+  supersedes: null
+  artifacts:
+    report: reports/legacy_rescue_gate_diagnostic_sweep_2026_05_09.md
+    sweep: reports/legacy_rescue_gate_diagnostic_sweep.csv
+    metrics_report: reports/legacy_rescue_logistic_gate_maxlegacy_t90/metrics.md
+    threshold_sweep: reports/legacy_rescue_logistic_gate_maxlegacy_t90/threshold_sweep.csv
+    raw_metrics: reports/legacy_rescue_logistic_gate_maxlegacy_t90/raw_metrics.parquet
+    predictions: processed/legacy_rescue_logistic_gate_maxlegacy_t90/predictions/test_predictions.parquet
+    apo_pdb_predictions: processed/legacy_rescue_logistic_gate_maxlegacy_t90/predictions/apo_pdb_predictions.parquet
+    alphafold_predictions: processed/legacy_rescue_logistic_gate_maxlegacy_t90/predictions/alphafold_predictions.parquet
+  notes: >
+    HOLDOUT-POSITIVE DIAGNOSTIC. A narrow diagnostic sweep over gate feature
+    sets, logistic C, rewrite modes, and thresholds found a recall-heavy
+    maxlegacy rewrite at threshold 0.90. It beats exp-035 on both external F1
+    scores, reaching apo-PDB F1/AUROC 0.756 / 0.791 and AlphaFold F1/AUROC
+    0.807 / 0.829, but lowers internal binary F1 to 0.895 and lipid5 macro-F1
+    to 0.658. Do not promote: rewrite mode and threshold were selected by a
+    holdout-scored diagnostic sweep. Next step is an internal-only selection
+    rule that can justify a similar recall-heavy policy.

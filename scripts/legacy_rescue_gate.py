@@ -36,6 +36,7 @@ DEFAULT_BASE_HOLDOUT_DIR = Path(
 DEFAULT_PAPER17_DIR = Path("processed/paper17_family_encoder/predictions")
 DEFAULT_V_STEROL_DIR = Path("processed/v_sterol/predictions")
 DEFAULT_MODEL_NAME = "legacy_rescue_logistic_gate"
+REWRITE_MODES = ("mean", "maxlegacy", "paper17", "vsterol")
 
 
 def _load_test_predictions(path: Path) -> pd.DataFrame:
@@ -146,22 +147,41 @@ def apply_rescue_gate(
     *,
     threshold: float,
     model_name: str = DEFAULT_MODEL_NAME,
+    rewrite_mode: str = "mean",
 ) -> pd.DataFrame:
-    """Rewrite high-confidence base-negative rows to mean legacy probabilities."""
+    """Rewrite high-confidence base-negative rows to legacy probabilities."""
 
     out = base.copy()
     candidates = _lipid_probability(base) < 0.5
     fired = candidates & (gate_scores >= threshold)
-    replacement = (
-        paper17[PROBA_COLUMNS].to_numpy(dtype=float)
-        + v_sterol[PROBA_COLUMNS].to_numpy(dtype=float)
-    ) / 2.0
+    replacement = _replacement_probabilities(paper17, v_sterol, rewrite_mode=rewrite_mode)
     out.loc[fired, PROBA_COLUMNS] = replacement[fired]
     out["y_pred_int"] = out[PROBA_COLUMNS].to_numpy(dtype=float).argmax(axis=1)
     out["model"] = model_name
     out["legacy_rescue_gate_score"] = gate_scores
     out["legacy_rescue_gate_fired"] = fired
     return out
+
+
+def _replacement_probabilities(
+    paper17: pd.DataFrame,
+    v_sterol: pd.DataFrame,
+    *,
+    rewrite_mode: str,
+) -> np.ndarray:
+    paper17_proba = paper17[PROBA_COLUMNS].to_numpy(dtype=float)
+    v_sterol_proba = v_sterol[PROBA_COLUMNS].to_numpy(dtype=float)
+    if rewrite_mode == "mean":
+        return (paper17_proba + v_sterol_proba) / 2.0
+    if rewrite_mode == "paper17":
+        return paper17_proba
+    if rewrite_mode == "vsterol":
+        return v_sterol_proba
+    if rewrite_mode == "maxlegacy":
+        paper17_lipid = paper17_proba[:, LIPID_INDICES].sum(axis=1)
+        v_sterol_lipid = v_sterol_proba[:, LIPID_INDICES].sum(axis=1)
+        return np.where((paper17_lipid >= v_sterol_lipid)[:, None], paper17_proba, v_sterol_proba)
+    raise ValueError(f"unknown rewrite_mode {rewrite_mode!r}; expected one of {REWRITE_MODES}")
 
 
 def _score_thresholds(
@@ -171,6 +191,7 @@ def _score_thresholds(
     scores: np.ndarray,
     thresholds: list[float],
     model_name: str,
+    rewrite_mode: str,
 ) -> pd.DataFrame:
     rows = []
     for threshold in thresholds:
@@ -181,6 +202,7 @@ def _score_thresholds(
             scores,
             threshold=threshold,
             model_name=model_name,
+            rewrite_mode=rewrite_mode,
         )
         summary = _aggregate(evaluate_test_predictions(predictions), ["model"]).iloc[0]
         rows.append(
@@ -207,6 +229,7 @@ def _evaluate_holdout(
     model: LogisticRegression,
     threshold: float,
     model_name: str,
+    rewrite_mode: str,
     output_predictions_dir: Path,
 ) -> tuple[dict[str, float], Path]:
     base = _load_holdout_predictions(base_holdout_dir / f"{holdout_name}_predictions.parquet")
@@ -225,6 +248,7 @@ def _evaluate_holdout(
         scores,
         threshold=threshold,
         model_name=model_name,
+        rewrite_mode=rewrite_mode,
     )
     predictions_path = output_predictions_dir / f"{holdout_name}_predictions.parquet"
     predictions.to_parquet(predictions_path, index=False)
@@ -243,6 +267,7 @@ def _write_report(
     path: Path,
     *,
     threshold: float,
+    rewrite_mode: str,
     summary: pd.Series,
     holdouts: dict[str, dict[str, float]],
     threshold_sweep: pd.DataFrame,
@@ -254,10 +279,10 @@ def _write_report(
         "# Legacy Rescue Logistic Gate, 2026-05-09\n\n"
         "Holdout-safe logistic gate trained on internal split prediction features only. "
         "The gate scores rows where the deployable exp-028 ensemble is below the "
-        "binary lipid threshold; fired rows are rewritten to the mean "
-        "`paper17_family_encoder` and `v_sterol` class probabilities.\n\n"
+        "binary lipid threshold.\n\n"
         "Selected threshold: "
         f"`{threshold:.2f}`\n\n"
+        f"Rewrite mode: `{rewrite_mode}`\n\n"
         "| metric | value |\n|---|---:|\n"
         f"| internal binary F1 | {summary['binary_f1_mean']:.3f} +/- {summary['binary_f1_std']:.3f} |\n"
         f"| internal AUROC | {summary['binary_auroc_mean']:.3f} +/- {summary['binary_auroc_std']:.3f} |\n"
@@ -290,6 +315,7 @@ def run_legacy_rescue_gate(
     output_report_dir: Path = Path("reports/legacy_rescue_logistic_gate"),
     threshold: float = 0.95,
     model_name: str = DEFAULT_MODEL_NAME,
+    rewrite_mode: str = "mean",
 ) -> dict[str, Path]:
     """Run the complete legacy rescue gate ablation."""
 
@@ -307,6 +333,7 @@ def run_legacy_rescue_gate(
         lio_scores,
         threshold=threshold,
         model_name=model_name,
+        rewrite_mode=rewrite_mode,
     )
     predictions_path = output_predictions_dir / "test_predictions.parquet"
     predictions.to_parquet(predictions_path, index=False)
@@ -324,6 +351,7 @@ def run_legacy_rescue_gate(
         lio_scores,
         thresholds,
         model_name,
+        rewrite_mode,
     )
     threshold_sweep_path = output_report_dir / "threshold_sweep.csv"
     threshold_sweep.to_csv(threshold_sweep_path, index=False)
@@ -342,6 +370,7 @@ def run_legacy_rescue_gate(
             model=final_model,
             threshold=threshold,
             model_name=model_name,
+            rewrite_mode=rewrite_mode,
             output_predictions_dir=output_predictions_dir,
         )
 
@@ -349,6 +378,7 @@ def run_legacy_rescue_gate(
     _write_report(
         report_path,
         threshold=threshold,
+        rewrite_mode=rewrite_mode,
         summary=summary,
         holdouts=holdouts,
         threshold_sweep=threshold_sweep,
@@ -366,6 +396,7 @@ def run_legacy_rescue_gate(
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--threshold", type=float, default=0.95)
+    parser.add_argument("--rewrite-mode", choices=REWRITE_MODES, default="mean")
     parser.add_argument("--base-test-path", type=Path, default=DEFAULT_BASE_TEST)
     parser.add_argument("--base-holdout-dir", type=Path, default=DEFAULT_BASE_HOLDOUT_DIR)
     parser.add_argument("--paper17-dir", type=Path, default=DEFAULT_PAPER17_DIR)
@@ -396,6 +427,7 @@ def main() -> None:
         output_report_dir=args.output_report_dir,
         threshold=args.threshold,
         model_name=args.model_name,
+        rewrite_mode=args.rewrite_mode,
     )
     for label, path in outputs.items():
         print(f"{label}: {path}")
