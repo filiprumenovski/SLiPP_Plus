@@ -10,7 +10,8 @@ scientific evidence in this project.
 ## Current State
 
 - Branch: `main`
-- Latest pushed commit at time of writing: `933312e experiments: record five-way compact ensemble`
+- Latest pushed experiment commit at time of writing: `933312e experiments: record five-way compact ensemble`
+- Latest handoff refresh: this file's commit.
 - Worktree was clean when this file was written.
 - Current internal leader: `exp-019-compact-five-way-shape-chem-ensemble`
 - Current internal best command: `uv run python scripts/compact_probability_ensemble.py`
