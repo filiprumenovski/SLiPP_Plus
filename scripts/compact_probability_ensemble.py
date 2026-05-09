@@ -17,12 +17,14 @@ from slipp_plus.evaluate import (
 
 PROBA_COLUMNS = [f"p_{label}" for label in CLASS_10]
 DEFAULT_COMPONENT_DIRS = [
-    Path("processed/v49_tunnel_shape3"),
     Path("processed/v49_tunnel_shape"),
-    Path("processed/v49_shell6_tunnel_shape"),
+    Path("processed/v49_shell6_tunnel_shape3"),
+    Path("processed/v49_tunnel_shape_hydro4"),
+    Path("processed/v49_tunnel_geom"),
+    Path("processed/v49_tunnel_chem"),
 ]
-DEFAULT_MODEL_NAME = "shape3_shape6_shell6_mean"
-DEFAULT_REPORT_TITLE = "Compact shape3/shape6/shell6 probability ensemble"
+DEFAULT_MODEL_NAME = "shape6_shell6shape3_hydro4_geom_chem_mean"
+DEFAULT_REPORT_TITLE = "Compact five-way shape/chem probability ensemble"
 
 
 def _prediction_path(component_dir: Path) -> Path:
@@ -147,7 +149,7 @@ def main() -> None:
         default=None,
         help=(
             "Component processed directory. Repeat to override the default "
-            "shape3/shape6/shell6 ensemble."
+            "five-way shape/chem ensemble."
         ),
     )
     parser.add_argument("--model-name", default=DEFAULT_MODEL_NAME)
@@ -155,12 +157,12 @@ def main() -> None:
     parser.add_argument(
         "--output-predictions-dir",
         type=Path,
-        default=Path("processed/compact_shape3_shape6_shell6_ensemble/predictions"),
+        default=Path("processed/compact_shape6_shell6shape3_hydro4_geom_chem_ensemble/predictions"),
     )
     parser.add_argument(
         "--output-report-dir",
         type=Path,
-        default=Path("reports/compact_shape3_shape6_shell6_ensemble"),
+        default=Path("reports/compact_shape6_shell6shape3_hydro4_geom_chem_ensemble"),
     )
     args = parser.parse_args()
     outputs = run_compact_probability_ensemble(

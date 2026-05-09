@@ -64,6 +64,14 @@ COMPACT_RUNS: tuple[CompactRun, ...] = (
         model="shape3_shape6_shell6_mean",
         artifact="431K+431K+433K",
     ),
+    CompactRun(
+        "compact_shape6_shell6shape3_hydro4_geom_chem_ensemble",
+        "shape6+shell6shape3+hydro4+geom+chem mean ensemble",
+        "49/54/55/58",
+        49,
+        model="shape6_shell6shape3_hydro4_geom_chem_mean",
+        artifact="431K+433K+433K+434K+433K",
+    ),
 )
 
 
@@ -154,6 +162,9 @@ def _render_summary(ladder: pl.DataFrame) -> str:
     tunnel_geom = _row_by_label(ladder, "v49+tunnel_geom")
     shape3_shape6 = _row_by_label(ladder, "shape3+shape6 mean ensemble")
     shape3_shape6_shell6 = _row_by_label(ladder, "shape3+shape6+shell6 mean ensemble")
+    shape6_five_way = _row_by_label(
+        ladder, "shape6+shell6shape3+hydro4+geom+chem mean ensemble"
+    )
     paper17_aa20 = _row_by_label(ladder, "paper17+aa20")
     paper17_aa20_tunnel_shape = _row_by_label(ladder, "paper17+aa20+tunnel_shape")
     paper17_shell12 = _row_by_label(ladder, "paper17+shell12")
@@ -240,6 +251,7 @@ def _render_summary(ladder: pl.DataFrame) -> str:
             tunnel_geom=tunnel_geom,
             shape3_shape6=shape3_shape6,
             shape3_shape6_shell6=shape3_shape6_shell6,
+            shape6_five_way=shape6_five_way,
             tunnel_moe=tunnel_moe,
         )
     )
@@ -259,7 +271,7 @@ def _render_summary(ladder: pl.DataFrame) -> str:
             (
                 "Decision rule: keep the smallest stack whose lipid5 macro-F1 is within "
                 "0.01-0.015 of the best observed model and does not degrade STE. Under "
-                "current results, the shape3/shape6/shell6 probability ensemble is the "
+                "current results, the five-way shape/chem probability ensemble is the "
                 "internal leader, `v49+tunnel_shape3` is the best single compact model, "
                 "`v49+tunnel_shape` is the more balanced compact holdout candidate, and "
                 "`v49` is the stricter parsimony fallback."
@@ -292,6 +304,7 @@ def _ablation_delta_lines(
     tunnel_geom: dict[str, object] | None,
     shape3_shape6: dict[str, object] | None,
     shape3_shape6_shell6: dict[str, object] | None,
+    shape6_five_way: dict[str, object] | None,
     tunnel_moe: dict[str, object] | None,
 ) -> list[str]:
     comparisons = [
@@ -341,6 +354,12 @@ def _ablation_delta_lines(
             shape3_shape6,
             "`shape3+shape6+shell6 mean ensemble` vs `shape3+shape6 mean ensemble`",
             "new internal leader; improves lipid macro and apo-PDB but lowers binary F1 and AlphaFold F1 slightly",
+        ),
+        (
+            shape6_five_way,
+            shape3_shape6_shell6,
+            "`shape6+shell6shape3+hydro4+geom+chem mean ensemble` vs `shape3+shape6+shell6 mean ensemble`",
+            "new internal leader; negative individual variants become complementary, but holdouts regress",
         ),
         (
             tunnel_geom,

@@ -4,14 +4,15 @@ Date: 2026-05-08
 
 ## Current answer
 
-The current internal leader is `compact_shape3_shape6_shell6_ensemble`: 49/52/55 features, 431K+431K+433K artifact, lipid5 macro-F1 0.678 +/- 0.028.
+The current internal leader is `compact_shape6_shell6shape3_hydro4_geom_chem_ensemble`: 49/54/55/58 features, 431K+433K+433K+434K+433K artifact, lipid5 macro-F1 0.684 +/- 0.030.
 
-It matches the 105-feature tunnel MoE within split noise while using 49/52/55 instead of 105 features and 431K+431K+433K instead of 1339K.
+It matches the 105-feature tunnel MoE within split noise while using 49/54/55/58 instead of 105 features and 431K+433K+433K+434K+433K instead of 1339K.
 
 ## Internal 25-split Comparison
 
 | stack | features | artifact | lipid5 macro-F1 | macro10 F1 | binary F1 | CLR | MYR | OLA | PLM | STE |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| `shape6+shell6shape3+hydro4+geom+chem mean ensemble` | 49/54/55/58 | 431K+433K+433K+434K+433K | 0.684 +/- 0.030 | 0.778 +/- 0.017 | 0.906 +/- 0.015 | 0.773 | 0.714 | 0.631 | 0.655 | 0.645 |
 | `shape3+shape6+shell6 mean ensemble` | 49/52/55 | 431K+431K+433K | 0.678 +/- 0.028 | 0.776 +/- 0.015 | 0.903 +/- 0.017 | 0.766 | 0.705 | 0.621 | 0.650 | 0.649 |
 | `shape3+shape6 mean ensemble` | 52/55 | 431K+433K | 0.676 +/- 0.032 | 0.775 +/- 0.017 | 0.904 +/- 0.015 | 0.759 | 0.702 | 0.620 | 0.652 | 0.646 |
 | `v49+tunnel_shape3` | 52 | 432K | 0.668 +/- 0.031 | 0.768 +/- 0.018 | 0.900 +/- 0.015 | 0.747 | 0.700 | 0.610 | 0.642 | 0.638 |
@@ -45,6 +46,7 @@ It matches the 105-feature tunnel MoE within split noise while using 49/52/55 in
 | `v49+shell6+tunnel_shape` vs `v49+tunnel_shape` | +0.000 | ties internally but improves both holdouts |
 | `shape3+shape6 mean ensemble` vs `v49+tunnel_shape3` | +0.008 | confirms complementary compact errors |
 | `shape3+shape6+shell6 mean ensemble` vs `shape3+shape6 mean ensemble` | +0.002 | new internal leader; improves lipid macro and apo-PDB but lowers binary F1 and AlphaFold F1 slightly |
+| `shape6+shell6shape3+hydro4+geom+chem mean ensemble` vs `shape3+shape6+shell6 mean ensemble` | +0.005 | new internal leader; negative individual variants become complementary, but holdouts regress |
 | `v49+tunnel_geom` vs `v49` | +0.016 | ties shape within noise with more columns |
 | `v_tunnel+moe` vs `v49+tunnel_shape` | -0.001 | high-complexity reference does not improve the compact leader |
 
@@ -52,4 +54,4 @@ It matches the 105-feature tunnel MoE within split noise while using 49/52/55 in
 
 The main recovery comes from AA20, not shell12 alone: `paper17+shell12` is 0.567, `paper17+aa20` is 0.645, and `v49` is 0.649.
 
-Decision rule: keep the smallest stack whose lipid5 macro-F1 is within 0.01-0.015 of the best observed model and does not degrade STE. Under current results, the shape3/shape6/shell6 probability ensemble is the internal leader, `v49+tunnel_shape3` is the best single compact model, `v49+tunnel_shape` is the more balanced compact holdout candidate, and `v49` is the stricter parsimony fallback.
+Decision rule: keep the smallest stack whose lipid5 macro-F1 is within 0.01-0.015 of the best observed model and does not degrade STE. Under current results, the five-way shape/chem probability ensemble is the internal leader, `v49+tunnel_shape3` is the best single compact model, `v49+tunnel_shape` is the more balanced compact holdout candidate, and `v49` is the stricter parsimony fallback.

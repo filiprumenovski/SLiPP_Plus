@@ -575,7 +575,7 @@
   models: [family_encoder, family_encoder, family_encoder]
   postprocessing: "mean_probability_ensemble(exp-014, exp-012, exp-013)"
   status: complete
-  is_current_best: true
+  is_current_best: false
   metrics:
     binary_f1: "0.903 ± 0.017"
     binary_auroc: "0.989 ± 0.003"
@@ -605,3 +605,42 @@
     exp-014), raises macro10 to 0.776, and improves apo-PDB F1 to 0.712 while
     AlphaFold F1 is slightly lower than exp-017. This is still an internal
     validation leader, not a solved external-generalization answer.
+
+- id: exp-019-compact-five-way-shape-chem-ensemble
+  date: "2026-05-08"
+  feature_set: v49+tunnel_shape + v14+aa20+shell6+tunnel_shape3 + v49+tunnel_shape_hydro4 + v49+tunnel_geom + v49+tunnel_chem
+  config: scripts/compact_probability_ensemble.py
+  models: [family_encoder, family_encoder, family_encoder, family_encoder, family_encoder]
+  postprocessing: "mean_probability_ensemble(exp-012, exp-015, exp-016, tunnel_geom, tunnel_chem)"
+  status: complete
+  is_current_best: true
+  metrics:
+    binary_f1: "0.906 ± 0.015"
+    binary_auroc: "0.989 ± 0.003"
+    macro_f1_10: "0.778 ± 0.017"
+    lipid_macro_f1: "0.684 ± 0.030"
+    clr_f1: "0.773"
+    myr_f1: "0.714"
+    ola_f1: "0.631"
+    plm_f1: "0.655"
+    ste_f1: "0.645"
+  holdouts:
+    apo_pdb_f1: 0.649
+    apo_pdb_auroc: 0.797
+    alphafold_f1: 0.623
+    alphafold_auroc: 0.863
+  supersedes: exp-018-compact-shape3-shape6-shell6-ensemble
+  artifacts:
+    predictions: processed/compact_shape6_shell6shape3_hydro4_geom_chem_ensemble/predictions/test_predictions.parquet
+    apo_predictions: processed/compact_shape6_shell6shape3_hydro4_geom_chem_ensemble/predictions/apo_pdb_predictions.parquet
+    alphafold_predictions: processed/compact_shape6_shell6shape3_hydro4_geom_chem_ensemble/predictions/alphafold_predictions.parquet
+    report: reports/compact_shape6_shell6shape3_hydro4_geom_chem_ensemble/metrics.md
+    metrics: reports/compact_shape6_shell6shape3_hydro4_geom_chem_ensemble/raw_metrics.parquet
+  notes: >
+    NEW INTERNAL LEADER, HOLDOUT-REGRESSIVE. A cheap probability-ensemble
+    search over existing compact prediction artifacts found a five-way
+    shape/chem blend that raises lipid5 macro-F1 to 0.684 (+0.006 over exp-018),
+    macro10 to 0.778, and binary F1 to 0.906. The same blend regresses both
+    holdout F1s relative to exp-018, so it is an internal-validation ablation
+    leader rather than a release-candidate replacement without further holdout
+    analysis.
