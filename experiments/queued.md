@@ -40,6 +40,14 @@ Generated from the registry after `reports/ablation_matrix.md` was created.
 These handoff items require long model runs or additional implementation and should not be run inline without long-run approval:
 
 1. STE class-imbalance handling: baseline vs class-weighted comparison for STE.
-2. Ensemble vs best single model: confirm ensemble macro-F1 lift over the best single model by at least 1 standard deviation.
-3. Tiebreaker on/off: quantify per-class lift from the PLM/STE or current boundary-head tiebreaker stack.
-4. CAVER/tunnel marginal value: compare the current compact leader against the appropriate no-tunnel baseline using matched split protocol.
+2. Tiebreaker on/off: quantify per-class lift from the PLM/STE or current boundary-head tiebreaker stack.
+3. CAVER/tunnel marginal value: compare the current compact leader against the appropriate no-tunnel baseline using matched split protocol.
+
+## Closed From Existing Artifacts
+
+1. Ensemble vs best single model (`handoff.md` 8.4)
+   - Report: `reports/ensemble_ablation.md`
+   - Result: weak positive but below the requested >=1 std bar. RF+XGB+LGBM
+     mean-probability ensembles improve lipid macro-F1 on every checked flat
+     stack (`+0.006` to `+0.012`), but none by at least one standard deviation.
+   - No new model training was run; this used persisted prediction artifacts.

@@ -101,6 +101,14 @@ Focused verification runs during these ticks:
 - `uv run ruff format --check .`: passed after the format sweep.
 - `uv run mypy src/slipp_plus/run_metadata.py`: passed.
 
+The ensemble-vs-single ablation was closed from existing artifacts:
+
+- `reports/ensemble_ablation.md`
+- Result: weak positive but below the handoff 8.4 success bar. RF+XGB+LGBM
+  mean-probability ensembles improve lipid macro-F1 by `+0.006` to `+0.012`
+  over the best single learner across checked flat stacks, but none by at least
+  one standard deviation.
+
 ## Remaining Work
 
 ### 1. Highest-impact non-docstring work
@@ -118,6 +126,9 @@ shit, start high impact work." Prefer these before returning to item 6.3:
    - If long-run mode is not authorized, do not run it inline; record exact
      command and expected artifacts instead.
 3. Long-run ablation closure.
+   - `handoff.md` 8.4 is closed in `reports/ensemble_ablation.md`.
+   - Still open: STE imbalance handling, tiebreaker on/off, and CAVER/tunnel
+     marginal value.
    - See `experiments/queued.md`; these are intentionally queued because they
      need longer model runs or missing holdout implementation.
 4. CI state.
