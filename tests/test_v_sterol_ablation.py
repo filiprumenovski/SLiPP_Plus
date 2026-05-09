@@ -5,7 +5,7 @@ from pathlib import Path
 import pandas as pd
 
 from slipp_plus.constants import FEATURE_SETS
-from slipp_plus.v_sterol_ablation import build_v_sterol_ablation_from_v_sterol
+from slipp_plus.experiments.v_sterol_ablation import build_v_sterol_ablation_from_v_sterol
 
 
 def _training_frame() -> pd.DataFrame:

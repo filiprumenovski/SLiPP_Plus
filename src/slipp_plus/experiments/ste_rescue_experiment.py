@@ -18,16 +18,16 @@ import pandas as pd
 import polars as pl
 from xgboost import XGBClassifier
 
-from .boundary_head import (
+from ..boundary_head import (
     NeighborRescueRule,
     apply_neighbor_rescue_head,
     build_boundary_training,
     gain_importance,
     train_boundary_head,
 )
-from .constants import CLASS_10
-from .ensemble import PROBA_COLUMNS, average_softprobs, load_predictions, score_summary
-from .splits import load_split
+from ..constants import CLASS_10
+from ..ensemble import PROBA_COLUMNS, average_softprobs, load_predictions, score_summary
+from ..splits import load_split
 
 STE_LABEL = "STE"
 NEIGHBOR_LABELS: tuple[str, ...] = ("PLM", "COA", "OLA", "MYR")

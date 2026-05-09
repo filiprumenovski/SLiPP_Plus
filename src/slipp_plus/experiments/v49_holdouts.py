@@ -14,10 +14,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from .constants import AA20, AROMATIC_ALIPHATIC_12, SELECTED_17
-from .ingest import _read_holdout_xlsx
-from .schemas import validate_holdout
-from .v49 import (
+from ..constants import AA20, AROMATIC_ALIPHATIC_12, SELECTED_17
+from ..ingest import _read_holdout_xlsx
+from ..schemas import validate_holdout
+from ..v49 import (
     _descriptor_cost_matrix,
     _extract_pocket_aa_and_shell_features,
     _parse_info_file,

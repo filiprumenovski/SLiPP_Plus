@@ -5,7 +5,7 @@ import polars as pl
 
 from slipp_plus.constants import CLASS_10
 from slipp_plus.ensemble import PROBA_COLUMNS
-from slipp_plus.pair_tiebreaker_experiment import apply_pair_tiebreaker
+from slipp_plus.experiments.pair_tiebreaker_experiment import apply_pair_tiebreaker
 
 
 def _base_frame() -> pl.DataFrame:

@@ -7,7 +7,7 @@ import pytest
 
 from slipp_plus.constants import CLASS_10
 from slipp_plus.ensemble import PROBA_COLUMNS
-from slipp_plus.plm_ste_holdout import (
+from slipp_plus.experiments.plm_ste_holdout import (
     binary_metrics_from_probabilities,
     ensemble_holdout_frame,
     pair_confusion_metrics,

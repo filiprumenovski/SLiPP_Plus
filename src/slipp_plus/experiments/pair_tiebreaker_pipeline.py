@@ -10,15 +10,15 @@ import numpy as np
 import pandas as pd
 import polars as pl
 
-from .boundary_head import (
+from ..boundary_head import (
     BoundaryRule,
     apply_boundary_head,
     build_boundary_training,
     gain_importance,
     train_boundary_head,
 )
-from .ensemble import average_softprobs, load_predictions
-from .splits import load_split
+from ..ensemble import average_softprobs, load_predictions
+from ..splits import load_split
 
 
 def _rule_with_margin(rule: BoundaryRule, margin: float) -> BoundaryRule:

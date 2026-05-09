@@ -21,16 +21,16 @@ import numpy as np
 import pandas as pd
 import polars as pl
 
-from .artifact_schema import validate_feature_schema_metadata
-from .boundary_head import (
+from ..artifact_schema import validate_feature_schema_metadata
+from ..boundary_head import (
     BoundaryRule,
     apply_boundary_head,
     build_boundary_training,
     train_boundary_head,
 )
-from .config import Settings, load_settings
-from .constants import CLASS_10, LIG_TO_CLASS
-from .ensemble import DEFAULT_MODELS, LIPID_IDX, PROBA_COLUMNS
+from ..config import Settings, load_settings
+from ..constants import CLASS_10, LIG_TO_CLASS
+from ..ensemble import DEFAULT_MODELS, LIPID_IDX, PROBA_COLUMNS
 from .plm_ste_tiebreaker import PLM_STE_RULE
 
 PLM = "PLM"

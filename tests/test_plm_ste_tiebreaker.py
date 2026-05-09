@@ -1,4 +1,4 @@
-"""Tests for slipp_plus.plm_ste_tiebreaker.
+"""Tests for slipp_plus.experiments.plm_ste_tiebreaker.
 
 These tests deliberately avoid depending on the not-yet-materialized
 ``processed/v_plm_ste/...`` outputs. They instead exercise:
@@ -20,7 +20,7 @@ import pytest
 
 from slipp_plus.constants import CLASS_10, FEATURE_SETS
 from slipp_plus.ensemble import PROBA_COLUMNS
-from slipp_plus.plm_ste_tiebreaker import (
+from slipp_plus.experiments.plm_ste_tiebreaker import (
     PLM_IDX,
     STE_IDX,
     apply_tiebreaker,

@@ -14,8 +14,8 @@ from pathlib import Path
 import numpy as np
 import polars as pl
 
-from .aromatic_aliphatic import _compute_centroid
-from .v49 import POCKET_HEADER
+from ..aromatic_aliphatic import _compute_centroid
+from ..v49 import POCKET_HEADER
 
 LOGGER = logging.getLogger(__name__)
 

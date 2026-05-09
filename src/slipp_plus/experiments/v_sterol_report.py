@@ -18,7 +18,7 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import confusion_matrix, f1_score, roc_auc_score
 
-from .constants import CLASS_10, LIPID_CODES
+from ..constants import CLASS_10, LIPID_CODES
 
 LIPID_IDX = np.array([i for i, c in enumerate(CLASS_10) if c in LIPID_CODES])
 
