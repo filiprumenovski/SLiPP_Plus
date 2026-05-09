@@ -237,15 +237,12 @@ def test_composite_phase_a_translates_topology_to_hierarchical_settings() -> Non
 
     assert translated.pipeline_mode == "hierarchical"
     assert translated.hierarchical.specialist_gate == "utility"
-    assert translated.hierarchical.specialist_rule is not None
-    assert translated.hierarchical.specialist_rule.name == "ste_neighbors_expert"
-    assert translated.hierarchical.specialist_rule.positive_label == "STE"
-    assert translated.hierarchical.specialist_rule.neighbor_labels == (
-        "PLM",
-        "COA",
-        "OLA",
-        "MYR",
-    )
+    # Phase A now uses the multi-specialist field even for a single expert.
+    rules = translated.hierarchical.specialist_rules
+    assert rules is not None and len(rules) == 1
+    assert rules[0].name == "ste_neighbors_expert"
+    assert rules[0].positive_label == "STE"
+    assert rules[0].neighbor_labels == ("PLM", "COA", "OLA", "MYR")
     assert translated.hierarchical.boundary_heads[0].name == "ola_plm_expert"
     assert translated.hierarchical.boundary_heads[0].positive_label == "OLA"
 

@@ -43,22 +43,36 @@ def _phase_a_hierarchical_settings(settings: Settings) -> Settings:
     hierarchy = raw.setdefault("hierarchical", {})
 
     one_vs_neighbors = [expert for expert in topology.experts if expert.kind == "one_vs_neighbors"]
-    if len(one_vs_neighbors) > 1:
-        raise NotImplementedError(
-            "composite Phase A supports one one_vs_neighbors expert; got "
-            f"{[expert.name for expert in one_vs_neighbors]}"
-        )
     if one_vs_neighbors:
-        expert = one_vs_neighbors[0]
-        hierarchy["specialist_gate"] = expert.gate
-        hierarchy["specialist_feature_set"] = expert.feature_set
-        hierarchy["specialist_rule"] = {
-            "name": expert.name,
-            "positive_label": expert.labels[0],
-            "neighbor_labels": list(expert.labels[1:]),
-            "top_k": expert.max_rank or len(expert.labels),
-            "min_positive_proba": settings.hierarchical.ste_threshold,
-        }
+        # Multi-specialist support: declaration order is preserved so that rule
+        # priority (e.g. STE first) is deterministic. Phase A previously
+        # supported only one specialist; the constraint is now lifted because
+        # OLA / PLM rescues stack on top of STE.
+        gate_modes = {expert.gate for expert in one_vs_neighbors}
+        feature_sets = {expert.feature_set for expert in one_vs_neighbors}
+        if len(gate_modes) > 1:
+            raise NotImplementedError(
+                "composite Phase A requires a single specialist gate mode across "
+                f"experts; got {sorted(str(g) for g in gate_modes)}"
+            )
+        if len(feature_sets) > 1:
+            raise NotImplementedError(
+                "composite Phase A requires a single specialist feature_set across "
+                f"experts; got {sorted(str(s) for s in feature_sets)}"
+            )
+        hierarchy["specialist_gate"] = next(iter(gate_modes))
+        hierarchy["specialist_feature_set"] = next(iter(feature_sets))
+        hierarchy["specialist_rules"] = [
+            {
+                "name": expert.name,
+                "positive_label": expert.labels[0],
+                "neighbor_labels": list(expert.labels[1:]),
+                "top_k": expert.max_rank or len(expert.labels),
+                "min_positive_proba": settings.hierarchical.ste_threshold,
+            }
+            for expert in one_vs_neighbors
+        ]
+        hierarchy.pop("specialist_rule", None)
 
     boundary_heads = []
     for expert in topology.experts:

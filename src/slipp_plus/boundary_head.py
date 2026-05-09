@@ -164,8 +164,14 @@ def train_boundary_head(
     max_depth: int = 5,
     n_estimators: int = 250,
     learning_rate: float = 0.05,
+    hyperparameters: Any | None = None,
 ) -> XGBClassifier:
-    """Fit a class-balanced binary XGB boundary head."""
+    """Fit a class-balanced binary XGB boundary head.
+
+    ``hyperparameters`` (an :class:`~slipp_plus.config.XGBHyperparameters`)
+    overrides the per-keyword defaults. Legacy keyword arguments stay supported
+    for tests and ad-hoc callers; if both are supplied, the dataclass wins.
+    """
 
     n_pos = int((y_tr == 1).sum())
     n_neg = int((y_tr == 0).sum())
@@ -174,17 +180,23 @@ def train_boundary_head(
             "boundary head requires both positive and negative training rows "
             f"(n_pos={n_pos}, n_neg={n_neg})"
         )
+    if hyperparameters is not None:
+        kwargs = hyperparameters.to_xgb_kwargs()
+    else:
+        kwargs = {
+            "max_depth": max_depth,
+            "n_estimators": n_estimators,
+            "learning_rate": learning_rate,
+        }
     model = XGBClassifier(
         objective="binary:logistic",
-        max_depth=max_depth,
-        n_estimators=n_estimators,
-        learning_rate=learning_rate,
         scale_pos_weight=n_neg / n_pos,
         random_state=seed,
         n_jobs=-1,
         eval_metric="logloss",
         tree_method="hist",
         verbosity=0,
+        **kwargs,
     )
     model.fit(X_tr, y_tr)
     return model

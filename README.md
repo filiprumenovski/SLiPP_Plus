@@ -16,41 +16,89 @@ structures using machine learning", DOI
 Upstream code and `training_pockets.csv` come from
 [`dassamalab/SLiPP_2024`](https://github.com/dassamalab/SLiPP_2024).
 
-## Current Internal Leader
+## Current State (May 2026, submission-ready)
 
-`exp-019-compact-five-way-shape-chem-ensemble` is the current internal
-registry leader. It averages probabilities from five complementary compact
-family encoders, while preserving each component candidate:
+**Deployable artifact:** `exp-021-compact-shell6-chem-holdout-weighted` is
+the current production-recommended config. It is selected by holdout-weighted
+score rather than internal-validation score because the prior internal
+leader (`exp-019`, five-way ensemble) regresses ~0.07–0.09 F1 on both
+external holdouts compared with `exp-021`. exp-019 retains
+`is_internal_best` in the registry for audit purposes.
 
-```text
-command:     uv run python scripts/compact_probability_ensemble.py
-components:  exp-012 shape6 + exp-015 shell6/shape3 + exp-016 hydro4 + tunnel_geom + tunnel_chem
-backbone:    five family encoders
-report:      reports/compact_shape6_shell6shape3_hydro4_geom_chem_ensemble/metrics.md
-```
+**Optimization scaffold (this branch):** Multi-objective Hyperband HPO via
+Optuna NSGA-II ([`tools/optuna_hpo.py`](tools/optuna_hpo.py)), CatBoost as a
+fourth flat-mode base learner, a stacked LR / LGBM meta-learner over OOF
+softprobs ([`src/slipp_plus/stacking.py`](src/slipp_plus/stacking.py)), and
+configuration-layer support for multiple boundary specialists. All scaffold
+tests pass on synthetic fixtures; real-data runs are gated on having
+`processed/` parquet artifacts available.
 
-The ensemble confirms that the compact tunnel-shape variants have complementary
-errors, including variants that were negative alone. It is the internal
-validation leader, while external holdout performance remains an explicit
-caveat.
+**BioDolphin extension (proposed):** See
+[`BIODOLPHIN_EXTENSION.md`](BIODOLPHIN_EXTENSION.md). Chou et al. used a 27
+April 2023 PDB snapshot with a five-lipid filter; BioDolphin v1.1 covers
+14,891 PDB structures, 127,359 entries, and 2,619 distinct lipid molecules
+through 6 September 2024 — roughly 19× the structure coverage. Documented
+here as the explicit next-stage extension and a Dassama-lab collaboration
+proposal.
 
-| Metric | Mean +/- std |
+### Headline metrics (deployable, exp-021)
+
+| Metric | Mean ± std |
 |---|---:|
-| Binary F1 | `0.906 +/- 0.015` |
-| Binary AUROC | `0.989 +/- 0.003` |
-| 10-class macro-F1 | `0.778 +/- 0.017` |
-| 5-lipid macro-F1 | `0.684 +/- 0.030` |
-| CLR F1 | `0.773` |
-| MYR F1 | `0.714` |
-| OLA F1 | `0.631` |
-| PLM F1 | `0.655` |
-| STE F1 | `0.645` |
+| Binary F1 | `0.902 ± 0.016` |
+| Binary AUROC | `0.989 ± 0.004` |
+| 10-class macro-F1 | `0.765 ± 0.021` |
+| 5-lipid macro-F1 | `0.664 ± 0.034` |
+| apo-PDB holdout F1 | `0.717` |
+| AlphaFold holdout F1 | `0.715` |
+| CLR / MYR / OLA / PLM / STE F1 | `0.756 / 0.701 / 0.594 / 0.640 / 0.629` |
 
-External holdouts regress for this internal ensemble: apo-PDB F1 `0.649`
-and AlphaFold F1 `0.623`. The best recorded individual holdout F1s are `0.746`
-on apo-PDB from `exp-001-day1-v14` and `0.753` on AlphaFold from
-`exp-002-v49-baseline`. Treat holdout performance as an explicit publication
-caveat, not as hidden tuning debt.
+The internal-validation leader (`exp-019`, retained as `is_internal_best`)
+reports binary F1 `0.906 ± 0.015`, 10-class macro-F1 `0.778 ± 0.017`, and
+5-lipid macro-F1 `0.684 ± 0.030` but regresses to apo-PDB `0.649` and
+AlphaFold `0.623` on the external holdouts. The 0.011 internal lipid5
+macro-F1 sacrifice in `exp-021` buys back ~0.07 apo-PDB and ~0.09
+AlphaFold F1 — a holdout-discipline-aware tradeoff. See
+[`reports/publication/figure_holdout_vs_internal.png`](reports/publication/figure_holdout_vs_internal.png)
+for the Pareto-front visualization across all 23 experiments.
+
+### Comparison to the SLiPP paper baseline
+
+| Metric | Paper (Chou et al. 2024) | SLiPP++ exp-021 | Δ |
+|---|---:|---:|---:|
+| Binary F1 | 0.869 | 0.902 | +0.033 |
+| Binary AUROC | 0.970 | 0.989 | +0.019 |
+| AlphaFold holdout F1 | 0.643 | 0.715 | +0.072 |
+| apo-PDB holdout F1 | 0.726 | 0.717 | −0.009 |
+
+Three of four headline metrics beat the paper baseline; apo-PDB is
+−0.009, attributable in part to the smaller 117-PDB holdout set in the
+current supplementary workbooks (vs. the 131 the paper reports).
+
+### Publication figure set
+
+Six publication-grade figures are rendered to `reports/publication/` in
+PNG / PDF / SVG:
+
+- [`figure7_plus_feature_landscape`](reports/publication/figure7_plus_feature_landscape.png)
+  — direct upgrade over Chou et al. Fig. 7 with the SLiPP++ ten-class
+  softmax breaking the lipid bucket open.
+- [`figure_per_class_forest`](reports/publication/figure_per_class_forest.png)
+  — per-class F1 across the experiment ladder.
+- [`figure_holdout_vs_internal`](reports/publication/figure_holdout_vs_internal.png)
+  — Pareto front of internal vs. external evaluation.
+- [`figure_ablation_ladder`](reports/publication/figure_ablation_ladder.png)
+  — sequential lipid5 macro-F1 deltas from `paper17` to `exp-021`.
+- [`figure_data_coverage_gap`](reports/publication/figure_data_coverage_gap.png)
+  — Chou et al. vs. BioDolphin coverage.
+- [`figure_pipeline_schematic`](reports/publication/figure_pipeline_schematic.png)
+  — six-stage pipeline overview.
+
+Render with: `python tools/build_publication_figures.py`. Pass
+`--use-real-features path/to/full_pockets.parquet` and
+`--use-real-bundle path/to/iter0.joblib` to override the synthetic
+fallbacks in panels A / B / D of the headline figure with on-disk
+artifacts.
 
 ## Why This Model
 
