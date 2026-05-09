@@ -143,6 +143,16 @@ deployable result.
   both apo-PDB F1 and AlphaFold F1 while staying within 0.03 binary F1 of the
   paper.
 
+`exp-036-legacy-rescue-logistic-gate-t99` is closed neutral.
+
+- Script: `scripts/legacy_rescue_gate.py --threshold 0.99`
+- Report: `reports/legacy_rescue_logistic_gate_t99/metrics.md`
+- Result: internal binary F1 improves slightly to `0.901 +/- 0.017`, but
+  holdouts fall versus exp-035: apo-PDB `0.727 / 0.802`, AlphaFold
+  `0.752 / 0.854`.
+- Decision: do not promote. The internally highest binary-F1 threshold is too
+  conservative externally.
+
 `exp-005-v_sterol-ensemble` holdouts are now complete from existing artifacts.
 
 - Report: `reports/v_sterol_holdout_completion.md`
@@ -170,8 +180,10 @@ holdout reporting.
 
 1. Try to beat exp-035 without using holdout labels for selection. Best next
    directions: threshold policy selected from internal prediction features,
-   stricter rescue precision controls, or a small meta-gate that preserves
-   AlphaFold AUROC while recovering more apo-PDB recall.
+   asymmetric thresholding by domain-risk score, or a small meta-gate that
+   preserves AlphaFold AUROC while recovering more apo-PDB recall. The simple
+   stricter threshold ablation (`exp-036`, threshold `0.99`) did not beat
+   exp-035.
 2. Prioritize domain-shift fixes that can be learned without tuning on holdout
    labels. The holdout threshold diagnostic showed lower deployable thresholds
    would help externally, but internal threshold selection did not reproduce

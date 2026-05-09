@@ -39,3 +39,4 @@ Generated from `experiments/registry.yaml`. Metrics are copied from registry ent
 | exp-033-covariate-shift-threshold-neutral | exp-028 probability space | - | - | 0.717 | 0.724 | NEUTRAL COVARIATE-SHIFT RESULT. | - |
 | exp-034-holdout-label-source-audit | holdout label audit | - | - | - | - | ROW-ORDER DIAGNOSTIC. | - |
 | **exp-035-legacy-rescue-logistic-gate-reproducible** | exp-028 + paper17_family_encoder + v_sterol probabilities | 0.900 ± 0.018 | 0.766 ± 0.017 | 0.742 | 0.775 | NEW DEPLOYABLE LEADER. | - |
+| exp-036-legacy-rescue-logistic-gate-t99 | exp-028 + paper17_family_encoder + v_sterol probabilities | 0.901 ± 0.017 | 0.766 ± 0.018 | 0.727 | 0.752 | NEUTRAL STRICT-GATE RESULT. | - |

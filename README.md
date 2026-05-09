@@ -77,6 +77,11 @@ Previous holdout-safe lead: `exp-032-legacy-rescue-holdout-safe-gate` showed
 that a small logistic rescue gate transfers. `exp-035` is the script-backed
 rerun and supersedes it as the deployable recommendation.
 
+Follow-up threshold check: `exp-036-legacy-rescue-logistic-gate-t99` uses the
+internally highest binary-F1 threshold (`0.99`). It improves over exp-028 but
+does not beat exp-035: apo-PDB F1 falls to `0.727` and AlphaFold F1 falls to
+`0.752`.
+
 Holdout-label audit: `exp-034-holdout-label-source-audit` found a row-order
 trap, not a semantic label conflict. Root holdout files and component-specific
 holdout feature files have the same identities but different row order; labels

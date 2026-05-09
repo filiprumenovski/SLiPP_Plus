@@ -1156,3 +1156,36 @@
     F1 is 0.900 +/- 0.018, lipid5 macro-F1 is 0.666, apo-PDB F1/AUROC is
     0.742 / 0.793, and AlphaFold F1/AUROC is 0.775 / 0.857. This beats exp-028
     on both external F1 scores under holdout-safe constraints.
+
+- id: exp-036-legacy-rescue-logistic-gate-t99
+  date: "2026-05-09"
+  feature_set: exp-028 + paper17_family_encoder + v_sterol probabilities
+  config: scripts/legacy_rescue_gate.py
+  models: [family_encoder, logistic_gate]
+  postprocessing: "holdout_safe_logistic_rescue_gate(threshold=0.99)"
+  status: complete
+  is_current_best: false
+  metrics:
+    binary_f1: "0.901 ± 0.017"
+    binary_auroc: "0.989 ± 0.003"
+    macro_f1_10: "0.766 ± 0.018"
+    lipid_macro_f1: "0.667"
+  holdouts:
+    apo_pdb_f1: 0.727
+    apo_pdb_auroc: 0.802
+    alphafold_f1: 0.752
+    alphafold_auroc: 0.854
+  supersedes: null
+  artifacts:
+    report: reports/legacy_rescue_logistic_gate_t99/metrics.md
+    threshold_sweep: reports/legacy_rescue_logistic_gate_t99/threshold_sweep.csv
+    raw_metrics: reports/legacy_rescue_logistic_gate_t99/raw_metrics.parquet
+    predictions: processed/legacy_rescue_logistic_gate_t99/predictions/test_predictions.parquet
+    apo_pdb_predictions: processed/legacy_rescue_logistic_gate_t99/predictions/apo_pdb_predictions.parquet
+    alphafold_predictions: processed/legacy_rescue_logistic_gate_t99/predictions/alphafold_predictions.parquet
+  notes: >
+    NEUTRAL STRICT-GATE RESULT. The internally highest binary-F1 threshold
+    from the leave-iteration-out sweep, 0.99, improves internal binary F1 to
+    0.901 +/- 0.017 and still beats exp-028 on both holdout F1 scores. It does
+    not beat exp-035: apo-PDB F1 falls to 0.727 and AlphaFold F1 falls to
+    0.752. The extra internal conservatism costs too much external recall.
