@@ -40,8 +40,7 @@ Generated from the registry after `reports/ablation_matrix.md` was created.
 These handoff items require long model runs or additional implementation and should not be run inline without long-run approval:
 
 1. STE class-imbalance handling: baseline vs class-weighted comparison for STE.
-2. Tiebreaker on/off: quantify per-class lift from the PLM/STE or current boundary-head tiebreaker stack.
-3. CAVER/tunnel marginal value: compare the current compact leader against the appropriate no-tunnel baseline using matched split protocol.
+2. CAVER/tunnel marginal value: compare the current compact leader against the appropriate no-tunnel baseline using matched split protocol.
 
 ## Closed From Existing Artifacts
 
@@ -51,3 +50,11 @@ These handoff items require long model runs or additional implementation and sho
      mean-probability ensembles improve lipid macro-F1 on every checked flat
      stack (`+0.006` to `+0.012`), but none by at least one standard deviation.
    - No new model training was run; this used persisted prediction artifacts.
+
+2. Tiebreaker on/off (`handoff.md` 8.5)
+   - Report: `reports/tiebreaker_ablation.md`
+   - Result: the narrow PLM/STE tiebreaker is small (`+0.009` lipid macro-F1,
+     `+0.045` STE F1), while the broader STE-neighbor rescue is material
+     (`+0.038` to `+0.040` lipid macro-F1, `+0.178` STE F1).
+   - No new model training was run; this used persisted `v_sterol` prediction
+     artifacts.

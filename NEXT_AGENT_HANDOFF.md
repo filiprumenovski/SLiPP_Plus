@@ -109,6 +109,14 @@ The ensemble-vs-single ablation was closed from existing artifacts:
   over the best single learner across checked flat stacks, but none by at least
   one standard deviation.
 
+The tiebreaker on/off ablation was closed from existing artifacts:
+
+- `reports/tiebreaker_ablation.md`
+- Result: the narrow PLM/STE tiebreaker is small, while the broader STE-neighbor
+  rescue is material: STE F1 rises from `0.398` to `0.576`, STE recall from
+  `0.349` to `0.592`, and lipid macro-F1 by `+0.038` to `+0.040` without
+  changing binary F1.
+
 ## Remaining Work
 
 ### 1. Highest-impact non-docstring work
@@ -127,8 +135,8 @@ shit, start high impact work." Prefer these before returning to item 6.3:
      command and expected artifacts instead.
 3. Long-run ablation closure.
    - `handoff.md` 8.4 is closed in `reports/ensemble_ablation.md`.
-   - Still open: STE imbalance handling, tiebreaker on/off, and CAVER/tunnel
-     marginal value.
+   - `handoff.md` 8.5 is closed in `reports/tiebreaker_ablation.md`.
+   - Still open: STE imbalance handling and CAVER/tunnel marginal value.
    - See `experiments/queued.md`; these are intentionally queued because they
      need longer model runs or missing holdout implementation.
 4. CI state.
