@@ -67,6 +67,16 @@ Internal-validation leader remains `exp-019-compact-five-way-shape-chem-ensemble
   `0.703 / 0.838`.
 - Decision: useful but not deployable over exp-028 because AlphaFold is weaker.
 
+`exp-009-v_sterol-boundary-refactor` holdouts are now complete for binary
+holdout reporting.
+
+- Reports: `reports/boundary_refactor_holdout_attempt.md`,
+  `reports/boundary_refactor_holdout_completion.md`
+- Result: apo-PDB F1/AUROC `0.679 / 0.812`; AlphaFold F1/AUROC
+  `0.708 / 0.864`.
+- Note: the boundary-refactor bundle changes subclass probabilities/classes but
+  makes zero binary holdout decision changes versus the flat v_sterol ensemble.
+
 ## Remaining High-Impact Work
 
 1. Prioritize domain-shift fixes that can be learned without tuning on holdout
@@ -83,12 +93,12 @@ Internal-validation leader remains `exp-019-compact-five-way-shape-chem-ensemble
    an internal-only improvement that reproduces exp-019's holdout regression.
 5. Keep README current with the deployable recommendation, internal leader, and
    major negative ablations. Stale docs are a known project risk.
-6. Remaining queued holdout completion is `exp-009-v_sterol-boundary-refactor`;
-   `exp-005` and `exp-011` are closed.
-7. Do not close `exp-009` with `make eval CFG=configs/v_sterol_boundary_refactor.yaml`
-   until the prediction source is fixed. That command currently reads the
-   generic `hierarchical_lipid_predictions.parquet`, which is an exp-011
-   composite pair-MoE artifact. See `reports/boundary_refactor_holdout_attempt.md`.
+6. Registry holdout-completion gaps from the 2026-05-08 audit are closed:
+   `exp-005`, `exp-009`, and `exp-011`.
+7. Do not use generic test-split metrics from
+   `make eval CFG=configs/v_sterol_boundary_refactor.yaml` for exp-009. That
+   command reads `hierarchical_lipid_predictions.parquet`, which is an exp-011
+   composite pair-MoE artifact. Use the registry's exp-009 internal metrics.
 
 ## Verification To Re-run
 

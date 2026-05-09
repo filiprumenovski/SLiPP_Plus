@@ -8,14 +8,8 @@ Generated from the registry after `reports/ablation_matrix.md` was created.
 
 ### Queue For Holdout Completion
 
-1. `exp-009-v_sterol-boundary-refactor`
-   - Config: `configs/v_sterol.yaml`
-   - Current gap: registry has no `holdouts` block for the boundary-refactor postprocessing.
-   - Suggested command: run the holdout validation path for the saved `ste_rescue_ola_plm_pair` predictions or regenerate the postprocessed holdout predictions, then update the registry with apo-PDB and AlphaFold metrics.
-   - Failed shortcut: `make eval CFG=configs/v_sterol_boundary_refactor.yaml`
-     reads the generic `hierarchical_lipid_predictions.parquet`, which is now
-     an exp-011 composite pair-MoE artifact, not the exp-009 boundary-refactor
-     predictions. See `reports/boundary_refactor_holdout_attempt.md`.
+All registry holdout-completion gaps from this audit are now closed. Keep this
+section for future registry audits.
 
 ### No Inline Completion Planned
 
@@ -149,3 +143,14 @@ Generated from the registry after `reports/ablation_matrix.md` was created.
    - This closes the composite pair/local-MoE holdout blocker, but does not
      change the deployable recommendation because exp-028 is stronger on
      AlphaFold.
+
+15. `exp-009-v_sterol-boundary-refactor` holdout completion
+   - Reports: `reports/boundary_refactor_holdout_attempt.md`,
+     `reports/boundary_refactor_holdout_completion.md`
+   - Result: the saved boundary-refactor bundle changes holdout subclass
+     probabilities/classes but makes zero binary lipid/non-lipid decision
+     changes versus the flat `v_sterol` ensemble. Binary holdout metrics
+     therefore match exp-005: apo-PDB F1/AUROC `0.679 / 0.812`; AlphaFold
+     F1/AUROC `0.708 / 0.864`.
+   - Do not use stale generic test-split metrics emitted by
+     `make eval CFG=configs/v_sterol_boundary_refactor.yaml` for exp-009.

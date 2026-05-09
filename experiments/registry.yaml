@@ -231,19 +231,30 @@
     ola_f1: "0.553 ± 0.056"
     plm_f1: "0.649 ± 0.050"
     ste_f1: "0.576 ± 0.105"
+  holdouts:
+    apo_pdb_f1: 0.679
+    apo_pdb_auroc: 0.812
+    alphafold_f1: 0.708
+    alphafold_auroc: 0.864
   supersedes: exp-007-v_sterol-plm_ste-tiebreaker
   artifacts:
     predictions: processed/v_sterol/predictions/ste_rescue_ola_plm_pair_predictions.parquet
     ste_rescue_predictions: processed/v_sterol/predictions/ste_rescue_boundary_refactor_predictions.parquet
+    apo_pdb_predictions: processed/v_sterol/predictions/holdouts/hierarchical_apo_pdb_predictions.parquet
+    alphafold_predictions: processed/v_sterol/predictions/holdouts/hierarchical_alphafold_predictions.parquet
     report: reports/v_sterol/boundary_refactor_results.md
     ste_rescue_report: reports/v_sterol/ste_rescue_boundary_refactor.md
     ola_plm_report: reports/v_sterol/ste_rescue_ola_plm_pair_selected.md
     residual_confusions: reports/v_sterol/ste_rescue_ola_plm_pair_residual_confusions.md
+    holdout_completion: reports/boundary_refactor_holdout_completion.md
   notes: >
     Boundary-head refactor promoted grouped STE-vs-neighbors rescue into the
     shared local-arbitration architecture. Main gain is STE F1: 0.444 -> 0.576
     vs exp-007, with binary F1/AUROC unchanged. OLA/PLM margin=0.05 adds a
     small stacked improvement; PLM/MYR stacking was neutral-to-regressive.
+    Holdout completion via the saved boundary-refactor bundle shows subclass
+    probability changes but zero binary decision changes versus the flat
+    v_sterol ensemble, so binary holdout F1/AUROC match exp-005.
 
 - id: exp-011-family-plus-moe
   date: "2026-04-28"
