@@ -71,6 +71,20 @@ holdout-negative.
   `0.739`, AlphaFold F1 `0.711`, holdout mean `0.725`), but it loses internal
   subclass quality and AlphaFold F1 versus exp-028.
 
+`exp-031-legacy-rescue-rule-diagnostic` is the strongest current lead.
+
+- Report: `reports/legacy_rescue_rule_ablation_2026_05_09.md`
+- Rule: start from exp-028; when exp-028 calls non-lipid but both
+  `paper17_family_encoder` and `v_sterol` have lipid probability `>= 0.35`,
+  replace probabilities with the paper17/v_sterol average.
+- Result: apo-PDB F1/AUROC `0.748 / 0.765`; AlphaFold F1/AUROC
+  `0.733 / 0.733`; internal binary F1 `0.899 +/- 0.017`, lipid5 macro-F1
+  `0.666`.
+- Decision: do not promote yet because the `0.35` thresholds came from a
+  holdout-scored diagnostic grid. This is the next thing to make holdout-safe:
+  select thresholds from internal split predictions or train a 25-split rescue
+  gate.
+
 `exp-005-v_sterol-ensemble` holdouts are now complete from existing artifacts.
 
 - Report: `reports/v_sterol_holdout_completion.md`
@@ -100,20 +114,25 @@ holdout reporting.
    labels. The holdout threshold diagnostic showed lower deployable thresholds
    would help externally, but internal threshold selection did not reproduce
    those thresholds.
-2. Build a holdout-safe calibration or domain-adaptation experiment using only
+2. Make exp-031 holdout-safe. Either select the legacy-rescue thresholds using
+   internal split predictions only, or train a small rescue gate inside the
+   25-split protocol using exp-028/paper17/v_sterol probabilities as features.
+   Success criterion: recover external gains without holdout-label threshold
+   tuning.
+3. Build a holdout-safe calibration or domain-adaptation experiment using only
    internal split predictions and unlabeled holdout feature distributions.
-3. Revisit targeted STE handling only if it is more local than a global class
+4. Revisit targeted STE handling only if it is more local than a global class
    weight: e.g. a calibrated PLM/STE/COA/MYR/OLA expert, confidence gating, or
    a data-extension path that adds STE-like pockets.
-4. If running more compact ensembles, keep exp-028 as the deployable anchor and
+5. If running more compact ensembles, keep exp-028 as the deployable anchor and
    report both internal lipid5 macro-F1 and apo-PDB/AlphaFold F1. Do not promote
    an internal-only improvement that reproduces exp-019/exp-030 holdout
    regression.
-5. Keep README current with the deployable recommendation, internal leader, and
+6. Keep README current with the deployable recommendation, internal leader, and
    major negative ablations. Stale docs are a known project risk.
-6. Registry holdout-completion gaps from the 2026-05-08 audit are closed:
+7. Registry holdout-completion gaps from the 2026-05-08 audit are closed:
    `exp-005`, `exp-009`, and `exp-011`.
-7. Do not use generic test-split metrics from
+8. Do not use generic test-split metrics from
    `make eval CFG=configs/v_sterol_boundary_refactor.yaml` for exp-009. That
    command reads `hierarchical_lipid_predictions.parquet`, which is an exp-011
    composite pair-MoE artifact. Use the registry's exp-009 internal metrics.

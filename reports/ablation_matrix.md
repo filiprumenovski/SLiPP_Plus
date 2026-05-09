@@ -34,3 +34,4 @@ Generated from `experiments/registry.yaml`. Metrics are copied from registry ent
 | **exp-028-compact-shape3-shell6-chem-weighted** | 0.1*(v49+tunnel_shape3) + 0.2*(v14+aa20+shell6+tunnel_shape) + 0.7*(v49+tunnel_chem) | 0.903 ± 0.016 | 0.769 ± 0.019 | 0.717 | 0.724 | NEW DEPLOYABLE LEADER. | - |
 | exp-029-compact-weight-local-refinement | compact probability ensembles | - | - | - | - | NEGATIVE LOCAL REFINEMENT. | - |
 | exp-030-probability-blend-internal-leader | probability blend over saved compact/v_sterol artifacts | 0.908 ± 0.015 | 0.781 ± 0.018 | 0.643 | 0.536 | NEW INTERNAL LEADER, HOLDOUT-NEGATIVE. | - |
+| exp-031-legacy-rescue-rule-diagnostic | exp-028 + paper17_family_encoder + v_sterol probabilities | 0.899 ± 0.017 | 0.766 | 0.748 | 0.733 | HOLDOUT-POSITIVE DIAGNOSTIC. | - |

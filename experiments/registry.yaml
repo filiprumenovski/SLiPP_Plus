@@ -1010,3 +1010,34 @@
     The same sweep found a balanced holdout diagnostic
     (0.35 paper17_family_encoder + 0.65 v_sterol) with holdout mean F1 0.725,
     but it loses internal lipid5 macro-F1 and AlphaFold F1 versus exp-028.
+
+- id: exp-031-legacy-rescue-rule-diagnostic
+  date: "2026-05-09"
+  feature_set: exp-028 + paper17_family_encoder + v_sterol probabilities
+  config: reports/legacy_rescue_rule_ablation_2026_05_09.md
+  models: [family_encoder]
+  postprocessing: "diagnostic_legacy_rescue_rule"
+  status: complete
+  is_current_best: false
+  metrics:
+    binary_f1: "0.899 ± 0.017"
+    macro_f1_10: "0.766"
+    lipid_macro_f1: "0.666"
+    ste_f1: "0.639"
+  holdouts:
+    apo_pdb_f1: 0.748
+    apo_pdb_auroc: 0.765
+    alphafold_f1: 0.733
+    alphafold_auroc: 0.733
+  supersedes: null
+  artifacts:
+    report: reports/legacy_rescue_rule_ablation_2026_05_09.md
+  notes: >
+    HOLDOUT-POSITIVE DIAGNOSTIC. Starting from exp-028, rescue only rows with
+    exp-028 lipid probability below 0.50 when both paper17_family_encoder and
+    v_sterol have lipid probability >=0.35, replacing probabilities with the
+    paper17/v_sterol average. This improves apo-PDB F1 to 0.748 and AlphaFold
+    F1 to 0.733 while keeping internal binary F1 at 0.899 and lipid5 macro-F1
+    at 0.666. Do not promote yet: thresholds were found by a holdout-scored
+    diagnostic grid. Next step is internal split threshold selection or a
+    25-split trained rescue gate.
