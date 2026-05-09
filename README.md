@@ -66,6 +66,15 @@ It improves apo-PDB F1 to `0.748` and AlphaFold F1 to `0.733`, with internal
 binary F1 `0.899 ± 0.017` and lipid5 macro-F1 `0.666`. It is not promoted
 because the threshold was found by a holdout-scored diagnostic grid.
 
+Holdout-label audit: `exp-034-holdout-label-source-audit` found that root
+holdout labels and component-specific holdout feature labels disagree on
+10 apo-PDB rows and 30 AlphaFold rows. Existing compact reports use the
+component label source; canonical root labels score the same exp-028 holdout
+predictions lower (`0.667` apo-PDB, `0.605` AlphaFold). Treat compact holdout
+metrics as blocked for promotion decisions until the label source is
+reconciled. The diagnostic exp-031 signal remains positive under both label
+sources.
+
 Latest negative ablation: `exp-032-legacy-rescue-holdout-safe-negative`
 tried to make exp-031 holdout-safe through internal threshold selection and a
 small logistic rescue gate. Both failed to recover the external gains

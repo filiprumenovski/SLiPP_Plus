@@ -110,6 +110,21 @@ holdout-negative.
 - Decision: probability-space covariate reweighting documents domain shift but
   is not a threshold-selection mechanism.
 
+`exp-034-holdout-label-source-audit` is a data-integrity blocker.
+
+- Report: `reports/holdout_label_source_audit_2026_05_09.md`
+- Finding: root holdout labels and component-specific holdout labels disagree
+  on 10 apo-PDB rows and 30 AlphaFold rows, despite matching row identities.
+- Current compact scripts evaluate against `component_dirs[0]` holdout labels.
+  That yields exp-028 apo-PDB/AlphaFold F1 `0.717 / 0.724`.
+- Canonical root holdout labels score the same exp-028 predictions at
+  `0.667 / 0.605`.
+- Exp-031 remains better than exp-028 under both label sources:
+  component labels `0.733 / 0.728`; root labels `0.748 / 0.740`.
+- Decision: before any further promotion/demotion, reconcile label source.
+  Prefer canonical root labels or regenerate component holdout feature files
+  from the root holdout tables while preserving row order and `class_binary`.
+
 `exp-005-v_sterol-ensemble` holdouts are now complete from existing artifacts.
 
 - Report: `reports/v_sterol_holdout_completion.md`
@@ -135,22 +150,25 @@ holdout reporting.
 
 ## Remaining High-Impact Work
 
-1. Prioritize domain-shift fixes that can be learned without tuning on holdout
+1. Reconcile the holdout label source before relying on compact holdout metrics.
+   `exp-034` shows component holdout feature files disagree with canonical root
+   holdout labels. This affects exp-028 and later holdout comparisons.
+2. Prioritize domain-shift fixes that can be learned without tuning on holdout
    labels. The holdout threshold diagnostic showed lower deployable thresholds
    would help externally, but internal threshold selection did not reproduce
    those thresholds.
-2. Revisit targeted STE handling only if it is more local than a global class
+3. Revisit targeted STE handling only if it is more local than a global class
    weight: e.g. a calibrated PLM/STE/COA/MYR/OLA expert, confidence gating, or
    a data-extension path that adds STE-like pockets.
-3. If running more compact ensembles, keep exp-028 as the deployable anchor and
+4. If running more compact ensembles, keep exp-028 as the deployable anchor and
    report both internal lipid5 macro-F1 and apo-PDB/AlphaFold F1. Do not promote
    an internal-only improvement that reproduces exp-019/exp-030 holdout
    regression.
-4. Keep README current with the deployable recommendation, internal leader, and
+5. Keep README current with the deployable recommendation, internal leader, and
    major negative ablations. Stale docs are a known project risk.
-5. Registry holdout-completion gaps from the 2026-05-08 audit are closed:
+6. Registry holdout-completion gaps from the 2026-05-08 audit are closed:
    `exp-005`, `exp-009`, and `exp-011`.
-6. Do not use generic test-split metrics from
+7. Do not use generic test-split metrics from
    `make eval CFG=configs/v_sterol_boundary_refactor.yaml` for exp-009. That
    command reads `hierarchical_lipid_predictions.parquet`, which is an exp-011
    composite pair-MoE artifact. Use the registry's exp-009 internal metrics.

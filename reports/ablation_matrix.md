@@ -37,3 +37,4 @@ Generated from `experiments/registry.yaml`. Metrics are copied from registry ent
 | exp-031-legacy-rescue-rule-diagnostic | exp-028 + paper17_family_encoder + v_sterol probabilities | 0.899 ± 0.017 | 0.766 | 0.748 | 0.733 | HOLDOUT-POSITIVE DIAGNOSTIC. | - |
 | exp-032-legacy-rescue-holdout-safe-negative | exp-028 + paper17_family_encoder + v_sterol probabilities | 0.903 ± 0.016 | - | 0.694 | 0.658 | NEGATIVE HOLDOUT-SAFE RESCUE RESULT. | - |
 | exp-033-covariate-shift-threshold-negative | exp-028 probability space | - | - | 0.667 | 0.605 | NEGATIVE COVARIATE-SHIFT RESULT. | - |
+| exp-034-holdout-label-source-audit | holdout label audit | - | - | - | - | DATA-INTEGRITY DIAGNOSTIC. | - |
