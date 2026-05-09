@@ -1251,3 +1251,25 @@
     policy with the same weak holdouts. Internal F1/fire scalar rules are not
     enough; the next selection attempt needs a better proxy for external false
     negatives or unlabeled shift.
+
+- id: exp-039-legacy-rescue-base-fn-selection-negative
+  date: "2026-05-09"
+  feature_set: exp-028 + paper17_family_encoder + v_sterol probabilities
+  config: reports/legacy_rescue_base_fn_selection_audit_2026_05_09.md
+  models: [family_encoder, logistic_gate]
+  postprocessing: "internal_base_false_negative_selection_audit"
+  status: complete
+  is_current_best: false
+  metrics: {}
+  holdouts: {}
+  supersedes: null
+  artifacts:
+    report: reports/legacy_rescue_base_fn_selection_audit_2026_05_09.md
+  notes: >
+    NEGATIVE BASE-FN SELECTION AUDIT. Directly targeting internal exp-028 base
+    false negatives does not recover a useful holdout-safe selector. With
+    internal binary F1 >=0.895, no candidate reaches rescue precision >=0.50.
+    Unconstrained base-FN recall selects very low thresholds with only about
+    0.107 rescue precision, overfiring on true non-lipid rows. The selector
+    needs a better proxy for external false negatives than ordinary internal
+    base-FN membership.

@@ -178,6 +178,16 @@ lead.
 - Decision: simple internal F1/fire scalar rules do not make exp-037
   holdout-safe.
 
+`exp-039-legacy-rescue-base-fn-selection-negative` is closed negative.
+
+- Report: `reports/legacy_rescue_base_fn_selection_audit_2026_05_09.md`
+- Result: selecting for internal exp-028 base false-negative recall overfires.
+  With internal binary F1 >= `0.895`, no candidate reaches rescue precision
+  `>= 0.50`; unconstrained recall leaders have only about `0.107` rescue
+  precision.
+- Decision: ordinary internal base-FN membership is not a good proxy for the
+  external false negatives that exp-037 rescues.
+
 `exp-005-v_sterol-ensemble` holdouts are now complete from existing artifacts.
 
 - Report: `reports/v_sterol_holdout_completion.md`
@@ -207,7 +217,8 @@ holdout reporting.
    direction: make the exp-037 `maxlegacy`/`0.90` recall-heavy policy
    selectable from internal-only evidence. The simple stricter threshold
    ablation (`exp-036`, threshold `0.99`) did not beat exp-035, and simple
-   internal F1/fire scalar selection (`exp-038`) did not recover exp-037.
+   internal F1/fire scalar selection (`exp-038`) plus direct base-FN recall
+   selection (`exp-039`) did not recover exp-037.
 2. Prioritize domain-shift fixes that can be learned without tuning on holdout
    labels. The holdout threshold diagnostic showed lower deployable thresholds
    would help externally, but internal threshold selection did not reproduce

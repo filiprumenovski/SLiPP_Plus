@@ -93,6 +93,11 @@ shows that simple internal scalar objectives do not recover exp-037. Maximizing
 internal F1 or internal fire rate under F1 floors picks conservative blended
 rewrites with weaker holdouts.
 
+Base-FN selection audit: `exp-039-legacy-rescue-base-fn-selection-negative`
+shows that direct internal base-false-negative recall is also not enough:
+precision-constrained selectors have no feasible candidate at the current F1
+floor, while unconstrained recall overfires.
+
 Holdout-label audit: `exp-034-holdout-label-source-audit` found a row-order
 trap, not a semantic label conflict. Root holdout files and component-specific
 holdout feature files have the same identities but different row order; labels
