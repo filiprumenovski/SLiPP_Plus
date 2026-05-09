@@ -33,3 +33,4 @@ Generated from `experiments/registry.yaml`. Metrics are copied from registry ent
 | exp-027-ste-class-weight-x2 | v49+tunnel_shape3 | 0.896 ± 0.016 | 0.760 ± 0.019 | 0.649 | 0.711 | NEGATIVE STE IMBALANCE RESULT. | - |
 | **exp-028-compact-shape3-shell6-chem-weighted** | 0.1*(v49+tunnel_shape3) + 0.2*(v14+aa20+shell6+tunnel_shape) + 0.7*(v49+tunnel_chem) | 0.903 ± 0.016 | 0.769 ± 0.019 | 0.717 | 0.724 | NEW DEPLOYABLE LEADER. | - |
 | exp-029-compact-weight-local-refinement | compact probability ensembles | - | - | - | - | NEGATIVE LOCAL REFINEMENT. | - |
+| exp-030-probability-blend-internal-leader | probability blend over saved compact/v_sterol artifacts | 0.908 ± 0.015 | 0.781 ± 0.018 | 0.643 | 0.536 | NEW INTERNAL LEADER, HOLDOUT-NEGATIVE. | - |

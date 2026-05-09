@@ -16,13 +16,16 @@ Deployable recommendation is `exp-028-compact-shape3-shell6-chem-weighted`:
 - AlphaFold holdout F1/AUROC: `0.724 / 0.855`
 - Component blend: `0.1 shape3 + 0.2 shell6_shape + 0.7 chem`
 
-Internal-validation leader remains `exp-019-compact-five-way-shape-chem-ensemble`:
+Internal-validation leader is `exp-030-probability-blend-internal-leader`:
 
-- Binary F1: `0.906 +/- 0.015`
-- 10-class macro-F1: `0.778 +/- 0.017`
-- 5-lipid macro-F1: `0.684 +/- 0.030`
-- Holdouts regress to apo-PDB `0.649` and AlphaFold `0.623`, so do not deploy
-  it without solving the external transfer issue.
+- Binary F1: `0.908 +/- 0.015`
+- Binary AUROC: `0.990 +/- 0.003`
+- 10-class macro-F1: `0.781 +/- 0.018`
+- 5-lipid macro-F1: `0.687 +/- 0.031`
+- Component blend: `0.20 compact_shape3_shape6 + 0.20 v_sterol + 0.10 exp-028
+  + 0.50 compact five-way`
+- Holdouts regress to apo-PDB `0.643` and AlphaFold `0.536`, so do not deploy
+  it. It is an internal-only leader and a domain-shift warning.
 
 ## Latest Completed Ablation
 
@@ -53,6 +56,20 @@ Internal-validation leader remains `exp-019-compact-five-way-shape-chem-ensemble
   better holdout-balanced candidate after allowing small optional mass from
   `shape6`, `shell6_shape3`, `hydro4`, and `geom`.
 - Decision: exp-028 is locally stable under this search.
+
+`exp-030-probability-blend-internal-leader` is closed internal-positive but
+holdout-negative.
+
+- Report: `reports/probability_blend_sweep_2026_05_09.md`
+- Result: improves internal binary F1 to `0.908 +/- 0.015`, macro10 to
+  `0.781 +/- 0.018`, lipid5 macro-F1 to `0.687 +/- 0.031`, and STE F1 to
+  `0.652`.
+- Holdouts: apo-PDB F1/AUROC `0.643 / 0.766`; AlphaFold F1/AUROC
+  `0.536 / 0.738`.
+- Decision: not deployable. The same sweep found a holdout-mean-positive
+  diagnostic (`0.35 paper17_family_encoder + 0.65 v_sterol`: apo-PDB F1
+  `0.739`, AlphaFold F1 `0.711`, holdout mean `0.725`), but it loses internal
+  subclass quality and AlphaFold F1 versus exp-028.
 
 `exp-005-v_sterol-ensemble` holdouts are now complete from existing artifacts.
 
@@ -90,7 +107,8 @@ holdout reporting.
    a data-extension path that adds STE-like pockets.
 4. If running more compact ensembles, keep exp-028 as the deployable anchor and
    report both internal lipid5 macro-F1 and apo-PDB/AlphaFold F1. Do not promote
-   an internal-only improvement that reproduces exp-019's holdout regression.
+   an internal-only improvement that reproduces exp-019/exp-030 holdout
+   regression.
 5. Keep README current with the deployable recommendation, internal leader, and
    major negative ablations. Stale docs are a known project risk.
 6. Registry holdout-completion gaps from the 2026-05-08 audit are closed:
@@ -110,6 +128,7 @@ uv run pytest -q tests/test_pipeline_mode.py tests/test_family_encoder_weights.p
 make train CFG=configs/archive/v49_tunnel_shape3_ste2_family_encoder.yaml
 make eval CFG=configs/archive/v49_tunnel_shape3_ste2_family_encoder.yaml
 uv run python scripts/compact_probability_ensemble.py --component-dir processed/v49_tunnel_shape3 --component-dir processed/v49_shell6_tunnel_shape --component-dir processed/v49_tunnel_chem --component-weight 0.1 --component-weight 0.2 --component-weight 0.7 --model-name shape3_shell6_chem_weighted_10_20_70 --report-title "Compact shape3 shell6 chem weighted probability ensemble" --output-predictions-dir processed/compact_shape3_shell6_chem_weighted_10_20_70/predictions --output-report-dir reports/compact_shape3_shell6_chem_weighted_10_20_70
+uv run python scripts/generate_ablation_matrix.py
 ```
 
 Before a release-facing commit, run:

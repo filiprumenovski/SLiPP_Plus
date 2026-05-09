@@ -974,3 +974,39 @@
     shape6, shell6_shape3, hydro4, and geom. No candidate beat the promoted
     0.10/0.20/0.70 blend at the holdout-balanced objective; exp-028 is locally
     stable under this search.
+
+- id: exp-030-probability-blend-internal-leader
+  date: "2026-05-09"
+  feature_set: probability blend over saved compact/v_sterol artifacts
+  config: reports/probability_blend_sweep_2026_05_09.md
+  models: [family_encoder]
+  postprocessing: "weighted_probability_ensemble(saved_artifacts)"
+  status: complete
+  is_current_best: false
+  metrics:
+    binary_f1: "0.908 ± 0.015"
+    binary_auroc: "0.990 ± 0.003"
+    macro_f1_10: "0.781 ± 0.018"
+    lipid_macro_f1: "0.687 ± 0.031"
+    clr_f1: "0.778"
+    myr_f1: "0.713"
+    ola_f1: "0.632"
+    plm_f1: "0.659"
+    ste_f1: "0.652"
+  holdouts:
+    apo_pdb_f1: 0.643
+    apo_pdb_auroc: 0.766
+    alphafold_f1: 0.536
+    alphafold_auroc: 0.738
+  supersedes: null
+  artifacts:
+    report: reports/probability_blend_sweep_2026_05_09.md
+  notes: >
+    NEW INTERNAL LEADER, HOLDOUT-NEGATIVE. A saved-artifact probability blend
+    of 0.20 compact_shape3_shape6, 0.20 v_sterol, 0.10 exp-028, and 0.50
+    compact five-way improves internal binary F1, macro10 F1, lipid5 macro-F1,
+    and STE F1 over exp-019 and exp-028 without retraining. It is not
+    deployable: apo-PDB F1 falls to 0.643 and AlphaFold F1 falls to 0.536.
+    The same sweep found a balanced holdout diagnostic
+    (0.35 paper17_family_encoder + 0.65 v_sterol) with holdout mean F1 0.725,
+    but it loses internal lipid5 macro-F1 and AlphaFold F1 versus exp-028.
