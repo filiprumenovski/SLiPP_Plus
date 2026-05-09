@@ -61,7 +61,7 @@ Run them manually with:
 uvx pre-commit run --all-files
 ```
 
-Prefer small, reviewable changes that follow the existing module boundaries. Do not rename public functions, move experiment artifacts, or alter model/science decisions without documenting the reason in `RESEARCH_LOG.md` and `experiments/registry.yaml`.
+Prefer small, reviewable changes that follow the existing module boundaries. Do not rename public functions, move experiment artifacts, or alter model/science decisions without documenting the reason in `experiments/registry.yaml`.
 
 ## Commit Messages
 
@@ -76,4 +76,4 @@ Use concise Conventional Commit-style messages:
 
 Create a feature branch or worktree branch for publication-polish changes. Do not push directly to `main`; open a pull request and let the maintainer merge after CI passes.
 
-Generated outputs in `processed/`, `models/`, and large structure directories should not be committed. Preserve `reports/`, `logs/`, `RESEARCH_LOG.md`, and `experiments/registry.yaml` as the experiment audit trail.
+Generated outputs in `processed/`, `models/`, and large structure directories should not be committed. Preserve `reports/`, `logs/`, and `experiments/registry.yaml` as the experiment audit trail.

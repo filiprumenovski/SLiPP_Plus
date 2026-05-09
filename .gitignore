@@ -83,3 +83,6 @@ summary_for_dassama.out
 
 # Historical report snapshots — keep locally only (large, churn-heavy)
 reports/archive/
+
+# Local research notes (not published)
+RESEARCH_LOG.md

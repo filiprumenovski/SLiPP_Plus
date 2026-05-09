@@ -118,7 +118,6 @@ Full audit trail:
 
 - [`experiments/registry.yaml`](experiments/registry.yaml): structured experiment index.
 - [`reports/compact_publishable/summary.md`](reports/compact_publishable/summary.md): compact ladder and deltas.
-- [`RESEARCH_LOG.md`](RESEARCH_LOG.md): decisions, failures, and abandoned ideas.
 
 ## Install
 
@@ -313,7 +312,6 @@ uv run ruff check src/slipp_plus/backbone_family_encoder.py src/slipp_plus/compo
 - [`README.md`](README.md): this file. Headline metrics, install, current state.
 - [`BIODOLPHIN_EXTENSION.md`](docs/BIODOLPHIN_EXTENSION.md): proposed next-stage extension to the BioDolphin lipid-pocket database (collaboration ask).
 - [`DATASHEET.md`](docs/DATASHEET.md): data provenance, checksums, class counts, and known issues.
-- [`RESEARCH_LOG.md`](RESEARCH_LOG.md): decision history and negative results.
 - [`experiments/registry.yaml`](experiments/registry.yaml): structured experiment registry (machine-readable).
 - [`reports/compact_publishable/summary.md`](reports/compact_publishable/summary.md): compact release-candidate ladder.
 - [`figures/`](figures/): submission-ready figures (PNG / PDF / SVG).
