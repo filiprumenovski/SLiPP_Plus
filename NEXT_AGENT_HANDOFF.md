@@ -6,15 +6,18 @@ failed/negative ablation notes.
 
 ## Current Best Metrics
 
-Deployable recommendation is `exp-028-compact-shape3-shell6-chem-weighted`:
+Deployable recommendation is `exp-035-legacy-rescue-logistic-gate-reproducible`:
 
-- Binary F1: `0.903 +/- 0.016`
-- Binary AUROC: `0.989 +/- 0.003`
-- 10-class macro-F1: `0.769 +/- 0.019`
-- 5-lipid macro-F1: `0.670 +/- 0.032`
-- apo-PDB holdout F1/AUROC: `0.717 / 0.801`
-- AlphaFold holdout F1/AUROC: `0.724 / 0.855`
-- Component blend: `0.1 shape3 + 0.2 shell6_shape + 0.7 chem`
+- Binary F1: `0.900 +/- 0.018`
+- Binary AUROC: `0.988 +/- 0.004`
+- 10-class macro-F1: `0.766 +/- 0.017`
+- 5-lipid macro-F1: `0.666`
+- apo-PDB holdout F1/AUROC: `0.742 / 0.793`
+- AlphaFold holdout F1/AUROC: `0.775 / 0.857`
+- Base blend: exp-028 `0.1 shape3 + 0.2 shell6_shape + 0.7 chem`
+- Rescue gate: logistic gate at threshold `0.95`, trained only on internal
+  split prediction features from exp-028, `paper17_family_encoder`, and
+  `v_sterol`; fired rows use the mean paper17/v_sterol class probabilities.
 
 Internal-validation leader is `exp-030-probability-blend-internal-leader`:
 
@@ -39,15 +42,15 @@ Internal-validation leader is `exp-030-probability-blend-internal-leader`:
   scores versus the unweighted `v49+tunnel_shape3` baseline.
 - Decision: do not promote simple STE overweighting.
 
-`exp-028-compact-shape3-shell6-chem-weighted` is the newest positive result.
+`exp-028-compact-shape3-shell6-chem-weighted` is the compact base anchor.
 
 - Report: `reports/compact_weight_grid_sweep.md`
 - Metrics: `reports/compact_shape3_shell6_chem_weighted_10_20_70/metrics.md`
 - Result: improves exp-021 by keeping apo-PDB F1 tied at `0.717`, raising
   AlphaFold F1 from `0.715` to `0.724`, and raising internal lipid5 macro-F1
   from `0.664` to `0.670`.
-- Decision: current deployable recommendation, while exp-019 remains the
-  internal-validation leader only.
+- Decision: superseded by exp-035, but keep it as the base anchor for rescue
+  gate and future ablations.
 
 `exp-029-compact-weight-local-refinement` is closed negative.
 
@@ -71,7 +74,8 @@ holdout-negative.
   `0.739`, AlphaFold F1 `0.711`, holdout mean `0.725`), but it loses internal
   subclass quality and AlphaFold F1 versus exp-028.
 
-`exp-031-legacy-rescue-rule-diagnostic` is the strongest current lead.
+`exp-031-legacy-rescue-rule-diagnostic` is the strongest holdout-scored
+diagnostic.
 
 - Report: `reports/legacy_rescue_rule_ablation_2026_05_09.md`
 - Rule: start from exp-028; when exp-028 calls non-lipid but both
@@ -86,7 +90,8 @@ holdout-negative.
   select thresholds from internal split predictions or train a 25-split rescue
   gate.
 
-`exp-032-legacy-rescue-holdout-safe-gate` is the strongest deployable lead.
+`exp-032-legacy-rescue-holdout-safe-gate` is the predecessor to the script-backed
+gate.
 
 - Report: `reports/legacy_rescue_holdout_safe_ablation_2026_05_09.md`
 - Internal threshold selection picks a strict rule:
@@ -97,8 +102,8 @@ holdout-negative.
 - A simple logistic rescue gate trained only on internal prediction features is
   positive: internal binary F1 `0.901 +/- 0.018`, lipid5 `0.667`, apo-PDB
   F1/AUROC `0.732 / 0.793`, AlphaFold F1/AUROC `0.755 / 0.847`.
-- Decision: first holdout-safe candidate that beats exp-028 on both external
-  F1 scores. Make it fully reproducible before marking it deployable.
+- Decision: superseded by exp-035, which made the gate fully reproducible and
+  found stronger holdout F1s under the same holdout-safe setup.
 
 `exp-033-covariate-shift-threshold-neutral` is closed neutral.
 
@@ -125,6 +130,19 @@ holdout-negative.
 - Decision: old exp-028 compact metrics remain valid; future ad hoc holdout
   scoring must align labels by identity, not row position.
 
+`exp-035-legacy-rescue-logistic-gate-reproducible` is the newest positive
+deployable result.
+
+- Script: `scripts/legacy_rescue_gate.py`
+- Report: `reports/legacy_rescue_logistic_gate/metrics.md`
+- Result: internal binary F1/AUROC `0.900 +/- 0.018 / 0.988 +/- 0.004`,
+  macro10 `0.766 +/- 0.017`, lipid5 macro-F1 `0.666`, apo-PDB F1/AUROC
+  `0.742 / 0.793`, AlphaFold F1/AUROC `0.775 / 0.857`.
+- Decision: supersedes exp-028 as the current deployable recommendation. It is
+  the first script-backed holdout-safe ablation here that beats the paper on
+  both apo-PDB F1 and AlphaFold F1 while staying within 0.03 binary F1 of the
+  paper.
+
 `exp-005-v_sterol-ensemble` holdouts are now complete from existing artifacts.
 
 - Report: `reports/v_sterol_holdout_completion.md`
@@ -150,9 +168,10 @@ holdout reporting.
 
 ## Remaining High-Impact Work
 
-1. Make exp-032 fully reproducible as a script/report artifact and then decide
-   whether it should supersede exp-028 as deployable. It is the first
-   holdout-safe candidate to beat exp-028 on both external F1 scores.
+1. Try to beat exp-035 without using holdout labels for selection. Best next
+   directions: threshold policy selected from internal prediction features,
+   stricter rescue precision controls, or a small meta-gate that preserves
+   AlphaFold AUROC while recovering more apo-PDB recall.
 2. Prioritize domain-shift fixes that can be learned without tuning on holdout
    labels. The holdout threshold diagnostic showed lower deployable thresholds
    would help externally, but internal threshold selection did not reproduce
@@ -160,8 +179,9 @@ holdout reporting.
 3. Revisit targeted STE handling only if it is more local than a global class
    weight: e.g. a calibrated PLM/STE/COA/MYR/OLA expert, confidence gating, or
    a data-extension path that adds STE-like pockets.
-4. If running more compact ensembles, keep exp-028 as the deployable anchor and
-   report both internal lipid5 macro-F1 and apo-PDB/AlphaFold F1. Do not promote
+4. If running more compact ensembles, keep exp-035 as the deployable target and
+   exp-028 as the base anchor. Report both internal lipid5 macro-F1 and
+   apo-PDB/AlphaFold F1. Do not promote
    an internal-only improvement that reproduces exp-019/exp-030 holdout
    regression.
 5. Keep README current with the deployable recommendation, internal leader, and
@@ -183,6 +203,7 @@ uv run pytest -q tests/test_pipeline_mode.py tests/test_family_encoder_weights.p
 make train CFG=configs/archive/v49_tunnel_shape3_ste2_family_encoder.yaml
 make eval CFG=configs/archive/v49_tunnel_shape3_ste2_family_encoder.yaml
 uv run python scripts/compact_probability_ensemble.py --component-dir processed/v49_tunnel_shape3 --component-dir processed/v49_shell6_tunnel_shape --component-dir processed/v49_tunnel_chem --component-weight 0.1 --component-weight 0.2 --component-weight 0.7 --model-name shape3_shell6_chem_weighted_10_20_70 --report-title "Compact shape3 shell6 chem weighted probability ensemble" --output-predictions-dir processed/compact_shape3_shell6_chem_weighted_10_20_70/predictions --output-report-dir reports/compact_shape3_shell6_chem_weighted_10_20_70
+uv run python scripts/legacy_rescue_gate.py
 uv run python scripts/generate_ablation_matrix.py
 ```
 

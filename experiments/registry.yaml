@@ -919,7 +919,7 @@
   models: [family_encoder, family_encoder, family_encoder]
   postprocessing: "weighted_probability_ensemble(shape3=0.1, shell6_shape=0.2, chem=0.7)"
   status: complete
-  is_current_best: true
+  is_current_best: false
   deployable_rationale: >
     Selected as the deployable artifact over exp-021 because it preserves the
     same apo-PDB F1 (0.717), improves AlphaFold F1 (0.715 -> 0.724), and
@@ -1116,3 +1116,43 @@
     apo-PDB rows and 30 AlphaFold rows; after aligning by structure_id/ligand,
     labels agree exactly. The compact ensemble script now prefers canonical
     root labels when present and aligns them to component prediction order.
+
+- id: exp-035-legacy-rescue-logistic-gate-reproducible
+  date: "2026-05-09"
+  feature_set: exp-028 + paper17_family_encoder + v_sterol probabilities
+  config: scripts/legacy_rescue_gate.py
+  models: [family_encoder, logistic_gate]
+  postprocessing: "holdout_safe_logistic_rescue_gate(threshold=0.95)"
+  status: complete
+  is_current_best: true
+  deployable_rationale: >
+    Supersedes exp-028 by using only saved internal split predictions from
+    exp-028, paper17_family_encoder, and v_sterol to train a logistic rescue
+    gate for exp-028 non-lipid calls. It improves both external holdout F1
+    scores while keeping internal binary F1 within about 0.003 of exp-028.
+  metrics:
+    binary_f1: "0.900 ± 0.018"
+    binary_auroc: "0.988 ± 0.004"
+    macro_f1_10: "0.766 ± 0.017"
+    lipid_macro_f1: "0.666"
+  holdouts:
+    apo_pdb_f1: 0.742
+    apo_pdb_auroc: 0.793
+    alphafold_f1: 0.775
+    alphafold_auroc: 0.857
+  supersedes: exp-028-compact-shape3-shell6-chem-weighted
+  artifacts:
+    report: reports/legacy_rescue_logistic_gate/metrics.md
+    threshold_sweep: reports/legacy_rescue_logistic_gate/threshold_sweep.csv
+    raw_metrics: reports/legacy_rescue_logistic_gate/raw_metrics.parquet
+    predictions: processed/legacy_rescue_logistic_gate/predictions/test_predictions.parquet
+    apo_pdb_predictions: processed/legacy_rescue_logistic_gate/predictions/apo_pdb_predictions.parquet
+    alphafold_predictions: processed/legacy_rescue_logistic_gate/predictions/alphafold_predictions.parquet
+  notes: >
+    NEW DEPLOYABLE LEADER. A first-class reproducible logistic rescue gate
+    trains only on internal split prediction features for rows where exp-028
+    calls non-lipid. At threshold 0.95, fired rows are rewritten to the mean
+    paper17_family_encoder and v_sterol class probabilities. Internal binary
+    F1 is 0.900 +/- 0.018, lipid5 macro-F1 is 0.666, apo-PDB F1/AUROC is
+    0.742 / 0.793, and AlphaFold F1/AUROC is 0.775 / 0.857. This beats exp-028
+    on both external F1 scores under holdout-safe constraints.

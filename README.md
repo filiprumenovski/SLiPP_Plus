@@ -44,13 +44,20 @@ proposal.
 
 | Metric | Mean ± std |
 |---|---:|
-| Binary F1 | `0.903 ± 0.016` |
-| Binary AUROC | `0.989 ± 0.003` |
-| 10-class macro-F1 | `0.769 ± 0.019` |
-| 5-lipid macro-F1 | `0.670 ± 0.032` |
-| apo-PDB holdout F1 | `0.717` |
-| AlphaFold holdout F1 | `0.724` |
-| CLR / MYR / OLA / PLM / STE F1 | `0.758 / 0.705 / 0.599 / 0.643 / 0.644` |
+| Binary F1 | `0.900 ± 0.018` |
+| Binary AUROC | `0.988 ± 0.004` |
+| 10-class macro-F1 | `0.766 ± 0.017` |
+| 5-lipid macro-F1 | `0.666` |
+| apo-PDB holdout F1 | `0.742` |
+| AlphaFold holdout F1 | `0.775` |
+
+Current deployable leader: `exp-035-legacy-rescue-logistic-gate-reproducible`
+starts from the exp-028 compact ensemble, trains a small logistic gate on
+internal split prediction features from exp-028, `paper17_family_encoder`, and
+`v_sterol`, and rewrites high-confidence exp-028 non-lipid calls to the mean
+legacy class probabilities. This keeps internal binary F1 within about 0.003
+of exp-028 while improving apo-PDB F1 from `0.717` to `0.742` and AlphaFold F1
+from `0.724` to `0.775`.
 
 The internal-validation leader (`exp-030-probability-blend-internal-leader`)
 reports binary F1 `0.908 ± 0.015`, AUROC `0.990 ± 0.003`, 10-class macro-F1
@@ -59,19 +66,16 @@ apo-PDB `0.643` and AlphaFold `0.536` on the external holdouts. The 0.017
 internal lipid5 macro-F1 sacrifice in `exp-028` buys back ~0.07 apo-PDB F1
 and ~0.19 AlphaFold F1 relative to this internal leader.
 
-Strongest current lead: `exp-031-legacy-rescue-rule-diagnostic` starts from
+Strongest holdout-scored diagnostic: `exp-031-legacy-rescue-rule-diagnostic` starts from
 exp-028 and rescues exp-028 non-lipid calls when `paper17_family_encoder` and
 `v_sterol` agree strongly enough. It improves apo-PDB F1 to `0.729` and
 AlphaFold F1 to `0.735`, with internal binary F1 `0.901 ± 0.015` and lipid5
 macro-F1 `0.668`. It is not promoted because the threshold was found by a
 holdout-scored diagnostic grid.
 
-Strongest holdout-safe lead: `exp-032-legacy-rescue-holdout-safe-gate` trains a
-small logistic rescue gate using only internal split prediction features. It
-keeps internal binary F1 at `0.901 ± 0.018`, lipid5 macro-F1 at `0.667`, and
-improves holdouts to apo-PDB `0.732` and AlphaFold `0.755`. It should be made
-fully reproducible as a first-class script/report artifact before replacing
-exp-028 as the deployable recommendation.
+Previous holdout-safe lead: `exp-032-legacy-rescue-holdout-safe-gate` showed
+that a small logistic rescue gate transfers. `exp-035` is the script-backed
+rerun and supersedes it as the deployable recommendation.
 
 Holdout-label audit: `exp-034-holdout-label-source-audit` found a row-order
 trap, not a semantic label conflict. Root holdout files and component-specific
@@ -81,12 +85,12 @@ now aligns canonical labels by identity before scoring.
 
 ### Comparison to the SLiPP paper baseline
 
-| Metric | Paper (Chou et al. 2024) | SLiPP++ exp-028 | Δ |
+| Metric | Paper (Chou et al. 2024) | SLiPP++ exp-035 | Δ |
 |---|---:|---:|---:|
-| Binary F1 | 0.869 | 0.903 | +0.034 |
-| Binary AUROC | 0.970 | 0.989 | +0.019 |
-| AlphaFold holdout F1 | 0.643 | 0.724 | +0.081 |
-| apo-PDB holdout F1 | 0.726 | 0.717 | −0.009 |
+| Binary F1 | 0.869 | 0.900 | +0.031 |
+| Binary AUROC | 0.970 | 0.988 | +0.018 |
+| AlphaFold holdout F1 | 0.643 | 0.775 | +0.132 |
+| apo-PDB holdout F1 | 0.726 | 0.742 | +0.016 |
 
 Three of four headline metrics beat the paper baseline; apo-PDB is
 −0.009, attributable in part to the smaller 117-PDB holdout set in the
@@ -196,7 +200,7 @@ checkout. See [`DATASHEET.md`](docs/DATASHEET.md) and
 
 ## Reproduce
 
-Run the current deployable compact ensemble:
+Run the compact base ensemble, then the current deployable rescue gate:
 
 ```bash
 uv run python scripts/compact_probability_ensemble.py \
@@ -211,6 +215,8 @@ uv run python scripts/compact_probability_ensemble.py \
   --output-predictions-dir processed/compact_shape3_shell6_chem_weighted_10_20_70/predictions \
   --output-report-dir reports/compact_shape3_shell6_chem_weighted_10_20_70
 uv run python -m slipp_plus.cli compact-report
+
+uv run python scripts/legacy_rescue_gate.py
 ```
 
 Run the paper-aligned Day 1 baseline:
