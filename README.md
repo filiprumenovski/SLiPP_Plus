@@ -18,35 +18,35 @@ Upstream code and `training_pockets.csv` come from
 
 ## Current Release Candidate
 
-`exp-017-compact-shape3-shape6-ensemble` is the current internal registry
-leader. It averages probabilities from the two strongest compact family
-encoders, while preserving both component candidates:
+`exp-018-compact-shape3-shape6-shell6-ensemble` is the current internal
+registry leader. It averages probabilities from three complementary compact
+family encoders, while preserving each component candidate:
 
 ```text
 command:     uv run python scripts/compact_probability_ensemble.py
-components:  exp-014 v49+tunnel_shape3 + exp-012 v49+tunnel_shape
-backbone:    two family encoders
-report:      reports/compact_shape3_shape6_ensemble/metrics.md
+components:  exp-014 v49+tunnel_shape3 + exp-012 v49+tunnel_shape + exp-013 shell6+tunnel_shape
+backbone:    three family encoders
+report:      reports/compact_shape3_shape6_shell6_ensemble/metrics.md
 ```
 
-The ensemble confirms that the three-feature and six-feature tunnel-shape
-variants have complementary errors. It is the internal validation leader, while
-external holdout performance remains an explicit caveat.
+The ensemble confirms that the compact tunnel-shape variants have complementary
+errors. It is the internal validation leader, while external holdout performance
+remains an explicit caveat.
 
 | Metric | Mean +/- std |
 |---|---:|
-| Binary F1 | `0.904 +/- 0.015` |
+| Binary F1 | `0.903 +/- 0.017` |
 | Binary AUROC | `0.989 +/- 0.003` |
-| 10-class macro-F1 | `0.775 +/- 0.017` |
-| 5-lipid macro-F1 | `0.676 +/- 0.032` |
-| CLR F1 | `0.759` |
-| MYR F1 | `0.702` |
-| OLA F1 | `0.620` |
-| PLM F1 | `0.652` |
-| STE F1 | `0.646` |
+| 10-class macro-F1 | `0.776 +/- 0.015` |
+| 5-lipid macro-F1 | `0.678 +/- 0.028` |
+| CLR F1 | `0.766` |
+| MYR F1 | `0.705` |
+| OLA F1 | `0.621` |
+| PLM F1 | `0.650` |
+| STE F1 | `0.649` |
 
-External holdouts are mixed for this compact ensemble: apo-PDB F1 `0.690`
-and AlphaFold F1 `0.676`. The best recorded individual holdout F1s are `0.746`
+External holdouts are mixed for this compact ensemble: apo-PDB F1 `0.712`
+and AlphaFold F1 `0.671`. The best recorded individual holdout F1s are `0.746`
 on apo-PDB from `exp-001-day1-v14` and `0.753` on AlphaFold from
 `exp-002-v49-baseline`. Treat holdout performance as an explicit publication
 caveat, not as hidden tuning debt.
@@ -62,6 +62,7 @@ The compact ablation ladder shows a clean story:
 | `v49` | 49 | `0.649 +/- 0.026` | `0.898 +/- 0.016` |
 | `v49+tunnel_shape3` | 52 | `0.668 +/- 0.031` | `0.900 +/- 0.015` |
 | `v49+tunnel_shape` | 55 | `0.666 +/- 0.032` | `0.902 +/- 0.017` |
+| `shape3+shape6+shell6 mean ensemble` | 49/52/55 | `0.678 +/- 0.028` | `0.903 +/- 0.017` |
 | `shape3+shape6 mean ensemble` | 52/55 | `0.676 +/- 0.032` | `0.904 +/- 0.015` |
 | `v_tunnel+moe` | 105 | `0.664 +/- 0.029` | `0.902 +/- 0.014` |
 

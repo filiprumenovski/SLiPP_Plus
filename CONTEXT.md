@@ -13,12 +13,12 @@ The project is in an **active research phase** — past Day 1 reproduction, now 
 ## Current Best Configuration
 
 ```
-experiment_id:   exp-017-compact-shape3-shape6-ensemble
-feature_set:     probability ensemble of v49+tunnel_shape3 and v49+tunnel_shape
-backbone:        two compact family encoders distilled from exp-009 teacher predictions
+experiment_id:   exp-018-compact-shape3-shape6-shell6-ensemble
+feature_set:     probability ensemble of v49+tunnel_shape3, v49+tunnel_shape, and shell6+tunnel_shape
+backbone:        three compact family encoders distilled from exp-009 teacher predictions
 postprocessing:  mean probability ensemble
 config:          scripts/compact_probability_ensemble.py
-predictions:     processed/compact_shape3_shape6_ensemble/predictions/test_predictions.parquet
+predictions:     processed/compact_shape3_shape6_shell6_ensemble/predictions/test_predictions.parquet
 reproduce:       uv run python scripts/compact_probability_ensemble.py
 report:          uv run python -m slipp_plus.cli compact-report
 ```
@@ -27,17 +27,17 @@ report:          uv run python -m slipp_plus.cli compact-report
 
 | metric                  | value           | paper baseline | Δ       |
 |---                      |---              |---             |---      |
-| Binary F1 (test)        | 0.904 ± 0.015  | 0.869          | +0.035  |
+| Binary F1 (test)        | 0.903 ± 0.017  | 0.869          | +0.034  |
 | Binary AUROC (test)     | 0.989 ± 0.003  | 0.970          | +0.019  |
-| 10-class macro-F1       | 0.775 ± 0.017  | —              | new     |
-| 5-lipid macro-F1        | 0.676 ± 0.032  | —              | new     |
-| CLR F1                  | 0.759           | —              | —       |
-| STE F1                  | 0.646           | —              | weakest |
-| PLM F1                  | 0.652           | —              | —       |
-| MYR F1                  | 0.702           | —              | —       |
-| OLA F1                  | 0.620           | —              | —       |
-| Apo-PDB F1              | 0.690           | 0.726          | conservative |
-| AlphaFold F1            | 0.676           | 0.643          | improved |
+| 10-class macro-F1       | 0.776 ± 0.015  | —              | new     |
+| 5-lipid macro-F1        | 0.678 ± 0.028  | —              | new     |
+| CLR F1                  | 0.766           | —              | —       |
+| STE F1                  | 0.649           | —              | weakest |
+| PLM F1                  | 0.650           | —              | —       |
+| MYR F1                  | 0.705           | —              | —       |
+| OLA F1                  | 0.621           | —              | —       |
+| Apo-PDB F1              | 0.712           | 0.726          | conservative |
+| AlphaFold F1            | 0.671           | 0.643          | improved |
 
 ## Active Hypotheses
 
@@ -48,8 +48,8 @@ report:          uv run python -m slipp_plus.cli compact-report
 
 ## Known Blockers / Weaknesses
 
-- **STE F1 (0.647)** remains the weakest lipid class. Only 152 training rows, so data scarcity is the floor.
-- **External holdouts are conservative** for the compact release candidate: apo-PDB F1 0.696 vs paper 0.726, AlphaFold F1 0.620 vs paper 0.643.
+- **STE F1 (0.649)** remains the weakest lipid class. Only 152 training rows, so data scarcity is the floor.
+- **External holdouts are conservative/mixed** for the compact ensemble: apo-PDB F1 0.712 vs paper 0.726, AlphaFold F1 0.671 vs paper 0.643.
 - **Tiebreaker modules** are heavily duplicated (~1,750 LOC of copy-paste). P2 audit item pending.
 
 ## What Has Been Tried (and failed / abandoned)
@@ -67,7 +67,8 @@ report:          uv run python -m slipp_plus.cli compact-report
 v14 (17 cols)  →  v14+shell (29)                ← shell12 alone is modest
                →  v14+aa (37)                   ← major compact recovery
                →  v49 (+20 AA +12 shell = 49)   ← parsimonious fallback
-               →  v49+tunnel_shape (55)         ← current release candidate
+               →  v49+tunnel_shape (55)         ← single compact release candidate
+               →  shape3+shape6+shell6 ensemble ← current internal leader
                →  v_sterol (+38 chem-refined = 87)
                →  v_tunnel (+18 tunnel = 105)   ← high-complexity reference only
                →  v_plm_ste (+16 motif = 103)   ← abandoned

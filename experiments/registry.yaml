@@ -536,7 +536,7 @@
   models: [family_encoder, family_encoder]
   postprocessing: "mean_probability_ensemble(exp-014, exp-012)"
   status: complete
-  is_current_best: true
+  is_current_best: false
   metrics:
     binary_f1: "0.904 ± 0.015"
     binary_auroc: "0.989 ± 0.003"
@@ -567,3 +567,41 @@
     binary F1 improves to 0.904. Holdouts remain mixed and do not beat the best
     individual holdout records, so this is an internal validation leader rather
     than a solved external-generalization answer.
+
+- id: exp-018-compact-shape3-shape6-shell6-ensemble
+  date: "2026-05-08"
+  feature_set: v49+tunnel_shape3 + v49+tunnel_shape + v14+aa20+shell6+tunnel_shape
+  config: scripts/compact_probability_ensemble.py
+  models: [family_encoder, family_encoder, family_encoder]
+  postprocessing: "mean_probability_ensemble(exp-014, exp-012, exp-013)"
+  status: complete
+  is_current_best: true
+  metrics:
+    binary_f1: "0.903 ± 0.017"
+    binary_auroc: "0.989 ± 0.003"
+    macro_f1_10: "0.776 ± 0.015"
+    lipid_macro_f1: "0.678 ± 0.028"
+    clr_f1: "0.766"
+    myr_f1: "0.705"
+    ola_f1: "0.621"
+    plm_f1: "0.650"
+    ste_f1: "0.649"
+  holdouts:
+    apo_pdb_f1: 0.712
+    apo_pdb_auroc: 0.803
+    alphafold_f1: 0.671
+    alphafold_auroc: 0.856
+  supersedes: exp-017-compact-shape3-shape6-ensemble
+  artifacts:
+    predictions: processed/compact_shape3_shape6_shell6_ensemble/predictions/test_predictions.parquet
+    apo_predictions: processed/compact_shape3_shape6_shell6_ensemble/predictions/apo_pdb_predictions.parquet
+    alphafold_predictions: processed/compact_shape3_shape6_shell6_ensemble/predictions/alphafold_predictions.parquet
+    report: reports/compact_shape3_shape6_shell6_ensemble/metrics.md
+    metrics: reports/compact_shape3_shape6_shell6_ensemble/raw_metrics.parquet
+  notes: >
+    NEW INTERNAL LEADER. Adds exp-013's shell6/tunnel-shape compact family
+    encoder to the exp-017 shape3/shape6 probability ensemble. The three-way
+    blend raises lipid5 macro-F1 to 0.678 (+0.002 over exp-017, +0.010 over
+    exp-014), raises macro10 to 0.776, and improves apo-PDB F1 to 0.712 while
+    AlphaFold F1 is slightly lower than exp-017. This is still an internal
+    validation leader, not a solved external-generalization answer.

@@ -16,6 +16,26 @@ from slipp_plus.evaluate import (
 )
 
 PROBA_COLUMNS = [f"p_{label}" for label in CLASS_10]
+DEFAULT_COMPONENT_DIRS = [
+    Path("processed/v49_tunnel_shape3"),
+    Path("processed/v49_tunnel_shape"),
+    Path("processed/v49_shell6_tunnel_shape"),
+]
+DEFAULT_MODEL_NAME = "shape3_shape6_shell6_mean"
+DEFAULT_REPORT_TITLE = "Compact shape3/shape6/shell6 probability ensemble"
+
+
+def _prediction_path(component_dir: Path) -> Path:
+    return component_dir / "predictions" / "hierarchical_lipid_predictions.parquet"
+
+
+def _holdout_prediction_path(component_dir: Path, holdout_name: str) -> Path:
+    return (
+        component_dir
+        / "predictions"
+        / "holdouts"
+        / f"family_encoder_{holdout_name}_predictions.parquet"
+    )
 
 
 def _average_prediction_frames(paths: list[Path], model_name: str) -> pd.DataFrame:
@@ -40,12 +60,13 @@ def _average_prediction_frames(paths: list[Path], model_name: str) -> pd.DataFra
 def _write_report(
     path: Path,
     *,
+    title: str,
     summary: pd.Series,
     holdouts: dict[str, dict[str, float]],
 ) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
-        "# Compact shape3/shape6 probability ensemble\n\n"
+        f"# {title}\n\n"
         "| metric | value |\n|---|---:|\n"
         f"| binary_f1 | {summary['binary_f1_mean']:.3f} +/- {summary['binary_f1_std']:.3f} |\n"
         f"| binary_auroc | {summary['binary_auroc_mean']:.3f} +/- {summary['binary_auroc_std']:.3f} |\n"
@@ -64,21 +85,21 @@ def _write_report(
 
 def run_compact_probability_ensemble(
     *,
-    shape3_dir: Path,
-    shape6_dir: Path,
+    component_dirs: list[Path],
     output_predictions_dir: Path,
     output_report_dir: Path,
+    model_name: str = DEFAULT_MODEL_NAME,
+    report_title: str = DEFAULT_REPORT_TITLE,
 ) -> dict[str, Path]:
-    """Average shape3 and shape6 compact predictions and write metrics."""
+    """Average compact-model predictions and write metrics."""
 
+    if len(component_dirs) < 2:
+        raise ValueError("at least two component directories are required")
     output_predictions_dir.mkdir(parents=True, exist_ok=True)
     output_report_dir.mkdir(parents=True, exist_ok=True)
     averaged = _average_prediction_frames(
-        [
-            shape3_dir / "predictions" / "hierarchical_lipid_predictions.parquet",
-            shape6_dir / "predictions" / "hierarchical_lipid_predictions.parquet",
-        ],
-        model_name="shape3_shape6_mean",
+        [_prediction_path(component_dir) for component_dir in component_dirs],
+        model_name=model_name,
     )
     predictions_path = output_predictions_dir / "test_predictions.parquet"
     averaged.to_parquet(predictions_path, index=False)
@@ -95,26 +116,20 @@ def run_compact_probability_ensemble(
     ):
         holdout_preds = _average_prediction_frames(
             [
-                shape3_dir
-                / "predictions"
-                / "holdouts"
-                / f"family_encoder_{holdout_name}_predictions.parquet",
-                shape6_dir
-                / "predictions"
-                / "holdouts"
-                / f"family_encoder_{holdout_name}_predictions.parquet",
+                _holdout_prediction_path(component_dir, holdout_name)
+                for component_dir in component_dirs
             ],
-            model_name="shape3_shape6_mean",
+            model_name=model_name,
         )
         holdout_preds_path = output_predictions_dir / f"{holdout_name}_predictions.parquet"
         holdout_preds.to_parquet(holdout_preds_path, index=False)
         holdouts[holdout_name] = evaluate_staged_holdout_predictions(
             holdout_preds,
-            pd.read_parquet(shape3_dir / holdout_file),
+            pd.read_parquet(component_dirs[0] / holdout_file),
         )
 
     report_path = output_report_dir / "metrics.md"
-    _write_report(report_path, summary=summary, holdouts=holdouts)
+    _write_report(report_path, title=report_title, summary=summary, holdouts=holdouts)
     return {
         "predictions": predictions_path,
         "raw_metrics": raw_metrics_path,
@@ -124,24 +139,36 @@ def run_compact_probability_ensemble(
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--shape3-dir", type=Path, default=Path("processed/v49_tunnel_shape3"))
-    parser.add_argument("--shape6-dir", type=Path, default=Path("processed/v49_tunnel_shape"))
+    parser.add_argument(
+        "--component-dir",
+        action="append",
+        dest="component_dirs",
+        type=Path,
+        default=None,
+        help=(
+            "Component processed directory. Repeat to override the default "
+            "shape3/shape6/shell6 ensemble."
+        ),
+    )
+    parser.add_argument("--model-name", default=DEFAULT_MODEL_NAME)
+    parser.add_argument("--report-title", default=DEFAULT_REPORT_TITLE)
     parser.add_argument(
         "--output-predictions-dir",
         type=Path,
-        default=Path("processed/compact_shape3_shape6_ensemble/predictions"),
+        default=Path("processed/compact_shape3_shape6_shell6_ensemble/predictions"),
     )
     parser.add_argument(
         "--output-report-dir",
         type=Path,
-        default=Path("reports/compact_shape3_shape6_ensemble"),
+        default=Path("reports/compact_shape3_shape6_shell6_ensemble"),
     )
     args = parser.parse_args()
     outputs = run_compact_probability_ensemble(
-        shape3_dir=args.shape3_dir,
-        shape6_dir=args.shape6_dir,
+        component_dirs=args.component_dirs or DEFAULT_COMPONENT_DIRS,
         output_predictions_dir=args.output_predictions_dir,
         output_report_dir=args.output_report_dir,
+        model_name=args.model_name,
+        report_title=args.report_title,
     )
     for label, path in outputs.items():
         print(f"{label}: {path}")

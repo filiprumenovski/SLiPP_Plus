@@ -10,28 +10,29 @@ scientific evidence in this project.
 ## Current State
 
 - Branch: `main`
-- Latest pushed commit at time of writing: `62277da experiments: record shell6 tunnel-shape ablation`
+- Latest local commit at time of writing: this commit, `experiments: promote three-way compact ensemble`
 - Worktree was clean when this file was written.
-- Current internal leader: `exp-017-compact-shape3-shape6-ensemble`
+- Current internal leader: `exp-018-compact-shape3-shape6-shell6-ensemble`
 - Current internal best command: `uv run python scripts/compact_probability_ensemble.py`
 - Best single compact model: `exp-014-v49-tunnel-shape3`
-- Previous more balanced compact candidate: `exp-012-compact-tunnel-shape`
-- Current best report: `reports/compact_shape3_shape6_ensemble/metrics.md`
-- Current best registry entry: `experiments/registry.yaml` entry `exp-017-compact-shape3-shape6-ensemble`
+- Previous two-way compact ensemble: `exp-017-compact-shape3-shape6-ensemble`
+- Current best report: `reports/compact_shape3_shape6_shell6_ensemble/metrics.md`
+- Current best registry entry: `experiments/registry.yaml` entry `exp-018-compact-shape3-shape6-shell6-ensemble`
 
 Current headline metrics from the registry/README:
 
 | metric | value |
 |---|---:|
-| Binary F1 | `0.904 +/- 0.015` |
+| Binary F1 | `0.903 +/- 0.017` |
 | Binary AUROC | `0.989 +/- 0.003` |
-| 10-class macro-F1 | `0.775 +/- 0.017` |
-| 5-lipid macro-F1 | `0.676 +/- 0.032` |
-| Apo-PDB F1 | `0.690` |
-| AlphaFold F1 | `0.676` |
+| 10-class macro-F1 | `0.776 +/- 0.015` |
+| 5-lipid macro-F1 | `0.678 +/- 0.028` |
+| Apo-PDB F1 | `0.712` |
+| AlphaFold F1 | `0.671` |
 
-The new internal leader is not a clean all-metric win: apo-PDB regresses vs
-exp-012, while AlphaFold improves. Do not hide that.
+The new internal leader is not a clean all-metric win: lipid macro and apo-PDB
+improve vs the two-way ensemble, binary F1 is slightly lower, and AlphaFold F1
+is slightly lower. Do not hide that.
 
 ## Recently Completed
 
