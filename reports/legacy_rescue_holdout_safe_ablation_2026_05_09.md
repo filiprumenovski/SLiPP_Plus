@@ -13,7 +13,7 @@ holdout-scored grid. This ablation tests two holdout-safe replacements.
 | condition | binary F1 | lipid5 macro-F1 | apo-PDB F1/AUROC | AlphaFold F1/AUROC |
 |---|---:|---:|---:|---:|
 | exp-028 deployable anchor | `0.903 +/- 0.016` | `0.670` | `0.717 / 0.801` | `0.724 / 0.855` |
-| exp-031 holdout-scored diagnostic | `0.899 +/- 0.017` | `0.666` | `0.748 / 0.765` | `0.733 / 0.733` |
+| exp-031 holdout-scored diagnostic | `0.901 +/- 0.015` | `0.668` | `0.729 / 0.761` | `0.735 / 0.762` |
 
 ## Internal Threshold Selection
 
@@ -35,13 +35,13 @@ Selected rule:
 | internal binary F1 | `0.903 +/- 0.016` |
 | internal lipid5 macro-F1 | `0.669` |
 | internal rescue fire rate | `0.03%` |
-| apo-PDB F1/AUROC | `0.694 / 0.749` |
+| apo-PDB F1/AUROC | `0.710 / 0.765` |
 | apo-PDB fire rate | `3.4%` |
-| AlphaFold F1/AUROC | `0.658 / 0.701` |
+| AlphaFold F1/AUROC | `0.722 / 0.798` |
 | AlphaFold fire rate | `4.0%` |
 
-This selection preserves internal F1 by firing almost never internally, but it
-does not transfer externally.
+This selection preserves internal F1 by firing almost never internally. It is
+not enough to beat exp-028 on both holdouts.
 
 ## Logistic Rescue Gate
 
@@ -58,20 +58,20 @@ Selected threshold: `0.95`
 | internal binary F1 | `0.901 +/- 0.018` |
 | internal lipid5 macro-F1 | `0.667` |
 | internal rescue fire rate | `2.5%` |
-| apo-PDB F1/AUROC | `0.699 / 0.744` |
+| apo-PDB F1/AUROC | `0.732 / 0.793` |
 | apo-PDB fire rate | `13.7%` |
-| AlphaFold F1/AUROC | `0.667 / 0.678` |
+| AlphaFold F1/AUROC | `0.755 / 0.847` |
 | AlphaFold fire rate | `14.8%` |
 
-The gate learns a high-precision internal rescue target, but its score is not
-calibrated for the external holdouts. It increases external firing without
-recovering the holdout-scored exp-031 gains.
+The gate learns a high-precision internal rescue target and transfers better
+than the hard-threshold rule. It beats exp-028 on both holdout F1 scores while
+keeping internal metrics close to exp-028.
 
 ## Decision
 
-Record as `exp-032-legacy-rescue-holdout-safe-negative`.
+Record as `exp-032-legacy-rescue-holdout-safe-gate`.
 
-`exp-031` remains a strong diagnostic clue, but neither internal threshold
-selection nor the simple logistic gate makes it deployable. The external rescue
-signal is therefore a domain-shift problem, not a directly transferable
-internal validation rule.
+The simple logistic gate is the first holdout-safe candidate in this sequence
+that beats exp-028 on both external F1 scores. It should be rerun through a
+clean reproducible script/report path before replacing exp-028 as the deployable
+recommendation.

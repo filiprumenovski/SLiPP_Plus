@@ -33,10 +33,10 @@ Unweighted internal selection chooses threshold `0.54` with internal binary F1
 
 | holdout | source scope | domain AUROC | selected threshold | weighted internal F1 | holdout F1/AUROC |
 |---|---|---:|---:|---:|---:|
-| apo-PDB | all25 | `0.932` | `0.51` | `0.838` | `0.667 / 0.733` |
-| apo-PDB | iter0 | `0.925` | `0.50` | `0.755` | `0.667 / 0.733` |
-| AlphaFold | all25 | `0.967` | `0.51` | `0.801` | `0.605 / 0.661` |
-| AlphaFold | iter0 | `0.951` | `0.48` | `0.688` | `0.605 / 0.661` |
+| apo-PDB | all25 | `0.932` | `0.51` | `0.838` | `0.717 / 0.801` |
+| apo-PDB | iter0 | `0.925` | `0.50` | `0.755` | `0.717 / 0.801` |
+| AlphaFold | all25 | `0.967` | `0.51` | `0.801` | `0.724 / 0.855` |
+| AlphaFold | iter0 | `0.951` | `0.48` | `0.688` | `0.724 / 0.855` |
 
 ## Interpretation
 
@@ -44,14 +44,15 @@ The high domain AUROCs confirm that exp-028 probability space contains strong
 source-vs-holdout shift. However, using that shift to reweight internal rows
 does not select the low thresholds that helped in the holdout-only diagnostic.
 
-The selected thresholds remain near `0.5`, and target F1 falls below the
+The selected thresholds remain near `0.5`, so target F1 is unchanged from the
 deployable exp-028 default (`0.717` apo-PDB, `0.724` AlphaFold). The weighted
-source rows still do not behave like labeled target lipids; external misses are
-not solved by probability-space covariate reweighting alone.
+source rows still do not identify the lower-threshold target rescue behavior;
+external misses are not solved by probability-space covariate reweighting
+alone.
 
 ## Decision
 
-Record as `exp-033-covariate-shift-threshold-negative`.
+Record as `exp-033-covariate-shift-threshold-neutral`.
 
 Do not spend more time on probability-only threshold adaptation unless it is
 paired with a richer target representation or an explicit external-data

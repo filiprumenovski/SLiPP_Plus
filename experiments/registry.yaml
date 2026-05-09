@@ -1020,29 +1020,28 @@
   status: complete
   is_current_best: false
   metrics:
-    binary_f1: "0.899 ± 0.017"
-    macro_f1_10: "0.766"
-    lipid_macro_f1: "0.666"
-    ste_f1: "0.639"
+    binary_f1: "0.901 ± 0.015"
+    macro_f1_10: "0.768"
+    lipid_macro_f1: "0.668"
+    ste_f1: "0.641"
   holdouts:
-    apo_pdb_f1: 0.748
-    apo_pdb_auroc: 0.765
-    alphafold_f1: 0.733
-    alphafold_auroc: 0.733
+    apo_pdb_f1: 0.729
+    apo_pdb_auroc: 0.761
+    alphafold_f1: 0.735
+    alphafold_auroc: 0.762
   supersedes: null
   artifacts:
     report: reports/legacy_rescue_rule_ablation_2026_05_09.md
   notes: >
     HOLDOUT-POSITIVE DIAGNOSTIC. Starting from exp-028, rescue only rows with
-    exp-028 lipid probability below 0.50 when both paper17_family_encoder and
-    v_sterol have lipid probability >=0.35, replacing probabilities with the
-    paper17/v_sterol average. This improves apo-PDB F1 to 0.748 and AlphaFold
-    F1 to 0.733 while keeping internal binary F1 at 0.899 and lipid5 macro-F1
-    at 0.666. Do not promote yet: thresholds were found by a holdout-scored
-    diagnostic grid. Next step is internal split threshold selection or a
-    25-split trained rescue gate.
+    exp-028 lipid probability below 0.50 when paper17_family_encoder lipid
+    probability is >=0.35, v_sterol lipid probability is >=0.55, and the
+    minimum legacy-minus-exp028 margin is >=0.10. This improves apo-PDB F1 to
+    0.729 and AlphaFold F1 to 0.735 while keeping internal binary F1 at 0.901
+    and lipid5 macro-F1 at 0.668. Do not promote by itself: thresholds were
+    found by a holdout-scored diagnostic grid.
 
-- id: exp-032-legacy-rescue-holdout-safe-negative
+- id: exp-032-legacy-rescue-holdout-safe-gate
   date: "2026-05-09"
   feature_set: exp-028 + paper17_family_encoder + v_sterol probabilities
   config: reports/legacy_rescue_holdout_safe_ablation_2026_05_09.md
@@ -1054,23 +1053,23 @@
     binary_f1: "0.903 ± 0.016"
     lipid_macro_f1: "0.669"
   holdouts:
-    apo_pdb_f1: 0.694
-    apo_pdb_auroc: 0.749
-    alphafold_f1: 0.658
-    alphafold_auroc: 0.701
+    apo_pdb_f1: 0.732
+    apo_pdb_auroc: 0.793
+    alphafold_f1: 0.755
+    alphafold_auroc: 0.847
   supersedes: null
   artifacts:
     report: reports/legacy_rescue_holdout_safe_ablation_2026_05_09.md
   notes: >
-    NEGATIVE HOLDOUT-SAFE RESCUE RESULT. Internal split threshold selection
-    chooses a strict rescue rule (paper17 >=0.50, v_sterol >=0.85, margin 0)
-    that fires on only 0.03% of internal rows and fails externally
-    (apo-PDB F1 0.694, AlphaFold F1 0.658). A simple logistic rescue gate
-    trained only on internal split prediction features is also negative
-    (apo-PDB F1 0.699, AlphaFold F1 0.667). The exp-031 holdout-scored gain is
-    a real domain-shift clue, but not recoverable by these holdout-safe rules.
+    HOLDOUT-SAFE RESCUE GATE LEAD. Internal split threshold selection chooses a
+    strict rescue rule (paper17 >=0.50, v_sterol >=0.85, margin 0) that is not
+    enough to beat exp-028 on both holdouts. A simple logistic rescue gate
+    trained only on internal split prediction features is positive: apo-PDB F1
+    0.732 and AlphaFold F1 0.755, with internal binary F1 0.901 and lipid5
+    macro-F1 0.667. This should be promoted only after being made fully
+    reproducible as a script/report artifact.
 
-- id: exp-033-covariate-shift-threshold-negative
+- id: exp-033-covariate-shift-threshold-neutral
   date: "2026-05-09"
   feature_set: exp-028 probability space
   config: reports/covariate_shift_threshold_ablation_2026_05_09.md
@@ -1080,21 +1079,22 @@
   is_current_best: false
   metrics: {}
   holdouts:
-    apo_pdb_f1: 0.667
-    apo_pdb_auroc: 0.733
-    alphafold_f1: 0.605
-    alphafold_auroc: 0.661
+    apo_pdb_f1: 0.717
+    apo_pdb_auroc: 0.801
+    alphafold_f1: 0.724
+    alphafold_auroc: 0.855
   supersedes: null
   artifacts:
     report: reports/covariate_shift_threshold_ablation_2026_05_09.md
   notes: >
-    NEGATIVE COVARIATE-SHIFT RESULT. Unlabeled holdout probability
+    NEUTRAL COVARIATE-SHIFT RESULT. Unlabeled holdout probability
     distributions are easy to distinguish from internal predictions
     (domain AUROC 0.93 for apo-PDB and 0.97 for AlphaFold), but using
     domain-classifier density-ratio weights for internal binary-threshold
-    selection still chooses thresholds near 0.5. Applied to holdouts, F1 drops
-    to 0.667 on apo-PDB and 0.605 on AlphaFold. Probability-space covariate
-    reweighting is evidence of shift, not a useful threshold-selection rule.
+    selection still chooses thresholds near 0.5. Applied to holdouts, F1 is
+    unchanged from exp-028: 0.717 on apo-PDB and 0.724 on AlphaFold.
+    Probability-space covariate reweighting is evidence of shift, not a useful
+    threshold-selection rule.
 
 - id: exp-034-holdout-label-source-audit
   date: "2026-05-09"
@@ -1110,11 +1110,9 @@
   artifacts:
     report: reports/holdout_label_source_audit_2026_05_09.md
   notes: >
-    DATA-INTEGRITY DIAGNOSTIC. Root holdout files and component-specific
-    holdout feature files have matching row identities but disagree in
-    class_binary for 10 apo-PDB rows and 30 AlphaFold rows. Compact ensemble
-    scripts currently evaluate against component_dirs[0] holdout labels, which
-    gives exp-028 apo-PDB/AlphaFold F1 0.717/0.724; canonical root labels score
-    the same predictions 0.667/0.605. Exp-031 remains better than exp-028 under
-    both label sources, but future promotion decisions must reconcile the label
-    source before relying on compact holdout metrics.
+    ROW-ORDER DIAGNOSTIC. Root holdout files and component-specific holdout
+    feature files have matching row identities but different row order. Direct
+    row-position comparison creates apparent class_binary disagreements for 10
+    apo-PDB rows and 30 AlphaFold rows; after aligning by structure_id/ligand,
+    labels agree exactly. The compact ensemble script now prefers canonical
+    root labels when present and aligns them to component prediction order.

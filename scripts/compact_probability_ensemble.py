@@ -40,6 +40,54 @@ def _holdout_prediction_path(component_dir: Path, holdout_name: str) -> Path:
     )
 
 
+def _load_holdout_labels(
+    *,
+    component_holdout_path: Path,
+    canonical_holdout_path: Path,
+) -> pd.DataFrame:
+    """Load holdout labels, preferring canonical root labels when row-aligned."""
+
+    component = pd.read_parquet(component_holdout_path).reset_index(drop=True)
+    if not canonical_holdout_path.exists():
+        return component
+
+    canonical = pd.read_parquet(canonical_holdout_path).reset_index(drop=True)
+    if len(component) != len(canonical):
+        raise ValueError(
+            "canonical holdout labels are not row-aligned with component holdout: "
+            f"{canonical_holdout_path} has {len(canonical)} rows, "
+            f"{component_holdout_path} has {len(component)} rows"
+        )
+
+    identity_columns = [
+        column
+        for column in ("structure_id", "ligand")
+        if column in component.columns and column in canonical.columns
+    ]
+    if identity_columns:
+        canonical_labels = canonical[identity_columns + ["class_binary"]].rename(
+            columns={"class_binary": "_canonical_class_binary"}
+        )
+        aligned = component[identity_columns].merge(
+            canonical_labels,
+            on=identity_columns,
+            how="left",
+            validate="one_to_one",
+        )
+        if aligned["_canonical_class_binary"].isna().any():
+            raise ValueError(
+                "canonical holdout labels do not cover every component holdout row: "
+                f"{canonical_holdout_path} vs {component_holdout_path}"
+            )
+        class_binary = aligned["_canonical_class_binary"].to_numpy()
+    else:
+        class_binary = canonical["class_binary"].to_numpy()
+
+    out = component.copy()
+    out["class_binary"] = class_binary
+    return out
+
+
 def _average_prediction_frames(
     paths: list[Path],
     model_name: str,
@@ -108,6 +156,7 @@ def run_compact_probability_ensemble(
     model_name: str = DEFAULT_MODEL_NAME,
     report_title: str = DEFAULT_REPORT_TITLE,
     component_weights: list[float] | None = None,
+    canonical_holdout_dir: Path = Path("processed"),
 ) -> dict[str, Path]:
     """Average compact-model predictions and write metrics."""
 
@@ -145,7 +194,10 @@ def run_compact_probability_ensemble(
         holdout_preds.to_parquet(holdout_preds_path, index=False)
         holdouts[holdout_name] = evaluate_staged_holdout_predictions(
             holdout_preds,
-            pd.read_parquet(component_dirs[0] / holdout_file),
+            _load_holdout_labels(
+                component_holdout_path=component_dirs[0] / holdout_file,
+                canonical_holdout_path=canonical_holdout_dir / holdout_file,
+            ),
         )
 
     report_path = output_report_dir / "metrics.md"
@@ -190,6 +242,16 @@ def main() -> None:
         type=Path,
         default=Path("reports/compact_shape6_shell6shape3_hydro4_geom_chem_ensemble"),
     )
+    parser.add_argument(
+        "--canonical-holdout-dir",
+        type=Path,
+        default=Path("processed"),
+        help=(
+            "Directory containing canonical apo_pdb_holdout.parquet and "
+            "alphafold_holdout.parquet labels. When present, these labels "
+            "override component holdout class_binary values after row-order checks."
+        ),
+    )
     args = parser.parse_args()
     outputs = run_compact_probability_ensemble(
         component_dirs=args.component_dirs or DEFAULT_COMPONENT_DIRS,
@@ -198,6 +260,7 @@ def main() -> None:
         model_name=args.model_name,
         report_title=args.report_title,
         component_weights=args.component_weights,
+        canonical_holdout_dir=args.canonical_holdout_dir,
     )
     for label, path in outputs.items():
         print(f"{label}: {path}")

@@ -34,7 +34,7 @@ Generated from `experiments/registry.yaml`. Metrics are copied from registry ent
 | **exp-028-compact-shape3-shell6-chem-weighted** | 0.1*(v49+tunnel_shape3) + 0.2*(v14+aa20+shell6+tunnel_shape) + 0.7*(v49+tunnel_chem) | 0.903 ± 0.016 | 0.769 ± 0.019 | 0.717 | 0.724 | NEW DEPLOYABLE LEADER. | - |
 | exp-029-compact-weight-local-refinement | compact probability ensembles | - | - | - | - | NEGATIVE LOCAL REFINEMENT. | - |
 | exp-030-probability-blend-internal-leader | probability blend over saved compact/v_sterol artifacts | 0.908 ± 0.015 | 0.781 ± 0.018 | 0.643 | 0.536 | NEW INTERNAL LEADER, HOLDOUT-NEGATIVE. | - |
-| exp-031-legacy-rescue-rule-diagnostic | exp-028 + paper17_family_encoder + v_sterol probabilities | 0.899 ± 0.017 | 0.766 | 0.748 | 0.733 | HOLDOUT-POSITIVE DIAGNOSTIC. | - |
-| exp-032-legacy-rescue-holdout-safe-negative | exp-028 + paper17_family_encoder + v_sterol probabilities | 0.903 ± 0.016 | - | 0.694 | 0.658 | NEGATIVE HOLDOUT-SAFE RESCUE RESULT. | - |
-| exp-033-covariate-shift-threshold-negative | exp-028 probability space | - | - | 0.667 | 0.605 | NEGATIVE COVARIATE-SHIFT RESULT. | - |
-| exp-034-holdout-label-source-audit | holdout label audit | - | - | - | - | DATA-INTEGRITY DIAGNOSTIC. | - |
+| exp-031-legacy-rescue-rule-diagnostic | exp-028 + paper17_family_encoder + v_sterol probabilities | 0.901 ± 0.015 | 0.768 | 0.729 | 0.735 | HOLDOUT-POSITIVE DIAGNOSTIC. | - |
+| exp-032-legacy-rescue-holdout-safe-gate | exp-028 + paper17_family_encoder + v_sterol probabilities | 0.903 ± 0.016 | - | 0.732 | 0.755 | HOLDOUT-SAFE RESCUE GATE LEAD. | - |
+| exp-033-covariate-shift-threshold-neutral | exp-028 probability space | - | - | 0.717 | 0.724 | NEUTRAL COVARIATE-SHIFT RESULT. | - |
+| exp-034-holdout-label-source-audit | holdout label audit | - | - | - | - | ROW-ORDER DIAGNOSTIC. | - |

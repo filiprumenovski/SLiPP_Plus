@@ -75,55 +75,55 @@ holdout-negative.
 
 - Report: `reports/legacy_rescue_rule_ablation_2026_05_09.md`
 - Rule: start from exp-028; when exp-028 calls non-lipid but both
-  `paper17_family_encoder` and `v_sterol` have lipid probability `>= 0.35`,
-  replace probabilities with the paper17/v_sterol average.
-- Result: apo-PDB F1/AUROC `0.748 / 0.765`; AlphaFold F1/AUROC
-  `0.733 / 0.733`; internal binary F1 `0.899 +/- 0.017`, lipid5 macro-F1
-  `0.666`.
+  `paper17_family_encoder` has lipid probability `>= 0.35`, `v_sterol` has
+  lipid probability `>= 0.55`, and the legacy-minus-exp028 margin is at least
+  `0.10`, replace probabilities with the paper17/v_sterol average.
+- Result: apo-PDB F1/AUROC `0.729 / 0.761`; AlphaFold F1/AUROC
+  `0.735 / 0.762`; internal binary F1 `0.901 +/- 0.015`, lipid5 macro-F1
+  `0.668`.
 - Decision: do not promote yet because the `0.35` thresholds came from a
   holdout-scored diagnostic grid. This is the next thing to make holdout-safe:
   select thresholds from internal split predictions or train a 25-split rescue
   gate.
 
-`exp-032-legacy-rescue-holdout-safe-negative` is closed negative.
+`exp-032-legacy-rescue-holdout-safe-gate` is the strongest deployable lead.
 
 - Report: `reports/legacy_rescue_holdout_safe_ablation_2026_05_09.md`
 - Internal threshold selection picks a strict rule:
   `paper17 >= 0.50`, `v_sterol >= 0.85`, `margin >= 0.00`.
-- Result: internal binary F1 `0.903 +/- 0.016`, lipid5 `0.669`, but holdouts
-  fall to apo-PDB F1/AUROC `0.694 / 0.749` and AlphaFold F1/AUROC
-  `0.658 / 0.701`.
+- Internal hard-threshold selection picks a strict rule:
+  `paper17 >= 0.50`, `v_sterol >= 0.85`, `margin >= 0.00`; it reaches
+  apo-PDB F1 `0.710` and AlphaFold F1 `0.722`, not enough to beat exp-028.
 - A simple logistic rescue gate trained only on internal prediction features is
-  also negative: apo-PDB F1 `0.699`, AlphaFold F1 `0.667`.
-- Decision: exp-031's gain is a real domain-shift clue, but these two
-  holdout-safe rescue-selection methods do not make it deployable.
+  positive: internal binary F1 `0.901 +/- 0.018`, lipid5 `0.667`, apo-PDB
+  F1/AUROC `0.732 / 0.793`, AlphaFold F1/AUROC `0.755 / 0.847`.
+- Decision: first holdout-safe candidate that beats exp-028 on both external
+  F1 scores. Make it fully reproducible before marking it deployable.
 
-`exp-033-covariate-shift-threshold-negative` is closed negative.
+`exp-033-covariate-shift-threshold-neutral` is closed neutral.
 
 - Report: `reports/covariate_shift_threshold_ablation_2026_05_09.md`
 - Method: train a source-vs-holdout domain classifier in exp-028 probability
   space, use unlabeled target density-ratio weights to select a binary lipid
   threshold on internal rows, then apply once to holdouts.
 - Result: domain AUROC is high (`0.932` apo-PDB, `0.967` AlphaFold), but
-  selected thresholds remain near `0.5`. Holdout F1 drops to apo-PDB `0.667`
-  and AlphaFold `0.605`.
+  selected thresholds remain near `0.5`. Holdout F1 stays unchanged from
+  exp-028: apo-PDB `0.717`, AlphaFold `0.724`.
 - Decision: probability-space covariate reweighting documents domain shift but
   is not a threshold-selection mechanism.
 
-`exp-034-holdout-label-source-audit` is a data-integrity blocker.
+`exp-034-holdout-label-source-audit` closed a row-order trap.
 
 - Report: `reports/holdout_label_source_audit_2026_05_09.md`
-- Finding: root holdout labels and component-specific holdout labels disagree
-  on 10 apo-PDB rows and 30 AlphaFold rows, despite matching row identities.
-- Current compact scripts evaluate against `component_dirs[0]` holdout labels.
-  That yields exp-028 apo-PDB/AlphaFold F1 `0.717 / 0.724`.
-- Canonical root holdout labels score the same exp-028 predictions at
-  `0.667 / 0.605`.
-- Exp-031 remains better than exp-028 under both label sources:
-  component labels `0.733 / 0.728`; root labels `0.748 / 0.740`.
-- Decision: before any further promotion/demotion, reconcile label source.
-  Prefer canonical root labels or regenerate component holdout feature files
-  from the root holdout tables while preserving row order and `class_binary`.
+- Finding: root holdout files and component-specific holdout feature files have
+  the same identities but different row order. Row-position comparison creates
+  apparent `class_binary` disagreements, but labels agree exactly after
+  aligning by `structure_id` and `ligand`.
+- Fix: `scripts/compact_probability_ensemble.py` now prefers canonical root
+  labels when present and aligns them to component prediction order by
+  `structure_id`/`ligand`.
+- Decision: old exp-028 compact metrics remain valid; future ad hoc holdout
+  scoring must align labels by identity, not row position.
 
 `exp-005-v_sterol-ensemble` holdouts are now complete from existing artifacts.
 
@@ -150,9 +150,9 @@ holdout reporting.
 
 ## Remaining High-Impact Work
 
-1. Reconcile the holdout label source before relying on compact holdout metrics.
-   `exp-034` shows component holdout feature files disagree with canonical root
-   holdout labels. This affects exp-028 and later holdout comparisons.
+1. Make exp-032 fully reproducible as a script/report artifact and then decide
+   whether it should supersede exp-028 as deployable. It is the first
+   holdout-safe candidate to beat exp-028 on both external F1 scores.
 2. Prioritize domain-shift fixes that can be learned without tuning on holdout
    labels. The holdout threshold diagnostic showed lower deployable thresholds
    would help externally, but internal threshold selection did not reproduce

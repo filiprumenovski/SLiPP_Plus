@@ -29,31 +29,31 @@ Grid:
 
 ## Best External-F1 Candidate
 
-`paper17_threshold=0.35`, `v_sterol_threshold=0.35`, `margin=0.00`
+`paper17_threshold=0.35`, `v_sterol_threshold=0.55`, `margin=0.10`
 
 | metric | value |
 |---|---:|
-| binary F1 | `0.899 +/- 0.017` |
-| macro10 F1 | `0.766` |
-| lipid5 macro-F1 | `0.666` |
-| STE F1 | `0.639` |
-| test rows rescued | `0.6%` |
-| apo-PDB rows rescued | `9.4%` |
-| AlphaFold rows rescued | `13.4%` |
-| apo-PDB F1/AUROC | `0.748 / 0.765` |
-| AlphaFold F1/AUROC | `0.733 / 0.733` |
-| holdout mean F1 | `0.740` |
+| binary F1 | `0.901 +/- 0.015` |
+| macro10 F1 | `0.768` |
+| lipid5 macro-F1 | `0.668` |
+| STE F1 | `0.641` |
+| test rows rescued | `0.2%` |
+| apo-PDB rows rescued | `7.7%` |
+| AlphaFold rows rescued | `9.4%` |
+| apo-PDB F1/AUROC | `0.729 / 0.761` |
+| AlphaFold F1/AUROC | `0.735 / 0.762` |
+| holdout mean F1 | `0.732` |
 
 Compared with exp-028:
 
 | metric | exp-028 | rescue rule | delta |
 |---|---:|---:|---:|
-| binary F1 | `0.903` | `0.899` | `-0.004` |
-| macro10 F1 | `0.769` | `0.766` | `-0.003` |
-| lipid5 macro-F1 | `0.670` | `0.666` | `-0.004` |
-| apo-PDB F1 | `0.717` | `0.748` | `+0.031` |
-| AlphaFold F1 | `0.724` | `0.733` | `+0.009` |
-| holdout mean F1 | `0.721` | `0.740` | `+0.019` |
+| binary F1 | `0.903` | `0.901` | `-0.002` |
+| macro10 F1 | `0.769` | `0.768` | `-0.001` |
+| lipid5 macro-F1 | `0.670` | `0.668` | `-0.002` |
+| apo-PDB F1 | `0.717` | `0.729` | `+0.012` |
+| AlphaFold F1 | `0.724` | `0.735` | `+0.011` |
+| holdout mean F1 | `0.721` | `0.732` | `+0.011` |
 
 ## Interpretation
 

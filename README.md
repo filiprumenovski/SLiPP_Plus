@@ -60,26 +60,24 @@ internal lipid5 macro-F1 sacrifice in `exp-028` buys back ~0.07 apo-PDB F1
 and ~0.19 AlphaFold F1 relative to this internal leader.
 
 Strongest current lead: `exp-031-legacy-rescue-rule-diagnostic` starts from
-exp-028 and rescues exp-028 non-lipid calls only when both
-`paper17_family_encoder` and `v_sterol` have lipid probability `>= 0.35`.
-It improves apo-PDB F1 to `0.748` and AlphaFold F1 to `0.733`, with internal
-binary F1 `0.899 ± 0.017` and lipid5 macro-F1 `0.666`. It is not promoted
-because the threshold was found by a holdout-scored diagnostic grid.
+exp-028 and rescues exp-028 non-lipid calls when `paper17_family_encoder` and
+`v_sterol` agree strongly enough. It improves apo-PDB F1 to `0.729` and
+AlphaFold F1 to `0.735`, with internal binary F1 `0.901 ± 0.015` and lipid5
+macro-F1 `0.668`. It is not promoted because the threshold was found by a
+holdout-scored diagnostic grid.
 
-Holdout-label audit: `exp-034-holdout-label-source-audit` found that root
-holdout labels and component-specific holdout feature labels disagree on
-10 apo-PDB rows and 30 AlphaFold rows. Existing compact reports use the
-component label source; canonical root labels score the same exp-028 holdout
-predictions lower (`0.667` apo-PDB, `0.605` AlphaFold). Treat compact holdout
-metrics as blocked for promotion decisions until the label source is
-reconciled. The diagnostic exp-031 signal remains positive under both label
-sources.
+Strongest holdout-safe lead: `exp-032-legacy-rescue-holdout-safe-gate` trains a
+small logistic rescue gate using only internal split prediction features. It
+keeps internal binary F1 at `0.901 ± 0.018`, lipid5 macro-F1 at `0.667`, and
+improves holdouts to apo-PDB `0.732` and AlphaFold `0.755`. It should be made
+fully reproducible as a first-class script/report artifact before replacing
+exp-028 as the deployable recommendation.
 
-Latest negative ablation: `exp-032-legacy-rescue-holdout-safe-negative`
-tried to make exp-031 holdout-safe through internal threshold selection and a
-small logistic rescue gate. Both failed to recover the external gains
-(best simple gate: apo-PDB `0.699`, AlphaFold `0.667`), so exp-031 remains a
-domain-shift clue rather than a deployable rule.
+Holdout-label audit: `exp-034-holdout-label-source-audit` found a row-order
+trap, not a semantic label conflict. Root holdout files and component-specific
+holdout feature files have the same identities but different row order; labels
+agree exactly after aligning by `structure_id` and `ligand`. Compact reporting
+now aligns canonical labels by identity before scoring.
 
 ### Comparison to the SLiPP paper baseline
 
