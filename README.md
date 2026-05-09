@@ -76,7 +76,7 @@ current supplementary workbooks (vs. the 131 the paper reports).
 
 ### Publication figure set
 
-Five publication-grade figures are rendered to `figures/` in
+Four publication-grade figures are rendered to `figures/` in
 PNG / PDF / SVG:
 
 - [`figure7_plus_feature_landscape`](figures/figure7_plus_feature_landscape.png)
@@ -86,8 +86,6 @@ PNG / PDF / SVG:
   — per-class F1 across the experiment ladder.
 - [`figure_ablation_ladder`](figures/figure_ablation_ladder.png)
   — sequential lipid5 macro-F1 deltas from `paper17` to `exp-021`.
-- [`figure_data_coverage_gap`](figures/figure_data_coverage_gap.png)
-  — Chou et al. vs. BioDolphin coverage.
 - [`figure_pipeline_schematic`](figures/figure_pipeline_schematic.png)
   — six-stage pipeline overview.
 

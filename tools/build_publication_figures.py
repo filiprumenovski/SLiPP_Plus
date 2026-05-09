@@ -1,6 +1,6 @@
 """Render the SLiPP++ publication figure set.
 
-Five figures, all written to ``figures/`` as PNG + PDF + SVG:
+Four figures, all written to ``figures/`` as PNG + PDF + SVG:
 
 1. ``figure7_plus_feature_landscape`` — the headline four-panel figure
    (feature-family importance, top features, per-class violin, PCA with
@@ -8,10 +8,8 @@ Five figures, all written to ``figures/`` as PNG + PDF + SVG:
 2. ``figure_per_class_forest`` — per-class F1 across the ablation ladder.
 3. ``figure_ablation_ladder`` — sequential lipid5 macro-F1 deltas from
    paper17 to exp-021.
-4. ``figure_data_coverage_gap`` — Chou et al. vs. BioDolphin v1.1 coverage,
-   the data-availability finding underwriting the proposed extension.
-5. ``figure_pipeline_schematic`` — six-stage pipeline schematic, the
-   spiritual successor to Chou et al. Fig. 7's development overview.
+4. ``figure_pipeline_schematic`` — pipeline schematic, the spiritual
+   successor to Chou et al. Fig. 7's development overview.
 
 Usage::
 
@@ -50,7 +48,6 @@ from slipp_plus.publication_figures import (  # noqa: E402
     PerClassResult,
     figure_7_plus,
     figure_ablation_ladder,
-    figure_data_coverage_gap,
     figure_per_class_forest,
     figure_pipeline_schematic,
 )
@@ -367,10 +364,6 @@ def main(argv: list[str] | None = None) -> int:
     )
     written["ablation_ladder"] = figure_ablation_ladder(
         rows=_ablation_ladder_rows(),
-        out_dir=args.out_dir,
-        formats=formats,
-    )
-    written["data_coverage_gap"] = figure_data_coverage_gap(
         out_dir=args.out_dir,
         formats=formats,
     )
