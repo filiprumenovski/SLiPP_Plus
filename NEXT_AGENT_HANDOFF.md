@@ -137,7 +137,8 @@ shit, start high impact work." Prefer these before returning to item 6.3:
 3. Long-run ablation closure.
    - `handoff.md` 8.4 is closed in `reports/ensemble_ablation.md`.
    - `handoff.md` 8.5 is closed in `reports/tiebreaker_ablation.md`.
-   - Still open: STE imbalance handling and CAVER/tunnel marginal value.
+   - `handoff.md` 8.6 is closed in `reports/caver_ablation.md`.
+   - Still open: STE imbalance handling.
    - See `experiments/queued.md`; these are intentionally queued because they
      need longer model runs or missing holdout implementation.
 4. CI state.
@@ -255,13 +256,13 @@ See `experiments/queued.md`. Do not delete it. It currently queues:
 - Holdout completion for `exp-009-v_sterol-boundary-refactor`
 - Composite holdout inference/metrics for `exp-011-family-plus-moe`
 - STE class-imbalance handling ablation
-- CAVER/tunnel marginal value ablation
 
 Closed from existing artifacts:
 
 - Ensemble vs best single model ablation: `reports/ensemble_ablation.md`
 - Tiebreaker on/off ablation: `reports/tiebreaker_ablation.md`
 - Compact subset sweep: `reports/compact_subset_ensemble_sweep/summary.md`
+- CAVER/tunnel marginal value ablation: `reports/caver_ablation.md`
 
 The still-queued items require long model runs or new implementation. Do not run
 them inline unless the user explicitly authorizes long-run mode.

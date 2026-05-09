@@ -40,7 +40,6 @@ Generated from the registry after `reports/ablation_matrix.md` was created.
 These handoff items require long model runs or additional implementation and should not be run inline without long-run approval:
 
 1. STE class-imbalance handling: baseline vs class-weighted comparison for STE.
-2. CAVER/tunnel marginal value: compare the current compact leader against the appropriate no-tunnel baseline using matched split protocol.
 
 ## Closed From Existing Artifacts
 
@@ -68,3 +67,12 @@ These handoff items require long model runs or additional implementation and sho
    - No new model training was run; this swept equal-probability subsets over
      existing compact prediction artifacts plus a targeted shell6/chem weight
      sweep.
+
+4. CAVER/tunnel marginal value (`handoff.md` 8.6)
+   - Report: `reports/caver_ablation.md`
+   - Result: CAVER/tunnel features are real but small. Compact tunnel shape
+     adds about `+0.011` to `+0.017` lipid macro-F1 over matched no-tunnel
+     baselines, while the full raw tunnel block is redundant and weaker than
+     screened compact subsets.
+   - No new model training was run; this consolidates existing v_sterol-aligned
+     tunnel screens and compact ladder artifacts.
