@@ -4,8 +4,8 @@ from pathlib import Path
 
 import pandas as pd
 
-from slipp_plus.feature_builders.caver_t12_features import build_training_v_caver_t12_parquet
 from slipp_plus.constants import CAVER_T12_FEATURES_17, FEATURE_SETS
+from slipp_plus.feature_builders.caver_t12_features import build_training_v_caver_t12_parquet
 
 
 def test_caver_t12_registry_shape() -> None:

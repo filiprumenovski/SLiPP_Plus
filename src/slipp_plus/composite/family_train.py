@@ -12,14 +12,6 @@ import polars as pl
 import sklearn
 
 from ..artifact_schema import build_feature_schema_metadata, write_artifact_schema_sidecar
-from .backbone_family_encoder import (
-    FamilyEncoderNet,
-    FamilyEncoderTrainConfig,
-    fit_family_encoder,
-    predict_family_encoder_outputs,
-    predict_family_encoder_proba,
-)
-from .topology import composite_topology_metadata, resolve_composite_topology
 from ..config import Settings
 from ..constants import CLASS_10
 from ..ensemble import PROBA_COLUMNS
@@ -33,6 +25,14 @@ from ..feature_families import (
 from ..features import class10_labels
 from ..run_metadata import write_run_metadata_sidecar
 from ..splits import load_split
+from .backbone_family_encoder import (
+    FamilyEncoderNet,
+    FamilyEncoderTrainConfig,
+    fit_family_encoder,
+    predict_family_encoder_outputs,
+    predict_family_encoder_proba,
+)
+from .topology import composite_topology_metadata, resolve_composite_topology
 
 
 def _test_prediction_frame(
@@ -126,7 +126,9 @@ def run_family_encoder_training(settings: Settings) -> dict[str, Path]:
 
     all_frames: list[pl.DataFrame] = []
     bundle_payload: dict[str, Any] | None = None
-    cfg = FamilyEncoderTrainConfig()
+    cfg = FamilyEncoderTrainConfig(
+        class_weight_multipliers=topology.backbone.class_weight_multipliers or None,
+    )
     for iteration in range(settings.n_iterations):
         train_idx, test_idx = load_split(proc / "splits" / f"seed_{iteration:02d}.parquet")
         fit_idx, val_idx = _train_val_split(train_idx, settings.seed_base + iteration)

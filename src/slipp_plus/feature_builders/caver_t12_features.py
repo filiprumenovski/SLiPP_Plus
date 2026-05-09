@@ -11,13 +11,13 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from ..constants import CAVER_T12_FEATURES_17
 from .caver_analysis import (
     CaverPocketContext,
     cast_caver_t12_features,
     derive_caver_t12_features_by_pocket,
     safe_caver_t12_defaults,
 )
-from ..constants import CAVER_T12_FEATURES_17
 
 
 def build_training_v_caver_t12_parquet(

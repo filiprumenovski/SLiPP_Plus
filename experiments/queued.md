@@ -35,12 +35,6 @@ Generated from the registry after `reports/ablation_matrix.md` was created.
 3. `exp-008-detector-bakeoff`
    - Reason: detector comparison, not a classifier holdout experiment; apo-PDB/AlphaFold classifier holdout fields are not applicable.
 
-## Missing Publishable Ablations
-
-These handoff items require long model runs or additional implementation and should not be run inline without long-run approval:
-
-1. STE class-imbalance handling: baseline vs class-weighted comparison for STE.
-
 ## Closed From Existing Artifacts
 
 1. Ensemble vs best single model (`handoff.md` 8.4)
@@ -121,3 +115,13 @@ These handoff items require long model runs or additional implementation and sho
      apo-PDB (22.6% rescue each), while AlphaFold rescue is weak and diffuse
      (`shape3` rescues 25.0%).
    - This rules out a simple component override as the next easy fix.
+
+10. STE class-imbalance handling (`handoff.md` 8.3)
+   - Report: `reports/ste_imbalance_ablation.md`
+   - Result: negative. Doubling STE's already inverse-frequency-corrected
+     family-encoder class weight increases STE recall slightly (`0.733` to
+     `0.741`) but lowers STE precision (`0.576` to `0.555`), STE F1 (`0.638`
+     to `0.629`), lipid5 macro-F1 (`0.668` to `0.657`), and both holdout F1
+     scores versus the unweighted shape3 baseline.
+   - This closes the simple class-weight route; future STE work needs a more
+     targeted classifier, calibration, or data-extension intervention.

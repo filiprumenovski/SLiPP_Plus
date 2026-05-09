@@ -276,9 +276,9 @@ def _real_context(args: argparse.Namespace) -> HPOContext:
 
     import pandas as pd
 
+    from slipp_plus.config import Settings, load_settings
     from slipp_plus.constants import CLASS_10
     from slipp_plus.features import class10_labels, feature_matrix
-    from slipp_plus.config import Settings, load_settings
 
     settings: Settings = load_settings(args.config) if args.config else None  # type: ignore[assignment]
     processed = Path(args.processed_dir)

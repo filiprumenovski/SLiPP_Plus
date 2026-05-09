@@ -125,6 +125,37 @@ def test_pair_moe_config_validates_teacher_stack() -> None:
     assert all(item.kind == "binary_boundary" for item in settings.composite.experts)
 
 
+def test_family_encoder_accepts_class_weight_multipliers() -> None:
+    raw = load_settings(Path("configs/archive/v49_tunnel_shape3_family_encoder.yaml")).model_dump(
+        mode="python"
+    )
+    raw["composite"]["backbone"]["class_weight_multipliers"] = {"STE": 2.0}
+
+    settings = Settings.model_validate(raw)
+
+    assert settings.composite.backbone.class_weight_multipliers == {"STE": 2.0}
+
+
+def test_family_encoder_rejects_unknown_class_weight_multiplier() -> None:
+    raw = load_settings(Path("configs/archive/v49_tunnel_shape3_family_encoder.yaml")).model_dump(
+        mode="python"
+    )
+    raw["composite"]["backbone"]["class_weight_multipliers"] = {"BAD": 2.0}
+
+    with pytest.raises(ValueError, match="unknown class_weight_multipliers"):
+        Settings.model_validate(raw)
+
+
+def test_family_encoder_rejects_non_positive_class_weight_multiplier() -> None:
+    raw = load_settings(Path("configs/archive/v49_tunnel_shape3_family_encoder.yaml")).model_dump(
+        mode="python"
+    )
+    raw["composite"]["backbone"]["class_weight_multipliers"] = {"STE": 0.0}
+
+    with pytest.raises(ValueError, match="class_weight_multipliers must be positive"):
+        Settings.model_validate(raw)
+
+
 def test_pair_moe_combiner_preserves_non_candidate_mass() -> None:
     from slipp_plus.composite.pair_moe import _apply_pair_expert
 

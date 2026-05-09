@@ -16,7 +16,7 @@ model bundle.
 The OOF construction follows the standard recipe: a row's softprobs come from
 the iteration in which that row was in the *test* fold, never from a
 training fit on itself. Because the project's stratified shuffle splits
-allow rows to land in multiple test folds (n_iterations × test_fraction is
+allow rows to land in multiple test folds (n_iterations x test_fraction is
 larger than 1), we average those visits per row. Rows that never enter a
 test fold are excluded from meta-learner training.
 """

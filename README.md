@@ -61,6 +61,12 @@ macro-F1 sacrifice in `exp-021` buys back ~0.07 apo-PDB and ~0.09
 AlphaFold F1 — a holdout-discipline-aware tradeoff documented in the
 registry's `holdout_acceptance_test` notes.
 
+Latest negative ablation: `exp-027-ste-class-weight-x2` doubled STE's
+family-encoder class weight. It increased STE recall slightly but lowered STE
+F1 (`0.638 -> 0.629`), lipid5 macro-F1 (`0.668 -> 0.657`), apo-PDB F1
+(`0.667 -> 0.649`), and AlphaFold F1 (`0.724 -> 0.711`). Simple global STE
+overweighting is therefore not a promotion path.
+
 ### Comparison to the SLiPP paper baseline
 
 | Metric | Paper (Chou et al. 2024) | SLiPP++ exp-021 | Δ |

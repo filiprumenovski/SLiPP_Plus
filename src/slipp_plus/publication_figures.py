@@ -24,17 +24,15 @@ written under ``figures/`` at the repository root.
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Sequence
+from typing import Any
 
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from matplotlib.patches import FancyBboxPatch
-from sklearn.decomposition import PCA
-from sklearn.preprocessing import StandardScaler
 
 from .constants import CLASS_10, LIPID_CODES
 
@@ -366,7 +364,7 @@ def _draw_panel_b_top_features(ax: plt.Axes, importance: FeatureImportanceData, 
     ax.set_xticks(xs)
     ax.set_xticklabels(df["feature"], rotation=30, ha="right", fontsize=8.5)
     ax.set_ylabel("Permutation decrease in macro-F1")
-    ax.set_title("Top features by permutation importance (25-iter CV, 1σ)", loc="left")
+    ax.set_title("Top features by permutation importance (25-iter CV, 1 sigma)", loc="left")
     ax.grid(axis="y", linestyle=":", linewidth=0.5, alpha=0.7)
     ax.set_axisbelow(True)
     handles = [

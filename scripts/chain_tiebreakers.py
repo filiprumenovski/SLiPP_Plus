@@ -28,7 +28,6 @@ from slipp_plus.experiments.plm_ste_tiebreaker import (
     build_plm_vs_ste_training,
     train_plm_ste_tiebreaker,
 )
-from slipp_plus.splits import load_split
 from slipp_plus.experiments.sterol_tiebreaker import (
     apply_tiebreaker as apply_clr_ste_tb,
 )
@@ -36,6 +35,7 @@ from slipp_plus.experiments.sterol_tiebreaker import (
     build_clr_vs_ste_training,
     train_sterol_tiebreaker,
 )
+from slipp_plus.splits import load_split
 
 FULL_POCKETS = Path("processed/v_sterol/full_pockets.parquet")
 PREDICTIONS = Path("processed/v_sterol/predictions/test_predictions.parquet")

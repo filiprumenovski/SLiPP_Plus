@@ -49,7 +49,6 @@ from slipp_plus.publication_figures import (  # noqa: E402
     figure_per_class_forest,
 )
 
-
 # Class sizes from DATASHEET.md / registry validation block
 CLASS_SIZES: dict[str, int] = {
     "ADN": 414,
@@ -365,7 +364,7 @@ def main(argv: list[str] | None = None) -> int:
         formats=formats,
     )
 
-    print(f"Wrote {len(written)} figures × {len(formats)} formats to {args.out_dir}/")
+    print(f"Wrote {len(written)} figures x {len(formats)} formats to {args.out_dir}/")
     for name, paths in written.items():
         for fmt, p in paths.items():
             print(f"  {name}.{fmt}: {p}")

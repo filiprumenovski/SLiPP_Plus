@@ -30,3 +30,4 @@ Generated from `experiments/registry.yaml`. Metrics are copied from registry ent
 | exp-024-domain-shift-false-negative-features | v49+tunnel_shape feature basis | - | - | - | - | DOMAIN-SHIFT DIAGNOSTIC. | - |
 | exp-025-domain-shift-nearest-neighbors | v49+tunnel_shape feature basis | - | - | - | - | DOMAIN-SHIFT DIAGNOSTIC. | - |
 | exp-026-domain-shift-component-rescue | compact component prediction artifacts | - | - | - | - | DOMAIN-SHIFT DIAGNOSTIC. | - |
+| exp-027-ste-class-weight-x2 | v49+tunnel_shape3 | 0.896 ± 0.016 | 0.760 ± 0.019 | 0.649 | 0.711 | NEGATIVE STE IMBALANCE RESULT. | - |

@@ -845,3 +845,42 @@
     the best component, shape3, rescues 25.0% of false negatives at 0.5. This
     suggests the transfer gap is shared across compact variants rather than a
     simple matter of choosing one component as an override.
+
+- id: exp-027-ste-class-weight-x2
+  date: "2026-05-08"
+  feature_set: v49+tunnel_shape3
+  config: configs/archive/v49_tunnel_shape3_ste2_family_encoder.yaml
+  models: [family_encoder]
+  postprocessing: "STE class_weight_multiplier=2.0"
+  status: complete
+  is_current_best: false
+  metrics:
+    binary_f1: "0.896 ± 0.016"
+    binary_auroc: "0.988 ± 0.003"
+    macro_f1_10: "0.760 ± 0.019"
+    lipid_macro_f1: "0.657 ± 0.027"
+    clr_f1: "0.734"
+    myr_f1: "0.697"
+    ola_f1: "0.600"
+    plm_f1: "0.627"
+    ste_f1: "0.629"
+  holdouts:
+    apo_pdb_f1: 0.649
+    apo_pdb_auroc: 0.803
+    alphafold_f1: 0.711
+    alphafold_auroc: 0.870
+  supersedes: null
+  artifacts:
+    report: reports/ste_imbalance_ablation.md
+    metrics_table: reports/v49_tunnel_shape3_ste2_family_encoder/metrics_table.md
+    raw_metrics: reports/v49_tunnel_shape3_ste2_family_encoder/raw_metrics.parquet
+    predictions: processed/v49_tunnel_shape3_ste2/predictions/hierarchical_lipid_predictions.parquet
+    family_predictions: processed/v49_tunnel_shape3_ste2/predictions/family_encoder_predictions.parquet
+    bundle: models/v49_tunnel_shape3_ste2_family_encoder/family_encoder_bundle.joblib
+  notes: >
+    NEGATIVE STE IMBALANCE RESULT. Doubling STE's already inverse-frequency
+    corrected family-encoder class weight slightly increases STE recall
+    (0.733 -> 0.741) but lowers STE precision (0.576 -> 0.555), STE F1
+    (0.638 -> 0.629), lipid5 macro-F1 (0.668 -> 0.657), and both holdout F1
+    scores versus the unweighted shape3 baseline. The simple class-weight route
+    does not beat exp-014, exp-019, or the holdout-weighted exp-021 candidate.

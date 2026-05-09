@@ -4,14 +4,14 @@ from __future__ import annotations
 
 from typing import Any
 
+from ..constants import CLASS_10
+from ..hierarchical_experiment import LIPID_LABELS, NONLIPID_LABELS
 from .config import (
     CompositeBackboneSettings,
     CompositeExpertSettings,
     CompositeHeadSettings,
     CompositeSettings,
 )
-from ..constants import CLASS_10
-from ..hierarchical_experiment import LIPID_LABELS, NONLIPID_LABELS
 
 
 def default_composite_from_hierarchical(settings: Any) -> CompositeSettings:

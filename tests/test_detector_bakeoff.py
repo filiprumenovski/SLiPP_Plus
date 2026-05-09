@@ -6,7 +6,6 @@ import numpy as np
 import polars as pl
 import pytest
 
-from slipp_plus.feature_builders.aromatic_aliphatic import _compute_centroid
 from slipp_plus.experiments.detector_bakeoff import (
     SCORE_SCHEMA,
     compute_hit_metrics,
@@ -15,6 +14,7 @@ from slipp_plus.experiments.detector_bakeoff import (
     score_structure,
     summarize,
 )
+from slipp_plus.feature_builders.aromatic_aliphatic import _compute_centroid
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 ADN_1BX4_PDB = REPO_ROOT / "data" / "structures" / "source_pdbs" / "ADN" / "pdb1BX4.pdb"

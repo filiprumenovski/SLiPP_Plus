@@ -15,15 +15,15 @@ import pandas as pd
 from Bio.PDB import PDBParser
 from scipy.optimize import linear_sum_assignment
 
+from ..constants import AA20, AROMATIC_ALIPHATIC_12, SELECTED_17
+from ..ingest import _read_training_csv
+from ..schemas import validate_training
 from .aromatic_aliphatic import (
     _classify_residue_name,
     _closest_heavy_atom_distance,
     _compute_centroid,
     _shell_index,
 )
-from ..constants import AA20, AROMATIC_ALIPHATIC_12, SELECTED_17
-from ..ingest import _read_training_csv
-from ..schemas import validate_training
 
 INFO_FIELD_MAP: dict[str, str] = {
     "Volume": "pock_vol",

@@ -13,10 +13,10 @@ from typing import Any
 import joblib
 
 from ..artifact_schema import read_artifact_schema_sidecar, write_artifact_schema_sidecar
-from .topology import composite_topology_metadata, resolve_composite_topology
 from ..config import Settings
 from ..constants import HIERARCHICAL_PREDICTIONS_NAME
 from ..hierarchical_pipeline import run_hierarchical_training
+from .topology import composite_topology_metadata, resolve_composite_topology
 
 
 def _assert_supported_phase_a(settings: Settings) -> None:

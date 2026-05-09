@@ -76,6 +76,18 @@ class FamilyEncoderNet(nn.Module):
         return self.global_head(z), z
 
 
+def _class_weights(
+    y_train: np.ndarray,
+    multipliers: Mapping[str, float] | None = None,
+) -> np.ndarray:
+    counts = np.bincount(y_train, minlength=len(CLASS_10)).astype(np.float32)
+    weights = counts.sum() / np.maximum(counts, 1.0)
+    if multipliers:
+        for label, multiplier in multipliers.items():
+            weights[CLASS_10.index(label)] *= float(multiplier)
+    return weights / weights.mean()
+
+
 def fit_family_encoder(
     train_arrays: Mapping[str, np.ndarray],
     train_masks: np.ndarray,
@@ -131,12 +143,7 @@ def fit_family_encoder(
         lr=cfg.learning_rate,
         weight_decay=cfg.weight_decay,
     )
-    counts = np.bincount(y_train, minlength=len(CLASS_10)).astype(np.float32)
-    weights = counts.sum() / np.maximum(counts, 1.0)
-    if cfg.class_weight_multipliers:
-        for label, multiplier in cfg.class_weight_multipliers.items():
-            weights[CLASS_10.index(label)] *= float(multiplier)
-    weights = weights / weights.mean()
+    weights = _class_weights(y_train, cfg.class_weight_multipliers)
     ce = nn.CrossEntropyLoss(weight=torch.tensor(weights, dtype=torch.float32))
     kl = nn.KLDivLoss(reduction="batchmean")
 
