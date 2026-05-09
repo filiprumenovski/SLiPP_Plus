@@ -102,6 +102,11 @@ Unlabeled-target audit: `exp-040-legacy-rescue-unlabeled-target-selection-negati
 shows that target predicted-positive rate and target mean lipid probability
 also miss exp-037; they select low-threshold mean rewrites with weaker holdouts.
 
+Structure-stress audit: `exp-041-legacy-rescue-structure-stress-negative` shows
+that current random split artifacts cannot provide a useful leave-structure
+proxy: only ~16 test rows per iteration are unseen structures, and those rows
+are already near-perfect.
+
 Holdout-label audit: `exp-034-holdout-label-source-audit` found a row-order
 trap, not a semantic label conflict. Root holdout files and component-specific
 holdout feature files have the same identities but different row order; labels

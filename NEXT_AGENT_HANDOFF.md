@@ -198,6 +198,16 @@ lead.
 - Decision: target prevalence/mass alone is not enough to make the maxlegacy
   diagnostic deployable.
 
+`exp-041-legacy-rescue-structure-stress-negative` is closed negative.
+
+- Report: `reports/legacy_rescue_structure_stress_audit_2026_05_09.md`
+- Result: the current random split artifacts do not provide a usable
+  leave-structure stress subset. Only about `16` test rows per iteration are
+  from structures absent from that iteration's train split, and those rows are
+  already near-perfect (`~0.98` F1).
+- Decision: a real structure/cluster stress selector would require retraining
+  with grouped splits.
+
 `exp-005-v_sterol-ensemble` holdouts are now complete from existing artifacts.
 
 - Report: `reports/v_sterol_holdout_completion.md`
@@ -229,11 +239,14 @@ holdout reporting.
    ablation (`exp-036`, threshold `0.99`) did not beat exp-035, and simple
    internal F1/fire scalar selection (`exp-038`) plus direct base-FN recall
    selection (`exp-039`) plus naive unlabeled target-stat selection (`exp-040`)
+   plus structure-overlap stress selection from existing artifacts (`exp-041`)
    did not recover exp-037.
 2. Prioritize domain-shift fixes that can be learned without tuning on holdout
    labels. The holdout threshold diagnostic showed lower deployable thresholds
    would help externally, but internal threshold selection did not reproduce
    those thresholds.
+   A true grouped leave-structure/leave-cluster retrain is now the cleanest
+   remaining internal-only route, but it is heavier than saved-artifact sweeps.
 3. Revisit targeted STE handling only if it is more local than a global class
    weight: e.g. a calibrated PLM/STE/COA/MYR/OLA expert, confidence gating, or
    a data-extension path that adds STE-like pockets.

@@ -1294,3 +1294,24 @@
     low-threshold mean rewrites with apo-PDB F1 0.738 and AlphaFold F1 0.744.
     Maximizing internal fire rate selects low-threshold v_sterol with similar
     weak holdouts. Unlabeled prevalence/mass objectives are insufficient.
+
+- id: exp-041-legacy-rescue-structure-stress-negative
+  date: "2026-05-09"
+  feature_set: exp-028 + paper17_family_encoder + v_sterol probabilities
+  config: reports/legacy_rescue_structure_stress_audit_2026_05_09.md
+  models: [family_encoder, logistic_gate]
+  postprocessing: "structure_overlap_stress_audit"
+  status: complete
+  is_current_best: false
+  metrics: {}
+  holdouts: {}
+  supersedes: null
+  artifacts:
+    report: reports/legacy_rescue_structure_stress_audit_2026_05_09.md
+  notes: >
+    NEGATIVE STRUCTURE-STRESS AUDIT. Existing random split prediction
+    artifacts cannot provide a useful leave-structure stress proxy. Only about
+    16 test rows per iteration are from structures absent from that iteration's
+    train split, and those rows are already near-perfect (F1 about 0.98). A
+    real leave-structure or leave-cluster selection experiment requires
+    retraining with grouped splits.

@@ -44,3 +44,4 @@ Generated from `experiments/registry.yaml`. Metrics are copied from registry ent
 | exp-038-legacy-rescue-internal-selection-audit | exp-028 + paper17_family_encoder + v_sterol probabilities | - | - | - | - | NEGATIVE INTERNAL-SELECTION AUDIT. | - |
 | exp-039-legacy-rescue-base-fn-selection-negative | exp-028 + paper17_family_encoder + v_sterol probabilities | - | - | - | - | NEGATIVE BASE-FN SELECTION AUDIT. | - |
 | exp-040-legacy-rescue-unlabeled-target-selection-negative | exp-028 + paper17_family_encoder + v_sterol probabilities | - | - | - | - | NEGATIVE UNLABELED-TARGET SELECTION AUDIT. | - |
+| exp-041-legacy-rescue-structure-stress-negative | exp-028 + paper17_family_encoder + v_sterol probabilities | - | - | - | - | NEGATIVE STRUCTURE-STRESS AUDIT. | - |
