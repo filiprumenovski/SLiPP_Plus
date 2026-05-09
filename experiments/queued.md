@@ -24,14 +24,14 @@ section for future registry audits.
 
 ## Closed From Existing Artifacts
 
-1. Ensemble vs best single model (`handoff.md` 8.4)
+1. Ensemble vs best single model
    - Report: `reports/ensemble_ablation.md`
    - Result: weak positive but below the requested >=1 std bar. RF+XGB+LGBM
      mean-probability ensembles improve lipid macro-F1 on every checked flat
      stack (`+0.006` to `+0.012`), but none by at least one standard deviation.
    - No new model training was run; this used persisted prediction artifacts.
 
-2. Tiebreaker on/off (`handoff.md` 8.5)
+2. Tiebreaker on/off
    - Report: `reports/tiebreaker_ablation.md`
    - Result: the narrow PLM/STE tiebreaker is small (`+0.009` lipid macro-F1,
      `+0.045` STE F1), while the broader STE-neighbor rescue is material
@@ -49,7 +49,7 @@ section for future registry audits.
      existing compact prediction artifacts plus a targeted shell6/chem weight
      sweep.
 
-4. CAVER/tunnel marginal value (`handoff.md` 8.6)
+4. CAVER/tunnel marginal value
    - Report: `reports/caver_ablation.md`
    - Result: CAVER/tunnel features are real but small. Compact tunnel shape
      adds about `+0.011` to `+0.017` lipid macro-F1 over matched no-tunnel
@@ -103,7 +103,7 @@ section for future registry audits.
      (`shape3` rescues 25.0%).
    - This rules out a simple component override as the next easy fix.
 
-10. STE class-imbalance handling (`handoff.md` 8.3)
+10. STE class-imbalance handling
    - Report: `reports/ste_imbalance_ablation.md`
    - Result: negative. Doubling STE's already inverse-frequency-corrected
      family-encoder class weight increases STE recall slightly (`0.733` to

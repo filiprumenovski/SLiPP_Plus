@@ -86,3 +86,8 @@ reports/archive/
 
 # Local research notes (not published)
 RESEARCH_LOG.md
+
+# Local-only infra / agent handoff (not published)
+infra/
+NEXT_AGENT_HANDOFF.md
+handoff.md
