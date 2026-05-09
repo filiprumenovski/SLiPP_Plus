@@ -1645,9 +1645,9 @@ if __name__ == "__main__":
     sys.exit(main())
 
 
-from .constants import TUNNEL_FEATURES_15 as _REGISTRY_TUNNEL_FEATURES_15  # noqa: E402
-from .constants import TUNNEL_FEATURES_18 as _REGISTRY_TUNNEL_FEATURES_18  # noqa: E402
-from .constants import TUNNEL_MISSINGNESS_3 as _REGISTRY_TUNNEL_MISSINGNESS_3  # noqa: E402
+from ..constants import TUNNEL_FEATURES_15 as _REGISTRY_TUNNEL_FEATURES_15  # noqa: E402
+from ..constants import TUNNEL_FEATURES_18 as _REGISTRY_TUNNEL_FEATURES_18  # noqa: E402
+from ..constants import TUNNEL_MISSINGNESS_3 as _REGISTRY_TUNNEL_MISSINGNESS_3  # noqa: E402
 
 assert TUNNEL_FEATURES_15 == _REGISTRY_TUNNEL_FEATURES_15, (
     "tunnel_features.TUNNEL_FEATURES_15 drifted from constants.TUNNEL_FEATURES_15"

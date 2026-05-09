@@ -868,7 +868,7 @@ if __name__ == "__main__":
 # Re-export the canonical constant via the constants module for symmetry.
 # ``constants.PALMITATE_VS_STERYL_EXTRA_16`` is the authoritative import path
 # for the rest of the codebase; this local list is kept in lockstep.
-from .constants import PALMITATE_VS_STERYL_EXTRA_16 as _PALMITATE_VS_STERYL_EXTRA_16  # noqa: E402
+from ..constants import PALMITATE_VS_STERYL_EXTRA_16 as _PALMITATE_VS_STERYL_EXTRA_16  # noqa: E402
 
 assert PALMITATE_VS_STERYL_EXTRA_16 == _PALMITATE_VS_STERYL_EXTRA_16, (
     "plm_ste_features.PALMITATE_VS_STERYL_EXTRA_16 drifted from "

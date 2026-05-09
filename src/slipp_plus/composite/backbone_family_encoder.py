@@ -9,8 +9,8 @@ import numpy as np
 import torch
 from torch import nn
 
-from .constants import CLASS_10
-from .feature_families import FeatureFamilySpec
+from ..constants import CLASS_10
+from ..feature_families import FeatureFamilySpec
 
 
 @dataclass(frozen=True)

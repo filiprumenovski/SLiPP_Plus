@@ -24,13 +24,13 @@ import numpy as np
 import pandas as pd
 
 from .aromatic_aliphatic import _parse_pqr_coordinates, _shell_index
-from .constants import FEATURE_SETS, LIPID_BOUNDARY_FEATURES_22
+from ..constants import FEATURE_SETS, LIPID_BOUNDARY_FEATURES_22
 from .plm_ste_features import (
     _bin_of_t,
     _closest_heavy_atom_info,
     _parse_protein_chains,
 )
-from .schemas import validate_holdout, validate_training
+from ..schemas import validate_holdout, validate_training
 
 HYDROPHOBE_RESIDUES: frozenset[str] = frozenset(
     {"ALA", "VAL", "LEU", "ILE", "MET", "PRO", "CYS", "PHE", "TRP", "TYR"}

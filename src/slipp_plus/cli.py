@@ -307,7 +307,7 @@ def build_caver_t12(
     ),
 ) -> None:
     """Build the persisted-output-first CAVER Tier 1-2 feature parquet."""
-    from .caver_t12_features import (
+    from .feature_builders.caver_t12_features import (
         build_holdout_v_caver_t12_parquet,
         build_training_v_caver_t12_parquet,
     )
@@ -359,7 +359,7 @@ def build_lipid_boundary(
     skip_validation: bool = typer.Option(False, help="Skip full feature-set schema validation."),
 ) -> None:
     """Build the v_lipid_boundary training feature parquet."""
-    from .lipid_boundary_features import build_training_v_lipid_boundary_parquet
+    from .feature_builders.lipid_boundary_features import build_training_v_lipid_boundary_parquet
 
     out = build_training_v_lipid_boundary_parquet(
         base_parquet=base_parquet,

@@ -12,11 +12,11 @@ from typing import Any
 
 import joblib
 
-from .artifact_schema import read_artifact_schema_sidecar, write_artifact_schema_sidecar
-from .composite_topology import composite_topology_metadata, resolve_composite_topology
-from .config import Settings
-from .constants import HIERARCHICAL_PREDICTIONS_NAME
-from .hierarchical_pipeline import run_hierarchical_training
+from ..artifact_schema import read_artifact_schema_sidecar, write_artifact_schema_sidecar
+from .topology import composite_topology_metadata, resolve_composite_topology
+from ..config import Settings
+from ..constants import HIERARCHICAL_PREDICTIONS_NAME
+from ..hierarchical_pipeline import run_hierarchical_training
 
 
 def _assert_supported_phase_a(settings: Settings) -> None:
@@ -105,12 +105,12 @@ def run_composite_training(settings: Settings) -> dict[str, Path]:
     """Train the Phase-A composite/MoE topology and preserve prediction parity."""
 
     if settings.composite.backbone.kind == "family_encoder":
-        from .composite_family_train import run_family_encoder_training
+        from .family_train import run_family_encoder_training
 
         return run_family_encoder_training(settings)
 
     if settings.composite.teacher_predictions_path is not None:
-        from .composite_pair_moe import run_pair_moe_training
+        from .pair_moe import run_pair_moe_training
 
         return run_pair_moe_training(settings)
 

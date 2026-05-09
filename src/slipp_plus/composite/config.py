@@ -7,7 +7,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator
 
-from .constants import CLASS_10, FEATURE_SETS
+from ..constants import CLASS_10, FEATURE_SETS
 
 BackboneKind = Literal["teacher_ensemble", "family_encoder"]
 HeadKind = Literal["multiclass", "binary", "lipid_family", "nonlipid_family"]

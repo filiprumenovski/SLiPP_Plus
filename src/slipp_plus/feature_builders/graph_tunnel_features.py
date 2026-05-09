@@ -23,7 +23,7 @@ import pandas as pd
 from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import dijkstra
 
-from .constants import GRAPH_TUNNEL_FEATURES_3 as _REGISTRY_GRAPH_TUNNEL_FEATURES_3
+from ..constants import GRAPH_TUNNEL_FEATURES_3 as _REGISTRY_GRAPH_TUNNEL_FEATURES_3
 from .plm_ste_features import _axial_profile
 
 GRAPH_TUNNEL_FEATURES_3: list[str] = [

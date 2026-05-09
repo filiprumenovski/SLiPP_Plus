@@ -8,7 +8,7 @@ from pathlib import Path
 import numpy as np
 
 from slipp_plus.constants import FEATURE_SETS
-from slipp_plus.graph_tunnel_features import (
+from slipp_plus.feature_builders.graph_tunnel_features import (
     GRAPH_TUNNEL_FEATURES_3,
     AlphaSphere,
     graph_tunnel_features_for_pocket,

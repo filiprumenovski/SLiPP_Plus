@@ -8,8 +8,8 @@ from pathlib import Path
 
 import pandas as pd
 
-from .constants import AROMATIC_ALIPHATIC_NORMALIZED_12, FEATURE_SETS
-from .schemas import validate_holdout, validate_training
+from ..constants import AROMATIC_ALIPHATIC_NORMALIZED_12, FEATURE_SETS
+from ..schemas import validate_holdout, validate_training
 
 
 def add_normalized_shell_features(df: pd.DataFrame) -> pd.DataFrame:

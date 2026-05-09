@@ -12,7 +12,7 @@ from pathlib import Path
 
 import numpy as np
 
-from .constants import CAVER_T12_FEATURES_17
+from ..constants import CAVER_T12_FEATURES_17
 
 _EPS = 1e-6
 _HIGH_CURVATURE_THRESHOLD = 0.15

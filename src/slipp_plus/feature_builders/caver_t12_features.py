@@ -17,7 +17,7 @@ from .caver_analysis import (
     derive_caver_t12_features_by_pocket,
     safe_caver_t12_defaults,
 )
-from .constants import CAVER_T12_FEATURES_17
+from ..constants import CAVER_T12_FEATURES_17
 
 
 def build_training_v_caver_t12_parquet(

@@ -18,15 +18,15 @@ try:
 except ImportError:
     xgboost_version = "unknown"
 
-from .artifact_schema import build_feature_schema_metadata, write_artifact_schema_sidecar
-from .composite_config import CompositeExpertSettings
-from .composite_topology import composite_topology_metadata, resolve_composite_topology
-from .config import Settings
-from .constants import CLASS_10, HIERARCHICAL_METRICS_NAME, HIERARCHICAL_PREDICTIONS_NAME
-from .ensemble import PROBA_COLUMNS
-from .features import class10_labels
-from .run_metadata import write_run_metadata_sidecar
-from .splits import load_split
+from ..artifact_schema import build_feature_schema_metadata, write_artifact_schema_sidecar
+from .config import CompositeExpertSettings
+from .topology import composite_topology_metadata, resolve_composite_topology
+from ..config import Settings
+from ..constants import CLASS_10, HIERARCHICAL_METRICS_NAME, HIERARCHICAL_PREDICTIONS_NAME
+from ..ensemble import PROBA_COLUMNS
+from ..features import class10_labels
+from ..run_metadata import write_run_metadata_sidecar
+from ..splits import load_split
 
 PAIR_MOE_BUNDLE_VERSION = 1
 

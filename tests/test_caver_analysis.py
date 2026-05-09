@@ -3,7 +3,7 @@ from __future__ import annotations
 import math
 from pathlib import Path
 
-from slipp_plus.caver_analysis import (
+from slipp_plus.feature_builders.caver_analysis import (
     CAVER_T12_FEATURES_17,
     CaverPocketContext,
     cast_caver_t12_features,

@@ -13,7 +13,7 @@ from typing import Literal
 import yaml
 from pydantic import BaseModel, Field, field_validator, model_validator
 
-from .composite_config import CompositeSettings
+from .composite.config import CompositeSettings
 from .constants import CLASS_10, FEATURE_SETS, HIERARCHICAL_BUNDLE_NAME
 
 CANONICAL_GROUPED_SPLIT_STRATEGY = "grouped"

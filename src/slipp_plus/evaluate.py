@@ -369,7 +369,7 @@ def evaluate_hierarchical_holdouts(
     if list(bundle.get("class_order", CLASS_10)) != list(CLASS_10):
         raise ValueError("hierarchical bundle class_order does not match canonical CLASS_10")
     if bundle.get("backend") == "family_encoder":
-        from .composite_family_train import predict_family_encoder_holdout
+        from .composite.family_train import predict_family_encoder_holdout
 
         outputs: dict[str, dict[str, float]] = {}
         for holdout_name in ("apo_pdb", "alphafold"):

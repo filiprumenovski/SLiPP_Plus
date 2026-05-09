@@ -348,7 +348,7 @@ def run_training(settings: Settings) -> dict[str, Path]:
     """
 
     if settings.pipeline_mode == "composite":
-        from .composite_train import run_composite_training
+        from .composite.train import run_composite_training
 
         return run_composite_training(settings)
     if settings.pipeline_mode == "hierarchical":

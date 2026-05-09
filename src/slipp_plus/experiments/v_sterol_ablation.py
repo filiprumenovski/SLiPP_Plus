@@ -19,7 +19,7 @@ from pathlib import Path
 import pandas as pd
 
 from ..constants import DERIVED_FEATURES_26, EXTRA_VDW22, FEATURE_SETS
-from ..derived_features import compute_derived_features
+from ..feature_builders.derived_features import compute_derived_features
 from ..ingest import _read_training_csv
 from ..schemas import validate_holdout, validate_training
 

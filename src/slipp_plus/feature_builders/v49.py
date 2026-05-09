@@ -21,9 +21,9 @@ from .aromatic_aliphatic import (
     _compute_centroid,
     _shell_index,
 )
-from .constants import AA20, AROMATIC_ALIPHATIC_12, SELECTED_17
-from .ingest import _read_training_csv
-from .schemas import validate_training
+from ..constants import AA20, AROMATIC_ALIPHATIC_12, SELECTED_17
+from ..ingest import _read_training_csv
+from ..schemas import validate_training
 
 INFO_FIELD_MAP: dict[str, str] = {
     "Volume": "pock_vol",
