@@ -1,6 +1,6 @@
 """Render the SLiPP++ publication figure set.
 
-Four figures, all written to ``figures/`` as PNG + PDF + SVG:
+Three figures, all written to ``figures/`` as PNG + PDF + SVG:
 
 1. ``figure7_plus_feature_landscape`` — the headline four-panel figure
    (feature-family importance, top features, per-class violin, PCA with
@@ -8,8 +8,6 @@ Four figures, all written to ``figures/`` as PNG + PDF + SVG:
 2. ``figure_per_class_forest`` — per-class F1 across the ablation ladder.
 3. ``figure_ablation_ladder`` — sequential lipid5 macro-F1 deltas from
    paper17 to exp-021.
-4. ``figure_pipeline_schematic`` — pipeline schematic, the spiritual
-   successor to Chou et al. Fig. 7's development overview.
 
 Usage::
 
@@ -49,7 +47,6 @@ from slipp_plus.publication_figures import (  # noqa: E402
     figure_7_plus,
     figure_ablation_ladder,
     figure_per_class_forest,
-    figure_pipeline_schematic,
 )
 
 
@@ -364,10 +361,6 @@ def main(argv: list[str] | None = None) -> int:
     )
     written["ablation_ladder"] = figure_ablation_ladder(
         rows=_ablation_ladder_rows(),
-        out_dir=args.out_dir,
-        formats=formats,
-    )
-    written["pipeline_schematic"] = figure_pipeline_schematic(
         out_dir=args.out_dir,
         formats=formats,
     )
