@@ -62,8 +62,9 @@ These handoff items require long model runs or additional implementation and sho
 3. Compact subset ensemble sweep
    - Report: `reports/compact_subset_ensemble_sweep/summary.md`
    - Result: the five-way shape/chem blend remains the internal leader
-     (`0.684` lipid5 macro-F1), but `shell6_shape+chem` is the best
-     holdout-balanced compact blend found so far (apo-PDB F1 `0.717`,
-     AlphaFold F1 `0.698`, lipid5 macro-F1 `0.673`).
+     (`0.684` lipid5 macro-F1), but a chem-heavy `20% shell6_shape / 80% chem`
+     weighting is the best holdout-balanced compact blend found so far
+     (apo-PDB F1 `0.717`, AlphaFold F1 `0.715`, lipid5 macro-F1 `0.664`).
    - No new model training was run; this swept equal-probability subsets over
-     existing compact prediction artifacts.
+     existing compact prediction artifacts plus a targeted shell6/chem weight
+     sweep.

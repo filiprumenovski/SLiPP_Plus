@@ -8,6 +8,7 @@ Equal-probability subset sweep over seven existing compact family-encoder predic
 - Best holdout-balanced subset is `shell6_shape+chem`: lipid5 0.673, apo-PDB 0.717, AlphaFold 0.698.
 - `hydro4` and `geom` help internal validation but are associated with weaker holdout F1 in the top internal blends.
 - `shell6_shape` is the strongest holdout anchor; pairing it with `chem` beats the current internal leader on both holdouts.
+- Chem-heavy weighting improves holdout mean further (20% shell6_shape / 80% chem: holdout mean 0.716) but lowers internal lipid5 to 0.664.
 
 ## Top Internal Lipid5
 
@@ -55,3 +56,17 @@ Equal-probability subset sweep over seven existing compact family-encoder predic
 | `shape6+shell6_shape+shell6_shape3+hydro4` | 4 | 0.681 | 0.905 | 0.659 | 0.678 | 0.648 | 0.663 |
 | `shape3+shape6+shell6_shape3+hydro4` | 4 | 0.681 | 0.905 | 0.659 | 0.655 | 0.657 | 0.656 |
 | `shape6+shell6_shape+shell6_shape3+geom` | 4 | 0.678 | 0.905 | 0.657 | 0.655 | 0.633 | 0.644 |
+
+## Shell6/Chem Weight Sweep
+
+| shell6_shape_weight | chem_weight | lipid5 | STE | apo_f1 | alphafold_f1 | holdout_mean |
+|---:|---:|---:|---:|---:|---:|---:|
+| 0.200 | 0.800 | 0.664 | 0.629 | 0.717 | 0.715 | 0.716 |
+| 0.100 | 0.900 | 0.661 | 0.625 | 0.706 | 0.715 | 0.711 |
+| 0.700 | 0.300 | 0.673 | 0.653 | 0.727 | 0.689 | 0.708 |
+| 0.500 | 0.500 | 0.673 | 0.646 | 0.717 | 0.698 | 0.707 |
+| 0.300 | 0.700 | 0.669 | 0.642 | 0.717 | 0.698 | 0.707 |
+| 0.900 | 0.100 | 0.669 | 0.647 | 0.711 | 0.703 | 0.707 |
+| 0.400 | 0.600 | 0.673 | 0.646 | 0.706 | 0.698 | 0.702 |
+| 0.600 | 0.400 | 0.674 | 0.653 | 0.717 | 0.680 | 0.698 |
+| 0.800 | 0.200 | 0.671 | 0.650 | 0.711 | 0.680 | 0.696 |

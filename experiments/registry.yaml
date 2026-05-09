@@ -679,3 +679,38 @@
     while retaining lipid5 macro-F1 0.673. The result suggests shell6_shape is
     the external holdout anchor and chem adds complementary external signal,
     whereas hydro4/geom primarily help internal validation.
+
+- id: exp-021-compact-shell6-chem-holdout-weighted
+  date: "2026-05-08"
+  feature_set: 0.2*(v14+aa20+shell6+tunnel_shape) + 0.8*(v49+tunnel_chem)
+  config: scripts/compact_subset_ensemble_sweep.py
+  models: [family_encoder, family_encoder]
+  postprocessing: "weighted_probability_ensemble(shell6_shape=0.2, chem=0.8)"
+  status: complete
+  is_current_best: false
+  metrics:
+    binary_f1: "0.902 ± 0.016"
+    binary_auroc: "0.989 ± 0.004"
+    macro_f1_10: "0.765 ± 0.021"
+    lipid_macro_f1: "0.664 ± 0.034"
+    clr_f1: "0.756"
+    myr_f1: "0.701"
+    ola_f1: "0.594"
+    plm_f1: "0.640"
+    ste_f1: "0.629"
+  holdouts:
+    apo_pdb_f1: 0.717
+    apo_pdb_auroc: 0.802
+    alphafold_f1: 0.715
+    alphafold_auroc: 0.855
+  supersedes: null
+  artifacts:
+    sweep_report: reports/compact_subset_ensemble_sweep/summary.md
+    weight_sweep: reports/compact_subset_ensemble_sweep/shell6_chem_weight_sweep.csv
+  notes: >
+    HOLDOUT-WEIGHTED TRADEOFF. A targeted shell6_shape/chem weight sweep found
+    that a chem-heavy 20/80 blend improves the mean external holdout F1 to
+    0.716 (apo-PDB 0.717, AlphaFold 0.715), above the equal-weight
+    shell6_shape+chem blend and all current internal leaders. The cost is a
+    lower internal lipid5 macro-F1 of 0.664, so this is a holdout-stability
+    signal rather than an internal-validation leader.

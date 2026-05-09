@@ -15,7 +15,7 @@ scientific evidence in this project.
 - Current internal leader: `exp-019-compact-five-way-shape-chem-ensemble`
 - Current internal best command: `uv run python scripts/compact_probability_ensemble.py`
 - Best single compact model: `exp-014-v49-tunnel-shape3`
-- Holdout-balanced compact ensemble: `exp-020-compact-subset-sweep-holdout-anchor`
+- Holdout-balanced compact ensemble: `exp-021-compact-shell6-chem-holdout-weighted`
 - Current best report: `reports/compact_shape6_shell6shape3_hydro4_geom_chem_ensemble/metrics.md`
 - Current best registry entry: `experiments/registry.yaml` entry `exp-019-compact-five-way-shape-chem-ensemble`
 
@@ -32,9 +32,9 @@ Current headline metrics from the registry/README:
 
 The current internal leader is explicitly holdout-regressive: lipid macro,
 macro10, and binary F1 improve internally, but apo-PDB and AlphaFold F1 drop vs
-exp-018. The new subset sweep found a better holdout-balanced two-way blend
-(`shell6_shape+chem`: apo-PDB F1 0.717, AlphaFold F1 0.698) with lower internal
-lipid5 F1 0.673. Do not hide that tradeoff.
+exp-018. The subset/weight sweep found a better holdout-balanced two-way blend
+(`20% shell6_shape / 80% chem`: apo-PDB F1 0.717, AlphaFold F1 0.715) with
+lower internal lipid5 F1 0.664. Do not hide that tradeoff.
 
 ## Recently Completed
 
