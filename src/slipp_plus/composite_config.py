@@ -20,6 +20,18 @@ class CompositeBackboneSettings(BaseModel):
     kind: BackboneKind = "teacher_ensemble"
     feature_families: tuple[str, ...] = Field(default_factory=tuple)
     teacher_init: str | None = None
+    class_weight_multipliers: dict[str, float] = Field(default_factory=dict)
+
+    @field_validator("class_weight_multipliers")
+    @classmethod
+    def class_weight_multipliers_known(cls, value: dict[str, float]) -> dict[str, float]:
+        unknown = sorted(set(value) - set(CLASS_10))
+        if unknown:
+            raise ValueError(f"unknown class_weight_multipliers labels: {unknown}")
+        non_positive = {label: weight for label, weight in value.items() if weight <= 0}
+        if non_positive:
+            raise ValueError(f"class_weight_multipliers must be positive: {non_positive}")
+        return value
 
 
 class CompositeHeadSettings(BaseModel):

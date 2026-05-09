@@ -49,7 +49,7 @@ report:          uv run python -m slipp_plus.cli compact-report
 ## Known Blockers / Weaknesses
 
 - **STE F1 (0.645)** remains the weakest lipid class. Only 152 training rows, so data scarcity is the floor.
-- **External holdouts regress** for the five-way internal ensemble: apo-PDB F1 0.649 vs paper 0.726, AlphaFold F1 0.623 vs paper 0.643. Exp-021 (`20% shell6_shape / 80% chem`) is the best holdout-balanced compact ensemble so far (apo-PDB 0.717, AlphaFold 0.715) but drops internal lipid5 macro-F1 to 0.664.
+- **External holdouts regress** for the five-way internal ensemble: apo-PDB F1 0.649 vs paper 0.726, AlphaFold F1 0.623 vs paper 0.643. Exp-021 (`20% shell6_shape / 80% chem`) is the best holdout-balanced compact ensemble so far (apo-PDB 0.717, AlphaFold 0.715) but drops internal lipid5 macro-F1 to 0.664. Exp-022 shows the regression is largely a binary-threshold calibration/recall issue; exp-023 shows internal split threshold selection does not transfer.
 - **Tiebreaker modules** are heavily duplicated (~1,750 LOC of copy-paste). P2 audit item pending.
 
 ## What Has Been Tried (and failed / abandoned)
@@ -78,7 +78,7 @@ v14 (17 cols)  →  v14+shell (29)                ← shell12 alone is modest
 ## Suggested Next Experiments
 
 1. **Release hardening for `v49+tunnel_shape_family_encoder`**: freeze config, schema sidecars, and compact-report output.
-2. **Holdout story**: analyze why chem-heavy `shell6_shape+chem` transfers externally while the five-way internal leader regresses.
+2. **Holdout story**: investigate domain-shift features directly; threshold calibration learned on internal splits does not transfer to apo-PDB/AlphaFold.
 3. **Production path**: make compact inference load only the 55 required columns and avoid heavyweight MoE code paths.
 4. **Polars migration**: keep pandas only behind compatibility boundaries such as Pandera and Excel ingest.
 5. **Optional science follow-up**: SMOTE or class-balanced encoder training for STE, but only after release candidate cleanup.

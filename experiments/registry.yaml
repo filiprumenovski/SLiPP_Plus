@@ -714,3 +714,51 @@
     shell6_shape+chem blend and all current internal leaders. The cost is a
     lower internal lipid5 macro-F1 of 0.664, so this is a holdout-stability
     signal rather than an internal-validation leader.
+
+- id: exp-022-holdout-threshold-diagnostic
+  date: "2026-05-08"
+  feature_set: compact probability ensembles
+  config: reports/holdout_threshold_ablation.md
+  models: [family_encoder]
+  postprocessing: "diagnostic_binary_threshold_sweep"
+  status: complete
+  is_current_best: false
+  metrics: {}
+  holdouts: {}
+  supersedes: null
+  artifacts:
+    report: reports/holdout_threshold_ablation.md
+    metrics: reports/holdout_threshold_ablation.csv
+  notes: >
+    CALIBRATION DIAGNOSTIC. Sweeping the binary lipid probability threshold on
+    staged holdout predictions shows that the exp-019 holdout regression is
+    mostly a recall/calibration problem, not lipid overcalling. At threshold
+    0.5, exp-019 has high precision but many false negatives; lower diagnostic
+    thresholds around 0.25-0.35 recover large F1 on both apo-PDB and AlphaFold.
+    Because apo-PDB and AlphaFold are final holdouts, these tuned thresholds are
+    not deployable settings; the result points to a future calibration step
+    learned inside the 25-split protocol.
+
+- id: exp-023-internal-threshold-selection
+  date: "2026-05-08"
+  feature_set: compact probability ensembles
+  config: reports/internal_threshold_selection_ablation.md
+  models: [family_encoder]
+  postprocessing: "internal_split_binary_threshold_selection"
+  status: complete
+  is_current_best: false
+  metrics: {}
+  holdouts: {}
+  supersedes: null
+  artifacts:
+    report: reports/internal_threshold_selection_ablation.md
+    thresholds: reports/internal_threshold_selection.csv
+    holdout_application: reports/internal_threshold_holdout_application.csv
+  notes: >
+    NEGATIVE CALIBRATION RESULT. Learning one binary lipid-probability threshold
+    per compact ensemble from the 25 internal split predictions selects
+    thresholds near the default (0.51-0.54), not the low thresholds that maximize
+    holdout F1 diagnostically. Applying these internally selected thresholds to
+    apo-PDB and AlphaFold slightly worsens every checked condition, confirming
+    that the low-threshold holdout gains reflect external domain shift rather
+    than a calibration rule recoverable from the current internal split protocol.

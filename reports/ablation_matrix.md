@@ -25,3 +25,5 @@ Generated from `experiments/registry.yaml`. Metrics are copied from registry ent
 | **exp-019-compact-five-way-shape-chem-ensemble** | v49+tunnel_shape + v14+aa20+shell6+tunnel_shape3 + v49+tunnel_shape_hydro4 + v49+tunnel_geom + v49+tunnel_chem | 0.906 ± 0.015 | 0.778 ± 0.017 | 0.649 | 0.623 | NEW INTERNAL LEADER, HOLDOUT-REGRESSIVE. | - |
 | exp-020-compact-subset-sweep-holdout-anchor | v14+aa20+shell6+tunnel_shape + v49+tunnel_chem | 0.902 ± 0.016 | 0.772 ± 0.017 | 0.717 | 0.698 | HOLDOUT-BALANCED SIGNAL. | - |
 | exp-021-compact-shell6-chem-holdout-weighted | 0.2*(v14+aa20+shell6+tunnel_shape) + 0.8*(v49+tunnel_chem) | 0.902 ± 0.016 | 0.765 ± 0.021 | 0.717 | 0.715 | HOLDOUT-WEIGHTED TRADEOFF. | - |
+| exp-022-holdout-threshold-diagnostic | compact probability ensembles | - | - | - | - | CALIBRATION DIAGNOSTIC. | - |
+| exp-023-internal-threshold-selection | compact probability ensembles | - | - | - | - | NEGATIVE CALIBRATION RESULT. | - |

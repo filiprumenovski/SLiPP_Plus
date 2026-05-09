@@ -76,3 +76,21 @@ These handoff items require long model runs or additional implementation and sho
      screened compact subsets.
    - No new model training was run; this consolidates existing v_sterol-aligned
      tunnel screens and compact ladder artifacts.
+
+5. Holdout threshold diagnostic
+   - Report: `reports/holdout_threshold_ablation.md`
+   - Result: the five-way internal leader's holdout regression is primarily
+     recall/calibration-driven. At the default `0.5` lipid-probability
+     threshold it has high precision but many false negatives; diagnostic
+     thresholds around `0.25`-`0.35` recover large F1 on both holdouts.
+   - Do not deploy holdout-tuned thresholds. Use this as evidence for a future
+     calibration step learned inside the 25-split protocol.
+
+6. Internal threshold selection
+   - Report: `reports/internal_threshold_selection_ablation.md`
+   - Result: thresholds selected from the 25 internal splits stay near the
+     default (`0.51`-`0.54`) and slightly worsen apo-PDB/AlphaFold F1 for every
+     checked compact ensemble.
+   - This closes the obvious holdout-safe threshold-calibration idea as a
+     negative result; the low-threshold holdout gains are domain-shift evidence,
+     not an internally recoverable threshold rule.

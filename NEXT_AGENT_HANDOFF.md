@@ -10,8 +10,8 @@ scientific evidence in this project.
 ## Current State
 
 - Branch: `main`
-- Latest pushed commit before this update: `9255625 reports: close tiebreaker ablation`
-- Worktree contains a new subset-sweep ablation report.
+- Latest pushed commit before this update: `6e55028 reports: close caver tunnel ablation`
+- Worktree contains unrelated source edits plus a new holdout-threshold diagnostic report.
 - Current internal leader: `exp-019-compact-five-way-shape-chem-ensemble`
 - Current internal best command: `uv run python scripts/compact_probability_ensemble.py`
 - Best single compact model: `exp-014-v49-tunnel-shape3`
@@ -34,7 +34,10 @@ The current internal leader is explicitly holdout-regressive: lipid macro,
 macro10, and binary F1 improve internally, but apo-PDB and AlphaFold F1 drop vs
 exp-018. The subset/weight sweep found a better holdout-balanced two-way blend
 (`20% shell6_shape / 80% chem`: apo-PDB F1 0.717, AlphaFold F1 0.715) with
-lower internal lipid5 F1 0.664. Do not hide that tradeoff.
+lower internal lipid5 F1 0.664. The latest threshold diagnostic shows the
+holdout regression is mostly a recall/calibration issue at the default `0.5`
+lipid-probability threshold, but internal split threshold selection does not
+transfer to apo-PDB/AlphaFold. Do not hide that tradeoff.
 
 ## Recently Completed
 
@@ -263,6 +266,8 @@ Closed from existing artifacts:
 - Tiebreaker on/off ablation: `reports/tiebreaker_ablation.md`
 - Compact subset sweep: `reports/compact_subset_ensemble_sweep/summary.md`
 - CAVER/tunnel marginal value ablation: `reports/caver_ablation.md`
+- Holdout threshold diagnostic: `reports/holdout_threshold_ablation.md`
+- Internal threshold selection: `reports/internal_threshold_selection_ablation.md`
 
 The still-queued items require long model runs or new implementation. Do not run
 them inline unless the user explicitly authorizes long-run mode.

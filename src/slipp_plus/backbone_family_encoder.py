@@ -25,6 +25,7 @@ class FamilyEncoderTrainConfig:
     hard_label_weight: float = 0.20
     distill_weight: float = 1.00
     patience: int = 15
+    class_weight_multipliers: Mapping[str, float] | None = None
 
 
 class FamilyEncoderNet(nn.Module):
@@ -132,6 +133,9 @@ def fit_family_encoder(
     )
     counts = np.bincount(y_train, minlength=len(CLASS_10)).astype(np.float32)
     weights = counts.sum() / np.maximum(counts, 1.0)
+    if cfg.class_weight_multipliers:
+        for label, multiplier in cfg.class_weight_multipliers.items():
+            weights[CLASS_10.index(label)] *= float(multiplier)
     weights = weights / weights.mean()
     ce = nn.CrossEntropyLoss(weight=torch.tensor(weights, dtype=torch.float32))
     kl = nn.KLDivLoss(reduction="batchmean")
