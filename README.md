@@ -21,9 +21,8 @@ Upstream code and `training_pockets.csv` come from
 **Deployable artifact:** `exp-028-compact-shape3-shell6-chem-weighted` is
 the current production-recommended config. It is selected by holdout-weighted
 score rather than internal-validation score because the prior internal
-leader (`exp-019`, five-way ensemble) regresses ~0.07–0.09 F1 on both
-external holdouts compared with `exp-028`. exp-019 retains
-`is_internal_best` in the registry for audit purposes.
+leaders regress badly on the external holdouts. `exp-030` is now the
+internal-validation leader, but it is not deployable.
 
 **Optimization scaffold (this branch):** Multi-objective Hyperband HPO via
 Optuna NSGA-II ([`tools/optuna_hpo.py`](tools/optuna_hpo.py)), CatBoost as a
@@ -53,19 +52,25 @@ proposal.
 | AlphaFold holdout F1 | `0.724` |
 | CLR / MYR / OLA / PLM / STE F1 | `0.758 / 0.705 / 0.599 / 0.643 / 0.644` |
 
-The internal-validation leader (`exp-019`, retained as `is_internal_best`)
-reports binary F1 `0.906 ± 0.015`, 10-class macro-F1 `0.778 ± 0.017`, and
-5-lipid macro-F1 `0.684 ± 0.030` but regresses to apo-PDB `0.649` and
-AlphaFold `0.623` on the external holdouts. The 0.014 internal lipid5
-macro-F1 sacrifice in `exp-028` buys back ~0.07 apo-PDB and ~0.10
-AlphaFold F1 -- a holdout-discipline-aware tradeoff documented in the
-registry's `holdout_acceptance_test` notes.
+The internal-validation leader (`exp-030-probability-blend-internal-leader`)
+reports binary F1 `0.908 ± 0.015`, AUROC `0.990 ± 0.003`, 10-class macro-F1
+`0.781 ± 0.018`, and 5-lipid macro-F1 `0.687 ± 0.031`, but regresses to
+apo-PDB `0.643` and AlphaFold `0.536` on the external holdouts. The 0.017
+internal lipid5 macro-F1 sacrifice in `exp-028` buys back ~0.07 apo-PDB F1
+and ~0.19 AlphaFold F1 relative to this internal leader.
 
-Latest negative ablation: `exp-027-ste-class-weight-x2` doubled STE's
-family-encoder class weight. It increased STE recall slightly but lowered STE
-F1 (`0.638 -> 0.629`), lipid5 macro-F1 (`0.668 -> 0.657`), apo-PDB F1
-(`0.667 -> 0.649`), and AlphaFold F1 (`0.724 -> 0.711`). Simple global STE
-overweighting is therefore not a promotion path.
+Strongest current lead: `exp-031-legacy-rescue-rule-diagnostic` starts from
+exp-028 and rescues exp-028 non-lipid calls only when both
+`paper17_family_encoder` and `v_sterol` have lipid probability `>= 0.35`.
+It improves apo-PDB F1 to `0.748` and AlphaFold F1 to `0.733`, with internal
+binary F1 `0.899 ± 0.017` and lipid5 macro-F1 `0.666`. It is not promoted
+because the threshold was found by a holdout-scored diagnostic grid.
+
+Latest negative ablation: `exp-032-legacy-rescue-holdout-safe-negative`
+tried to make exp-031 holdout-safe through internal threshold selection and a
+small logistic rescue gate. Both failed to recover the external gains
+(best simple gate: apo-PDB `0.699`, AlphaFold `0.667`), so exp-031 remains a
+domain-shift clue rather than a deployable rule.
 
 ### Comparison to the SLiPP paper baseline
 
@@ -184,10 +189,20 @@ checkout. See [`DATASHEET.md`](docs/DATASHEET.md) and
 
 ## Reproduce
 
-Run the current internal compact leader:
+Run the current deployable compact ensemble:
 
 ```bash
-uv run python scripts/compact_probability_ensemble.py
+uv run python scripts/compact_probability_ensemble.py \
+  --component-dir processed/v49_tunnel_shape3 \
+  --component-dir processed/v49_shell6_tunnel_shape \
+  --component-dir processed/v49_tunnel_chem \
+  --component-weight 0.1 \
+  --component-weight 0.2 \
+  --component-weight 0.7 \
+  --model-name shape3_shell6_chem_weighted_10_20_70 \
+  --report-title "Compact shape3 shell6 chem weighted probability ensemble" \
+  --output-predictions-dir processed/compact_shape3_shell6_chem_weighted_10_20_70/predictions \
+  --output-report-dir reports/compact_shape3_shell6_chem_weighted_10_20_70
 uv run python -m slipp_plus.cli compact-report
 ```
 
