@@ -8,7 +8,7 @@ Generated from `experiments/registry.yaml`. Metrics are copied from registry ent
 | exp-002-v49-baseline | v49 | 0.895 ± 0.015 | 0.725 ± 0.017 | 0.709 | 0.753 | +20 AA counts + 12 aromatic/aliphatic shell features. | exp-005-v_sterol-ensemble |
 | exp-003-v49-ensemble-clr-ste-tb | v49 | 0.898 ± 0.016 | 0.731 ± 0.016 | - | - | CLR/STE tiebreaker fired only 2 times across 25 iterations (0.08%). | - |
 | exp-004-v61-baseline | v61 | 0.894 ± 0.016 | 0.726 ± 0.016 | 0.745 | 0.69 | v49 + 12 normalized shell features. | - |
-| exp-005-v_sterol-ensemble | v_sterol | 0.899 ± 0.015 | 0.734 ± 0.016 | - | - | Chemistry-refined residue shells (28 chem + 4 ratio + 5 PCA + 1 burial = 38 new features). | exp-007-v_sterol-plm_ste-tiebreaker |
+| exp-005-v_sterol-ensemble | v_sterol | 0.899 ± 0.015 | 0.734 ± 0.016 | 0.679 | 0.708 | Chemistry-refined residue shells (28 chem + 4 ratio + 5 PCA + 1 burial = 38 new features). | exp-007-v_sterol-plm_ste-tiebreaker |
 | exp-006-v_plm_ste-features | v_plm_ste | - | ~0.730 | - | - | ABANDONED. | - |
 | exp-007-v_sterol-plm_ste-tiebreaker | v_sterol | 0.899 ± 0.015 | 0.738 ± 0.015 | 0.716 | 0.725 | WINNING CONFIG. | exp-009-v_sterol-boundary-refactor |
 | exp-008-detector-bakeoff | - | - | - | - | - | fpocket vs P2Rank on 1,752 ligand-bound structures. | - |
@@ -32,3 +32,4 @@ Generated from `experiments/registry.yaml`. Metrics are copied from registry ent
 | exp-026-domain-shift-component-rescue | compact component prediction artifacts | - | - | - | - | DOMAIN-SHIFT DIAGNOSTIC. | - |
 | exp-027-ste-class-weight-x2 | v49+tunnel_shape3 | 0.896 ± 0.016 | 0.760 ± 0.019 | 0.649 | 0.711 | NEGATIVE STE IMBALANCE RESULT. | - |
 | **exp-028-compact-shape3-shell6-chem-weighted** | 0.1*(v49+tunnel_shape3) + 0.2*(v14+aa20+shell6+tunnel_shape) + 0.7*(v49+tunnel_chem) | 0.903 ± 0.016 | 0.769 ± 0.019 | 0.717 | 0.724 | NEW DEPLOYABLE LEADER. | - |
+| exp-029-compact-weight-local-refinement | compact probability ensembles | - | - | - | - | NEGATIVE LOCAL REFINEMENT. | - |

@@ -140,15 +140,25 @@
     plm_f1: "0.636 ± 0.046"
     myr_f1: 0.700
     ola_f1: 0.543
+  holdouts:
+    apo_pdb_f1: 0.679
+    apo_pdb_auroc: 0.812
+    alphafold_f1: 0.708
+    alphafold_auroc: 0.864
   supersedes: exp-002-v49-baseline
   artifacts:
     predictions: processed/v_sterol/predictions/test_predictions.parquet
+    apo_pdb_predictions: processed/v_sterol/predictions/holdouts/apo_pdb_ensemble_predictions.parquet
+    alphafold_predictions: processed/v_sterol/predictions/holdouts/alphafold_ensemble_predictions.parquet
     models: models/v_sterol/
     report: reports/v_sterol/v_sterol_ensemble_metrics.md
+    holdout_completion: reports/v_sterol_holdout_completion.md
   notes: >
     Chemistry-refined residue shells (28 chem + 4 ratio + 5 PCA + 1 burial = 38 new features).
-    CLR F1: +0.020 over v49 XGB. STE F1 regressed (0.415 → 0.398) — targeted in exp-007.
-    4 of 5 lipid classes improved. Sterol ID Sprint Round 1.
+    CLR F1: +0.020 over v49 XGB. STE F1 regressed (0.415 -> 0.398) -- targeted in exp-007.
+    4 of 5 lipid classes improved. Sterol ID Sprint Round 1. Holdout completion
+    from existing artifacts gives apo-PDB F1 0.679 and AlphaFold F1 0.708,
+    confirming that v_sterol alone did not solve external recall.
 
 - id: exp-006-v_plm_ste-features
   date: "2026-04-23"
@@ -927,3 +937,23 @@
     without new training: apo-PDB F1 ties at 0.717, AlphaFold F1 improves to
     0.724, and internal lipid5 macro-F1 recovers to 0.670. The gain comes from
     adding a small shape3 contribution to the shell6/chem holdout anchor.
+
+- id: exp-029-compact-weight-local-refinement
+  date: "2026-05-09"
+  feature_set: compact probability ensembles
+  config: reports/compact_weight_local_refinement.md
+  models: [family_encoder]
+  postprocessing: "local_weight_grid_around_exp-028"
+  status: complete
+  is_current_best: false
+  metrics: {}
+  holdouts: {}
+  supersedes: null
+  artifacts:
+    report: reports/compact_weight_local_refinement.md
+  notes: >
+    NEGATIVE LOCAL REFINEMENT. A bounded 0.05-resolution local grid around the
+    exp-028 shape3/shell6_shape/chem weights allowed small optional mass from
+    shape6, shell6_shape3, hydro4, and geom. No candidate beat the promoted
+    0.10/0.20/0.70 blend at the holdout-balanced objective; exp-028 is locally
+    stable under this search.

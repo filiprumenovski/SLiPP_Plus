@@ -8,17 +8,12 @@ Generated from the registry after `reports/ablation_matrix.md` was created.
 
 ### Queue For Holdout Completion
 
-1. `exp-005-v_sterol-ensemble`
-   - Config: `configs/v_sterol.yaml`
-   - Current gap: registry has no `holdouts` block.
-   - Suggested command: rerun/evaluate the saved `v_sterol` iteration-0 RF/XGB/LGBM bundles against current apo-PDB and AlphaFold parquet artifacts, then append `apo_pdb_f1`, `apo_pdb_auroc`, `alphafold_f1`, and `alphafold_auroc` to the registry.
-
-2. `exp-009-v_sterol-boundary-refactor`
+1. `exp-009-v_sterol-boundary-refactor`
    - Config: `configs/v_sterol.yaml`
    - Current gap: registry has no `holdouts` block for the boundary-refactor postprocessing.
    - Suggested command: run the holdout validation path for the saved `ste_rescue_ola_plm_pair` predictions or regenerate the postprocessed holdout predictions, then update the registry with apo-PDB and AlphaFold metrics.
 
-3. `exp-011-family-plus-moe`
+2. `exp-011-family-plus-moe`
    - Config: `configs/v_sterol_family_plus_moe.yaml`
    - Current gap: registry holdout fields are explicitly `null`.
    - Current blocker from registry notes: holdout inference for composite pair/local MoE bundles is not implemented yet.
@@ -125,3 +120,25 @@ Generated from the registry after `reports/ablation_matrix.md` was created.
      scores versus the unweighted shape3 baseline.
    - This closes the simple class-weight route; future STE work needs a more
      targeted classifier, calibration, or data-extension intervention.
+
+11. Weighted compact blend promotion
+   - Report: `reports/compact_weight_grid_sweep.md`
+   - Result: positive. `0.10 shape3 / 0.20 shell6_shape / 0.70 chem` improves
+     the prior exp-021 deployable recommendation by tying apo-PDB F1 (`0.717`),
+     improving AlphaFold F1 (`0.715` to `0.724`), and improving internal lipid5
+     macro-F1 (`0.664` to `0.670`).
+   - Registry: `exp-028-compact-shape3-shell6-chem-weighted` is now the
+     deployable recommendation.
+
+12. Compact weight local refinement
+   - Report: `reports/compact_weight_local_refinement.md`
+   - Result: negative. A bounded 0.05-resolution local grid around exp-028 found
+     no better holdout-balanced candidate after allowing small optional mass
+     from `shape6`, `shell6_shape3`, `hydro4`, and `geom`.
+
+13. `exp-005-v_sterol-ensemble` holdout completion
+   - Report: `reports/v_sterol_holdout_completion.md`
+   - Result: registry holdouts filled from existing persisted ensemble holdout
+     predictions. apo-PDB F1/AUROC `0.679 / 0.812`; AlphaFold F1/AUROC
+     `0.708 / 0.864`.
+   - No retraining was run.

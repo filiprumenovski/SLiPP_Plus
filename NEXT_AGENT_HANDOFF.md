@@ -46,6 +46,20 @@ Internal-validation leader remains `exp-019-compact-five-way-shape-chem-ensemble
 - Decision: current deployable recommendation, while exp-019 remains the
   internal-validation leader only.
 
+`exp-029-compact-weight-local-refinement` is closed negative.
+
+- Report: `reports/compact_weight_local_refinement.md`
+- Result: a bounded 0.05-resolution local grid around exp-028 did not find a
+  better holdout-balanced candidate after allowing small optional mass from
+  `shape6`, `shell6_shape3`, `hydro4`, and `geom`.
+- Decision: exp-028 is locally stable under this search.
+
+`exp-005-v_sterol-ensemble` holdouts are now complete from existing artifacts.
+
+- Report: `reports/v_sterol_holdout_completion.md`
+- Result: apo-PDB F1/AUROC `0.679 / 0.812`; AlphaFold F1/AUROC
+  `0.708 / 0.864`.
+
 ## Remaining High-Impact Work
 
 1. Prioritize domain-shift fixes that can be learned without tuning on holdout
@@ -62,6 +76,8 @@ Internal-validation leader remains `exp-019-compact-five-way-shape-chem-ensemble
    an internal-only improvement that reproduces exp-019's holdout regression.
 5. Keep README current with the deployable recommendation, internal leader, and
    major negative ablations. Stale docs are a known project risk.
+6. Remaining queued holdout completions are `exp-009-v_sterol-boundary-refactor`
+   and `exp-011-family-plus-moe`; `exp-005` is closed.
 
 ## Verification To Re-run
 
