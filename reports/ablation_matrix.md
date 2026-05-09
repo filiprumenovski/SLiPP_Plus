@@ -41,3 +41,4 @@ Generated from `experiments/registry.yaml`. Metrics are copied from registry ent
 | **exp-035-legacy-rescue-logistic-gate-reproducible** | exp-028 + paper17_family_encoder + v_sterol probabilities | 0.900 ± 0.018 | 0.766 ± 0.017 | 0.742 | 0.775 | NEW DEPLOYABLE LEADER. | - |
 | exp-036-legacy-rescue-logistic-gate-t99 | exp-028 + paper17_family_encoder + v_sterol probabilities | 0.901 ± 0.017 | 0.766 ± 0.018 | 0.727 | 0.752 | NEUTRAL STRICT-GATE RESULT. | - |
 | exp-037-legacy-rescue-maxlegacy-diagnostic | exp-028 + paper17_family_encoder + v_sterol probabilities | 0.895 ± 0.015 | 0.762 ± 0.019 | 0.756 | 0.807 | HOLDOUT-POSITIVE DIAGNOSTIC. | - |
+| exp-038-legacy-rescue-internal-selection-audit | exp-028 + paper17_family_encoder + v_sterol probabilities | - | - | - | - | NEGATIVE INTERNAL-SELECTION AUDIT. | - |

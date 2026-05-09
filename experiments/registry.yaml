@@ -1227,3 +1227,27 @@
     to 0.658. Do not promote: rewrite mode and threshold were selected by a
     holdout-scored diagnostic sweep. Next step is an internal-only selection
     rule that can justify a similar recall-heavy policy.
+
+- id: exp-038-legacy-rescue-internal-selection-audit
+  date: "2026-05-09"
+  feature_set: exp-028 + paper17_family_encoder + v_sterol probabilities
+  config: reports/legacy_rescue_internal_selection_audit_2026_05_09.md
+  models: [family_encoder, logistic_gate]
+  postprocessing: "internal_selection_audit_over_exp037_sweep"
+  status: complete
+  is_current_best: false
+  metrics: {}
+  holdouts: {}
+  supersedes: null
+  artifacts:
+    report: reports/legacy_rescue_internal_selection_audit_2026_05_09.md
+    sweep: reports/legacy_rescue_gate_diagnostic_sweep.csv
+  notes: >
+    NEGATIVE INTERNAL-SELECTION AUDIT. Simple internal-only criteria do not
+    recover the holdout-positive exp-037 maxlegacy policy. Maximizing internal
+    binary F1 selects a conservative blend_base50 threshold-0.99 policy with
+    weak holdouts (apo-PDB F1 0.704, AlphaFold F1 0.744). Maximizing internal
+    fire rate under F1 floors selects another blend_base50 threshold-0.90
+    policy with the same weak holdouts. Internal F1/fire scalar rules are not
+    enough; the next selection attempt needs a better proxy for external false
+    negatives or unlabeled shift.

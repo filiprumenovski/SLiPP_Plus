@@ -168,6 +168,16 @@ lead.
 - Decision: do not promote yet. This beats exp-035 externally, but the rewrite
   mode and threshold came from a holdout-scored diagnostic sweep.
 
+`exp-038-legacy-rescue-internal-selection-audit` is closed negative.
+
+- Report: `reports/legacy_rescue_internal_selection_audit_2026_05_09.md`
+- Result: maximizing internal binary F1 selects a conservative
+  `blend_base50`/`0.99` policy with apo-PDB F1 `0.704` and AlphaFold F1
+  `0.744`. Maximizing internal fire rate under F1 floors also selects
+  `blend_base50` rather than `maxlegacy` and does not beat exp-035.
+- Decision: simple internal F1/fire scalar rules do not make exp-037
+  holdout-safe.
+
 `exp-005-v_sterol-ensemble` holdouts are now complete from existing artifacts.
 
 - Report: `reports/v_sterol_holdout_completion.md`
@@ -196,7 +206,8 @@ holdout reporting.
 1. Try to beat exp-035 without using holdout labels for selection. Best next
    direction: make the exp-037 `maxlegacy`/`0.90` recall-heavy policy
    selectable from internal-only evidence. The simple stricter threshold
-   ablation (`exp-036`, threshold `0.99`) did not beat exp-035.
+   ablation (`exp-036`, threshold `0.99`) did not beat exp-035, and simple
+   internal F1/fire scalar selection (`exp-038`) did not recover exp-037.
 2. Prioritize domain-shift fixes that can be learned without tuning on holdout
    labels. The holdout threshold diagnostic showed lower deployable thresholds
    would help externally, but internal threshold selection did not reproduce

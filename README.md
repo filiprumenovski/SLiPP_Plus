@@ -88,6 +88,11 @@ apo-PDB F1 `0.756` and AlphaFold F1 `0.807`, beating exp-035 externally, but
 is not deployable because the rewrite/threshold were found by a holdout-scored
 sweep. The next ablation should make this selection internal-only.
 
+Internal-selection audit: `exp-038-legacy-rescue-internal-selection-audit`
+shows that simple internal scalar objectives do not recover exp-037. Maximizing
+internal F1 or internal fire rate under F1 floors picks conservative blended
+rewrites with weaker holdouts.
+
 Holdout-label audit: `exp-034-holdout-label-source-audit` found a row-order
 trap, not a semantic label conflict. Root holdout files and component-specific
 holdout feature files have the same identities but different row order; labels
