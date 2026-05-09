@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 
 from slipp_plus.constants import PALMITATE_VS_STERYL_EXTRA_16, PLM_STE_EXTRA_16
-from slipp_plus.plm_ste_features import _axial_profile
+from slipp_plus.feature_builders.plm_ste_features import _axial_profile
 
 
 def _vert_coords() -> np.ndarray:

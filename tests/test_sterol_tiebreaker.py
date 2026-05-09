@@ -1,4 +1,4 @@
-"""Tests for slipp_plus.sterol_tiebreaker."""
+"""Tests for slipp_plus.experiments.sterol_tiebreaker."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ import pytest
 
 from slipp_plus.constants import CLASS_10
 from slipp_plus.ensemble import PROBA_COLUMNS
-from slipp_plus.sterol_tiebreaker import (
+from slipp_plus.experiments.sterol_tiebreaker import (
     CLR_IDX,
     STE_IDX,
     apply_tiebreaker,

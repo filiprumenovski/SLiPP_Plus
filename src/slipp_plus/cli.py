@@ -108,7 +108,7 @@ def holdout_plm_ste_cmd(
     ),
 ) -> None:
     """Validate the v_sterol ensemble + PLM/STE tiebreaker on apo/AlphaFold holdouts."""
-    from .plm_ste_holdout import run_holdout_validation
+    from .experiments.plm_ste_holdout import run_holdout_validation
 
     settings = _load_settings(config)
     out = run_holdout_validation(
@@ -157,7 +157,7 @@ def pair_tiebreaker_sweep_cmd(
     workers: int = typer.Option(8, help="Maximum worker processes."),
 ) -> None:
     """Run a standalone pairwise tiebreaker margin sweep."""
-    from .pair_tiebreaker_experiment import run_pair_tiebreaker_experiment
+    from .experiments.pair_tiebreaker_experiment import run_pair_tiebreaker_experiment
 
     result = run_pair_tiebreaker_experiment(
         full_pockets_path=full_pockets,
@@ -307,7 +307,7 @@ def build_caver_t12(
     ),
 ) -> None:
     """Build the persisted-output-first CAVER Tier 1-2 feature parquet."""
-    from .caver_t12_features import (
+    from .feature_builders.caver_t12_features import (
         build_holdout_v_caver_t12_parquet,
         build_training_v_caver_t12_parquet,
     )
@@ -359,7 +359,7 @@ def build_lipid_boundary(
     skip_validation: bool = typer.Option(False, help="Skip full feature-set schema validation."),
 ) -> None:
     """Build the v_lipid_boundary training feature parquet."""
-    from .lipid_boundary_features import build_training_v_lipid_boundary_parquet
+    from .feature_builders.lipid_boundary_features import build_training_v_lipid_boundary_parquet
 
     out = build_training_v_lipid_boundary_parquet(
         base_parquet=base_parquet,
@@ -391,7 +391,7 @@ def build_v_sterol_ablation_cmd(
     ),
 ) -> None:
     """Build an explicit v_sterol feature-family ablation parquet set."""
-    from .v_sterol_ablation import build_v_sterol_ablation_from_v_sterol
+    from .experiments.v_sterol_ablation import build_v_sterol_ablation_from_v_sterol
 
     out = build_v_sterol_ablation_from_v_sterol(
         v_sterol_dir=v_sterol_dir,
@@ -433,7 +433,7 @@ def ste_rescue_sweep_cmd(
     workers: int = typer.Option(8, help="Maximum worker processes."),
 ) -> None:
     """Run the grouped STE-vs-neighbors rescue threshold sweep."""
-    from .ste_rescue_experiment import run_ste_rescue_experiment
+    from .experiments.ste_rescue_experiment import run_ste_rescue_experiment
 
     result = run_ste_rescue_experiment(
         full_pockets_path=full_pockets,

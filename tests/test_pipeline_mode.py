@@ -7,7 +7,7 @@ import pytest
 
 import slipp_plus.cli as cli
 import slipp_plus.hierarchical_pipeline as hierarchical_pipeline
-from slipp_plus.composite_topology import resolve_composite_topology
+from slipp_plus.composite.topology import resolve_composite_topology
 from slipp_plus.config import Settings, load_settings
 from slipp_plus.constants import CLASS_10, HIERARCHICAL_PREDICTIONS_NAME
 from slipp_plus.evaluate import evaluate_staged_holdout_predictions, run_evaluation
@@ -126,7 +126,7 @@ def test_pair_moe_config_validates_teacher_stack() -> None:
 
 
 def test_pair_moe_combiner_preserves_non_candidate_mass() -> None:
-    from slipp_plus.composite_pair_moe import _apply_pair_expert
+    from slipp_plus.composite.pair_moe import _apply_pair_expert
 
     probs = {f"p_{label}": 0.0 for label in CLASS_10}
     probs["p_PLM"] = 0.35
@@ -161,7 +161,7 @@ def test_pair_moe_combiner_preserves_non_candidate_mass() -> None:
 
 
 def test_local_moe_combiner_preserves_outside_mass() -> None:
-    from slipp_plus.composite_pair_moe import _apply_local_multiclass_expert
+    from slipp_plus.composite.pair_moe import _apply_local_multiclass_expert
 
     probs = {f"p_{label}": 0.0 for label in CLASS_10}
     probs["p_CLR"] = 0.20
@@ -231,21 +231,18 @@ def test_default_composite_topology_maps_hierarchical_settings(tmp_path: Path) -
 def test_composite_phase_a_translates_topology_to_hierarchical_settings() -> None:
     settings = load_settings(Path("configs/v_sterol_moe.yaml"))
 
-    from slipp_plus.composite_train import _phase_a_hierarchical_settings
+    from slipp_plus.composite.train import _phase_a_hierarchical_settings
 
     translated = _phase_a_hierarchical_settings(settings)
 
     assert translated.pipeline_mode == "hierarchical"
     assert translated.hierarchical.specialist_gate == "utility"
-    assert translated.hierarchical.specialist_rule is not None
-    assert translated.hierarchical.specialist_rule.name == "ste_neighbors_expert"
-    assert translated.hierarchical.specialist_rule.positive_label == "STE"
-    assert translated.hierarchical.specialist_rule.neighbor_labels == (
-        "PLM",
-        "COA",
-        "OLA",
-        "MYR",
-    )
+    # Phase A now uses the multi-specialist field even for a single expert.
+    rules = translated.hierarchical.specialist_rules
+    assert rules is not None and len(rules) == 1
+    assert rules[0].name == "ste_neighbors_expert"
+    assert rules[0].positive_label == "STE"
+    assert rules[0].neighbor_labels == ("PLM", "COA", "OLA", "MYR")
     assert translated.hierarchical.boundary_heads[0].name == "ola_plm_expert"
     assert translated.hierarchical.boundary_heads[0].positive_label == "OLA"
 
@@ -327,7 +324,7 @@ def test_composite_training_calls_composite_pipeline(monkeypatch, tmp_path: Path
             "composite_bundle": bundle,
         }
 
-    import slipp_plus.composite_train as composite_train
+    import slipp_plus.composite.train as composite_train
 
     monkeypatch.setattr(
         composite_train,

@@ -9,7 +9,7 @@ import pandas as pd
 import pytest
 
 from slipp_plus.constants import FEATURE_SETS, LIPID_BOUNDARY_FEATURES_22
-from slipp_plus.lipid_boundary_features import (
+from slipp_plus.feature_builders.lipid_boundary_features import (
     _collect_vert_coords,
     build_training_v_lipid_boundary_parquet,
     features_from_coordinates_and_chains,

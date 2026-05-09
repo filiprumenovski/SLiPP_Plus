@@ -6,8 +6,8 @@ import numpy as np
 import polars as pl
 import pytest
 
-from slipp_plus.aromatic_aliphatic import _compute_centroid
-from slipp_plus.detector_bakeoff import (
+from slipp_plus.feature_builders.aromatic_aliphatic import _compute_centroid
+from slipp_plus.experiments.detector_bakeoff import (
     SCORE_SCHEMA,
     compute_hit_metrics,
     extract_fpocket_predictions,

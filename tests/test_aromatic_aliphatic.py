@@ -8,7 +8,7 @@ import polars as pl
 import pytest
 from Bio.PDB import PDBParser
 
-from slipp_plus.aromatic_aliphatic import (
+from slipp_plus.feature_builders.aromatic_aliphatic import (
     ALIPHATIC_RESIDUES,
     AROMATIC_RESIDUES,
     _classify_residue_name,

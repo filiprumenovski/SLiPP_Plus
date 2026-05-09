@@ -72,12 +72,6 @@ Use concise Conventional Commit-style messages:
 - `docs: expand CAVER feature provenance`
 - `test: add day1 slow regression gate`
 
-When working from `handoff.md`, reference the completed section number in the commit subject or body, for example:
-
-```text
-polish: 1.2 add citation metadata
-```
-
 ## Branch Model
 
 Create a feature branch or worktree branch for publication-polish changes. Do not push directly to `main`; open a pull request and let the maintainer merge after CI passes.

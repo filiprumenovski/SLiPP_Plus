@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from slipp_plus.tunnel_features import TUNNEL_FEATURES_15, TUNNEL_MISSINGNESS_3
+from slipp_plus.feature_builders.tunnel_features import TUNNEL_FEATURES_15, TUNNEL_MISSINGNESS_3
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CACHE_ROOT = REPO_ROOT / "processed" / "v_tunnel" / "structure_json"

@@ -13,7 +13,7 @@ from typing import Literal
 import yaml
 from pydantic import BaseModel, Field, field_validator, model_validator
 
-from .composite_config import CompositeSettings
+from .composite.config import CompositeSettings
 from .constants import CLASS_10, FEATURE_SETS, HIERARCHICAL_BUNDLE_NAME
 
 CANONICAL_GROUPED_SPLIT_STRATEGY = "grouped"
@@ -27,6 +27,42 @@ GROUPED_SPLIT_STRATEGY_ALIASES = frozenset(
 SUPPORTED_SPLIT_STRATEGIES = frozenset(
     {"stratified_shuffle", CANONICAL_GROUPED_SPLIT_STRATEGY}
 ).union(GROUPED_SPLIT_STRATEGY_ALIASES)
+
+class FlatModelHyperparameters(BaseModel):
+    """Tunable per-family hyperparameters for flat-mode RF/XGB/LGBM/CatBoost.
+
+    Defaults reproduce the values that were inlined in ``train.py:_build_model``
+    before HPO was introduced. Anything not configured here keeps the historical
+    sklearn / xgboost / lightgbm / catboost defaults.
+    """
+
+    # RandomForest
+    rf_n_estimators: int = Field(default=100, ge=10, le=2000)
+    rf_max_depth: int | None = Field(default=None, ge=1, le=64)
+    rf_min_samples_leaf: int = Field(default=1, ge=1, le=64)
+    rf_max_features: float | None = Field(default=None, gt=0.0, le=1.0)
+    # XGBoost
+    xgb_max_depth: int = Field(default=6, ge=1, le=16)
+    xgb_n_estimators: int = Field(default=100, ge=10, le=2000)
+    xgb_learning_rate: float = Field(default=0.3, gt=0.0, le=1.0)
+    xgb_subsample: float = Field(default=1.0, gt=0.0, le=1.0)
+    xgb_colsample_bytree: float = Field(default=1.0, gt=0.0, le=1.0)
+    xgb_min_child_weight: float = Field(default=1.0, ge=0.0)
+    xgb_reg_alpha: float = Field(default=0.0, ge=0.0)
+    xgb_reg_lambda: float = Field(default=1.0, ge=0.0)
+    # LightGBM
+    lgbm_num_leaves: int = Field(default=31, ge=2, le=512)
+    lgbm_n_estimators: int = Field(default=100, ge=10, le=2000)
+    lgbm_learning_rate: float = Field(default=0.1, gt=0.0, le=1.0)
+    lgbm_min_data_in_leaf: int = Field(default=20, ge=1, le=200)
+    lgbm_feature_fraction: float = Field(default=1.0, gt=0.0, le=1.0)
+    lgbm_bagging_fraction: float = Field(default=1.0, gt=0.0, le=1.0)
+    # CatBoost (added when ``cat`` is present in the configured models list)
+    cat_depth: int = Field(default=6, ge=1, le=16)
+    cat_iterations: int = Field(default=200, ge=10, le=2000)
+    cat_learning_rate: float = Field(default=0.05, gt=0.0, le=1.0)
+    cat_l2_leaf_reg: float = Field(default=3.0, ge=0.0)
+
 
 FeatureSet = Literal[
     "v14",
@@ -59,7 +95,7 @@ FeatureSet = Literal[
     "v_graph_tunnel",
     "v_caver_t12",
 ]
-ModelKey = Literal["rf", "xgb", "lgbm"]
+ModelKey = Literal["rf", "xgb", "lgbm", "cat"]
 SplitStrategy = Literal["stratified_shuffle", "grouped"]
 PipelineMode = Literal["flat", "hierarchical", "composite"]
 Stage1Source = Literal["ensemble", "trained"]
@@ -225,6 +261,40 @@ class SpecialistRuleSettings(BaseModel):
         )
 
 
+class XGBHyperparameters(BaseModel):
+    """Tunable XGB hyperparameters for one stage of the hierarchical pipeline.
+
+    Defaults intentionally match the values that were inlined at every XGB call
+    site before HPO was introduced. Existing experiments must continue to
+    reproduce bit-identically when no overrides are supplied.
+    """
+
+    max_depth: int = Field(default=5, ge=1, le=16)
+    n_estimators: int = Field(default=250, ge=10, le=2000)
+    learning_rate: float = Field(default=0.05, gt=0.0, le=1.0)
+    subsample: float = Field(default=1.0, gt=0.0, le=1.0)
+    colsample_bytree: float = Field(default=1.0, gt=0.0, le=1.0)
+    min_child_weight: float = Field(default=1.0, ge=0.0)
+    reg_alpha: float = Field(default=0.0, ge=0.0)
+    reg_lambda: float = Field(default=1.0, ge=0.0)
+    gamma: float = Field(default=0.0, ge=0.0)
+
+    def to_xgb_kwargs(self) -> dict[str, float | int]:
+        """Render as keyword arguments for ``xgboost.XGBClassifier``."""
+
+        return {
+            "max_depth": self.max_depth,
+            "n_estimators": self.n_estimators,
+            "learning_rate": self.learning_rate,
+            "subsample": self.subsample,
+            "colsample_bytree": self.colsample_bytree,
+            "min_child_weight": self.min_child_weight,
+            "reg_alpha": self.reg_alpha,
+            "reg_lambda": self.reg_lambda,
+            "gamma": self.gamma,
+        }
+
+
 class HierarchicalSettings(BaseModel):
     stage1_source: Stage1Source = "ensemble"
     ste_threshold: float = Field(default=0.40, ge=0.0, le=1.0)
@@ -241,12 +311,47 @@ class HierarchicalSettings(BaseModel):
     specialist_feature_set: FeatureSet | None = None
     nonlipid_feature_set: FeatureSet | None = None
     specialist_rule: SpecialistRuleSettings | None = None
+    specialist_rules: list[SpecialistRuleSettings] | None = None
+    # Per-stage XGB hyperparameters. Defaults reproduce the historical
+    # hand-tuned values; HPO drivers override these per-trial.
+    stage1_xgb: XGBHyperparameters = Field(default_factory=XGBHyperparameters)
+    lipid_family_xgb: XGBHyperparameters = Field(default_factory=XGBHyperparameters)
+    nonlipid_xgb: XGBHyperparameters = Field(default_factory=XGBHyperparameters)
+    specialist_xgb: XGBHyperparameters = Field(default_factory=XGBHyperparameters)
+    boundary_head_xgb: XGBHyperparameters = Field(default_factory=XGBHyperparameters)
+
+    @model_validator(mode="after")
+    def specialist_rule_or_rules_not_both(self) -> HierarchicalSettings:
+        if self.specialist_rule is not None and self.specialist_rules:
+            raise ValueError(
+                "specify exactly one of `specialist_rule` (single) or "
+                "`specialist_rules` (list); not both"
+            )
+        return self
 
     def resolved_specialist_rule(self):
-        if self.specialist_rule is not None:
-            return self.specialist_rule.to_rule()
+        """Single-rule shim for legacy call sites.
 
-        return SpecialistRuleSettings(min_positive_proba=self.ste_threshold).to_rule()
+        Returns the first resolved rule. New code should prefer
+        :meth:`resolved_specialist_rules` which always returns a list.
+        """
+
+        rules = self.resolved_specialist_rules()
+        return rules[0] if rules else None
+
+    def resolved_specialist_rules(self) -> list:
+        """Return the configured specialist rules in declaration order.
+
+        Falls back to a single default STE rule (using
+        :attr:`ste_threshold`) when neither `specialist_rule` nor
+        `specialist_rules` is set, preserving historical behavior.
+        """
+
+        if self.specialist_rules:
+            return [setting.to_rule() for setting in self.specialist_rules]
+        if self.specialist_rule is not None:
+            return [self.specialist_rule.to_rule()]
+        return [SpecialistRuleSettings(min_positive_proba=self.ste_threshold).to_rule()]
 
 
 class Settings(BaseModel):
@@ -260,6 +365,9 @@ class Settings(BaseModel):
     split_strategy: SplitStrategy = "stratified_shuffle"
     split_group_column: str | None = None
     models: list[ModelKey] = Field(default_factory=lambda: ["rf", "xgb", "lgbm"])
+    flat_hyperparameters: FlatModelHyperparameters = Field(
+        default_factory=FlatModelHyperparameters
+    )
     hierarchical: HierarchicalSettings = Field(default_factory=HierarchicalSettings)
     composite: CompositeSettings = Field(default_factory=CompositeSettings)
     paths: Paths

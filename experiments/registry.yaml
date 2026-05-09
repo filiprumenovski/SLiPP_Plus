@@ -613,7 +613,8 @@
   models: [family_encoder, family_encoder, family_encoder, family_encoder, family_encoder]
   postprocessing: "mean_probability_ensemble(exp-012, exp-015, exp-016, tunnel_geom, tunnel_chem)"
   status: complete
-  is_current_best: true
+  is_current_best: false
+  is_internal_best: true
   metrics:
     binary_f1: "0.906 ± 0.015"
     binary_auroc: "0.989 ± 0.003"
@@ -687,7 +688,14 @@
   models: [family_encoder, family_encoder]
   postprocessing: "weighted_probability_ensemble(shell6_shape=0.2, chem=0.8)"
   status: complete
-  is_current_best: false
+  is_current_best: true
+  deployable_rationale: >
+    Selected as the deployable artifact over exp-019 because the internal
+    leader regressed on both external holdouts (apo-PDB 0.649, AlphaFold 0.623)
+    while exp-021 holds apo-PDB 0.717 and AlphaFold 0.715. The 0.011 internal
+    lipid5 macro-F1 sacrifice (0.684 -> 0.673) buys ~0.07 apo-PDB and ~0.09
+    AlphaFold F1 — a holdout-discipline-aware tradeoff. exp-019 retains
+    is_internal_best for audit purposes.
   metrics:
     binary_f1: "0.902 ± 0.016"
     binary_auroc: "0.989 ± 0.004"

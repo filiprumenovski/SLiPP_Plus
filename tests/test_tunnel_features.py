@@ -12,7 +12,7 @@ import pandas as pd
 import pytest
 
 from slipp_plus.constants import FEATURE_SETS
-from slipp_plus.tunnel_features import (
+from slipp_plus.feature_builders.tunnel_features import (
     TUNNEL_FEATURES_15,
     TUNNEL_FEATURES_18,
     TunnelBuildThresholds,

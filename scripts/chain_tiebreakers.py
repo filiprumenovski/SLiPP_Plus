@@ -21,18 +21,18 @@ from slipp_plus.ensemble import (
     load_predictions,
     score_summary,
 )
-from slipp_plus.plm_ste_tiebreaker import (
+from slipp_plus.experiments.plm_ste_tiebreaker import (
     apply_tiebreaker as apply_plm_ste_tb,
 )
-from slipp_plus.plm_ste_tiebreaker import (
+from slipp_plus.experiments.plm_ste_tiebreaker import (
     build_plm_vs_ste_training,
     train_plm_ste_tiebreaker,
 )
 from slipp_plus.splits import load_split
-from slipp_plus.sterol_tiebreaker import (
+from slipp_plus.experiments.sterol_tiebreaker import (
     apply_tiebreaker as apply_clr_ste_tb,
 )
-from slipp_plus.sterol_tiebreaker import (
+from slipp_plus.experiments.sterol_tiebreaker import (
     build_clr_vs_ste_training,
     train_sterol_tiebreaker,
 )

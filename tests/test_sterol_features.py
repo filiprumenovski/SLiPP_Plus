@@ -8,9 +8,9 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from slipp_plus.aromatic_aliphatic import _compute_centroid, _symmetric_jeffreys_log_ratio
+from slipp_plus.feature_builders.aromatic_aliphatic import _compute_centroid, _symmetric_jeffreys_log_ratio
 from slipp_plus.constants import AA20, FEATURE_SETS
-from slipp_plus.sterol_features import (
+from slipp_plus.feature_builders.sterol_features import (
     CHEMISTRY_GROUP_ORDER,
     CHEMISTRY_GROUPS,
     POCKET_GEOMETRY_COLS,

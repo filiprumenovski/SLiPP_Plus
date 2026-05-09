@@ -47,37 +47,62 @@ DEFAULT_STE_RULE = OneVsNeighborsRule(
 )
 
 
-def train_lipid_gate(X_tr: np.ndarray, y_tr: np.ndarray, seed: int) -> XGBClassifier:
+_DEFAULT_XGB_KWARGS: dict[str, float | int] = {
+    "max_depth": 5,
+    "n_estimators": 250,
+    "learning_rate": 0.05,
+}
+
+
+def _resolve_xgb_kwargs(hyperparameters: Any | None) -> dict[str, float | int]:
+    """Return XGB kwargs from a hyperparameters object or the legacy defaults."""
+
+    if hyperparameters is None:
+        return dict(_DEFAULT_XGB_KWARGS)
+    return hyperparameters.to_xgb_kwargs()
+
+
+def train_lipid_gate(
+    X_tr: np.ndarray,
+    y_tr: np.ndarray,
+    seed: int,
+    *,
+    hyperparameters: Any | None = None,
+) -> XGBClassifier:
     n_pos = int((y_tr == 1).sum())
     n_neg = int((y_tr == 0).sum())
+    kwargs = _resolve_xgb_kwargs(hyperparameters)
     model = XGBClassifier(
         objective="binary:logistic",
-        max_depth=5,
-        n_estimators=250,
-        learning_rate=0.05,
         scale_pos_weight=(n_neg / n_pos) if n_pos else 1.0,
         random_state=seed,
         n_jobs=-1,
         eval_metric="logloss",
         tree_method="hist",
         verbosity=0,
+        **kwargs,
     )
     model.fit(X_tr, y_tr)
     return model
 
 
-def train_lipid_family(X_tr: np.ndarray, y_tr: np.ndarray, seed: int) -> XGBClassifier:
+def train_lipid_family(
+    X_tr: np.ndarray,
+    y_tr: np.ndarray,
+    seed: int,
+    *,
+    hyperparameters: Any | None = None,
+) -> XGBClassifier:
+    kwargs = _resolve_xgb_kwargs(hyperparameters)
     model = XGBClassifier(
         objective="multi:softprob",
         num_class=len(LIPID_LABELS),
-        max_depth=5,
-        n_estimators=250,
-        learning_rate=0.05,
         random_state=seed,
         n_jobs=-1,
         eval_metric="mlogloss",
         tree_method="hist",
         verbosity=0,
+        **kwargs,
     )
     weights = compute_sample_weight(class_weight="balanced", y=y_tr)
     model.fit(X_tr, y_tr, sample_weight=weights)
@@ -88,6 +113,8 @@ def train_lipid_binary_heads(
     X_tr: np.ndarray,
     y_tr: np.ndarray,
     seed: int,
+    *,
+    hyperparameters: Any | None = None,
 ) -> dict[str, XGBClassifier]:
     """Train 5 independent binary one-vs-rest heads for lipid family classification.
 
@@ -110,21 +137,20 @@ def train_lipid_binary_heads(
     dict mapping lipid label string to its fitted binary XGB model.
     """
     models: dict[str, XGBClassifier] = {}
+    kwargs = _resolve_xgb_kwargs(hyperparameters)
     for i, label in enumerate(LIPID_LABELS):
         y_binary = (y_tr == i).astype(np.int64)
         n_pos = int(y_binary.sum())
         n_neg = int((y_binary == 0).sum())
         model = XGBClassifier(
             objective="binary:logistic",
-            max_depth=5,
-            n_estimators=250,
-            learning_rate=0.05,
             scale_pos_weight=(n_neg / n_pos) if n_pos > 0 else 1.0,
             random_state=seed,
             n_jobs=-1,
             eval_metric="logloss",
             tree_method="hist",
             verbosity=0,
+            **kwargs,
         )
         model.fit(X_tr, y_binary)
         models[label] = model
@@ -150,18 +176,23 @@ def predict_lipid_binary_heads(
     return raw / denom
 
 
-def train_nonlipid_family(X_tr: np.ndarray, y_tr: np.ndarray, seed: int) -> XGBClassifier:
+def train_nonlipid_family(
+    X_tr: np.ndarray,
+    y_tr: np.ndarray,
+    seed: int,
+    *,
+    hyperparameters: Any | None = None,
+) -> XGBClassifier:
+    kwargs = _resolve_xgb_kwargs(hyperparameters)
     model = XGBClassifier(
         objective="multi:softprob",
         num_class=len(NONLIPID_LABELS),
-        max_depth=5,
-        n_estimators=250,
-        learning_rate=0.05,
         random_state=seed,
         n_jobs=-1,
         eval_metric="mlogloss",
         tree_method="hist",
         verbosity=0,
+        **kwargs,
     )
     weights = compute_sample_weight(class_weight="balanced", y=y_tr)
     model.fit(X_tr, y_tr, sample_weight=weights)
@@ -216,20 +247,21 @@ def train_one_vs_neighbors(
     X_tr: np.ndarray,
     y_tr: np.ndarray,
     seed: int,
+    *,
+    hyperparameters: Any | None = None,
 ) -> XGBClassifier:
     n_pos = int((y_tr == 1).sum())
     n_neg = int((y_tr == 0).sum())
+    kwargs = _resolve_xgb_kwargs(hyperparameters)
     model = XGBClassifier(
         objective="binary:logistic",
-        max_depth=5,
-        n_estimators=250,
-        learning_rate=0.05,
         scale_pos_weight=(n_neg / n_pos) if n_pos else 1.0,
         random_state=seed,
         n_jobs=-1,
         eval_metric="logloss",
         tree_method="hist",
         verbosity=0,
+        **kwargs,
     )
     model.fit(X_tr, y_tr)
     return model

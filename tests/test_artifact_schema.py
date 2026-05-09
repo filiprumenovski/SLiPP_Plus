@@ -12,7 +12,7 @@ from slipp_plus.artifact_schema import (
     write_artifact_schema_sidecar,
 )
 from slipp_plus.constants import CLASS_10
-from slipp_plus.plm_ste_holdout import _load_model_bundles
+from slipp_plus.experiments.plm_ste_holdout import _load_model_bundles
 
 
 def test_feature_schema_hash_is_order_sensitive() -> None:

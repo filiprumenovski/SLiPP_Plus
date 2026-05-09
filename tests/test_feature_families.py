@@ -59,7 +59,7 @@ def test_signal_pruned_families_resolve() -> None:
 def test_family_encoder_forward_shape() -> None:
     code = """
 import numpy as np
-from slipp_plus.backbone_family_encoder import FamilyEncoderNet, predict_family_encoder_proba
+from slipp_plus.composite.backbone_family_encoder import FamilyEncoderNet, predict_family_encoder_proba
 arrays = {
     "paper17": np.ones((4, 17), dtype=np.float32),
     "aa20": np.ones((4, 20), dtype=np.float32),
