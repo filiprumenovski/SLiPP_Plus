@@ -1273,3 +1273,24 @@
     0.107 rescue precision, overfiring on true non-lipid rows. The selector
     needs a better proxy for external false negatives than ordinary internal
     base-FN membership.
+
+- id: exp-040-legacy-rescue-unlabeled-target-selection-negative
+  date: "2026-05-09"
+  feature_set: exp-028 + paper17_family_encoder + v_sterol probabilities
+  config: reports/legacy_rescue_unlabeled_target_selection_audit_2026_05_09.md
+  models: [family_encoder, logistic_gate]
+  postprocessing: "unlabeled_target_stat_selection_audit"
+  status: complete
+  is_current_best: false
+  metrics: {}
+  holdouts: {}
+  supersedes: null
+  artifacts:
+    report: reports/legacy_rescue_unlabeled_target_selection_audit_2026_05_09.md
+  notes: >
+    NEGATIVE UNLABELED-TARGET SELECTION AUDIT. Naive unlabeled target
+    statistics do not recover exp-037. Maximizing target predicted-positive
+    rate or target mean lipid probability under an internal F1 floor selects
+    low-threshold mean rewrites with apo-PDB F1 0.738 and AlphaFold F1 0.744.
+    Maximizing internal fire rate selects low-threshold v_sterol with similar
+    weak holdouts. Unlabeled prevalence/mass objectives are insufficient.

@@ -43,3 +43,4 @@ Generated from `experiments/registry.yaml`. Metrics are copied from registry ent
 | exp-037-legacy-rescue-maxlegacy-diagnostic | exp-028 + paper17_family_encoder + v_sterol probabilities | 0.895 ± 0.015 | 0.762 ± 0.019 | 0.756 | 0.807 | HOLDOUT-POSITIVE DIAGNOSTIC. | - |
 | exp-038-legacy-rescue-internal-selection-audit | exp-028 + paper17_family_encoder + v_sterol probabilities | - | - | - | - | NEGATIVE INTERNAL-SELECTION AUDIT. | - |
 | exp-039-legacy-rescue-base-fn-selection-negative | exp-028 + paper17_family_encoder + v_sterol probabilities | - | - | - | - | NEGATIVE BASE-FN SELECTION AUDIT. | - |
+| exp-040-legacy-rescue-unlabeled-target-selection-negative | exp-028 + paper17_family_encoder + v_sterol probabilities | - | - | - | - | NEGATIVE UNLABELED-TARGET SELECTION AUDIT. | - |

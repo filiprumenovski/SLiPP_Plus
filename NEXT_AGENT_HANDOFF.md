@@ -188,6 +188,16 @@ lead.
 - Decision: ordinary internal base-FN membership is not a good proxy for the
   external false negatives that exp-037 rescues.
 
+`exp-040-legacy-rescue-unlabeled-target-selection-negative` is closed negative.
+
+- Report: `reports/legacy_rescue_unlabeled_target_selection_audit_2026_05_09.md`
+- Result: naive unlabeled target statistics do not select exp-037. Maximizing
+  target predicted-positive rate or mean target lipid probability selects
+  low-threshold `mean` rewrites with apo-PDB F1 `0.738` and AlphaFold F1
+  `0.744`.
+- Decision: target prevalence/mass alone is not enough to make the maxlegacy
+  diagnostic deployable.
+
 `exp-005-v_sterol-ensemble` holdouts are now complete from existing artifacts.
 
 - Report: `reports/v_sterol_holdout_completion.md`
@@ -218,7 +228,8 @@ holdout reporting.
    selectable from internal-only evidence. The simple stricter threshold
    ablation (`exp-036`, threshold `0.99`) did not beat exp-035, and simple
    internal F1/fire scalar selection (`exp-038`) plus direct base-FN recall
-   selection (`exp-039`) did not recover exp-037.
+   selection (`exp-039`) plus naive unlabeled target-stat selection (`exp-040`)
+   did not recover exp-037.
 2. Prioritize domain-shift fixes that can be learned without tuning on holdout
    labels. The holdout threshold diagnostic showed lower deployable thresholds
    would help externally, but internal threshold selection did not reproduce

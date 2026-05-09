@@ -98,6 +98,10 @@ shows that direct internal base-false-negative recall is also not enough:
 precision-constrained selectors have no feasible candidate at the current F1
 floor, while unconstrained recall overfires.
 
+Unlabeled-target audit: `exp-040-legacy-rescue-unlabeled-target-selection-negative`
+shows that target predicted-positive rate and target mean lipid probability
+also miss exp-037; they select low-threshold mean rewrites with weaker holdouts.
+
 Holdout-label audit: `exp-034-holdout-label-source-audit` found a row-order
 trap, not a semantic label conflict. Root holdout files and component-specific
 holdout feature files have the same identities but different row order; labels
